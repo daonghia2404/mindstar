@@ -1,0 +1,19 @@
+@import '@/assets/styles/global';
+
+.WrapperLazyLoad {
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 100%;
+
+  .rc-virtual-list-holder {
+    max-height: 100% !important;
+  }
+
+  &-loading {
+    display: none;
+
+    &.show {
+      display: block;
+    }
+  }
+}

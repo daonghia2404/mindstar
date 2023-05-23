@@ -1,0 +1,26 @@
+@import '@/assets/styles/_global.scss';
+
+.RecentOrdersTable {
+  .Table {
+    margin-top: -1.2rem;
+
+    .ant-table-tbody>tr.ant-table-row:hover>td,
+    .ant-table-tbody>tr>td.ant-table-cell-row-hover {
+      background: $white;
+    }
+
+    .ant-table .ant-table-tbody>tr>td {
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+
+    .ant-table-thead {
+      display: none;
+    }
+  }
+}

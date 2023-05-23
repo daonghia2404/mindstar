@@ -1,0 +1,1 @@
+export type TRecentExpenseTableProps = unknown;

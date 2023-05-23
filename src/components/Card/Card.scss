@@ -1,0 +1,36 @@
+@import '@/assets/styles/_global.scss';
+
+.Card {
+  background: $white;
+  border-radius: 0.8rem;
+
+  &-header {
+    padding: 2.4rem 2.4rem 0;
+
+    &-title {
+      font-size: 1.6rem;
+      color: $mine-shaft;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    &-suffix-link {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: $purple-heart;
+
+      .Icon {
+        width: 3.2rem;
+        height: 3.2rem;
+      }
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &-body {
+    padding: 2.4rem;
+  }
+}

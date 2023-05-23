@@ -1,0 +1,56 @@
+@import '@/assets/styles/_global.scss';
+
+.Select {
+  .DropdownCustom {
+    .ant-dropdown-trigger {
+      &>div {
+        top: calc(100% + 0.4rem) !important;
+      }
+    }
+
+    &-overlay {
+      padding: 0;
+      left: 0 !important;
+      width: 100% !important;
+      min-width: unset !important;
+    }
+  }
+
+  &.FormField {
+    .FormField {
+      &-field {
+        .Select {
+          &-show {
+            &-value {
+              position: absolute;
+            }
+
+            &-search {
+              position: relative;
+              z-index: 2;
+
+              &.blur {
+                background: rgba($white, 0.5) !important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &-dropdown {
+    &-item {
+      padding: 1.2rem 1.6rem;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: $common-transition;
+
+      &:hover,
+      &.active {
+        color: $purple-heart;
+        background: $white-lilac;
+      }
+    }
+  }
+}

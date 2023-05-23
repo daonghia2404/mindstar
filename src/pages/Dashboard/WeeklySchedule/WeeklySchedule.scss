@@ -1,0 +1,46 @@
+@import '@/assets/styles/_global.scss';
+
+.WeeklySchedule {
+  .slick-list {
+    padding: 0.4rem;
+    margin: -0.4rem;
+
+    .slick-slide {
+      &:not(:last-child) {
+        margin-right: 1.2rem;
+      }
+    }
+  }
+
+  &-item {
+    border-radius: .8rem;
+    overflow: hidden;
+    width: 20rem;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .2);
+
+    &-header {
+      padding: 0.8rem 1.2rem;
+      background: $pomegranate;
+      color: $white;
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    &-body {
+      padding: 1.2rem;
+      background: $white;
+      text-align: center;
+
+      p {
+        font-size: 1.4rem;
+        color: $mine-shaft;
+
+        &:first-child {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+import React from 'react';
+import { Switch as AntdSwitch } from 'antd';
+import classNames from 'classnames';
+
+import FormField from '@/components/FormField';
+
+import { TSwitchProps } from './Switch.types';
+import './Switch.scss';
+
+const Switch: React.FC<TSwitchProps> = ({ label, required, size, className, value, disabled, style, onChange }) => {
+  return (
+    <FormField
+      label={label}
+      required={required}
+      size={size}
+      className={classNames('Switch', className)}
+      // focused
+      active
+      disabled={disabled}
+      style={style}
+    >
+      <AntdSwitch checked={value} onChange={onChange} />
+    </FormField>
+  );
+};
+
+export default Switch;

@@ -1,0 +1,16 @@
+@import '@/assets/styles/_global.scss';
+
+.RegisterBranch {
+  padding-top: 4.8rem;
+
+  &-step {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 2.5rem 0;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .2);
+    background: $white;
+    z-index: 6;
+  }
+}

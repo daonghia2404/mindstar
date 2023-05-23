@@ -1,0 +1,68 @@
+@import '@/assets/styles/_global.scss';
+
+.Pagination {
+
+  .ant-pagination-prev,
+  .ant-pagination-next {
+    min-width: 3.6rem !important;
+    height: 3.6rem !important;
+
+    .Button {
+      .ant-btn {
+        width: 3.6rem !important;
+        height: 3.6rem !important;
+      }
+    }
+
+
+    .Button .ant-btn {
+      border-radius: .8rem;
+    }
+  }
+
+  .ant-pagination-prev {
+    order: 98;
+  }
+
+  .ant-pagination-next {
+    order: 99;
+  }
+
+  .ant-pagination {
+    display: flex;
+    align-items: center;
+
+    &-item {
+      height: 2.4rem;
+      min-width: 2.4rem;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 0.8rem;
+      color: $dove-gray;
+
+      &:hover,
+      &.ant-pagination-item-active {
+        a {
+          color: $purple-heart;
+        }
+      }
+
+      a {
+        line-height: 1;
+        transition: $common-transition;
+      }
+    }
+  }
+
+  .ant-pagination-jump-prev .ant-pagination-item-container .ant-pagination-item-link-icon,
+  .ant-pagination-jump-next .ant-pagination-item-container .ant-pagination-item-link-icon {
+    color: $purple-heart;
+  }
+
+  .ant-pagination-item-ellipsis {
+    font-size: 1rem;
+    color: $dove-gray !important;
+  }
+}

@@ -1,0 +1,24 @@
+@import '@/assets/styles/_global.scss';
+
+.Switch {
+  .ant-switch {
+    min-width: 4rem;
+    height: 2.4rem;
+    line-height: 2.4rem;
+    background: $silver;
+    box-shadow: none;
+
+    &.ant-switch-checked {
+      background: $apple;
+
+      .ant-switch-handle {
+        left: calc(100% - 2rem - 2px);
+      }
+    }
+
+    &-handle {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+}

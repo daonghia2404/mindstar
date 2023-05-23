@@ -1,0 +1,66 @@
+@import '@/assets/styles/_global.scss';
+
+.StepStar {
+  column-gap: 1.6rem;
+
+  &-line {
+    flex: 0 0 4.8rem;
+    max-width: 4.8rem;
+    width: 4.8rem;
+    height: 1px;
+    background: $silver;
+  }
+
+  &-item {
+    column-gap: 1.2rem;
+    user-select: none;
+
+    &.passed,
+    &.active {
+      .StepStar-item {
+        &-icon {
+          span {
+            font-weight: 600;
+          }
+        }
+
+        &-title {
+          font-weight: 600;
+        }
+      }
+    }
+
+    &-icon {
+      position: relative;
+
+      .Icon {
+        width: 4rem;
+        height: 4rem;
+
+        svg path {
+          transition: $common-transition;
+        }
+      }
+
+      span {
+        @include centerAbsolute;
+        font-size: 1.4rem;
+        line-height: 1.5;
+        color: $emperor;
+        z-index: 2;
+
+        .Icon {
+          width: 1.6rem;
+          height: 1.6rem;
+        }
+      }
+    }
+
+    &-title {
+      font-size: 1.4rem;
+      line-height: 1.5;
+      color: $emperor;
+      transition: $common-transition;
+    }
+  }
+}

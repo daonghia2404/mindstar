@@ -1,0 +1,14 @@
+@import '@/assets/styles/_global.scss';
+
+.Empty {
+  text-align: center;
+  padding: 1.6rem;
+  font-size: 1.4rem;
+  color: $dove-gray;
+
+  .Icon {
+    width: 3.2rem;
+    height: 3.2rem;
+    margin: 0 auto .4rem;
+  }
+}

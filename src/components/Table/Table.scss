@@ -1,0 +1,121 @@
+@import '@/assets/styles/_global.scss';
+
+.Table {
+  .ant-table {
+    .ant-table-placeholder {
+      &>td {
+        border: none
+      }
+    }
+
+    .ant-table-column-sort {
+      background: rgba($selective-yellow, 0.1) !important;
+    }
+
+    .ant-table-column-sorter {
+      color: $silver-chalice;
+
+      .ant-table-column-sorter-up,
+      .ant-table-column-sorter-down {
+        font-size: 1rem;
+      }
+
+      .ant-table-column-sorter-up.active,
+      .ant-table-column-sorter-down.active {
+        color: $purple-heart;
+      }
+    }
+
+    .ant-table-tbody>tr.ant-table-row:hover>td,
+    .ant-table-tbody>tr>td.ant-table-cell-row-hover {
+      background: rgba($white-lilac, 0.5);
+    }
+
+    .ant-table-thead {
+      &>tr {
+        &>th {
+          font-weight: 700;
+          color: $tundora;
+          background: $white;
+          font-size: 1.4rem;
+          border-bottom-color: $alto;
+          user-select: none;
+          border-top: 1px solid $alto;
+
+          &::before {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .ant-table-tbody {
+      &>tr {
+        &>td {
+          border-bottom-color: $alto;
+          padding: 1.2rem 1.6rem;
+          font-size: 1.4rem;
+          color: $mine-shaft;
+          font-weight: 500;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+
+  &-image {
+    margin-right: -1.6rem;
+  }
+
+  &-info {
+    &-description {
+      margin-top: .4rem;
+      color: $dove-gray;
+      font-size: 1.2rem;
+    }
+  }
+
+  &-header {
+    margin-bottom: 2.4rem;
+  }
+
+  &-footer {
+    margin-top: 2.4rem;
+  }
+
+  &-total-item {
+    display: flex;
+    align-items: center;
+    column-gap: 0.4rem;
+    font-size: 1.4rem;
+    color: $tundora;
+
+    strong {
+      font-weight: 600;
+    }
+
+    .Icon {
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+  }
+
+  &-users {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 0.4rem;
+    row-gap: 0.4rem;
+
+    &-item {
+      display: flex;
+      align-items: center;
+      column-gap: .4rem;
+      padding: .4rem .8rem;
+      border-radius: 3.5rem;
+      background: rgba($alto, 0.5);
+      font-size: 1.2rem;
+      line-height: 1;
+      color: $mine-shaft;
+    }
+  }
+}

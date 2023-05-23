@@ -1,0 +1,68 @@
+@import '@/assets/styles/_global.scss';
+
+.Status {
+  column-gap: .8rem;
+  padding: .8rem 1.2rem;
+  border-radius: 3.5rem;
+  width: fit-content;
+
+  &.SUCCESS {
+    background: rgba($fruit-sald, 0.1);
+
+    .Status {
+      &-circle {
+        background: $fruit-sald;
+        box-shadow: 0 0 5px rgba($fruit-sald, 0.8);
+      }
+
+      &-label {
+        color: $fruit-sald;
+      }
+    }
+  }
+
+  &.WARNING {
+    background: rgba($selective-yellow, 0.15);
+
+    .Status {
+      &-circle {
+        background: $selective-yellow;
+        box-shadow: 0 0 5px rgba($selective-yellow, 0.8);
+      }
+
+      &-label {
+        color: $selective-yellow;
+      }
+    }
+  }
+
+  &.DANGER {
+    background: rgba($pomegranate, 0.1);
+
+    .Status {
+      &-circle {
+        background: $pomegranate;
+        box-shadow: 0 0 5px rgba($pomegranate, 0.8);
+      }
+
+      &-label {
+        color: $pomegranate;
+      }
+    }
+  }
+
+  &-circle {
+    width: .8rem;
+    flex: 0 0 .8rem;
+    max-width: .8rem;
+    height: .8rem;
+    border-radius: 50%;
+  }
+
+  &-label {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+}
