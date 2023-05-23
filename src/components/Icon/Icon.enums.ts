@@ -50,6 +50,7 @@ export enum EIconName {
   AngleRight = 'AngleRight',
   PigMoney = 'PigMoney',
   Coins = 'Coins',
+  Eye = 'Eye',
 }
 
 export enum EIconColor {

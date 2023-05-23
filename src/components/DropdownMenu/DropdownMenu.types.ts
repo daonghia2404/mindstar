@@ -21,5 +21,6 @@ export type TDropdownMenuItem = {
   hide?: boolean;
   data?: any;
   danger?: boolean;
+  active?: boolean;
   onClick?: (data: TDropdownMenuItem) => void;
 };

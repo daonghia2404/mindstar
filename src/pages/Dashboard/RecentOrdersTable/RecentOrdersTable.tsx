@@ -7,12 +7,12 @@ import { EIconName } from '@/components/Icon';
 import Avatar from '@/components/Avatar';
 import { TRootState } from '@/redux/reducers';
 import { TOrder } from '@/common/models';
+import { formatCurrency, formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
+import { EEmpty, EFormat } from '@/common/enums';
+import { dataOrderStatusOptions, dataPaymentTypeOptions } from '@/common/constants';
 
 import { TRecentOrdersTableProps } from './RecentOrdersTable.types';
 import './RecentOrdersTable.scss';
-import { formatCurrency, getFullUrlStatics } from '@/utils/functions';
-import { EEmpty } from '@/common/enums';
-import { dataOrderStatusOptions, dataPaymentTypeOptions } from '@/common/constants';
 
 const RecentOrdersTable: React.FC<TRecentOrdersTableProps> = () => {
   const ordersState = useSelector((state: TRootState) => state.orderReducer.getOrdersResponse)?.data;
@@ -39,6 +39,9 @@ const RecentOrdersTable: React.FC<TRecentOrdersTableProps> = () => {
           <div className="Table-info-description">
             {record?.customer_info?.name || EEmpty.DASH} - {record?.customer_info?.mobile || EEmpty.DASH}
           </div>
+          <div className="Table-info-description">
+            {formatISODateToDateTime(record.create_date, EFormat['DD/MM/YYYY - HH:mm'])}
+          </div>
         </div>
       ),
     },
@@ -51,13 +54,13 @@ const RecentOrdersTable: React.FC<TRecentOrdersTableProps> = () => {
 
         return (
           <div className="Table-info text-right">
-            <div className="Table-info-title">
+            <div className="Table-info-title nowrap">
               {formatCurrency({ amount: record.amount - record.discount_value, showSuffix: true })}
             </div>
-            <div className="Table-info-description">
+            <div className="Table-info-description nowrap">
               {dataPaymentTypeOptions.find((item) => item.value === record.payment_type)?.label || EEmpty.DASH}
             </div>
-            <div className="Table-info-description" style={{ color: orderStatus?.data?.color }}>
+            <div className="Table-info-description nowrap" style={{ color: orderStatus?.data?.color }}>
               {orderStatus?.label}
             </div>
           </div>

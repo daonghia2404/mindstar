@@ -5,6 +5,7 @@ import authReducer from './auth';
 import branchReducer from './branch';
 import dashboardReducer from './dashboard';
 import expenseReducer from './expense';
+import managerReducer from './manager';
 import orderReducer from './order';
 import redeemReducer from './redeem';
 import scheduleReducer from './schedule';
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   branchReducer,
   dashboardReducer,
   expenseReducer,
+  managerReducer,
   orderReducer,
   redeemReducer,
   scheduleReducer,

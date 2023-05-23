@@ -1,11 +1,41 @@
 @import '@/assets/styles/_global.scss';
 
 .Admin {
+  &.visible-menu {
+    .Admin {
+      &-sidebar {
+        pointer-events: unset;
+        transform: translateX(0%);
+
+        &-overlay {
+          pointer-events: unset;
+          opacity: 1;
+        }
+      }
+    }
+  }
+
   &-sidebar {
     position: fixed;
     width: 24rem;
     height: 100%;
-    z-index: 4;
+    z-index: 5;
+
+    @media (max-width: 991px) {
+      transition: $common-transition;
+      transform: translateX(-100%);
+      pointer-events: none;
+    }
+
+    &-overlay {
+      z-index: 4;
+      @include fullAbsolute;
+      background: rgba($black, 0.4);
+      backdrop-filter: blur(2px);
+      transition: $common-transition;
+      opacity: 0;
+      pointer-events: none;
+    }
   }
 
   &-header {
@@ -14,11 +44,20 @@
     left: 24rem;
     width: calc(100% - 24rem);
     z-index: 4;
+
+    @media (max-width: 991px) {
+      left: 0;
+      width: 100%;
+    }
   }
 
   &-body {
     padding: calc(6rem + 2.4rem) 2.4rem 2.4rem calc(24rem + 2.4rem);
     min-height: 100vh;
     background: rgba($alto, 0.2);
+
+    @media (max-width: 991px) {
+      padding-left: 2.4rem;
+    }
   }
 }

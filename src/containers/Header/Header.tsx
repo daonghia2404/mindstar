@@ -10,11 +10,12 @@ import ModalLogout from '@/containers/Header/ModalLogout';
 import { TRootState } from '@/redux/reducers';
 import { getFullUrlStatics } from '@/utils/functions';
 import MainBranchSelect from '@/containers/Header/MainBranchSelect';
+import ImageMenuBar from '@/assets/images/image-menu-bar.png';
 
 import { THeaderProps } from './Header.types.d';
 import './Header.scss';
 
-const Header: React.FC<THeaderProps> = () => {
+const Header: React.FC<THeaderProps> = ({ onOpenMenu }) => {
   const { pathname } = useLocation();
   const [modalLogoutState, setModalLogoutState] = useState<{ visible: boolean }>({ visible: false });
 
@@ -56,8 +57,12 @@ const Header: React.FC<THeaderProps> = () => {
   return (
     <div className="Header">
       <div className="Header-wrapper flex items-center justify-between">
-        <div className="Header-item">
-          <div className="Header-title">{headerTitle}</div>
+        <div className="Header-item flex items-center">
+          <div className="Header-menu" onClick={onOpenMenu}>
+            <img src={ImageMenuBar} alt="" />
+          </div>
+
+          <div className="Header-title nowrap">{headerTitle}</div>
         </div>
         <div className="Header-item flex items-center">
           <MainBranchSelect />

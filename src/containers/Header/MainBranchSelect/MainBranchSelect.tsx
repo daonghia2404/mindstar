@@ -32,6 +32,7 @@ const MainBranchSelect: React.FC<TMainBranchSelectProps> = () => {
   const dataBranchDropdownMenu = [
     {
       value: '',
+      active: !currentBranch?.id,
       label: 'Tất cả Chi nhánh',
       icon: EIconName.MapMarker,
       data: {
@@ -41,6 +42,7 @@ const MainBranchSelect: React.FC<TMainBranchSelectProps> = () => {
     },
     ...branchOptions.map((item) => ({
       value: String(item.id),
+      active: currentBranch?.id === item.id,
       label: item.name,
       icon: EIconName.MapMarker,
       data: item,
@@ -108,7 +110,7 @@ const MainBranchSelect: React.FC<TMainBranchSelectProps> = () => {
           <div className="Header-branch-icon">
             <Icon name={EIconName.MapMarker} color={EIconColor.MINE_SHAFT} />
           </div>
-          <div className="Header-branch-title">{currentBranch?.name}</div>
+          <div className="Header-branch-title nowrap">{currentBranch?.name}</div>
           <div className="Header-branch-arrow">
             <Icon name={EIconName.AngleDown} color={EIconColor.MINE_SHAFT} />
           </div>

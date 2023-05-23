@@ -58,6 +58,10 @@
           color: $mine-shaft;
           font-weight: 500;
           vertical-align: middle;
+
+          &.limit-width {
+            min-width: 18rem;
+          }
         }
       }
     }
@@ -81,6 +85,11 @@
 
   &-footer {
     margin-top: 2.4rem;
+
+    @media (max-width: 575px) {
+      flex-direction: column;
+      row-gap: 1.6rem;
+    }
   }
 
   &-total-item {

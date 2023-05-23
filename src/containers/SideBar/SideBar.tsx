@@ -15,7 +15,7 @@ import './SideBar.scss';
 
 const { Panel } = Collapse;
 
-const SideBar: React.FC<TSideBarProps> = () => {
+const SideBar: React.FC<TSideBarProps> = ({ onCloseMenu }) => {
   const { pathname } = useLocation();
   const settingState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data;
 
@@ -40,7 +40,10 @@ const SideBar: React.FC<TSideBarProps> = () => {
                     active: item.activePaths.includes(pathname),
                   })}
                   onClick={(): void => {
-                    if (!isChildren && item.link) navigate(item.link);
+                    if (!isChildren && item.link) {
+                      onCloseMenu?.();
+                      navigate(item.link);
+                    }
                   }}
                 >
                   <div className="SideBar-list-item-icon">
@@ -63,7 +66,10 @@ const SideBar: React.FC<TSideBarProps> = () => {
                         active: subItem.activePaths.includes(pathname),
                       })}
                       onClick={(): void => {
-                        if (subItem.link) navigate(subItem.link);
+                        if (subItem.link) {
+                          onCloseMenu?.();
+                          navigate(subItem.link);
+                        }
                       }}
                     >
                       <div className="SideBar-list-item-icon">

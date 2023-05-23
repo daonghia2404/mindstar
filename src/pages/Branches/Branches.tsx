@@ -35,21 +35,21 @@ const Branches: React.FC = () => {
     auditingStatuses: `${EAuditingStatus.ACTIVE},${EAuditingStatus.INACTIVE}`,
   });
 
-  const [modalBranchFormState, setModalBranchFormState] = useState<{ visible: boolean; data?: any }>({
+  const [modalBranchFormState, setModalBranchFormState] = useState<{ visible: boolean; data?: TBranch }>({
     visible: false,
   });
-  const [modalDeleteBranchState, setModalDeleteBranchState] = useState<{ visible: boolean; data?: any }>({
+  const [modalDeleteBranchState, setModalDeleteBranchState] = useState<{ visible: boolean; data?: TBranch }>({
     visible: false,
   });
 
-  const handleOpenModalBranchForm = (data?: any): void => {
+  const handleOpenModalBranchForm = (data?: TBranch): void => {
     setModalBranchFormState({ visible: true, data });
   };
   const handleCloseModalBranchForm = (): void => {
     setModalBranchFormState({ visible: false });
   };
 
-  const handleOpenModalDeleteBranch = (data?: any): void => {
+  const handleOpenModalDeleteBranch = (data?: TBranch): void => {
     setModalDeleteBranchState({ visible: true, data });
   };
   const handleCloseModalDeleteBranch = (): void => {
@@ -73,7 +73,13 @@ const Branches: React.FC = () => {
     });
   };
 
-  const dataTableDropdownActions = (data?: any): TDropdownMenuItem[] => [
+  const dataTableDropdownActions = (data?: TBranch): TDropdownMenuItem[] => [
+    {
+      value: 'setting',
+      label: 'Cài đặt',
+      icon: EIconName.Settings,
+      onClick: (): void => {},
+    },
     {
       value: 'edit',
       label: 'Sửa',
@@ -98,13 +104,14 @@ const Branches: React.FC = () => {
       key: 'name',
       dataIndex: 'name',
       title: 'Tên',
+      className: 'limit-width',
       sorter: true,
       keySort: 'name',
       width: 180,
       render: (_: string, record: TBranch): React.ReactElement => (
         <div className="Table-info">
           <div className="Table-info-title">{record?.name || EEmpty.DASH}</div>
-          <div className="Table-info-description">{record?.count_player || EEmpty.ZERO} thành viên</div>
+          <div className="Table-info-description">{record?.count_player || EEmpty.ZERO} học viên</div>
         </div>
       ),
     },
@@ -112,12 +119,14 @@ const Branches: React.FC = () => {
       key: 'address',
       dataIndex: 'address',
       title: 'Địa chỉ',
+      className: 'limit-width',
       render: (value: string): string => value || EEmpty.DASH,
     },
     {
       key: 'manager',
       dataIndex: 'manager',
       title: 'Quản lý',
+      className: 'limit-width',
       render: (_: string, record: TBranch): React.ReactElement =>
         record?.managers && record?.managers?.length > 0 ? (
           <div className="Table-users">
@@ -158,7 +167,7 @@ const Branches: React.FC = () => {
       dataIndex: 'actions',
       title: '',
       width: 40,
-      render: (_: string, record: any): React.ReactElement => (
+      render: (_: string, record: TBranch): React.ReactElement => (
         <div onClick={(e): void => e.stopPropagation()}>
           <DropdownMenu placement="bottomRight" options={dataTableDropdownActions(record)}>
             <Button

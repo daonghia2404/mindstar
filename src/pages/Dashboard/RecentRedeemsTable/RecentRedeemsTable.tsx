@@ -6,13 +6,13 @@ import Table from '@/components/Table';
 import { EIconName } from '@/components/Icon';
 import Avatar from '@/components/Avatar';
 import { TRootState } from '@/redux/reducers';
-import { EEmpty } from '@/common/enums';
+import { EEmpty, EFormat } from '@/common/enums';
 import { TRedeem } from '@/common/models';
-import { getFullUrlStatics } from '@/utils/functions';
+import { formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
+import { dataOrderStatusOptions } from '@/common/constants';
 
 import { TRecentRedeemsTableProps } from './RecentRedeemsTable.types';
 import './RecentRedeemsTable.scss';
-import { dataOrderStatusOptions } from '@/common/constants';
 
 const RecentRedeemsTable: React.FC<TRecentRedeemsTableProps> = () => {
   const redeemsState = useSelector((state: TRootState) => state.redeemReducer.getRedeemsResponse)?.data;
@@ -39,6 +39,9 @@ const RecentRedeemsTable: React.FC<TRecentRedeemsTableProps> = () => {
           <div className="Table-info-description">
             {record?.customer_info?.name || EEmpty.DASH} - {record?.customer_info?.mobile || EEmpty.DASH}
           </div>
+          <div className="Table-info-description">
+            {formatISODateToDateTime(record.create_date, EFormat['DD/MM/YYYY - HH:mm'])}
+          </div>
         </div>
       ),
     },
@@ -50,9 +53,9 @@ const RecentRedeemsTable: React.FC<TRecentRedeemsTableProps> = () => {
         const orderStatus = dataOrderStatusOptions.find((item) => item.value === record.redeem_status);
         return (
           <div className="Table-info text-right">
-            <div className="Table-info-title">{record?.point_used || EEmpty.ZERO}</div>
+            <div className="Table-info-title nowrap">{record?.point_used || EEmpty.ZERO}</div>
             <div className="Table-info-description">Điểm</div>
-            <div className="Table-info-description" style={{ color: orderStatus?.data?.color }}>
+            <div className="Table-info-description nowrap" style={{ color: orderStatus?.data?.color }}>
               {orderStatus?.label}
             </div>
           </div>

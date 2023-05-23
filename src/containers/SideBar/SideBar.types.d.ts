@@ -1,4 +1,6 @@
-export type TSideBarProps = unknown;
+export type TSideBarProps = {
+  onCloseMenu?: () => void;
+};
 
 export type TSideBarData = {
   id: string;

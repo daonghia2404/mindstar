@@ -15,7 +15,7 @@ export const dataSideBar = (): TSideBarData[] => [
     id: '2',
     title: 'Học viện',
     icon: EIconName.School,
-    activePaths: [Paths.Branches],
+    activePaths: [Paths.Branches, Paths.Managers],
     children: [
       {
         id: '1',
@@ -28,8 +28,8 @@ export const dataSideBar = (): TSideBarData[] => [
         id: '2',
         title: 'Giáo viên',
         icon: EIconName.Users,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.Managers,
+        activePaths: [Paths.Managers],
       },
       {
         id: '3',
@@ -47,7 +47,7 @@ export const dataSideBar = (): TSideBarData[] => [
       },
       {
         id: '5',
-        title: 'Thành viên',
+        title: 'Học viên',
         icon: EIconName.Users,
         link: Paths.Dashboard,
         activePaths: [],
@@ -179,8 +179,8 @@ export const dataSideBar = (): TSideBarData[] => [
       },
       {
         id: '6',
-        title: 'Kho hàng',
-        icon: EIconName.WareHouse,
+        title: 'Nhập hàng',
+        icon: EIconName.PackageImport,
         link: Paths.Dashboard,
         activePaths: [],
       },
@@ -241,6 +241,20 @@ export const dataSideBar = (): TSideBarData[] => [
         id: '4',
         title: 'Lợi nhuận',
         icon: EIconName.Graph,
+        link: Paths.Dashboard,
+        activePaths: [],
+      },
+      {
+        id: '5',
+        title: 'Bán hàng',
+        icon: EIconName.Receipt,
+        link: Paths.Dashboard,
+        activePaths: [],
+      },
+      {
+        id: '6',
+        title: 'Tồn kho',
+        icon: EIconName.WareHouse,
         link: Paths.Dashboard,
         activePaths: [],
       },

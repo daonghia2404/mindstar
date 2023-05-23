@@ -59,6 +59,7 @@ const Table: React.FC<TTableProps> = ({
           rowKey={rowKey}
           title={title}
           onChange={handleTableChange}
+          scroll={{ x: 'auto' }}
         />
       </div>
       {!!showPagination && !!pageSize && !!total && (

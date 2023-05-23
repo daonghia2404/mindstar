@@ -36,7 +36,9 @@ const RecentRevenueTable: React.FC<TRecentRevenueTableProps> = () => {
           <div className="Table-info-title" style={{ color: EIconColor.APPLE }}>
             +{formatCurrency({ amount: record.amount, showSuffix: true })}
           </div>
-          <div className="Table-info-description">{formatISODateToDateTime(record.at_date, EFormat['DD/MM/YYYY'])}</div>
+          <div className="Table-info-description">
+            {formatISODateToDateTime(record.at_date, EFormat['DD/MM/YYYY - HH:mm'])}
+          </div>
         </div>
       ),
     },

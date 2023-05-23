@@ -165,42 +165,42 @@ const Dashboard: React.FC = () => {
           </Col>
           <Col span={24}>
             <Row gutter={[24, 24]}>
-              <Col span={4}>
+              <Col span={12} md={{ span: 8 }} lg={{ span: 8 }} xl={{ span: 4 }}>
                 <DashboardStaticCard
                   title="Doanh thu (đ)"
                   value={beautifyCurrency(transactionsState?.sub_total || EEmpty.ZERO)}
                   icon={EIconName.PigMoney}
                 />
               </Col>
-              <Col span={4}>
+              <Col span={12} md={{ span: 8 }} lg={{ span: 8 }} xl={{ span: 4 }}>
                 <DashboardStaticCard
                   title="Chi phí (đ)"
                   value={beautifyCurrency(expensesState?.sub_total || EEmpty.ZERO)}
                   icon={EIconName.Coins}
                 />
               </Col>
-              <Col span={4}>
+              <Col span={12} md={{ span: 8 }} lg={{ span: 8 }} xl={{ span: 4 }}>
                 <DashboardStaticCard
                   title="Lớp học"
                   value={dashboardState?.class_count || EEmpty.ZERO}
                   icon={EIconName.ChalkBoard}
                 />
               </Col>
-              <Col span={4}>
+              <Col span={12} md={{ span: 8 }} lg={{ span: 8 }} xl={{ span: 4 }}>
                 <DashboardStaticCard
                   title="Đơn hàng"
                   value={dashboardState?.order_count || EEmpty.ZERO}
                   icon={EIconName.Receipt}
                 />
               </Col>
-              <Col span={4}>
+              <Col span={12} md={{ span: 8 }} lg={{ span: 8 }} xl={{ span: 4 }}>
                 <DashboardStaticCard
-                  title="Thành viên"
+                  title="Học viên"
                   value={dashboardState?.player_count || EEmpty.ZERO}
                   icon={EIconName.Users}
                 />
               </Col>
-              <Col span={4}>
+              <Col span={12} md={{ span: 8 }} lg={{ span: 8 }} xl={{ span: 4 }}>
                 <DashboardStaticCard
                   title="Trải nghiệm miễn phí"
                   value={dashboardState?.free_trial_count || EEmpty.ZERO}
@@ -214,20 +214,20 @@ const Dashboard: React.FC = () => {
           </Col>
           <Col span={24}>
             <Row gutter={[24, 24]}>
-              <Col span={12}>
+              <Col span={24} md={{ span: 12 }}>
                 <RecentRevenueTable />
               </Col>
-              <Col span={12}>
+              <Col span={24} md={{ span: 12 }}>
                 <RecentExpenseTable />
               </Col>
             </Row>
           </Col>
           <Col span={24}>
             <Row gutter={[24, 24]}>
-              <Col span={12}>
+              <Col span={24} md={{ span: 12 }}>
                 <RecentRedeemsTable />
               </Col>
-              <Col span={12}>
+              <Col span={24} md={{ span: 12 }}>
                 <RecentOrdersTable />
               </Col>
             </Row>

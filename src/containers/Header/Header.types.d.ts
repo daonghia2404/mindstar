@@ -1,1 +1,3 @@
-export type THeaderProps = unknown;
+export type THeaderProps = {
+  onOpenMenu?: () => void;
+};

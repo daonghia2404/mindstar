@@ -2,6 +2,7 @@ export * from './auth';
 export * from './branch';
 export * from './dashboard';
 export * from './expense';
+export * from './manager';
 export * from './order';
 export * from './redeem';
 export * from './schedule';

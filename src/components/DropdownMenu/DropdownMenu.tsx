@@ -51,7 +51,10 @@ const DropdownMenu: React.FC<TDropdownMenuProps> = ({
           .map((item) => (
             <div
               key={item.value}
-              className={classNames('DropdownMenu-list-item flex items-center', { danger: item.danger })}
+              className={classNames('DropdownMenu-list-item flex items-center', {
+                danger: item.danger,
+                active: item.active,
+              })}
               onClick={(): void => {
                 item.onClick?.(item);
                 onClickMenuItem?.(item);
