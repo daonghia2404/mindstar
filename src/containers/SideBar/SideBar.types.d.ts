@@ -7,6 +7,7 @@ export type TSideBarData = {
   title: string;
   link?: string;
   activePaths: string[];
+  hide?: boolean;
   icon?: string;
   children?: TSideBarData[];
 };

@@ -18,6 +18,9 @@ import './Header.scss';
 const Header: React.FC<THeaderProps> = ({ onOpenMenu }) => {
   const { pathname } = useLocation();
   const [modalLogoutState, setModalLogoutState] = useState<{ visible: boolean }>({ visible: false });
+  const dataLocation = {
+    id: [...pathname.split('/')].pop(),
+  };
 
   const myProfileState = useSelector((state: TRootState) => state.userReducer.getMyProfileResponse)?.data;
 
@@ -30,11 +33,11 @@ const Header: React.FC<THeaderProps> = ({ onOpenMenu }) => {
 
   const headerTitle =
     [
-      ...dataSideBar().filter((item) => !item.children || item.children.length === 0),
-      ...dataSideBar()
+      ...dataSideBar(dataLocation).filter((item) => !item.children || item.children.length === 0),
+      ...dataSideBar(dataLocation)
         .map((item) => item.children)
         .flat(),
-    ].find((item) => item?.activePaths.includes(pathname))?.title || 'MindStar';
+    ].find((item) => item?.link === pathname)?.title || 'MindStar';
 
   const dataAccountDropdownMenu = [
     {

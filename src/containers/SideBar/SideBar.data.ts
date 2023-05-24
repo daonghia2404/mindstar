@@ -32,6 +32,14 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         activePaths: [Paths.Managers, Paths.ManagerDetail(data?.id)],
       },
       {
+        id: '2-1',
+        title: 'Chi tiết Giáo viên',
+        icon: EIconName.Users,
+        hide: true,
+        link: Paths.ManagerDetail(data?.id),
+        activePaths: [Paths.ManagerDetail(data?.id)],
+      },
+      {
         id: '3',
         title: 'Lớp học',
         icon: EIconName.ChalkBoard,

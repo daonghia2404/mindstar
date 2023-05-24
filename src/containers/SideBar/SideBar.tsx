@@ -63,25 +63,27 @@ const SideBar: React.FC<TSideBarProps> = ({ onCloseMenu }) => {
             >
               {isChildren ? (
                 <div className="SideBar-list-children">
-                  {item.children?.map((subItem) => (
-                    <div
-                      key={subItem.id}
-                      className={classNames('SideBar-list-item flex items-center', {
-                        active: subItem.activePaths.includes(pathname),
-                      })}
-                      onClick={(): void => {
-                        if (subItem.link) {
-                          onCloseMenu?.();
-                          navigate(subItem.link);
-                        }
-                      }}
-                    >
-                      <div className="SideBar-list-item-icon">
-                        <Icon name={subItem.icon as EIconName} color={EIconColor.DOVE_GRAY} />
+                  {item.children
+                    ?.filter((subItem) => !subItem.hide)
+                    .map((subItem) => (
+                      <div
+                        key={subItem.id}
+                        className={classNames('SideBar-list-item flex items-center', {
+                          active: subItem.activePaths.includes(pathname),
+                        })}
+                        onClick={(): void => {
+                          if (subItem.link) {
+                            onCloseMenu?.();
+                            navigate(subItem.link);
+                          }
+                        }}
+                      >
+                        <div className="SideBar-list-item-icon">
+                          <Icon name={subItem.icon as EIconName} color={EIconColor.DOVE_GRAY} />
+                        </div>
+                        <div className="SideBar-list-item-title">{subItem.title}</div>
                       </div>
-                      <div className="SideBar-list-item-title">{subItem.title}</div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               ) : (
                 <></>
