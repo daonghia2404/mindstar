@@ -18,6 +18,9 @@ const { Panel } = Collapse;
 const SideBar: React.FC<TSideBarProps> = ({ onCloseMenu }) => {
   const { pathname } = useLocation();
   const settingState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data;
+  const dataLocation = {
+    id: [...pathname.split('/')].pop(),
+  };
 
   return (
     <div className="SideBar">
@@ -27,7 +30,7 @@ const SideBar: React.FC<TSideBarProps> = ({ onCloseMenu }) => {
       </Link>
 
       <Collapse className="SideBar-list" expandIconPosition="right" expandIcon={(): React.ReactNode => <></>}>
-        {dataSideBar().map((item) => {
+        {dataSideBar(dataLocation).map((item) => {
           const isChildren = item.children && item.children?.length > 0;
 
           return (
@@ -62,6 +65,7 @@ const SideBar: React.FC<TSideBarProps> = ({ onCloseMenu }) => {
                 <div className="SideBar-list-children">
                   {item.children?.map((subItem) => (
                     <div
+                      key={subItem.id}
                       className={classNames('SideBar-list-item flex items-center', {
                         active: subItem.activePaths.includes(pathname),
                       })}

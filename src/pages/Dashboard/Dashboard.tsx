@@ -21,10 +21,10 @@ import {
   getTransactionsAction,
 } from '@/redux/actions';
 import { EEmpty } from '@/common/enums';
-
-import './Dashboard.scss';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
 import { beautifyCurrency } from '@/utils/functions';
+
+import './Dashboard.scss';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();

@@ -1,3 +1,4 @@
+import { CSSProperties } from 'react';
 import { TFormFieldProps } from '@/components/FormField';
 
 export type TInputProps = TFormFieldProps & {
@@ -8,6 +9,7 @@ export type TInputProps = TFormFieldProps & {
   useNumber?: boolean;
   useComma?: boolean;
   placeholder?: string;
+  styleForm?: CSSProperties;
   onSearch?: (value?: string) => void;
   onChange?: (value: string | number) => void;
   onEnter?: () => void;

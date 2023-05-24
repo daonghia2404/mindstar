@@ -1,11 +1,11 @@
 import React, { ChangeEvent } from 'react';
 
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
+import { TFormFieldProps } from '@/components/FormField';
 
-export type TTextAreaProps = {
+export type TTextAreaProps = TFormFieldProps & {
   className?: string;
   placeholder?: string;
-  type?: 'text' | 'password';
   value?: string;
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;

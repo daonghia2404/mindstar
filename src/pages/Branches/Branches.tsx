@@ -17,14 +17,17 @@ import { EAuditingStatus, EEmpty } from '@/common/enums';
 import { EGetBranchesAction, getBranchesAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
 import { TGetBranchesParams } from '@/services/api';
-
-import './Branches.scss';
 import { TBranch } from '@/common/models';
 import Avatar from '@/components/Avatar';
 import { getFullUrlStatics } from '@/utils/functions';
 
+import './Branches.scss';
+import Tags from '@/components/Tags';
+
 const Branches: React.FC = () => {
   const dispatch = useDispatch();
+
+  const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
 
   const branchesState = useSelector((state: TRootState) => state.branchReducer.getBranchesResponse)?.data;
   const getBranchesLoading = useSelector((state: TRootState) => state.loadingReducer[EGetBranchesAction.GET_BRANCHES]);
@@ -129,14 +132,15 @@ const Branches: React.FC = () => {
       className: 'limit-width',
       render: (_: string, record: TBranch): React.ReactElement =>
         record?.managers && record?.managers?.length > 0 ? (
-          <div className="Table-users">
-            {record?.managers?.map((item) => (
-              <div className="Table-users-item">
-                <Avatar size={24} image={getFullUrlStatics(item.avatar)} />
-                {item.name}
-              </div>
-            ))}
-          </div>
+          <Tags
+            options={record?.managers?.map((item) => ({
+              label: item.name,
+              value: String(item.id),
+              data: {
+                avatar: getFullUrlStatics(item.avatar),
+              },
+            }))}
+          />
         ) : (
           <>{EEmpty.DASH}</>
         ),
@@ -145,11 +149,14 @@ const Branches: React.FC = () => {
       key: 'primary_contact',
       dataIndex: 'primary_contact',
       title: 'Hotline',
-      render: (value: string): React.ReactElement => (
-        <a href={`tel: ${value}`} className="Table-link">
-          {value}
-        </a>
-      ),
+      render: (value: string): React.ReactElement =>
+        value ? (
+          <a href={`tel: ${value}`} className="Table-link">
+            {value}
+          </a>
+        ) : (
+          <>{EEmpty.DASH}</>
+        ),
     },
     {
       key: 'status',
@@ -184,7 +191,8 @@ const Branches: React.FC = () => {
 
   const getBranches = useCallback(() => {
     dispatch(getBranchesAction.request({ params: getBranchesParamsRequest }));
-  }, [dispatch, getBranchesParamsRequest]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, getBranchesParamsRequest, currentBranchId]);
 
   useEffect(() => {
     getBranches();
@@ -200,7 +208,7 @@ const Branches: React.FC = () => {
                 <Input
                   style={{ minWidth: '24rem' }}
                   label="Tìm kiếm"
-                  suffixIcon={<Icon name={EIconName.Search} color={EIconColor.MINE_SHAFT} />}
+                  suffixIcon={<Icon name={EIconName.Search} color={EIconColor.TUNDORA} />}
                   onSearch={handleSearch}
                 />
               </Col>

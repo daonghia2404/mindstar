@@ -1,3 +1,41 @@
 @import '@/assets/styles/_global.scss';
 
-.DatePicker {}
+.DatePicker {
+  .ant-picker {
+    width: 100%;
+  }
+
+  &-dropdown {
+    .ant-picker-header-view button:hover {
+      color: $purple-heart;
+    }
+
+    .ant-picker-header>button:hover {
+      color: $purple-heart;
+    }
+
+    .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+    .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+    .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
+      background: $purple-heart;
+    }
+
+    .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+      border-color: $purple-heart;
+      border-radius: .4rem;
+    }
+
+    .ant-picker-today-btn {
+      color: $purple-heart;
+    }
+
+    .ant-picker-cell .ant-picker-cell-inner {
+      border-radius: .4rem;
+    }
+
+    .ant-picker-panel-container {
+      border-radius: .8rem;
+      box-shadow: 0 0 4px rgba(0, 0, 0, .2);
+    }
+  }
+}

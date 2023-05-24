@@ -7,6 +7,7 @@ import ApiService from '@/services/api';
 export type TGetManagersParams = {
   page: number;
   size: number;
+  userType?: string;
   sort?: string;
   name?: string;
 };

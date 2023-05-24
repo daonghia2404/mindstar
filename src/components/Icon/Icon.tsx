@@ -7,6 +7,7 @@ import './Icon.scss';
 
 import Google from './Google';
 import ArrowLongRight from './ArrowLongRight';
+import ArrowLongLeft from './ArrowLongLeft';
 import AngleDown from './AngleDown';
 import X from './X';
 import StarOutline from './StarOutline';
@@ -65,6 +66,8 @@ const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
         return <Google color={color} />;
       case EIconName.ArrowLongRight:
         return <ArrowLongRight color={color} />;
+      case EIconName.ArrowLongLeft:
+        return <ArrowLongLeft color={color} />;
       case EIconName.AngleDown:
         return <AngleDown color={color} />;
       case EIconName.X:

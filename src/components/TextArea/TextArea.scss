@@ -1,3 +1,23 @@
 @import '@/assets/styles/_global.scss';
 
-.TextArea {}
+.TextArea {
+  height: unset !important;
+
+  .FormField {
+    &-label {
+      top: 1.2rem;
+      transform: none;
+    }
+
+    &-field {
+      .ant-input {
+        padding-top: 1.6rem;
+        height: 12rem !important;
+      }
+    }
+  }
+
+  .ant-input {
+    resize: none;
+  }
+}

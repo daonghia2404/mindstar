@@ -112,3 +112,20 @@ export enum EOrderStatus {
   READY_FOR_DELIVERY = 6,
   COMPLETED = 7,
 }
+
+export enum EDegreeType {
+  BEGINNER = 1,
+  INTERMEDIATE = 2,
+  ADVANCED = 3,
+}
+
+export enum ESalaryType {
+  MONTHLY = 'monthly',
+  SESSION = 'session',
+}
+
+export enum EUserType {
+  PLAYER = 'player',
+  TEACHER = 'teacher',
+  MANAGER = 'manager',
+}

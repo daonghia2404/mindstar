@@ -15,3 +15,4 @@ export * from './schedule';
 export * from './order';
 export * from './redeem';
 export * from './manager';
+export * from './class';

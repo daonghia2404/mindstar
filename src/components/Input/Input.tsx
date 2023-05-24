@@ -26,6 +26,9 @@ const Input: React.FC<TInputProps> = ({
   style,
   active,
   placeholder,
+  readOnlyText,
+  styleForm,
+  renderShowValue,
   onSearch,
   onChange,
   onEnter,
@@ -81,6 +84,8 @@ const Input: React.FC<TInputProps> = ({
     value: numberic && useComma && useNumber && value ? formatNumberWithCommas(Number(value || 0)) : value,
     disabled,
     placeholder,
+    style: styleForm,
+    readOnly: readOnlyText,
     onChange: handleChange,
     onKeyDown: handleKeydown,
     onFocus: handleFocus,
@@ -103,15 +108,20 @@ const Input: React.FC<TInputProps> = ({
       size={size}
       className={classNames('Input', className)}
       focused={focused}
-      active={active || focused || Boolean(value)}
+      active={active || focused || Boolean(value) || Boolean(keyword)}
       suffixIcon={suffixIcon}
       suffixText={suffixText}
       disabled={disabled}
       style={style}
+      readOnlyText={readOnlyText}
       onClick={handleFocus}
       onBlur={handleBlur}
     >
-      {type === 'password' ? <AntdInput.Password {...commonProps} /> : <AntdInput {...commonProps} />}
+      {readOnlyText ? (
+        <div className="FormField-show-value">{renderShowValue || value}</div>
+      ) : (
+        <>{type === 'password' ? <AntdInput.Password {...commonProps} /> : <AntdInput {...commonProps} />}</>
+      )}
     </FormField>
   );
 };

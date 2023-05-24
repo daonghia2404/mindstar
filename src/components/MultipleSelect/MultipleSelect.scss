@@ -1,0 +1,80 @@
+@import '@/assets/styles/_global.scss';
+
+.MultipleSelect {
+  height: unset !important;
+  min-height: 4.8rem;
+
+  .FormField {
+    &-label {
+      top: 1.2rem;
+      transform: none;
+    }
+
+    &-field {
+      padding-top: 1.6rem;
+    }
+  }
+
+  .DropdownCustom {
+    .ant-dropdown-trigger {
+      &>div {
+        top: calc(100% + 0.4rem) !important;
+      }
+    }
+
+    &-overlay {
+      padding: 0;
+      left: 0 !important;
+      width: 100% !important;
+      min-width: unset !important;
+    }
+  }
+
+  &.FormField {
+    .FormField {
+      &-field {
+        .MultipleSelect {
+          &-show {
+            &-value {
+              transition: $common-transition;
+
+              &.blur {
+                opacity: 0.5;
+              }
+            }
+
+            &-search {
+              position: absolute;
+              z-index: 2;
+              top: 2rem;
+              left: 1.2rem;
+              width: calc(100% - 2.4rem);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &-dropdown {
+    &-item {
+      padding: 1.2rem 1.6rem;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: $common-transition;
+
+      &:hover,
+      &.active {
+        color: $purple-heart;
+        background: $white-lilac;
+      }
+
+      &.active {
+        &:hover {
+          color: darken($purple-heart, 5%);
+          background: darken($white-lilac, 5%);
+        }
+      }
+    }
+  }
+}

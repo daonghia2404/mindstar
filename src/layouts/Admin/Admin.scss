@@ -60,4 +60,33 @@
       padding-left: 2.4rem;
     }
   }
+
+  &-back {
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    color: $dove-gray;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+      color: $purple-heart;
+
+      .Icon {
+        svg {
+          stroke: $purple-heart;
+        }
+      }
+    }
+
+    .Icon {
+      width: 2.8rem;
+      height: 2.8rem;
+      margin-top: .2rem;
+
+      svg {
+        transition: $common-transition;
+      }
+    }
+  }
 }

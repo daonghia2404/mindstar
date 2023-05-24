@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
+import { TSelectOption } from '@/components/Select';
+import { getTotalPage } from '@/utils/functions';
 
 type TScroll = {
   x: number;
@@ -63,4 +68,64 @@ export const useOnClickOutside = (
       document.removeEventListener('touchstart', listener);
     };
   }, [ref, handler]);
+};
+
+export const useOptionsPaginate = (
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  actions: any,
+  reducer: string,
+  response: string,
+  keySearch = 'name',
+): { options: TSelectOption[]; handleLoadMore: () => void; handleSearch: (keyword?: string) => void } => {
+  const dispatch = useDispatch();
+
+  const total = useSelector((state: any) => state?.[reducer]?.[response])?.data?.total_elements;
+  const [options, setOptions] = useState<TSelectOption[]>([]);
+  const [paramsRequest, setParamsRequest] = useState({
+    page: DEFAULT_PAGE,
+    size: DEFAULT_PAGE_SIZE,
+  });
+
+  const handleSearch = (keyword?: string): void => {
+    setParamsRequest({
+      ...paramsRequest,
+      page: DEFAULT_PAGE,
+      [keySearch]: keyword || undefined,
+    });
+  };
+
+  const handleLoadMore = (): void => {
+    const isLoadMore = paramsRequest.page < getTotalPage(total, paramsRequest.size);
+    if (isLoadMore) {
+      setParamsRequest({
+        ...paramsRequest,
+        page: paramsRequest.page + 1,
+      });
+    }
+  };
+
+  const getData = useCallback(() => {
+    dispatch(
+      actions?.request({ params: paramsRequest }, (fetchingResponse: any): void => {
+        const isFirstFetching = paramsRequest.page === DEFAULT_PAGE;
+        const dataFetching = fetchingResponse?.data?.content?.map((item: any) => ({
+          value: String(item.id),
+          label: item.name,
+        }));
+
+        setOptions(isFirstFetching ? dataFetching : [...options, ...dataFetching]);
+      }),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, paramsRequest]);
+
+  useEffect(() => {
+    getData();
+  }, [getData]);
+
+  return {
+    options,
+    handleLoadMore,
+    handleSearch,
+  };
 };

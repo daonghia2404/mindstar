@@ -23,15 +23,16 @@
           &-show {
             &-value {
               position: absolute;
+              transition: $common-transition;
+
+              &.blur {
+                opacity: 0.5;
+              }
             }
 
             &-search {
               position: relative;
               z-index: 2;
-
-              &.blur {
-                background: rgba($white, 0.5) !important;
-              }
             }
           }
         }

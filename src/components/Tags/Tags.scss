@@ -1,0 +1,48 @@
+@import '@/assets/styles/_global.scss';
+
+.Tags {
+  column-gap: 0.4rem;
+  row-gap: 0.4rem;
+
+  .Avatar {
+    margin-left: -.4rem;
+  }
+
+  &-item {
+    column-gap: .4rem;
+    padding: .4rem 1.2rem;
+    border-radius: 3.5rem;
+    background: rgba($alto, 0.5);
+    font-size: 1.2rem;
+    min-height: 3.2rem;
+    line-height: 1;
+    color: $mine-shaft;
+
+    &.onclick {
+      transition: $common-transition;
+      cursor: pointer;
+
+      &:hover {
+        background: $white-lilac;
+        color: $purple-heart;
+
+        svg {
+          stroke: $purple-heart;
+        }
+      }
+    }
+
+    &-icon {
+      margin-left: -.4rem;
+
+      .Icon {
+        width: 2rem;
+        height: 2rem;
+
+        svg {
+          transition: $common-transition;
+        }
+      }
+    }
+  }
+}

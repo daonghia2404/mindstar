@@ -51,6 +51,7 @@ export enum EIconName {
   PigMoney = 'PigMoney',
   Coins = 'Coins',
   Eye = 'Eye',
+  ArrowLongLeft = 'ArrowLongLeft',
 }
 
 export enum EIconColor {

@@ -11,6 +11,12 @@ export type TUser = {
   level_id: null;
   merchant: TMerchant[];
   mobile: string;
+  salary_type?: string;
+  salary?: number;
+  note?: string;
+  degree_type?: number;
+  classes?: TClass[];
+  total_income?: number;
   name: string;
   point_earned: null;
   points: number;
@@ -208,3 +214,5 @@ export type TOrder = {
   transaction_status: number;
   update_date: number;
 };
+
+export type TUploadFile = any;

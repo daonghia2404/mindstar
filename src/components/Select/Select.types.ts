@@ -21,7 +21,7 @@ export type TSelectProps = TFormFieldProps & {
 
 export type TSelectOption = {
   label: string;
-  value: string;
+  value: any;
   data?: any;
   disabled?: boolean;
 };

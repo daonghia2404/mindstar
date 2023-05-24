@@ -2,7 +2,7 @@ import { EIconName } from '@/components/Icon';
 import { TSideBarData } from '@/containers/SideBar/SideBar.types';
 import { Paths } from '@/pages/routers';
 
-export const dataSideBar = (): TSideBarData[] => [
+export const dataSideBar = (data?: any): TSideBarData[] => [
   {
     id: '1',
     title: 'Thống kê',
@@ -15,7 +15,7 @@ export const dataSideBar = (): TSideBarData[] => [
     id: '2',
     title: 'Học viện',
     icon: EIconName.School,
-    activePaths: [Paths.Branches, Paths.Managers],
+    activePaths: [Paths.Branches, Paths.Managers, Paths.ManagerDetail(data?.id)],
     children: [
       {
         id: '1',
@@ -29,7 +29,7 @@ export const dataSideBar = (): TSideBarData[] => [
         title: 'Giáo viên',
         icon: EIconName.Users,
         link: Paths.Managers,
-        activePaths: [Paths.Managers],
+        activePaths: [Paths.Managers, Paths.ManagerDetail(data?.id)],
       },
       {
         id: '3',

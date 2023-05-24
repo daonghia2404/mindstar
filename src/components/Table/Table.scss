@@ -108,23 +108,4 @@
       height: 2.4rem;
     }
   }
-
-  &-users {
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: 0.4rem;
-    row-gap: 0.4rem;
-
-    &-item {
-      display: flex;
-      align-items: center;
-      column-gap: .4rem;
-      padding: .4rem .8rem;
-      border-radius: 3.5rem;
-      background: rgba($alto, 0.5);
-      font-size: 1.2rem;
-      line-height: 1;
-      color: $mine-shaft;
-    }
-  }
 }

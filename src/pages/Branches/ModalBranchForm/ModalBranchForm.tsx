@@ -8,7 +8,7 @@ import Select from '@/components/Select';
 import Switch from '@/components/Switch';
 import { TRootState } from '@/redux/reducers';
 import { ECreateBranchAction, EUpdateBranchAction, createBranchAction, updateBranchAction } from '@/redux/actions';
-import { showNotification } from '@/utils/functions';
+import { showNotification, validationRules } from '@/utils/functions';
 import { EAuditingStatus, ETypeNotification } from '@/common/enums';
 
 import { TModalBranchFormProps } from './ModalBranchForm.type';
@@ -55,12 +55,14 @@ const ModalBranchForm: React.FC<TModalBranchFormProps> = ({ visible, data, onClo
 
   useEffect(() => {
     if (visible) {
-      form.setFieldsValue({
-        name: data?.name,
-        city: cityOptions?.find((item) => item.value === data?.city?.id),
-        address: data?.address,
-        status: Boolean(data?.auditing_status),
-      });
+      if (data) {
+        form.setFieldsValue({
+          name: data?.name,
+          city: cityOptions?.find((item) => item.value === data?.city?.id),
+          address: data?.address,
+          status: Boolean(data?.auditing_status),
+        });
+      }
     } else {
       form.resetFields();
     }
@@ -81,17 +83,17 @@ const ModalBranchForm: React.FC<TModalBranchFormProps> = ({ visible, data, onClo
         <Form form={form}>
           <Row gutter={[16, 16]}>
             <Col span={24}>
-              <Form.Item name="name">
+              <Form.Item name="name" rules={[validationRules.required()]}>
                 <Input label="Tên" required placeholder="Nhập dữ liệu" active />
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item name="address">
+              <Form.Item name="address" rules={[validationRules.required()]}>
                 <Input label="Địa chỉ" required placeholder="Nhập dữ liệu" active />
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item name="city">
+              <Form.Item name="city" rules={[validationRules.required()]}>
                 <Select label="Thành phố" required options={cityOptions} placeholder="Chọn dữ liệu" active showSearch />
               </Form.Item>
             </Col>

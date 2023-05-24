@@ -140,9 +140,11 @@ const Select: React.FC<TSelectProps> = ({
         disabled={disabled}
         placement={placement}
       >
-        {!keyword && <span className="Select-show-value">{value?.label}</span>}
+        {!keyword && (
+          <span className={classNames('Select-show-value', { blur: showSearch && focused })}>{value?.label}</span>
+        )}
         <Input
-          className={classNames('Select-show-search', { blur: showSearch && focused })}
+          className={classNames('Select-show-search')}
           ref={ref}
           value={keyword}
           readOnly={!showSearch}

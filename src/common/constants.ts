@@ -1,4 +1,11 @@
-import { EAuditingStatus, EOrderStatus, EPaymentType, ETransactionStatus } from '@/common/enums';
+import {
+  EAuditingStatus,
+  EDegreeType,
+  EOrderStatus,
+  EPaymentType,
+  ESalaryType,
+  ETransactionStatus,
+} from '@/common/enums';
 import { EIconColor } from '@/components/Icon';
 import { EStatusStyleType } from '@/components/Status';
 
@@ -93,4 +100,15 @@ export const dataOrderStatusOptions = [
 export const dataAuditingStatusOptions = [
   { value: EAuditingStatus.ACTIVE, label: 'Hoạt Động', data: { statusType: EStatusStyleType.SUCCESS } },
   { value: EAuditingStatus.INACTIVE, label: 'Ngừng Hoạt Động', data: { statusType: EStatusStyleType.DANGER } },
+];
+
+export const dataDegreeTypeOptions = [
+  { value: EDegreeType.BEGINNER, label: 'Tập Sự', data: { color: EIconColor.CERULEAN } },
+  { value: EDegreeType.INTERMEDIATE, label: 'Trung Cấp', data: { color: EIconColor.SELECTIVE_YELLOW } },
+  { value: EDegreeType.ADVANCED, label: 'Chuyên Nghiệp', data: { color: EIconColor.POMEGRANATE } },
+];
+
+export const dataSalaryTypeOptions = [
+  { value: ESalaryType.MONTHLY, label: 'Theo Tháng' },
+  { value: ESalaryType.SESSION, label: 'Theo Mùa' },
 ];

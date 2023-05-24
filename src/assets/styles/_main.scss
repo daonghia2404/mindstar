@@ -116,6 +116,10 @@ html {
   text-decoration: underline;
 }
 
+.pointer-events-none {
+  pointer-events: none;
+}
+
 .ant-form {
   .ant-form-item {
     margin-bottom: 0;

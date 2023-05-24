@@ -6,6 +6,26 @@
   border: 1px solid $silver-chalice;
   transition: $common-transition;
 
+  &.readonly-text {
+    height: unset !important;
+    border: none;
+    padding: 0 !important;
+
+    &.active {
+      .FormField-suffix-text {
+        bottom: 0;
+      }
+    }
+
+    .FormField {
+      &-label {
+        left: 0 !important;
+        color: $dove-gray;
+      }
+    }
+  }
+
+
   &.suffix-visible {
     .FormField-field {
       width: calc(100% - 11rem);
@@ -80,9 +100,13 @@
         font-size: 1.2rem;
       }
 
-
       &-label {
         left: 1.2rem;
+      }
+
+      &-show-value {
+        font-size: 1.2rem;
+        color: $mine-shaft;
       }
 
       &-field {
@@ -92,6 +116,7 @@
           right: 1.2rem;
         }
 
+        .ant-picker,
         .Select-show-value,
         .ant-input {
           height: 1.8rem;
@@ -141,6 +166,12 @@
         left: 1.2rem;
       }
 
+      &-show-value {
+        padding-top: 2.4rem;
+        font-size: 1.4rem;
+        color: $mine-shaft;
+      }
+
       &-field {
         .ant-input-password-icon {
           width: 2rem;
@@ -148,6 +179,7 @@
           right: 1.2rem;
         }
 
+        .ant-picker,
         .Select-show-value,
         .ant-input {
           height: 2.4rem;
@@ -197,6 +229,11 @@
         left: 1.2rem;
       }
 
+      &-show-value {
+        font-size: 1.6rem;
+        color: $mine-shaft;
+      }
+
       &-field {
         .ant-input-password-icon {
           width: 2rem;
@@ -204,6 +241,7 @@
           right: 1.2rem;
         }
 
+        .ant-picker,
         .Select-show-value,
         .ant-input {
           height: 2.8rem;
@@ -249,6 +287,7 @@
       position: static;
     }
 
+    .ant-picker,
     .ant-input-affix-wrapper,
     .ant-input {
       padding: 0;

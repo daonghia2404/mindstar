@@ -101,6 +101,19 @@
     }
   }
 
+  &.DANGER_TRANSPARENT {
+    .ant-btn {
+      border-color: lighten($pomegranate, 35%);
+      background: lighten($pomegranate, 35%);
+      color: $pomegranate;
+
+      &:hover {
+        border-color: lighten($pomegranate, 30%);
+        background: lighten($pomegranate, 30%);
+      }
+    }
+  }
+
   &.PURPLE_TRANSPARENT {
     .ant-btn {
       border-color: $white-lilac;

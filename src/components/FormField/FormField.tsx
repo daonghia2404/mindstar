@@ -16,6 +16,7 @@ const FormField: React.FC<TFormFieldProps> = ({
   suffixText,
   disabled,
   style,
+  readOnlyText,
   onClick,
   onBlur,
 }) => {
@@ -25,6 +26,7 @@ const FormField: React.FC<TFormFieldProps> = ({
         active,
         focused,
         disabled,
+        'readonly-text': readOnlyText,
         'suffix-visible': suffixText,
       })}
       onClick={(): void => {
