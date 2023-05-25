@@ -6,6 +6,44 @@
   }
 
   &-dropdown {
+    .ant-btn {
+      height: 2.8rem;
+      padding: .4rem .8rem;
+      column-gap: .4rem;
+      font-size: 1.4rem;
+      line-height: 1;
+      background: $purple-heart;
+      color: $white;
+      border: none;
+      border-radius: .4rem;
+      box-shadow: none;
+
+      &:hover {
+        background: darken($purple-heart, 5%);
+      }
+
+      &:active {
+        background: darken($purple-heart, 10%);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+      }
+    }
+
+    .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover {
+      background: $white-lilac;
+    }
+
+    .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner {
+      background: $purple-heart;
+      color: $white;
+    }
+
+    .ant-picker-header-view {
+      white-space: nowrap;
+    }
+
     .ant-picker-header-view button:hover {
       color: $purple-heart;
     }

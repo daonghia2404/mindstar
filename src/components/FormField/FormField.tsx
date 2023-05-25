@@ -30,12 +30,12 @@ const FormField: React.FC<TFormFieldProps> = ({
         'suffix-visible': suffixText,
       })}
       onClick={(): void => {
-        if (!disabled && !focused) {
+        if (!disabled && !focused && !readOnlyText) {
           onClick?.();
         }
       }}
       onBlur={(): void => {
-        if (!disabled && focused) {
+        if (!disabled && focused && !readOnlyText) {
           setTimeout(() => {
             onBlur?.();
           }, 100);

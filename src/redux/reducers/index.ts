@@ -5,6 +5,7 @@ import authReducer from './auth';
 import branchReducer from './branch';
 import classReducer from './class';
 import dashboardReducer from './dashboard';
+import eventReducer from './event';
 import expenseReducer from './expense';
 import managerReducer from './manager';
 import orderReducer from './order';
@@ -13,6 +14,7 @@ import scheduleReducer from './schedule';
 import settingReducer from './setting';
 import transactionReducer from './transaction';
 import uiReducer from './ui';
+import uploadReducer from './upload';
 import userReducer from './user';
 
 const rootReducer = combineReducers({
@@ -23,6 +25,7 @@ const rootReducer = combineReducers({
   branchReducer,
   classReducer,
   dashboardReducer,
+  eventReducer,
   expenseReducer,
   managerReducer,
   orderReducer,
@@ -31,6 +34,7 @@ const rootReducer = combineReducers({
   settingReducer,
   transactionReducer,
   uiReducer,
+  uploadReducer,
   userReducer,
 });
 

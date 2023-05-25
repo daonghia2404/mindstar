@@ -105,7 +105,7 @@ const ModalManagerForm: React.FC<TModalManagerFormProps> = ({ visible, data, onC
         });
       } else {
         form.setFieldsValue({
-          branches: [{ label: currentBranch?.name, value: String(currentBranch?.id) }],
+          branches: currentBranch?.id ? [{ label: currentBranch?.name, value: String(currentBranch?.id) }] : undefined,
         });
       }
     } else {

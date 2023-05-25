@@ -27,6 +27,7 @@ export type TUser = {
   update_date: number;
   user_name: string;
   user_type: string;
+  user?: TUser;
 };
 
 export type TCity = {
@@ -173,9 +174,32 @@ export type TSchedule = {
 export type TClass = {
   id: number;
   name: string;
+  auditing_status: number;
+  branch: TBranch;
+  branch_id: number;
+  create_date: number;
+  description: string;
+  index: number;
+  managers: TUser[];
+  number_of_players: number;
+  update_date: number;
+  course_fee: number;
 };
 
-export type TEvent = unknown;
+export type TEvent = {
+  auditing_status: number;
+  branch_id: number;
+  class_ids: string;
+  create_date: number;
+  end_date_time: number;
+  frequency_type: number;
+  id: number;
+  is_repeat: boolean;
+  location: string;
+  start_date_time: number;
+  title: string;
+  update_date: number;
+};
 
 export type TRedeem = {
   auditing_status: number;

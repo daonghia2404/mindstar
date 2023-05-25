@@ -1,5 +1,6 @@
 import {
   EAuditingStatus,
+  EDayOfWeek,
   EDegreeType,
   EOrderStatus,
   EPaymentType,
@@ -111,4 +112,14 @@ export const dataDegreeTypeOptions = [
 export const dataSalaryTypeOptions = [
   { value: ESalaryType.MONTHLY, label: 'Theo Tháng' },
   { value: ESalaryType.SESSION, label: 'Theo Mùa' },
+];
+
+export const dataDayOfWeeksOptions = [
+  { value: EDayOfWeek.MONDAY, label: 'Thứ 2' },
+  { value: EDayOfWeek.TUESDAY, label: 'Thứ 3' },
+  { value: EDayOfWeek.WEDNESDAY, label: 'Thứ 4' },
+  { value: EDayOfWeek.THURSDAY, label: 'Thứ 5' },
+  { value: EDayOfWeek.FRIDAY, label: 'Thứ 6' },
+  { value: EDayOfWeek.SATURDAY, label: 'Thứ 7' },
+  { value: EDayOfWeek.SUNDAY, label: 'CN' },
 ];

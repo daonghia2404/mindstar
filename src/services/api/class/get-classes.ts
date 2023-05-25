@@ -1,13 +1,19 @@
 import { TClass } from '@/common/models';
-import { TCommonPaginate, TCommonResponse } from '@/common/types';
+import { TCommonPaginate, TCommonResponse, THeaderBranchIds } from '@/common/types';
 import ApiService from '@/services/api';
 
 // TYPES
 
-export type TGetClassesParams = unknown;
+export type TGetClassesParams = {
+  page: number;
+  size: number;
+  sort?: string;
+  name?: string;
+};
 
 export type TGetClassesMaterials = {
   params?: TGetClassesParams;
+  headers?: THeaderBranchIds;
 };
 
 export type TGetClassesResponse = TCommonResponse & {
@@ -18,7 +24,7 @@ export type TGetClassesResponse = TCommonResponse & {
 
 // FUNCTION
 
-export const getClasses = async ({ params }: TGetClassesMaterials): Promise<TGetClassesResponse> => {
-  const response = await ApiService.get(`/v1/api/admin/classes`, { params });
+export const getClasses = async ({ params, headers }: TGetClassesMaterials): Promise<TGetClassesResponse> => {
+  const response = await ApiService.get(`/v1/api/admin/classes`, { params, headers });
   return response.data;
 };

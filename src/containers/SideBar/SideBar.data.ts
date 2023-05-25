@@ -2,6 +2,7 @@ import { EIconName } from '@/components/Icon';
 import { TSideBarData } from '@/containers/SideBar/SideBar.types';
 import { Paths } from '@/pages/routers';
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const dataSideBar = (data?: any): TSideBarData[] => [
   {
     id: '1',
@@ -15,12 +16,19 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     id: '2',
     title: 'Học viện',
     icon: EIconName.School,
-    activePaths: [Paths.Branches, Paths.Managers, Paths.ManagerDetail(data?.id)],
+    activePaths: [
+      Paths.Branches,
+      Paths.Managers,
+      Paths.ManagerDetail(data?.id),
+      Paths.Classes,
+      Paths.ClassDetail(data?.id),
+      Paths.Events,
+    ],
     children: [
       {
         id: '1',
         title: 'Chi nhánh',
-        icon: EIconName.GitBranch,
+        icon: EIconName.MapMarker,
         link: Paths.Branches,
         activePaths: [Paths.Branches],
       },
@@ -43,8 +51,16 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         id: '3',
         title: 'Lớp học',
         icon: EIconName.ChalkBoard,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.Classes,
+        activePaths: [Paths.Classes, Paths.ClassDetail(data?.id)],
+      },
+      {
+        id: '3-1',
+        title: 'Chi tiết Lớp học',
+        icon: EIconName.ChalkBoard,
+        hide: true,
+        link: Paths.ClassDetail(data?.id),
+        activePaths: [Paths.ClassDetail(data?.id)],
       },
       {
         id: '4',
@@ -85,8 +101,8 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         id: '8',
         title: 'Sự kiện',
         icon: EIconName.SpeakerPhone,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.Events,
+        activePaths: [Paths.Events],
       },
     ],
   },

@@ -27,6 +27,9 @@ const RegisterBranch = lazy(() => retryLoadComponent(() => import('@/pages/Regis
 const Branches = lazy(() => retryLoadComponent(() => import('@/pages/Branches')));
 const Managers = lazy(() => retryLoadComponent(() => import('@/pages/Managers')));
 const ManagerDetail = lazy(() => retryLoadComponent(() => import('@/pages/ManagerDetail')));
+const Classes = lazy(() => retryLoadComponent(() => import('@/pages/Classes')));
+const ClassDetail = lazy(() => retryLoadComponent(() => import('@/pages/ClassDetail')));
+const Events = lazy(() => retryLoadComponent(() => import('@/pages/Events')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -48,6 +51,9 @@ export const Paths = {
   Branches: '/branches',
   Managers: '/managers',
   ManagerDetail: (id?: string): string => `/managers/${id || ':id'}`,
+  Classes: '/classes',
+  ClassDetail: (id?: string): string => `/classes/${id || ':id'}`,
+  Events: '/events',
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -64,6 +70,9 @@ export const Pages = {
   Branches,
   Managers,
   ManagerDetail,
+  Classes,
+  ClassDetail,
+  Events,
 
   Login,
   LoginDomain,

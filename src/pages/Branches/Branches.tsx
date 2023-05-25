@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { navigate } from '@reach/router';
 
 import Input from '@/components/Input';
 import Card from '@/components/Card';
@@ -18,11 +19,11 @@ import { EGetBranchesAction, getBranchesAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
 import { TGetBranchesParams } from '@/services/api';
 import { TBranch } from '@/common/models';
-import Avatar from '@/components/Avatar';
 import { getFullUrlStatics } from '@/utils/functions';
+import Tags from '@/components/Tags';
+import { Paths } from '@/pages/routers';
 
 import './Branches.scss';
-import Tags from '@/components/Tags';
 
 const Branches: React.FC = () => {
   const dispatch = useDispatch();
@@ -138,6 +139,9 @@ const Branches: React.FC = () => {
               value: String(item.id),
               data: {
                 avatar: getFullUrlStatics(item.avatar),
+              },
+              onClick: (): void => {
+                navigate(Paths.ManagerDetail(String(item.id)));
               },
             }))}
           />

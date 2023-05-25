@@ -76,6 +76,7 @@ export const useOptionsPaginate = (
   reducer: string,
   response: string,
   keySearch = 'name',
+  params?: { [key: string]: any },
 ): { options: TSelectOption[]; handleLoadMore: () => void; handleSearch: (keyword?: string) => void } => {
   const dispatch = useDispatch();
 
@@ -84,6 +85,7 @@ export const useOptionsPaginate = (
   const [paramsRequest, setParamsRequest] = useState({
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
+    ...params,
   });
 
   const handleSearch = (keyword?: string): void => {

@@ -7,6 +7,8 @@ export type TDatePickerProps = TFormFieldProps & {
   placeholder?: string;
   disabled?: boolean;
   allowClear?: boolean;
+  format?: string;
+  showTime?: boolean;
   onChange?: (value: any) => void;
   disabledDate?: (current: Moment) => boolean;
 };

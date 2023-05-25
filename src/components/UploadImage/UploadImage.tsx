@@ -5,7 +5,6 @@ import Avatar from '@/components/Avatar';
 import { REGEX } from '@/common/constants';
 import Upload from '@/components/Upload/Upload';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
-import { TUploadFile } from '@/common/models';
 
 import { TUploadImageProps } from './UploadImage.types.d';
 import './UploadImage.scss';
@@ -18,7 +17,6 @@ const UploadImage: React.FC<TUploadImageProps> = ({
   shape = 'square',
   readOnlyText,
   value,
-  useUploadAPI,
   disabled,
   onChange,
 }) => {
@@ -32,13 +30,6 @@ const UploadImage: React.FC<TUploadImageProps> = ({
       setIsChanged(true);
       onChange?.(file);
     }
-  };
-
-  const handleUploadSuccess = (files: TUploadFile[]): void => {
-    const file = files[0]?.url;
-    setPreviewImage(file);
-    setIsChanged(true);
-    onChange?.(file as unknown as any);
   };
 
   useEffect(() => {
@@ -57,13 +48,7 @@ const UploadImage: React.FC<TUploadImageProps> = ({
 
   return (
     <FormField active label={label} required={required} size={size} readOnlyText={readOnlyText} className="UploadImage">
-      <Upload
-        useUploadAPI={useUploadAPI}
-        accept=".jpg, .png, .jpeg"
-        disabled={disabled}
-        onChange={handleUploadChange}
-        onUploadSuccess={handleUploadSuccess}
-      >
+      <Upload accept=".jpg, .png, .jpeg" disabled={disabled} onChange={handleUploadChange}>
         <div className="UploadImage-wrapper">
           <Avatar size={sizeImage} shape={shape} image={previewImage} />
           <div className="UploadImage-placeholder flex items-center justify-center">

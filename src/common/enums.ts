@@ -80,7 +80,7 @@ export enum EEmpty {
 export enum EFormat {
   'DD/MM/YYYY' = 'DD/MM/YYYY',
   'DD/MM/YYYY - HH:mm' = 'DD/MM/YYYY - HH:mm',
-  DATE_TIME = 'DD/MM/YYYY - HH:mm',
+  'HH:mm:ss' = 'HH:mm:ss',
   'dddd, DD' = 'dddd, DD',
   'HH:mm' = 'HH:mm',
 }
@@ -128,4 +128,14 @@ export enum EUserType {
   PLAYER = 'player',
   TEACHER = 'teacher',
   MANAGER = 'manager',
+}
+
+export enum EDayOfWeek {
+  MONDAY = '1',
+  TUESDAY = '2',
+  WEDNESDAY = '3',
+  THURSDAY = '4',
+  FRIDAY = '5',
+  SATURDAY = '6',
+  SUNDAY = '7',
 }

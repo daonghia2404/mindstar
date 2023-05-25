@@ -165,7 +165,7 @@ export const formatAbbreviationsName = (value: string): string => {
 export const formatISODateToDateTime = (time: string | number, format?: string): string => {
   return moment(time)
     .locale('vi')
-    .format(format || EFormat.DATE_TIME);
+    .format(format || EFormat['DD/MM/YYYY - HH:mm']);
 };
 
 export const formatCurrency = (config: {

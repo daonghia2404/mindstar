@@ -28,6 +28,7 @@ import './Managers.scss';
 const Managers: React.FC = () => {
   const dispatch = useDispatch();
 
+  const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
   const getManagersLoading = useSelector((state: TRootState) => state.loadingReducer[EGetManagersAction.GET_MANAGERS]);
   const managersState = useSelector((state: TRootState) => state.managerReducer.getManagersResponse)?.data;
   const [modalManagerFormState, setModalManagerFormState] = useState<{ visible: boolean; data?: TUser }>({
@@ -172,6 +173,9 @@ const Managers: React.FC = () => {
               label: item.name,
               value: String(item.id),
               data: { iconName: EIconName.ChalkBoard },
+              onClick: (): void => {
+                navigate(Paths.ClassDetail(String(item.id)));
+              },
             }))}
           />
         ) : (
@@ -199,8 +203,8 @@ const Managers: React.FC = () => {
   ];
 
   const getManagers = useCallback(() => {
-    dispatch(getManagersAction.request({ params: getManagersParamsRequest }));
-  }, [dispatch, getManagersParamsRequest]);
+    dispatch(getManagersAction.request({ params: getManagersParamsRequest, headers: { branchIds: currentBranchId } }));
+  }, [dispatch, getManagersParamsRequest, currentBranchId]);
 
   useEffect(() => {
     getManagers();
