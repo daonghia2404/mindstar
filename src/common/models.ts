@@ -86,6 +86,12 @@ export type TSetting = {
 export type TBranch = {
   academy_id: number;
   address: string;
+  yearold: string;
+  year: string;
+  hour: any;
+  explain: any;
+  avatar: any;
+  desc: string;
   auditing_status: number;
   city: TCity;
   count_player: number;

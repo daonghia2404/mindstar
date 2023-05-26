@@ -43,6 +43,7 @@ const App: React.FC = () => {
         <Admin path={LayoutPaths.Admin}>
           <ProtectedRoute path={Paths.Dashboard} component={Pages.Dashboard} />
           <ProtectedRoute path={Paths.Branches} component={Pages.Branches} />
+          <ProtectedRoute path={Paths.Breaks} component={Pages.Breaks} />
           <ProtectedRoute path={Paths.Managers} component={Pages.Managers} />
           <ProtectedRoute path={Paths.ManagerDetail()} component={Pages.ManagerDetail} />
 

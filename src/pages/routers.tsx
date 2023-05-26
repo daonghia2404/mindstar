@@ -25,6 +25,7 @@ const Home = lazy(() => retryLoadComponent(() => import('@/pages/Home')));
 const Dashboard = lazy(() => retryLoadComponent(() => import('@/pages/Dashboard')));
 const RegisterBranch = lazy(() => retryLoadComponent(() => import('@/pages/RegisterBranch')));
 const Branches = lazy(() => retryLoadComponent(() => import('@/pages/Branches')));
+const Breaks = lazy(() => retryLoadComponent(() => import('@/pages/Breaks')));
 const Managers = lazy(() => retryLoadComponent(() => import('@/pages/Managers')));
 const ManagerDetail = lazy(() => retryLoadComponent(() => import('@/pages/ManagerDetail')));
 
@@ -42,7 +43,7 @@ export const ModulePaths = {};
 
 export const Paths = {
   Home: '/',
-
+  Breaks: '/breaks',
   Dashboard: '/',
   RegisterBranch: '/register-branch',
   Branches: '/branches',
@@ -58,7 +59,7 @@ export const Paths = {
 
 export const Pages = {
   Home,
-
+  Breaks,
   Dashboard,
   RegisterBranch,
   Branches,
