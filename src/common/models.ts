@@ -86,7 +86,7 @@ export type TSetting = {
 export type TBranch = {
   academy_id: number;
   address: string;
-  yearold: string;
+  classname: string;
   year: string;
   hour: any;
   explain: any;

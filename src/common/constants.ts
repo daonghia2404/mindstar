@@ -28,14 +28,6 @@ export const dataTablePerPageOptions = [
   { label: '75', value: '75' },
   { label: '100', value: '100' },
 ];
-export const dataDreaksTimeOff = [
-  { label: '10', value: '10' },
-  { label: '25', value: '25' },
-  { label: '50', value: '50' },
-  { label: '75', value: '75' },
-  { label: '100', value: '100' },
-];
-
 export const DEFAULT_PAGE = 0;
 export const DEFAULT_PAGE_SIZE = 10;
 

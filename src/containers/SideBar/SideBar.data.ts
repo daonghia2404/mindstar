@@ -78,7 +78,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         id: '8',
         title: 'Thời gian nghỉ',
         icon: EIconName.ClockCancel,
-        link: Paths.Breaks,
+        link: Paths.TimeOffs,
         activePaths: [],
       },
       {

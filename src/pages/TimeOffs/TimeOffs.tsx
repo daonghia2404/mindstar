@@ -5,10 +5,10 @@ import { useSelector } from 'react-redux';
 import Card from '@/components/Card';
 import Select, { TSelectOption } from '@/components/Select';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
-import { dataDreaksTimeOff, DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
 import Input from '@/components/Input';
 
-import './Breaks.scss';
+import './TimeOffs.scss';
 import { TRootState } from '@/redux/reducers';
 import Table from '@/components/Table';
 import Button, { EButtonStyleType } from '@/components/Button';
@@ -21,7 +21,7 @@ import { TDropdownMenuItem } from '@/components/DropdownMenu/DropdownMenu.types'
 import { TGetBranchesParams } from '@/services/api';
 import Avatar from '@/components/Avatar';
 
-const Breaks: React.FC = () => {
+const TimeOffs: React.FC = () => {
   const [filterYear, setFilterYear] = useState<TSelectOption | undefined>({
     label: String(moment().year()),
     value: String(moment().year()),
@@ -51,6 +51,13 @@ const Breaks: React.FC = () => {
       sort,
     });
   };
+  const dataTimeOff = [
+    { label: '10', value: '10' },
+    { label: '25', value: '25' },
+    { label: '50', value: '50' },
+    { label: '75', value: '75' },
+    { label: '100', value: '100' },
+  ];
   const dataTableDropdownActions = (data?: TBranch): TDropdownMenuItem[] => [
     {
       value: 'setting',
@@ -109,7 +116,7 @@ const Breaks: React.FC = () => {
       className: 'limit-width',
       render: (_: string, record: TBranch): React.ReactElement => (
         <div className="Table-info">
-          <div className="Table-info-title">{record?.yearold}</div>
+          <div className="Table-info-title">{record?.classname}</div>
         </div>
       ),
     },
@@ -222,7 +229,7 @@ const Breaks: React.FC = () => {
     return [];
   };
   return (
-    <div className="Breaks">
+    <div className="TimeOffs">
       <Row gutter={[24, 24]}>
         <Col span={24}>
           <Card className="Branches-filter">
@@ -238,7 +245,7 @@ const Breaks: React.FC = () => {
                     />
                   </Col>
                   <Col>
-                    <Select label="All Classes" options={dataDreaksTimeOff} placement="topLeft" size="middle" />
+                    <Select label="All Classes" options={dataTimeOff} placement="topLeft" size="middle" />
                   </Col>
                 </Row>
               </Col>
@@ -266,4 +273,4 @@ const Breaks: React.FC = () => {
   );
 };
 
-export default Breaks;
+export default TimeOffs;
