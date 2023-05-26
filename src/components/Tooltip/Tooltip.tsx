@@ -5,13 +5,14 @@ import classNames from 'classnames';
 import { TTooltipProps } from './Tooltip.types';
 import './Tooltip.scss';
 
-const Tooltip: React.FC<TTooltipProps> = ({ title, placement, className, overlayClassName, children }) => {
+const Tooltip: React.FC<TTooltipProps> = ({ title, placement, trigger, className, overlayClassName, children }) => {
   return (
     <AntdTooltip
       className={classNames('Tooltip', className)}
       title={title}
+      trigger={trigger}
       placement={placement}
-      getPopupContainer={(trigger: HTMLElement): HTMLElement => trigger}
+      getPopupContainer={(triggerContainer: HTMLElement): HTMLElement => triggerContainer}
       overlayClassName={classNames('Tooltip-overlay', overlayClassName)}
     >
       <div className="Tooltip-wrapper">{children}</div>

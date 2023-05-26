@@ -3,6 +3,7 @@ import { SyntheticEvent } from 'react';
 import { notification } from 'antd';
 import { Rule } from 'antd/lib/form';
 import moment from 'moment';
+import crypto from 'crypto';
 
 import { EFormat, ETypeNotification } from '@/common/enums';
 import { REGEX } from '@/common/constants';
@@ -377,4 +378,20 @@ export const convertDaysOfWeek = (data: string): string[] => {
     return item;
   });
   return newDayOfWeek;
+};
+
+export const generateInitialPassword = (): string => {
+  return `${crypto
+    .randomBytes(8)
+    .toString('base64')
+    .replace(/[^a-zA-Z0-9 ]/g, '')
+    .substring(1, 9)}`;
+};
+
+export const totalNumberInArray = (data?: number[]): number => {
+  return (
+    data?.reduce((result, value) => {
+      return result + value;
+    }, 0) || 0
+  );
 };

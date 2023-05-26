@@ -1,3 +1,4 @@
+import { EUserType } from '@/common/enums';
 import ApiService from '@/services/api';
 
 // TYPES
@@ -24,8 +25,13 @@ export const uploadAvatarUser = async ({
   params,
   body,
 }: TUploadAvatarUserMaterials): Promise<TUploadAvatarUserResponse> => {
-  const response = await ApiService.post(`/v1/api/admin/${paths?.userType}s/${paths?.id}/upload-avatar`, body, {
-    params,
-  });
+  const isPrefixAdmin = [EUserType.MANAGER, EUserType.TEACHER].includes(paths?.userType as EUserType);
+  const response = await ApiService.post(
+    `/v1/api${isPrefixAdmin ? '/admin' : ''}/${paths?.userType}s/${paths?.id}/upload-avatar`,
+    body,
+    {
+      params,
+    },
+  );
   return response.data;
 };

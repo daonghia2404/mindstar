@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Input, InputRef } from 'antd';
 import classNames from 'classnames';
 
-import { getTotalPage, searchString } from '@/utils/functions';
+import { searchString } from '@/utils/functions';
 import { useDebounce } from '@/utils/hooks';
 import { ETimeoutDebounce } from '@/common/enums';
 import WrapperLazyLoad from '@/components/WrapperLazyLoad';
@@ -21,7 +21,6 @@ const Select: React.FC<TSelectProps> = ({
   value,
   className,
   allowClear,
-  paginate,
   label,
   required,
   size,
@@ -55,12 +54,12 @@ const Select: React.FC<TSelectProps> = ({
   };
 
   const handleLoadMore = (): void => {
-    if (onLoadMore && paginate) {
-      const isLoadMore = paginate.page < getTotalPage(paginate.total, paginate.pageSize);
-      if (isLoadMore) {
-        onLoadMore?.();
-      }
-    }
+    onLoadMore?.();
+    // if (onLoadMore && paginate) {
+    //   const isLoadMore = paginate.page < getTotalPage(paginate.total, paginate.pageSize);
+    //   if (isLoadMore) {
+    //   }
+    // }
   };
 
   const handleChange = (data: TSelectOption): void => {

@@ -9,6 +9,7 @@ import eventReducer from './event';
 import expenseReducer from './expense';
 import managerReducer from './manager';
 import orderReducer from './order';
+import playerReducer from './player';
 import redeemReducer from './redeem';
 import scheduleReducer from './schedule';
 import settingReducer from './setting';
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   expenseReducer,
   managerReducer,
   orderReducer,
+  playerReducer,
   redeemReducer,
   scheduleReducer,
   settingReducer,

@@ -1,6 +1,10 @@
 @import '@/assets/styles/_global.scss';
 
 .Table {
+  .ant-spin-dot-item {
+    background: $selective-yellow;
+  }
+
   .ant-table {
     .ant-table-placeholder {
       &>td {

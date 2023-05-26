@@ -8,6 +8,7 @@ import eventSaga from './event';
 import expenseSaga from './expense';
 import managerSaga from './manager';
 import orderSaga from './order';
+import playerSaga from './player';
 import redeemSaga from './redeem';
 import scheduleSaga from './schedule';
 import settingSaga from './setting';
@@ -25,6 +26,7 @@ const rootSaga = function* root(): Generator {
     fork(expenseSaga),
     fork(managerSaga),
     fork(orderSaga),
+    fork(playerSaga),
     fork(redeemSaga),
     fork(scheduleSaga),
     fork(settingSaga),

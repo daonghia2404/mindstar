@@ -17,6 +17,9 @@ import { TClass } from '@/common/models';
 import Status from '@/components/Status';
 import ModalClassForm from '@/pages/Classes/ModalClassForm';
 import ModalDeleteClass from '@/pages/Classes/ModalDeleteClass';
+import { formatCurrency } from '@/utils/functions';
+import ManagersTable from '@/pages/ClassDetail/ManagersTable';
+import PlayersTable from '@/pages/ClassDetail/PlayersTable';
 
 import './ClassDetail.scss';
 
@@ -55,10 +58,14 @@ const ClassDetail: React.FC = () => {
 
   const classInfo = {
     name: classState?.name || EEmpty.DASH,
+    numberPlayers: String(classState?.number_of_players || EEmpty.ZERO),
     status: ((): React.ReactNode => {
       const status = dataAuditingStatusOptions.find((item) => item.value === classState?.auditing_status);
       return status ? <Status label={status?.label} styleType={status?.data?.statusType} /> : EEmpty.DASH;
     })(),
+    courseFee: classState?.course_fee
+      ? formatCurrency({ amount: classState?.course_fee, showSuffix: true })
+      : EEmpty.DASH,
     description: classState?.description || EEmpty.DASH,
     branch: classState?.branch ? (
       <Tags
@@ -128,21 +135,30 @@ const ClassDetail: React.FC = () => {
                 <Input label="Chi nhánh" readOnlyText active renderShowValue={classInfo?.branch} />
               </Col>
               <Col span={12}>
-                <Input label="Tổng học viên" readOnlyText active renderShowValue={classInfo?.branch} />
+                <Input label="Tổng học viên" readOnlyText active value={classInfo?.numberPlayers} />
+              </Col>
+              <Col span={12}>
+                <Input label="Học phí" readOnlyText active value={classInfo?.courseFee} />
               </Col>
               <Col span={24}>
                 <Input label="Trạng thái" readOnlyText active renderShowValue={classInfo?.status} />
               </Col>
               <Col span={24}>
-                <Input label="Giáo viên" readOnlyText active renderShowValue={classInfo?.branch} />
-              </Col>
-              <Col span={24}>
-                <Input label="Mô tả" readOnlyText active renderShowValue={classInfo?.branch} />
+                <Input label="Mô tả" readOnlyText active renderShowValue={classInfo?.description} />
               </Col>
             </Row>
           </Card>
         </Col>
-        <Col span={24} md={{ span: 12 }} />
+        <Col span={24} md={{ span: 12 }}>
+          <Card title="Thông tin giáo viên">
+            <ManagersTable dataSources={classState?.managers} />
+          </Card>
+        </Col>
+        <Col span={24}>
+          <Card title="Thông tin học viên">
+            <PlayersTable />
+          </Card>
+        </Col>
       </Row>
 
       <ModalClassForm {...modalClassFormState} onClose={handleCloseModalClassForm} onSuccess={getClass} />

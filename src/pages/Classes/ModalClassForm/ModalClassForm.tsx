@@ -16,7 +16,7 @@ import {
   getManagersAction,
   updateClassAction,
 } from '@/redux/actions';
-import { showNotification, validationRules } from '@/utils/functions';
+import { formatISODateToDateTime, showNotification, validationRules } from '@/utils/functions';
 import { EFormat, ETypeNotification, EUserType } from '@/common/enums';
 import TextArea from '@/components/TextArea';
 import MultipleSelect from '@/components/MultipleSelect';
@@ -120,7 +120,22 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
           branch: data?.branch ? { label: data?.branch?.name, value: String(data?.branch?.id) } : undefined,
           name: data?.name,
           description: data?.description,
-          schedules: undefined,
+          schedules: data?.schedules
+            ?.map((item) => {
+              const parseDayOfWeek = item.at_eras.split(',');
+              return parseDayOfWeek.map((subItem) => ({
+                ...item,
+                dayOfWeek: subItem,
+              }));
+            })
+            .flat()
+            .map((item) => {
+              return {
+                dayOfWeek: item.dayOfWeek,
+                startTime: formatISODateToDateTime(item.at_time, EFormat['HH:mm:ss']),
+                endTime: formatISODateToDateTime(item.at_time + item.duration_in_second * 1000, EFormat['HH:mm:ss']),
+              };
+            }),
           membershipFee: data?.course_fee,
           managers: data?.managers?.map((item) => ({ label: item.name, value: String(item.id) })),
         });

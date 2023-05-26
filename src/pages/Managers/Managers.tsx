@@ -155,7 +155,7 @@ const Managers: React.FC = () => {
       title: 'Số điện thoại',
       render: (value: string): React.ReactElement =>
         value ? (
-          <a href={`tel: ${value}`} className="Table-link">
+          <a href={`tel: ${value}`} className="Table-link" onClick={(e): void => e.stopPropagation()}>
             {value}
           </a>
         ) : (

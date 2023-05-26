@@ -48,6 +48,8 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.Classes} component={Pages.Classes} />
           <ProtectedRoute path={Paths.ClassDetail()} component={Pages.ClassDetail} />
           <ProtectedRoute path={Paths.Events} component={Pages.Events} />
+          <ProtectedRoute path={Paths.Players} component={Pages.Players} />
+          <ProtectedRoute path={Paths.PlayerDetail()} component={Pages.PlayerDetail} />
 
           <Redirect noThrow from={Paths.Rest} to={`${LayoutPaths.Admin}${Paths.Dashboard}`} />
         </Admin>

@@ -6,6 +6,7 @@ export * from './event';
 export * from './expense';
 export * from './manager';
 export * from './order';
+export * from './player';
 export * from './redeem';
 export * from './schedule';
 export * from './setting';

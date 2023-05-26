@@ -42,7 +42,15 @@ const ModalEventForm: React.FC<TModalEventFormProps> = ({ visible, data, onClose
     options: optionsClasses,
     handleLoadMore: handleLoadMoreClasses,
     handleSearch: handleSearchClasses,
-  } = useOptionsPaginate(getClassesAction, 'classReducer', 'getClassesResponse');
+    handleReset: handleResetClasses,
+  } = useOptionsPaginate(
+    getClassesAction,
+    'classReducer',
+    'getClassesResponse',
+    undefined,
+    {},
+    { branchIds: formValues?.branch?.value || '' },
+  );
 
   const createEventLoading = useSelector((state: TRootState) => state.loadingReducer[ECreateEventAction.CREATE_EVENT]);
   const updateEventLoading = useSelector((state: TRootState) => state.loadingReducer[EUpdateEventAction.UPDATE_EVENT]);
@@ -76,24 +84,34 @@ const ModalEventForm: React.FC<TModalEventFormProps> = ({ visible, data, onClose
   };
 
   useEffect(() => {
+    if (formValues?.branch?.value) handleResetClasses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formValues?.branch?.value]);
+
+  useEffect(() => {
     if (visible) {
       if (data) {
-        form.setFieldsValue({
+        const dataChanged = {
           title: data?.title,
           location: data?.location,
           startDate: data?.start_date_time ? moment(data?.start_date_time) : undefined,
           endDate: data?.end_date_time ? moment(data?.end_date_time) : undefined,
-          // classes: data?.class_ids ? [] : data?.class_ids?.split(',').map((item) => Number(item)),
-          // branch: data?.branch_id || Number(branchIds),
+          classes: data?.classes?.map((item) => ({ label: item?.name, value: String(item?.id) })),
+          branch: data?.branch ? { label: data?.branch?.name, value: String(data?.branch?.id) } : undefined,
           isRepeat: data?.is_repeat,
-        });
+        };
+        form.setFieldsValue(dataChanged);
+        setFormValues({ ...formValues, ...dataChanged });
       } else {
-        form.setFieldsValue({
+        const dataChanged = {
           branch: currentBranch?.id ? { label: currentBranch?.name, value: String(currentBranch?.id) } : undefined,
-        });
+        };
+        form.setFieldsValue(dataChanged);
+        setFormValues({ ...formValues, ...dataChanged });
       }
     } else {
       form.resetFields();
+      setFormValues({});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible, form, data]);
@@ -183,22 +201,31 @@ const ModalEventForm: React.FC<TModalEventFormProps> = ({ visible, data, onClose
                   options={optionsBranches}
                   onLoadMore={handleLoadMoreBranches}
                   onSearch={handleSearchBranches}
+                  onChange={(): void => {
+                    const dataChanged = {
+                      classes: undefined,
+                    };
+                    form.setFieldsValue(dataChanged);
+                    setFormValues({ ...formValues, ...dataChanged });
+                  }}
                 />
               </Form.Item>
             </Col>
-            <Col span={24}>
-              <Form.Item name="classes">
-                <MultipleSelect
-                  label="Lớp học"
-                  placeholder="Chọn dữ liệu"
-                  active
-                  showSearch
-                  options={optionsClasses}
-                  onLoadMore={handleLoadMoreClasses}
-                  onSearch={handleSearchClasses}
-                />
-              </Form.Item>
-            </Col>
+            {formValues?.branch && (
+              <Col span={24}>
+                <Form.Item name="classes">
+                  <MultipleSelect
+                    label="Lớp học"
+                    placeholder="Chọn dữ liệu"
+                    active
+                    showSearch
+                    options={optionsClasses}
+                    onLoadMore={handleLoadMoreClasses}
+                    onSearch={handleSearchClasses}
+                  />
+                </Form.Item>
+              </Col>
+            )}
           </Row>
         </Form>
       </div>

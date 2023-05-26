@@ -53,6 +53,7 @@ export enum EIconName {
   Coins = 'Coins',
   Eye = 'Eye',
   Clock = 'Clock',
+  Copy = 'Copy',
 }
 
 export enum EIconColor {

@@ -197,7 +197,7 @@ const Dashboard: React.FC = () => {
                 <DashboardStaticCard
                   title="Học viên"
                   value={dashboardState?.player_count || EEmpty.ZERO}
-                  icon={EIconName.Users}
+                  icon={EIconName.UsersGroup}
                 />
               </Col>
               <Col span={12} md={{ span: 8 }} lg={{ span: 8 }} xl={{ span: 4 }}>

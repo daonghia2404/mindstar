@@ -30,6 +30,8 @@ const ManagerDetail = lazy(() => retryLoadComponent(() => import('@/pages/Manage
 const Classes = lazy(() => retryLoadComponent(() => import('@/pages/Classes')));
 const ClassDetail = lazy(() => retryLoadComponent(() => import('@/pages/ClassDetail')));
 const Events = lazy(() => retryLoadComponent(() => import('@/pages/Events')));
+const Players = lazy(() => retryLoadComponent(() => import('@/pages/Players')));
+const PlayerDetail = lazy(() => retryLoadComponent(() => import('@/pages/PlayerDetail')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -54,6 +56,8 @@ export const Paths = {
   Classes: '/classes',
   ClassDetail: (id?: string): string => `/classes/${id || ':id'}`,
   Events: '/events',
+  Players: '/players',
+  PlayerDetail: (id?: string): string => `/players/${id || ':id'}`,
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -73,6 +77,8 @@ export const Pages = {
   Classes,
   ClassDetail,
   Events,
+  Players,
+  PlayerDetail,
 
   Login,
   LoginDomain,

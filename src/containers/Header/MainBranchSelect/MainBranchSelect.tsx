@@ -1,33 +1,33 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import DropdownMenu from '@/components/DropdownMenu';
 import Icon, { EIconName, EIconColor } from '@/components/Icon';
-import { TGetBranchesParams } from '@/services/api';
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
 import { getCommonBranchesAction, uiActions } from '@/redux/actions';
 import { EAuditingStatus } from '@/common/enums';
 import { TBranch } from '@/common/models';
 import { TRootState } from '@/redux/reducers';
-import { getTotalPage } from '@/utils/functions';
 import Helpers from '@/services/helpers';
 import { TDropdownMenuItem } from '@/components/DropdownMenu/DropdownMenu.types';
 
 import { TMainBranchSelectProps } from './MainBranchSelect.type';
 import './MainBranchSelect.scss';
+import { useOptionsPaginate } from '@/utils/hooks';
 
 const MainBranchSelect: React.FC<TMainBranchSelectProps> = () => {
   const dispatch = useDispatch();
-  const branchesState = useSelector((state: TRootState) => state.branchReducer.getCommonBranchesResponse)?.data;
   const currentBranch = useSelector((state: TRootState) => state.uiReducer.branch);
   const [visible, setVisible] = useState<boolean>(false);
 
-  const [getBranchesParamsRequest, setGetBranchesParamsRequest] = useState<TGetBranchesParams>({
-    page: DEFAULT_PAGE,
-    size: DEFAULT_PAGE_SIZE,
-    auditingStatuses: `${EAuditingStatus.ACTIVE}`,
-  });
-  const [branchOptions, setBranchOptions] = useState<TBranch[]>([]);
+  const { options: optionsBranches, handleLoadMore: handleLoadMoreBranches } = useOptionsPaginate(
+    getCommonBranchesAction,
+    'branchReducer',
+    'getCommonBranchesResponse',
+    undefined,
+    {
+      auditingStatuses: `${EAuditingStatus.ACTIVE}`,
+    },
+  );
 
   const dataBranchDropdownMenu = [
     {
@@ -40,26 +40,14 @@ const MainBranchSelect: React.FC<TMainBranchSelectProps> = () => {
         name: 'Tất cả Chi nhánh',
       },
     },
-    ...branchOptions.map((item) => ({
-      value: String(item.id),
-      active: currentBranch?.id === item.id,
-      label: item.name,
+    ...optionsBranches.map((item) => ({
+      value: String(item.data.id),
+      active: currentBranch?.id === item.data.id,
+      label: item.data.name,
       icon: EIconName.MapMarker,
       data: item,
     })),
   ];
-
-  const handleLoadMore = (): void => {
-    const isLoadMore =
-      getBranchesParamsRequest.page < getTotalPage(branchesState?.total_elements || 0, getBranchesParamsRequest.size);
-
-    if (isLoadMore) {
-      setGetBranchesParamsRequest({
-        ...getBranchesParamsRequest,
-        page: getBranchesParamsRequest.page + 1,
-      });
-    }
-  };
 
   const handleChangeBranch = (data: TDropdownMenuItem): void => {
     setVisible(false);
@@ -67,31 +55,15 @@ const MainBranchSelect: React.FC<TMainBranchSelectProps> = () => {
     Helpers.setDataBranch(data?.data || {});
   };
 
-  const getBranches = useCallback(() => {
-    dispatch(
-      getCommonBranchesAction.request({ params: getBranchesParamsRequest }, (response): void => {
-        const isFirstFetching = getBranchesParamsRequest.page === DEFAULT_PAGE;
-        const fetchingData = response.data.content;
-        setBranchOptions(isFirstFetching ? fetchingData : [...branchOptions, ...fetchingData]);
-      }),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, getBranchesParamsRequest]);
-
   useEffect(() => {
     const existedBranchData = Helpers.getDataBranch();
     dispatch(
       uiActions.setCommonBranch(
-        existedBranchData?.id ? (existedBranchData as TBranch) : (dataBranchDropdownMenu[0]?.data as TBranch),
+        existedBranchData?.id ? (existedBranchData as TBranch) : (dataBranchDropdownMenu[0]?.data as any),
       ),
     );
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    getBranches();
-  }, [getBranches]);
 
   return (
     <div className="Header-branch">
@@ -103,7 +75,7 @@ const MainBranchSelect: React.FC<TMainBranchSelectProps> = () => {
         placement="bottomRight"
         getPopupContainer={(trigger): HTMLElement => trigger}
         maxHeight={256}
-        onEnd={handleLoadMore}
+        onEnd={handleLoadMoreBranches}
         onClickMenuItem={handleChangeBranch}
       >
         <div className="Header-branch flex items-center">

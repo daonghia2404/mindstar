@@ -22,6 +22,8 @@ const Table: React.FC<TTableProps> = ({
   pageSize,
   total,
   showPagination = true,
+  scroll,
+  onRow,
   onPaginationChange,
 }) => {
   const [sorting, setSorting] = useState<string>();
@@ -52,14 +54,16 @@ const Table: React.FC<TTableProps> = ({
             triggerAsc: 'Sắp xếp tăng dần',
             emptyText: <Empty />,
           }}
+          rowClassName={classNames({ 'cursor-pointer': onRow })}
           pagination={false}
           columns={columns}
           dataSource={dataSources}
           loading={loading}
           rowKey={rowKey}
+          onRow={onRow}
           title={title}
           onChange={handleTableChange}
-          scroll={{ x: 'auto' }}
+          scroll={{ ...scroll, x: 'auto' }}
         />
       </div>
       {!!showPagination && !!pageSize && !!total && (

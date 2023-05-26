@@ -18,3 +18,4 @@ export * from './manager';
 export * from './class';
 export * from './upload';
 export * from './event';
+export * from './player';
