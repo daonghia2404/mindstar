@@ -3,6 +3,7 @@ export type TUser = {
   address: string;
   auditing_status: number;
   avatar: string;
+  branch: TBranch;
   branch_id: null;
   branch_name: string;
   class: TClass;
@@ -38,6 +39,7 @@ export type TUser = {
   referral_code_used?: string;
   number_of_units?: number;
   position?: string;
+  players?: TUser[];
 };
 
 export type TCity = {
@@ -256,6 +258,15 @@ export type TOrder = {
 };
 
 export type TUploadFile = any;
+
+export type TTimeOff = {
+  at_date_time: number;
+  auditing_status: number;
+  branch: TBranch;
+  id: number;
+  player: TUser;
+  reason: string;
+};
 
 export type TProduct = {
   product_id: number;

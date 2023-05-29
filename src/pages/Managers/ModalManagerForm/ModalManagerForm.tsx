@@ -11,7 +11,6 @@ import {
   ECreateManagerAction,
   EUpdateManagerAction,
   createManagerAction,
-  getBranchesAction,
   getClassesAction,
   updateManagerAction,
 } from '@/redux/actions';
@@ -37,11 +36,11 @@ const ModalManagerForm: React.FC<TModalManagerFormProps> = ({ visible, data, onC
     handleSearch: handleSearchClasses,
   } = useOptionsPaginate(getClassesAction, 'classReducer', 'getClassesResponse');
 
-  const {
-    options: optionsBranches,
-    handleLoadMore: handleLoadMoreBranches,
-    handleSearch: handleSearchBranches,
-  } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', 'branchName');
+  // const {
+  //   options: optionsBranches,
+  //   handleLoadMore: handleLoadMoreBranches,
+  //   handleSearch: handleSearchBranches,
+  // } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', 'branchName');
 
   const settingsState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data;
   const cityOptions = settingsState?.cities?.map((item) => ({ label: item.name, value: item.id }));
@@ -142,7 +141,7 @@ const ModalManagerForm: React.FC<TModalManagerFormProps> = ({ visible, data, onC
                 <Input label="Số điện thoại" required placeholder="Nhập dữ liệu" active numberic />
               </Form.Item>
             </Col>
-            <Col span={24}>
+            {/* <Col span={24}>
               <Form.Item name="branches" rules={[validationRules.required()]}>
                 <MultipleSelect
                   label="Chi nhánh"
@@ -155,7 +154,7 @@ const ModalManagerForm: React.FC<TModalManagerFormProps> = ({ visible, data, onC
                   onSearch={handleSearchBranches}
                 />
               </Form.Item>
-            </Col>
+            </Col> */}
             <Col span={24}>
               <Form.Item name="degreeType" rules={[validationRules.required()]}>
                 <Select label="Trình độ" required placeholder="Chọn dữ liệu" active options={dataDegreeTypeOptions} />

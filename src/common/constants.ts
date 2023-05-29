@@ -29,7 +29,6 @@ export const dataTablePerPageOptions = [
   { label: '75', value: '75' },
   { label: '100', value: '100' },
 ];
-
 export const DEFAULT_PAGE = 0;
 export const DEFAULT_PAGE_SIZE = 10;
 

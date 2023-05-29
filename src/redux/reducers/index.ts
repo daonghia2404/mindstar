@@ -14,6 +14,7 @@ import playerReducer from './player';
 import redeemReducer from './redeem';
 import scheduleReducer from './schedule';
 import settingReducer from './setting';
+import timeOffReducer from './time-off';
 import transactionReducer from './transaction';
 import uiReducer from './ui';
 import uploadReducer from './upload';
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   redeemReducer,
   scheduleReducer,
   settingReducer,
+  timeOffReducer,
   transactionReducer,
   uiReducer,
   uploadReducer,

@@ -25,6 +25,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
       Paths.Events,
       Paths.Players,
       Paths.PlayerDetail(data?.id),
+      Paths.TimeOffs,
     ],
     children: [
       {
@@ -81,14 +82,14 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
       },
       {
         id: '4',
-        title: 'Tập thử miễn phí',
+        title: 'Học thử miễn phí',
         icon: EIconName.Rocket,
         link: Paths.Dashboard,
         activePaths: [],
       },
       {
         id: '6',
-        title: 'Lịch tập',
+        title: 'Lịch học',
         icon: EIconName.Calendar,
         link: Paths.Dashboard,
         activePaths: [],
@@ -104,8 +105,8 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         id: '8',
         title: 'Thời gian nghỉ',
         icon: EIconName.ClockCancel,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.TimeOffs,
+        activePaths: [Paths.TimeOffs],
       },
       {
         id: '8',

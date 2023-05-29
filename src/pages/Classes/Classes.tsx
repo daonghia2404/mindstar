@@ -219,7 +219,7 @@ const Classes: React.FC = () => {
                 <Row gutter={[16, 16]} justify="space-between" align="middle">
                   <Col>
                     <div className="Table-total-item">
-                      <Icon name={EIconName.MapMarker} color={EIconColor.TUNDORA} />
+                      <Icon name={EIconName.ChalkBoard} color={EIconColor.TUNDORA} />
                       Tổng Lớp Học: <strong>{classsState?.total_elements || EEmpty.ZERO}</strong>
                     </div>
                   </Col>

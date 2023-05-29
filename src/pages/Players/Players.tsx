@@ -254,7 +254,7 @@ const Players: React.FC = () => {
                 <Row gutter={[16, 16]} justify="space-between" align="middle">
                   <Col>
                     <div className="Table-total-item">
-                      <Icon name={EIconName.MapMarker} color={EIconColor.TUNDORA} />
+                      <Icon name={EIconName.UsersGroup} color={EIconColor.TUNDORA} />
                       Tổng Học Viên: <strong>{playersState?.total_elements || EEmpty.ZERO}</strong>
                     </div>
                   </Col>

@@ -13,6 +13,7 @@ import './ModalLogout.scss';
 const ModalLogout: React.FC<TModalLogoutProps> = ({ visible, onClose }) => {
   const handleSubmit = (): void => {
     Helpers.clearTokens();
+    Helpers.setDataBranch({});
     navigate(LayoutPaths.Auth);
   };
 

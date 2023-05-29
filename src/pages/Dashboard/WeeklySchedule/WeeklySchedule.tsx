@@ -21,7 +21,7 @@ const WeeklySchedule: React.FC<TWeeklyScheduleProps> = () => {
   return (
     <Card
       className="WeeklySchedule"
-      title="Lịch tập trong tuần"
+      title="Lịch học trong tuần"
       suffixLink={{ icon: EIconName.ArrowLongRight, link: '#' }}
     >
       <div className="WeeklySchedule-wrapper">

@@ -52,7 +52,7 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
 
   const handleSubmit = (): void => {
     form.validateFields().then((values) => {
-      const parseSCheduleGroup: { [key: number]: any } = _.groupBy(
+      const parseScheduleGroup: { [key: number]: any } = _.groupBy(
         values?.schedules?.map((item: TWorkTime) => {
           const startTime = moment(item.startTime, EFormat['HH:mm:ss']).valueOf();
           const endTime = moment(item.endTime, EFormat['HH:mm:ss']).valueOf();
@@ -67,10 +67,10 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
         'totalTime',
       );
 
-      const parseScheduleData = Object.keys(parseSCheduleGroup)
+      const parseScheduleData = Object.keys(parseScheduleGroup)
         ?.map((item) => {
-          const firstItem = parseSCheduleGroup?.[item as unknown as number]?.[0];
-          const mergeDayOfWeek = parseSCheduleGroup?.[item as unknown as number]
+          const firstItem = parseScheduleGroup?.[item as unknown as number]?.[0];
+          const mergeDayOfWeek = parseScheduleGroup?.[item as unknown as number]
             ?.map((subItem: TWorkTime) => subItem?.dayOfWeek)
             ?.join(',');
 
@@ -199,7 +199,7 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
             </Col>
             <Col span={24}>
               <Form.Item name="schedules" rules={[validationRules.required()]}>
-                <WorkingTimes label="Lịch tập" required />
+                <WorkingTimes label="Lịch học" required />
               </Form.Item>
             </Col>
             <Col span={24}>

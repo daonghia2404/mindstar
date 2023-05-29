@@ -10,14 +10,14 @@ import Input from '@/components/Input';
 import { Paths } from '@/pages/routers';
 import { getClassAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
-import { EEmpty } from '@/common/enums';
-import { dataAuditingStatusOptions } from '@/common/constants';
+import { EEmpty, EFormat } from '@/common/enums';
+import { dataAuditingStatusOptions, dataDayOfWeeksOptions } from '@/common/constants';
 import Tags from '@/components/Tags';
 import { TClass } from '@/common/models';
 import Status from '@/components/Status';
 import ModalClassForm from '@/pages/Classes/ModalClassForm';
 import ModalDeleteClass from '@/pages/Classes/ModalDeleteClass';
-import { formatCurrency } from '@/utils/functions';
+import { formatCurrency, formatISODateToDateTime } from '@/utils/functions';
 import ManagersTable from '@/pages/ClassDetail/ManagersTable';
 import PlayersTable from '@/pages/ClassDetail/PlayersTable';
 
@@ -67,6 +67,32 @@ const ClassDetail: React.FC = () => {
       ? formatCurrency({ amount: classState?.course_fee, showSuffix: true })
       : EEmpty.DASH,
     description: classState?.description || EEmpty.DASH,
+    schedules: ((): React.ReactNode => {
+      const schedulesOptions = classState?.schedules
+        ?.map((item) => {
+          const parseDayOfWeek = item.at_eras.split(',');
+          return parseDayOfWeek.map((subItem) => ({
+            ...item,
+            day_of_week: subItem,
+          }));
+        })
+        .flat()
+        .map((item, index) => {
+          const startTime = formatISODateToDateTime(item.at_time, EFormat['HH:mm']);
+          const endTime = formatISODateToDateTime(item.at_time + item.duration_in_second * 1000, EFormat['HH:mm']);
+          const dayLabel = dataDayOfWeeksOptions.find((subItem) => subItem.value === item.day_of_week)?.label;
+
+          return {
+            label: `${dayLabel} | ${startTime} - ${endTime}`,
+            value: index,
+            data: {
+              iconName: EIconName.Calendar,
+            },
+          };
+        });
+
+      return classState?.schedules && classState?.schedules?.length ? <Tags options={schedulesOptions} /> : EEmpty.DASH;
+    })(),
     branch: classState?.branch ? (
       <Tags
         options={[
@@ -132,16 +158,19 @@ const ClassDetail: React.FC = () => {
                 <Input label="Tên" readOnlyText active value={classInfo?.name} />
               </Col>
               <Col span={12}>
-                <Input label="Chi nhánh" readOnlyText active renderShowValue={classInfo?.branch} />
+                <Input label="Trạng thái" readOnlyText active renderShowValue={classInfo?.status} />
               </Col>
               <Col span={12}>
                 <Input label="Tổng học viên" readOnlyText active value={classInfo?.numberPlayers} />
               </Col>
               <Col span={12}>
+                <Input label="Chi nhánh" readOnlyText active renderShowValue={classInfo?.branch} />
+              </Col>
+              <Col span={12}>
                 <Input label="Học phí" readOnlyText active value={classInfo?.courseFee} />
               </Col>
               <Col span={24}>
-                <Input label="Trạng thái" readOnlyText active renderShowValue={classInfo?.status} />
+                <Input label="Lịch học" readOnlyText active renderShowValue={classInfo?.schedules} />
               </Col>
               <Col span={24}>
                 <Input label="Mô tả" readOnlyText active renderShowValue={classInfo?.description} />
