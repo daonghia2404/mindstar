@@ -11,6 +11,13 @@ export type TTableProps = {
   pageSize?: number;
   total?: number;
   showPagination?: boolean;
+  scroll?: {
+    x?: number | string;
+    y?: number | string;
+  };
+  onRow?: (data: any) => {
+    onClick?: () => void;
+  };
   title?: () => React.ReactElement;
   onPaginationChange?: (page: number, pageSize: number, sorter?: string) => void;
   onSearch?: (keyword: string) => void;

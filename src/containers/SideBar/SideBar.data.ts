@@ -2,6 +2,7 @@ import { EIconName } from '@/components/Icon';
 import { TSideBarData } from '@/containers/SideBar/SideBar.types';
 import { Paths } from '@/pages/routers';
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const dataSideBar = (data?: any): TSideBarData[] => [
   {
     id: '1',
@@ -15,14 +16,39 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     id: '2',
     title: 'Học viện',
     icon: EIconName.School,
-    activePaths: [Paths.Branches, Paths.Managers, Paths.ManagerDetail(data?.id)],
+    activePaths: [
+      Paths.Branches,
+      Paths.Managers,
+      Paths.ManagerDetail(data?.id),
+      Paths.Classes,
+      Paths.ClassDetail(data?.id),
+      Paths.Events,
+      Paths.Players,
+      Paths.PlayerDetail(data?.id),
+      Paths.TimeOffs,
+    ],
     children: [
       {
         id: '1',
         title: 'Chi nhánh',
-        icon: EIconName.GitBranch,
+        icon: EIconName.MapMarker,
         link: Paths.Branches,
         activePaths: [Paths.Branches],
+      },
+      {
+        id: '3',
+        title: 'Lớp học',
+        icon: EIconName.ChalkBoard,
+        link: Paths.Classes,
+        activePaths: [Paths.Classes, Paths.ClassDetail(data?.id)],
+      },
+      {
+        id: '3-1',
+        title: 'Chi tiết Lớp học',
+        icon: EIconName.ChalkBoard,
+        hide: true,
+        link: Paths.ClassDetail(data?.id),
+        activePaths: [Paths.ClassDetail(data?.id)],
       },
       {
         id: '2',
@@ -40,23 +66,24 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         activePaths: [Paths.ManagerDetail(data?.id)],
       },
       {
-        id: '3',
-        title: 'Lớp học',
-        icon: EIconName.ChalkBoard,
-        link: Paths.Dashboard,
-        activePaths: [],
+        id: '5',
+        title: 'Học viên',
+        icon: EIconName.UsersGroup,
+        link: Paths.Players,
+        activePaths: [Paths.Players, Paths.PlayerDetail(data?.id)],
+      },
+      {
+        id: '5-1',
+        title: 'Chi tiết Học viên',
+        icon: EIconName.UsersGroup,
+        hide: true,
+        link: Paths.PlayerDetail(data?.id),
+        activePaths: [Paths.PlayerDetail(data?.id)],
       },
       {
         id: '4',
         title: 'Tập thử miễn phí',
         icon: EIconName.Rocket,
-        link: Paths.Dashboard,
-        activePaths: [],
-      },
-      {
-        id: '5',
-        title: 'Học viên',
-        icon: EIconName.Users,
         link: Paths.Dashboard,
         activePaths: [],
       },
@@ -79,14 +106,14 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         title: 'Thời gian nghỉ',
         icon: EIconName.ClockCancel,
         link: Paths.TimeOffs,
-        activePaths: [],
+        activePaths: [Paths.TimeOffs],
       },
       {
         id: '8',
         title: 'Sự kiện',
         icon: EIconName.SpeakerPhone,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.Events,
+        activePaths: [Paths.Events],
       },
     ],
   },

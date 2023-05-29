@@ -1,0 +1,28 @@
+@import '@/assets/styles/_global.scss';
+
+.UserCard {
+  text-align: center;
+
+  &-avatar {
+    margin: 0 auto .4rem;
+    cursor: pointer;
+  }
+
+  &-info {
+    &-title {
+      font-size: 1.4rem;
+      color: $mine-shaft;
+      transition: $common-transition;
+      cursor: pointer;
+
+      &:hover {
+        color: $purple-heart;
+      }
+    }
+
+    &-description {
+      color: $dove-gray;
+      font-size: 1.2rem;
+    }
+  }
+}

@@ -1,27 +1,33 @@
 import { Col, Row } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
+import { navigate } from '@reach/router';
 
 import Card from '@/components/Card';
-import Select from '@/components/Select';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
 import Input from '@/components/Input';
 import { TRootState } from '@/redux/reducers';
 import Table from '@/components/Table';
 import Button, { EButtonStyleType } from '@/components/Button';
-import { EEmpty } from '@/common/enums';
+import { EEmpty, EFormat } from '@/common/enums';
 import { TTimeOff } from '@/common/models';
-import { getFullUrlStatics } from '@/utils/functions';
+import { capitalizeFirstLetter, formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
 import DropdownMenu from '@/components/DropdownMenu';
 import { TDropdownMenuItem } from '@/components/DropdownMenu/DropdownMenu.types';
 import Avatar from '@/components/Avatar';
-import { EGetTimeOffsAction, getTimeOffsAction } from '@/redux/actions';
+import { EGetTimeOffsAction, getClassesAction, getTimeOffsAction } from '@/redux/actions';
 import { TGetTimeOffsParams } from '@/services/api';
 import Tags from '@/components/Tags';
+import { Paths } from '@/pages/routers';
+import ModalDeleteTimeOff from '@/pages/TimeOffs/ModalDeleteTimeOff';
 
 import './TimeOffs.scss';
+import { useOptionsPaginate } from '@/utils/hooks';
+import MultipleSelect from '@/components/MultipleSelect';
+import { TSelectOption } from '@/components/Select';
+import DatePicker from '@/components/DatePicker';
 
 const TimeOffs: React.FC = () => {
   const dispatch = useDispatch();
@@ -33,13 +39,26 @@ const TimeOffs: React.FC = () => {
   const [getTimeOffsParamsRequest, setGetTimeOffsParamsRequest] = useState<TGetTimeOffsParams>({
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
-    fromDate: moment({ year: 2000 }).valueOf(),
-    toDate: moment().valueOf(),
+    fromDate: moment().startOf('month').valueOf(),
+    toDate: moment().endOf('month').valueOf(),
   });
 
   const [modalDeleteTimeOffState, setModalDeleteTimeOffState] = useState<{ visible: boolean; data?: TTimeOff }>({
     visible: false,
   });
+
+  const {
+    options: classesOptions,
+    handleSearch: handleSearchClasses,
+    handleLoadMore: handleLoadMoreClasses,
+  } = useOptionsPaginate(
+    getClassesAction,
+    'classReducer',
+    'getClassesResponse',
+    undefined,
+    {},
+    { branchIds: currentBranchId },
+  );
 
   const handleOpenModalDeleteTimeOff = (data?: TTimeOff): void => {
     setModalDeleteTimeOffState({ visible: true, data });
@@ -94,9 +113,6 @@ const TimeOffs: React.FC = () => {
       dataIndex: 'name',
       title: 'Tên',
       className: 'limit-width',
-      sorter: true,
-      keySort: 'name',
-      width: 180,
       render: (_: string, record: TTimeOff): React.ReactElement => (
         <div className="Table-info">
           <div className="Table-info-title">{record?.player?.name}</div>
@@ -111,8 +127,8 @@ const TimeOffs: React.FC = () => {
       ),
     },
     {
-      key: 'classes',
-      dataIndex: 'classes',
+      key: 'branch',
+      dataIndex: 'branch',
       title: 'Lớp Học',
       render: (_: string, record: TTimeOff): React.ReactElement =>
         record?.player?.class ? (
@@ -122,6 +138,49 @@ const TimeOffs: React.FC = () => {
                 label: record?.player?.class.name,
                 value: String(record?.player?.class.id),
                 data: { iconName: EIconName.ChalkBoard },
+                onClick: (): void => {
+                  navigate(Paths.ClassDetail(String(record?.player?.class.id)));
+                },
+              },
+            ]}
+          />
+        ) : (
+          <>{EEmpty.DASH}</>
+        ),
+    },
+    {
+      key: 'branch',
+      dataIndex: 'branch',
+      title: 'Chi nhánh',
+      render: (_: string, record: TTimeOff): React.ReactElement =>
+        record?.branch ? (
+          <Tags
+            options={[
+              {
+                label: record?.branch.name,
+                value: String(record?.branch.id),
+                data: { iconName: EIconName.MapMarker },
+              },
+            ]}
+          />
+        ) : (
+          <>{EEmpty.DASH}</>
+        ),
+    },
+    {
+      key: 'at_date_time',
+      dataIndex: 'at_date_time',
+      title: 'Thời gian nghỉ',
+      render: (_: string, record: TTimeOff): React.ReactElement =>
+        record.at_date_time ? (
+          <Tags
+            options={[
+              {
+                label: capitalizeFirstLetter(
+                  formatISODateToDateTime(record.at_date_time, EFormat['dddd | DD/MM/YYYY - HH:mm']),
+                ),
+                value: String(record.at_date_time),
+                data: { iconName: EIconName.Calendar },
               },
             ]}
           />
@@ -156,7 +215,17 @@ const TimeOffs: React.FC = () => {
   ];
 
   const getTimeOffs = useCallback(() => {
-    dispatch(getTimeOffsAction.request({ params: getTimeOffsParamsRequest, headers: { branchIds: currentBranchId } }));
+    dispatch(
+      getTimeOffsAction.request({
+        params: {
+          ...getTimeOffsParamsRequest,
+          classIds: (getTimeOffsParamsRequest?.classIds as unknown as TSelectOption[])
+            ?.map((item) => item.value)
+            .join(','),
+        },
+        headers: { branchIds: currentBranchId },
+      }),
+    );
   }, [dispatch, getTimeOffsParamsRequest, currentBranchId]);
 
   useEffect(() => {
@@ -168,9 +237,9 @@ const TimeOffs: React.FC = () => {
       <Row gutter={[24, 24]}>
         <Col span={24}>
           <Card className="TimeOffs-filter">
-            <Row gutter={[16, 16]}>
-              <Col span={22}>
-                <Row gutter={[24, 24]}>
+            <Row gutter={[16, 16]} justify="space-between">
+              <Col>
+                <Row gutter={[16, 16]}>
                   <Col>
                     <Input
                       style={{ minWidth: '24rem' }}
@@ -180,7 +249,44 @@ const TimeOffs: React.FC = () => {
                     />
                   </Col>
                   <Col>
-                    <Select label="All Classes" options={[]} placement="topLeft" size="middle" />
+                    <MultipleSelect
+                      label="Lớp học"
+                      value={getTimeOffsParamsRequest?.classIds as any}
+                      onChange={(options): void => {
+                        setGetTimeOffsParamsRequest({
+                          ...getTimeOffsParamsRequest,
+                          page: DEFAULT_PAGE,
+                          classIds: options as any,
+                        });
+                      }}
+                      showSearch
+                      allowClear
+                      options={classesOptions}
+                      onLoadMore={handleLoadMoreClasses}
+                      onSearch={handleSearchClasses}
+                      placement="topLeft"
+                    />
+                  </Col>
+                </Row>
+              </Col>
+              <Col>
+                <Row gutter={[16, 16]}>
+                  <Col>
+                    <DatePicker
+                      value={moment(getTimeOffsParamsRequest.fromDate)}
+                      label="Tháng"
+                      picker="month"
+                      format={EFormat['MM/YYYY']}
+                      placeholder=" "
+                      onChange={(data: Moment): void => {
+                        setGetTimeOffsParamsRequest({
+                          ...getTimeOffsParamsRequest,
+                          page: DEFAULT_PAGE,
+                          fromDate: data?.clone()?.startOf('month')?.valueOf(),
+                          toDate: data?.clone()?.endOf('month')?.valueOf(),
+                        });
+                      }}
+                    />
                   </Col>
                 </Row>
               </Col>
@@ -190,6 +296,16 @@ const TimeOffs: React.FC = () => {
         <Col span={24}>
           <Card className="TimeOffs-table">
             <Table
+              header={
+                <Row gutter={[16, 16]} justify="space-between" align="middle">
+                  <Col>
+                    <div className="Table-total-item">
+                      <Icon name={EIconName.ClockCancel} color={EIconColor.TUNDORA} />
+                      Tổng Thời Gian Nghỉ: <strong>{timeOffsState?.total_elements || EEmpty.ZERO}</strong>
+                    </div>
+                  </Col>
+                </Row>
+              }
               loading={getTimeOffsLoading}
               columns={columns}
               dataSources={timeOffsState?.content || []}
@@ -201,6 +317,12 @@ const TimeOffs: React.FC = () => {
           </Card>
         </Col>
       </Row>
+
+      <ModalDeleteTimeOff
+        {...modalDeleteTimeOffState}
+        onClose={handleCloseModalDeleteTimeOff}
+        onSuccess={getTimeOffs}
+      />
     </div>
   );
 };

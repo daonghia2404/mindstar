@@ -16,10 +16,10 @@ const Tags: React.FC<TTagsProps> = ({ options = [] }) => {
           className={classNames('Tags-item flex items-center', { 'onclick': item.onClick })}
           onClick={(): void => item.onClick?.(item)}
         >
-          {item.data?.avatar && <Avatar size={24} image={item.data?.avatar} />}
+          {!['undefined'].includes(typeof item.data?.avatar) && <Avatar size={24} image={item.data?.avatar} />}
           {item.data?.iconName && (
             <div className="Tags-item-icon">
-              <Icon name={item.data?.iconName} color={EIconColor.DOVE_GRAY} />
+              <Icon name={item.data?.iconName} color={EIconColor.MINE_SHAFT} />
             </div>
           )}
           {item.label}

@@ -4,6 +4,7 @@ export type TUser = {
   auditing_status: number;
   avatar: string;
   branch_id: null;
+  branch_name: string;
   class: TClass;
   city: TCity;
   date_of_birth: number;
@@ -28,6 +29,15 @@ export type TUser = {
   update_date: number;
   user_name: string;
   user_type: string;
+  user?: TUser;
+  parent_name?: string;
+  create_date?: number;
+  clothes_number?: number;
+  player_schedules?: TSchedule[];
+  transaction_amount?: number;
+  referral_code_used?: string;
+  number_of_units?: number;
+  position?: string;
 };
 
 export type TCity = {
@@ -72,7 +82,9 @@ export type TSetting = {
   enable_transport: boolean;
   expense_settings: unknown;
   facebook_settings: unknown;
-  kit_fee_definitions: unknown;
+  kit_fee_definitions: {
+    kit_fee_products: TProduct[];
+  };
   ninepay_payment_settings: unknown;
   notification_settings: unknown;
   payment_settings: unknown;
@@ -159,6 +171,7 @@ export type TTransaction = {
 export type TSchedule = {
   at_date: number;
   at_eras: string;
+  day_of_week: string;
   at_months: string;
   at_time: number;
   auditing_status: number;
@@ -174,9 +187,35 @@ export type TSchedule = {
 export type TClass = {
   id: number;
   name: string;
+  auditing_status: number;
+  branch: TBranch;
+  branch_id: number;
+  create_date: number;
+  description: string;
+  index: number;
+  managers: TUser[];
+  number_of_players: number;
+  update_date: number;
+  course_fee: number;
+  schedules: TSchedule[];
 };
 
-export type TEvent = unknown;
+export type TEvent = {
+  auditing_status: number;
+  branch: TBranch;
+  classes: TClass[];
+  branch_id: number;
+  class_ids: string;
+  create_date: number;
+  end_date_time: number;
+  frequency_type: number;
+  id: number;
+  is_repeat: boolean;
+  location: string;
+  start_date_time: number;
+  title: string;
+  update_date: number;
+};
 
 export type TRedeem = {
   auditing_status: number;
@@ -225,4 +264,10 @@ export type TTimeOff = {
   id: number;
   player: TUser;
   reason: string;
+};
+
+export type TProduct = {
+  product_id: number;
+  product_name: string;
+  selling_price: number;
 };

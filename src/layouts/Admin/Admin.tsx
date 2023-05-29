@@ -18,6 +18,7 @@ const Admin: React.FC<TAdminProps> = ({ children }) => {
   const dispatch = useDispatch();
   const isMobile = useMediaQuery({ query: '(max-width: 991px)' });
   const [visibleMenu, setVisibleMenu] = useState<boolean>(false);
+  const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
 
   const atk = Helpers.getAccessToken();
   const myProfileState = useSelector((state: TRootState) => state.userReducer.getMyProfileResponse);
@@ -29,7 +30,7 @@ const Admin: React.FC<TAdminProps> = ({ children }) => {
   };
 
   const getSettings = (): void => {
-    dispatch(getSettingsAction.request({}));
+    dispatch(getSettingsAction.request({ headers: { branchIds: currentBranchId } }));
   };
 
   const handleOpenMenu = (): void => {
@@ -49,7 +50,7 @@ const Admin: React.FC<TAdminProps> = ({ children }) => {
       Helpers.clearTokens();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentBranchId]);
 
   useEffect(() => {
     setVisibleMenu(false);

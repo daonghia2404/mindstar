@@ -58,7 +58,7 @@ const Login: React.FC = () => {
     }
 
     navigate(Paths.Dashboard);
-    showNotification(ETypeNotification.SUCCESS, 'Đăng nhập thành công');
+    showNotification(ETypeNotification.SUCCESS, 'Đăng Nhập Thành Công !');
   };
 
   useEffect(() => {

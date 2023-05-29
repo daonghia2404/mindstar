@@ -9,17 +9,18 @@ import Card from '@/components/Card';
 import Input from '@/components/Input';
 import UploadImage from '@/components/UploadImage';
 import { Paths } from '@/pages/routers';
-import { getManagerAction } from '@/redux/actions';
+import { getManagerAction, uploadAvatarUserAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
-import { EEmpty, EFormat } from '@/common/enums';
-import { formatCurrency, formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
-import { dataDegreeTypeOptions, dataSalaryTypeOptions } from '@/common/constants';
+import { EEmpty, EFormat, ETypeNotification, EUserType } from '@/common/enums';
+import { formatCurrency, formatISODateToDateTime, getFullUrlStatics, showNotification } from '@/utils/functions';
+import { dataAuditingStatusOptions, dataDegreeTypeOptions, dataSalaryTypeOptions } from '@/common/constants';
 import Tags from '@/components/Tags';
 import { TUser } from '@/common/models';
 import ModalDeleteManager from '@/pages/Managers/ModalDeleteManager';
 import ModalManagerForm from '@/pages/Managers/ModalManagerForm';
 
 import './ManagerDetail.scss';
+import Status from '@/components/Status';
 
 const ManagerDetail: React.FC = () => {
   const dispatch = useDispatch();
@@ -52,13 +53,30 @@ const ManagerDetail: React.FC = () => {
     setModalDeleteManagerState({ visible: false });
   };
 
+  const handleUploadAvatar = (file: File): void => {
+    const formData = new FormData();
+    formData.append('file', file);
+    dispatch(
+      uploadAvatarUserAction.request(
+        { body: formData, paths: { id: managerState?.id || '', userType: EUserType.MANAGER } },
+        (): void => {
+          showNotification(ETypeNotification.SUCCESS, 'Thay Đổi Ảnh Đại Diện Thành Công !');
+        },
+      ),
+    );
+  };
+
   const handleBack = (): void => {
     navigate(Paths.Managers);
   };
 
   const managerInfo = {
     avatar: managerState?.avatar ? getFullUrlStatics(managerState.avatar) : undefined,
-    name: managerState?.name,
+    name: managerState?.name || EEmpty.DASH,
+    status: ((): React.ReactNode => {
+      const status = dataAuditingStatusOptions.find((item) => item.value === managerState?.auditing_status);
+      return status ? <Status label={status?.label} styleType={status?.data?.statusType} /> : EEmpty.DASH;
+    })(),
     birthday: managerState?.date_of_birth
       ? formatISODateToDateTime(managerState?.date_of_birth, EFormat['DD/MM/YYYY'])
       : EEmpty.DASH,
@@ -74,12 +92,15 @@ const ManagerDetail: React.FC = () => {
             label: item.name,
             value: String(item.id),
             data: { iconName: EIconName.ChalkBoard },
+            onClick: (): void => {
+              navigate(Paths.ClassDetail(String(item.id)));
+            },
           }))}
         />
       ) : (
         EEmpty.DASH
       ),
-    salaryType: dataSalaryTypeOptions.find((item) => item.value === managerState?.salary_type)?.label,
+    salaryType: dataSalaryTypeOptions.find((item) => item.value === managerState?.salary_type)?.label || EEmpty.DASH,
     salary: managerState?.salary ? formatCurrency({ amount: managerState.salary, showSuffix: true }) : EEmpty.DASH,
     totalIncome: managerState?.total_income
       ? formatCurrency({ amount: managerState.total_income, showSuffix: true })
@@ -130,11 +151,17 @@ const ManagerDetail: React.FC = () => {
             </Col>
           </Row>
         </Col>
-        <Col span={12}>
+        <Col span={24} md={{ span: 12 }}>
           <Card title="Thông tin cá nhân">
             <Row gutter={[16, 16]}>
               <Col span={12}>
-                <UploadImage label="Ảnh đại diện" readOnlyText active value={managerInfo?.avatar} />
+                <UploadImage
+                  label="Ảnh đại diện"
+                  readOnlyText
+                  active
+                  value={managerInfo?.avatar}
+                  onChange={handleUploadAvatar}
+                />
               </Col>
               <Col span={12} />
               <Col span={12}>
@@ -155,9 +182,12 @@ const ManagerDetail: React.FC = () => {
             </Row>
           </Card>
         </Col>
-        <Col span={12}>
+        <Col span={24} md={{ span: 12 }}>
           <Card title="Thông tin công việc">
             <Row gutter={[16, 16]}>
+              <Col span={24}>
+                <Input label="Trạng thái" readOnlyText active renderShowValue={managerInfo?.status} />
+              </Col>
               <Col span={12}>
                 <Input
                   label="Trình độ"
@@ -167,21 +197,19 @@ const ManagerDetail: React.FC = () => {
                   styleForm={{ color: managerInfo?.dgreeType?.data?.color }}
                 />
               </Col>
-              <Col span={12} />
               <Col span={24}>
                 <Input label="Lớp học" readOnlyText active renderShowValue={managerInfo?.classes} />
               </Col>
               <Col span={12}>
                 <Input label="Chế độ lương" readOnlyText active value={managerInfo?.salaryType} />
               </Col>
-              <Col span={12} />
               <Col span={12}>
                 <Input label="Lương" readOnlyText active value={managerInfo?.salary} />
               </Col>
-              <Col span={12}>
+              <Col span={24}>
                 <Input label="Tổng thu nhập" readOnlyText active value={managerInfo?.totalIncome} />
               </Col>
-              <Col span={12}>
+              <Col span={24}>
                 <Input label="Ghi chú" readOnlyText active value={managerInfo?.note} />
               </Col>
             </Row>

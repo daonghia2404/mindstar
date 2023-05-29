@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { navigate } from '@reach/router';
 
 import Input from '@/components/Input';
 import Card from '@/components/Card';
@@ -18,16 +19,14 @@ import { EGetBranchesAction, getBranchesAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
 import { TGetBranchesParams } from '@/services/api';
 import { TBranch } from '@/common/models';
-import Avatar from '@/components/Avatar';
 import { getFullUrlStatics } from '@/utils/functions';
+import Tags from '@/components/Tags';
+import { Paths } from '@/pages/routers';
 
 import './Branches.scss';
-import Tags from '@/components/Tags';
 
 const Branches: React.FC = () => {
   const dispatch = useDispatch();
-
-  const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
 
   const branchesState = useSelector((state: TRootState) => state.branchReducer.getBranchesResponse)?.data;
   const getBranchesLoading = useSelector((state: TRootState) => state.loadingReducer[EGetBranchesAction.GET_BRANCHES]);
@@ -139,6 +138,9 @@ const Branches: React.FC = () => {
               data: {
                 avatar: getFullUrlStatics(item.avatar),
               },
+              onClick: (): void => {
+                navigate(Paths.ManagerDetail(String(item.id)));
+              },
             }))}
           />
         ) : (
@@ -151,7 +153,7 @@ const Branches: React.FC = () => {
       title: 'Hotline',
       render: (value: string): React.ReactElement =>
         value ? (
-          <a href={`tel: ${value}`} className="Table-link">
+          <a href={`tel: ${value}`} className="Table-link" onClick={(e): void => e.stopPropagation()}>
             {value}
           </a>
         ) : (
@@ -191,8 +193,7 @@ const Branches: React.FC = () => {
 
   const getBranches = useCallback(() => {
     dispatch(getBranchesAction.request({ params: getBranchesParamsRequest }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, getBranchesParamsRequest, currentBranchId]);
+  }, [dispatch, getBranchesParamsRequest]);
 
   useEffect(() => {
     getBranches();

@@ -58,6 +58,8 @@ import AngleRight from './AngleRight';
 import PigMoney from './PigMoney';
 import Coins from './Coins';
 import Eye from './Eye';
+import Clock from './Clock';
+import Copy from './Copy';
 
 const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
   const renderIcon = (): React.ReactElement => {
@@ -168,6 +170,10 @@ const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
         return <Coins color={color} />;
       case EIconName.Eye:
         return <Eye color={color} />;
+      case EIconName.Clock:
+        return <Clock color={color} />;
+      case EIconName.Copy:
+        return <Copy color={color} />;
 
       default:
         return <></>;

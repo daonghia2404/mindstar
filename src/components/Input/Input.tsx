@@ -29,6 +29,7 @@ const Input: React.FC<TInputProps> = ({
   readOnlyText,
   styleForm,
   renderShowValue,
+  onBlur,
   onSearch,
   onChange,
   onEnter,
@@ -77,6 +78,7 @@ const Input: React.FC<TInputProps> = ({
   const handleBlur = (): void => {
     ref.current?.blur();
     setFocused(false);
+    onBlur?.();
   };
 
   const commonProps = {
@@ -86,6 +88,7 @@ const Input: React.FC<TInputProps> = ({
     placeholder,
     style: styleForm,
     readOnly: readOnlyText,
+    maxLength: numberic && useNumber ? 12 : undefined,
     onChange: handleChange,
     onKeyDown: handleKeydown,
     onFocus: handleFocus,
@@ -118,7 +121,9 @@ const Input: React.FC<TInputProps> = ({
       onBlur={handleBlur}
     >
       {readOnlyText ? (
-        <div className="FormField-show-value">{renderShowValue || value}</div>
+        <div className="FormField-show-value" style={styleForm}>
+          {renderShowValue || value}
+        </div>
       ) : (
         <>{type === 'password' ? <AntdInput.Password {...commonProps} /> : <AntdInput {...commonProps} />}</>
       )}

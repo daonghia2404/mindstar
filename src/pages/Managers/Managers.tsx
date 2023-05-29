@@ -28,6 +28,7 @@ import './Managers.scss';
 const Managers: React.FC = () => {
   const dispatch = useDispatch();
 
+  const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
   const getManagersLoading = useSelector((state: TRootState) => state.loadingReducer[EGetManagersAction.GET_MANAGERS]);
   const managersState = useSelector((state: TRootState) => state.managerReducer.getManagersResponse)?.data;
   const [modalManagerFormState, setModalManagerFormState] = useState<{ visible: boolean; data?: TUser }>({
@@ -154,7 +155,7 @@ const Managers: React.FC = () => {
       title: 'Số điện thoại',
       render: (value: string): React.ReactElement =>
         value ? (
-          <a href={`tel: ${value}`} className="Table-link">
+          <a href={`tel: ${value}`} className="Table-link" onClick={(e): void => e.stopPropagation()}>
             {value}
           </a>
         ) : (
@@ -172,6 +173,9 @@ const Managers: React.FC = () => {
               label: item.name,
               value: String(item.id),
               data: { iconName: EIconName.ChalkBoard },
+              onClick: (): void => {
+                navigate(Paths.ClassDetail(String(item.id)));
+              },
             }))}
           />
         ) : (
@@ -199,8 +203,8 @@ const Managers: React.FC = () => {
   ];
 
   const getManagers = useCallback(() => {
-    dispatch(getManagersAction.request({ params: getManagersParamsRequest }));
-  }, [dispatch, getManagersParamsRequest]);
+    dispatch(getManagersAction.request({ params: getManagersParamsRequest, headers: { branchIds: currentBranchId } }));
+  }, [dispatch, getManagersParamsRequest, currentBranchId]);
 
   useEffect(() => {
     getManagers();
@@ -230,7 +234,7 @@ const Managers: React.FC = () => {
                 <Row gutter={[16, 16]} justify="space-between" align="middle">
                   <Col>
                     <div className="Table-total-item">
-                      <Icon name={EIconName.MapMarker} color={EIconColor.TUNDORA} />
+                      <Icon name={EIconName.Users} color={EIconColor.TUNDORA} />
                       Tổng Giáo Viên: <strong>{managersState?.total_elements || EEmpty.ZERO}</strong>
                     </div>
                   </Col>

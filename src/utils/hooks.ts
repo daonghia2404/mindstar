@@ -76,7 +76,14 @@ export const useOptionsPaginate = (
   reducer: string,
   response: string,
   keySearch = 'name',
-): { options: TSelectOption[]; handleLoadMore: () => void; handleSearch: (keyword?: string) => void } => {
+  params?: { [key: string]: any },
+  headers?: { [key: string]: any },
+): {
+  options: TSelectOption[];
+  handleReset: () => void;
+  handleLoadMore: () => void;
+  handleSearch: (keyword?: string) => void;
+} => {
   const dispatch = useDispatch();
 
   const total = useSelector((state: any) => state?.[reducer]?.[response])?.data?.total_elements;
@@ -84,6 +91,7 @@ export const useOptionsPaginate = (
   const [paramsRequest, setParamsRequest] = useState({
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
+    ...params,
   });
 
   const handleSearch = (keyword?: string): void => {
@@ -104,13 +112,22 @@ export const useOptionsPaginate = (
     }
   };
 
+  const handleReset = (): void => {
+    setParamsRequest({
+      page: DEFAULT_PAGE,
+      size: DEFAULT_PAGE_SIZE,
+      ...params,
+    });
+  };
+
   const getData = useCallback(() => {
     dispatch(
-      actions?.request({ params: paramsRequest }, (fetchingResponse: any): void => {
+      actions?.request({ params: paramsRequest, headers }, (fetchingResponse: any): void => {
         const isFirstFetching = paramsRequest.page === DEFAULT_PAGE;
         const dataFetching = fetchingResponse?.data?.content?.map((item: any) => ({
           value: String(item.id),
           label: item.name,
+          data: item,
         }));
 
         setOptions(isFirstFetching ? dataFetching : [...options, ...dataFetching]);
@@ -125,6 +142,7 @@ export const useOptionsPaginate = (
 
   return {
     options,
+    handleReset,
     handleLoadMore,
     handleSearch,
   };

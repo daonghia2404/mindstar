@@ -28,8 +28,9 @@
     }
 
     &-overlay {
-      z-index: 4;
       @include fullAbsolute;
+      position: fixed;
+      z-index: 4;
       background: rgba($black, 0.4);
       backdrop-filter: blur(2px);
       transition: $common-transition;

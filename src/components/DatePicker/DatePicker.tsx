@@ -21,6 +21,9 @@ const DatePicker: React.FC<TDatePickerProps> = ({
   active,
   style,
   allowClear = false,
+  format,
+  showTime,
+  picker,
   disabledDate,
   onChange,
 }) => {
@@ -67,9 +70,16 @@ const DatePicker: React.FC<TDatePickerProps> = ({
         dropdownClassName="DatePicker-dropdown"
         open={focused}
         onOpenChange={setFocused}
-        format={EFormat['DD/MM/YYYY']}
+        format={format || EFormat['DD/MM/YYYY']}
         value={value}
-        locale={vi}
+        picker={picker}
+        locale={{
+          ...vi,
+          lang: {
+            ...vi.lang,
+            ok: 'Chọn',
+          },
+        }}
         allowClear={false}
         inputReadOnly
         clearIcon={<Icon name={EIconName.X} color={EIconColor.DOVE_GRAY} />}
@@ -78,6 +88,7 @@ const DatePicker: React.FC<TDatePickerProps> = ({
         disabledDate={disabledDate}
         suffixIcon={<></>}
         onFocus={handleFocus}
+        showTime={showTime}
         getPopupContainer={(trigger): HTMLElement => trigger}
       />
     </FormField>

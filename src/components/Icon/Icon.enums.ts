@@ -1,6 +1,7 @@
 export enum EIconName {
   Google = 'Google',
   ArrowLongRight = 'ArrowLongRight',
+  ArrowLongLeft = 'ArrowLongLeft',
   AngleDown = 'AngleDown',
   X = 'X',
   StarOutline = 'StarOutline',
@@ -51,7 +52,8 @@ export enum EIconName {
   PigMoney = 'PigMoney',
   Coins = 'Coins',
   Eye = 'Eye',
-  ArrowLongLeft = 'ArrowLongLeft',
+  Clock = 'Clock',
+  Copy = 'Copy',
 }
 
 export enum EIconColor {

@@ -1,0 +1,11 @@
+@import '@/assets/styles/_global.scss';
+
+.CheckboxGroup {
+  height: unset !important;
+
+  .FormField {
+    &-field {
+      padding-top: 2.4rem;
+    }
+  }
+}

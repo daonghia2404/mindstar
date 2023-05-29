@@ -56,7 +56,7 @@ const errorReducer = (state: TErrorState = {}, action: IErrorAction | IResetActi
       axiosErrorData?.errors?.[0].message ||
       error?.message;
 
-    if (error && !isNotShowToast) showNotification(ETypeNotification.ERROR, error as string);
+    if (error && !isNotShowToast) showNotification(ETypeNotification.ERROR, `${error as string} !`);
   }
 
   return {

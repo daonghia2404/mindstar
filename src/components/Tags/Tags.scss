@@ -17,6 +17,7 @@
     min-height: 3.2rem;
     line-height: 1;
     color: $mine-shaft;
+    white-space: nowrap;
 
     &.onclick {
       transition: $common-transition;
