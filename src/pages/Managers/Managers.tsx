@@ -234,7 +234,7 @@ const Managers: React.FC = () => {
                 <Row gutter={[16, 16]} justify="space-between" align="middle">
                   <Col>
                     <div className="Table-total-item">
-                      <Icon name={EIconName.MapMarker} color={EIconColor.TUNDORA} />
+                      <Icon name={EIconName.Users} color={EIconColor.TUNDORA} />
                       Tổng Giáo Viên: <strong>{managersState?.total_elements || EEmpty.ZERO}</strong>
                     </div>
                   </Col>

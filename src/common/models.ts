@@ -257,6 +257,15 @@ export type TOrder = {
 
 export type TUploadFile = any;
 
+export type TTimeOff = {
+  at_date_time: number;
+  auditing_status: number;
+  branch: TBranch;
+  id: number;
+  player: TUser;
+  reason: string;
+};
+
 export type TProduct = {
   product_id: number;
   product_name: string;

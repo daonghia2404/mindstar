@@ -83,6 +83,8 @@ export enum EFormat {
   'HH:mm:ss' = 'HH:mm:ss',
   'dddd, DD' = 'dddd, DD',
   'HH:mm' = 'HH:mm',
+  'MM/YYYY' = 'MM/YYYY',
+  'dddd | DD/MM/YYYY - HH:mm' = 'dddd | DD/MM/YYYY - HH:mm',
 }
 
 export enum EAuditingStatus {

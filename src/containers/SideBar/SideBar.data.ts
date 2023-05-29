@@ -25,6 +25,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
       Paths.Events,
       Paths.Players,
       Paths.PlayerDetail(data?.id),
+      Paths.TimeOffs,
     ],
     children: [
       {
@@ -104,8 +105,8 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         id: '8',
         title: 'Thời gian nghỉ',
         icon: EIconName.ClockCancel,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.TimeOffs,
+        activePaths: [Paths.TimeOffs],
       },
       {
         id: '8',

@@ -23,6 +23,7 @@ const DatePicker: React.FC<TDatePickerProps> = ({
   allowClear = false,
   format,
   showTime,
+  picker,
   disabledDate,
   onChange,
 }) => {
@@ -71,6 +72,7 @@ const DatePicker: React.FC<TDatePickerProps> = ({
         onOpenChange={setFocused}
         format={format || EFormat['DD/MM/YYYY']}
         value={value}
+        picker={picker}
         locale={{
           ...vi,
           lang: {

@@ -27,6 +27,7 @@ const MultipleSelect: React.FC<TMultipleSelectProps> = ({
   placement,
   active,
   placeholder,
+  allowClear,
   onSearch,
   onLoadMore,
   onChange,
@@ -127,7 +128,21 @@ const MultipleSelect: React.FC<TMultipleSelectProps> = ({
       active={active || focused || isExistedValue}
       onClick={handleFocus}
       disabled={disabled}
-      suffixIcon={<Icon name={EIconName.AngleDown} color={EIconColor.TUNDORA} />}
+      suffixIcon={
+        allowClear && isExistedValue ? (
+          <Icon
+            className="cursor-pointer"
+            name={EIconName.X}
+            color={EIconColor.TUNDORA}
+            onClick={(): void => {
+              onChange?.(undefined);
+              handleBlur();
+            }}
+          />
+        ) : (
+          <Icon name={EIconName.AngleDown} color={EIconColor.TUNDORA} />
+        )
+      }
     >
       <DropdownCustom
         visible={focused}
@@ -138,7 +153,9 @@ const MultipleSelect: React.FC<TMultipleSelectProps> = ({
         onVisibleChange={(): void => handleBlur()}
       >
         {!keyword && (
-          <span className={classNames('MultipleSelect-show-value', { blur: showSearch && focused })}>
+          <span
+            className={classNames('FormField-show-value MultipleSelect-show-value', { blur: showSearch && focused })}
+          >
             {value?.map((item) => item.label)?.join(', ')}
           </span>
         )}

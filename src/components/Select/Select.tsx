@@ -140,7 +140,9 @@ const Select: React.FC<TSelectProps> = ({
         placement={placement}
       >
         {!keyword && (
-          <span className={classNames('Select-show-value', { blur: showSearch && focused })}>{value?.label}</span>
+          <span className={classNames('Select-show-value FormField-show-value', { blur: showSearch && focused })}>
+            {value?.label}
+          </span>
         )}
         <Input
           className={classNames('Select-show-search')}
