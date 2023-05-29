@@ -13,6 +13,7 @@ import {
   createPlayerAction,
   getBranchesAction,
   getClassesAction,
+  searchUserAction,
   updatePlayerAction,
 } from '@/redux/actions';
 import {
@@ -20,6 +21,7 @@ import {
   formatCurrency,
   formatISODateToDateTime,
   generateInitialPassword,
+  schedulesOptionsByClassSchedule,
   showNotification,
   validationRules,
 } from '@/utils/functions';
@@ -31,7 +33,8 @@ import { useOptionsPaginate } from '@/utils/hooks';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import Tooltip from '@/components/Tooltip';
 import CheckboxGroup from '@/components/CheckboxGroup';
-import { TClass } from '@/common/models';
+import { TClass, TUser } from '@/common/models';
+import ModalAddPlayerInExistedUser from '@/pages/Players/ModalAddPlayerInExistedUser';
 
 import { TModalPlayerFormProps } from './ModalPlayerForm.type';
 import './ModalPlayerForm.scss';
@@ -41,6 +44,15 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
   const [form] = Form.useForm();
   const [formValues, setFormValues] = useState<any>({});
   const currentBranch = useSelector((state: TRootState) => state.uiReducer.branch);
+
+  const [modalAddPlayerInExistedUserState, setModalAddPlayerInExistedUserState] = useState<{
+    visible: boolean;
+    data?: TUser;
+  }>({
+    visible: false,
+  });
+  const isConfirmAddInExistedUser =
+    !modalAddPlayerInExistedUserState.visible && Boolean(modalAddPlayerInExistedUserState?.data?.id);
 
   const {
     options: optionsClasses,
@@ -78,10 +90,30 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
   );
   const loading = createPlayerLoading || updatePlayerLoading;
 
+  const handleOpenAddPlayerInExistedUserModal = (dataModal?: TUser): void => {
+    setModalAddPlayerInExistedUserState({ ...modalAddPlayerInExistedUserState, visible: true, data: dataModal });
+  };
+
+  const handleCloseAddPlayerInExistedUserModal = (): void => {
+    setModalAddPlayerInExistedUserState({ visible: false });
+  };
+
+  const handleSubmitAddPlayerInExistedUserModal = (): void => {
+    setModalAddPlayerInExistedUserState({ ...modalAddPlayerInExistedUserState, visible: false });
+    const dataChanged = {
+      parentName: modalAddPlayerInExistedUserState?.data?.name,
+      phoneNumber: modalAddPlayerInExistedUserState?.data?.mobile,
+      address: modalAddPlayerInExistedUserState?.data?.address,
+      city: cityOptions?.find((item) => item.value === modalAddPlayerInExistedUserState?.data?.city?.id),
+    };
+    form.setFieldsValue(dataChanged);
+    setFormValues({ ...formValues, ...dataChanged });
+  };
+
   const handleSubmit = (): void => {
     form.validateFields().then((values) => {
       const body = {
-        // user_id
+        user_id: modalAddPlayerInExistedUserState?.data?.id,
         name: values?.name,
         date_of_birth: values?.dateOfBirth?.valueOf(),
         clothes_number: values?.shirtNumber,
@@ -115,25 +147,15 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
     onSuccess?.();
   };
 
-  const schedulesOptions = (formValues?.class?.data as TClass)?.schedules
-    ?.map((item) => {
-      const parseDayOfWeek = item.at_eras.split(',');
-      return parseDayOfWeek.map((subItem) => ({
-        ...item,
-        dayOfWeek: subItem,
-      }));
-    })
-    .flat()
-    .map((item) => {
-      const startTime = formatISODateToDateTime(item.at_time, EFormat['HH:mm']);
-      const endTime = formatISODateToDateTime(item.at_time + item.duration_in_second * 1000, EFormat['HH:mm']);
-      const dayLabel = dataDayOfWeeksOptions.find((subItem) => subItem.value === item.dayOfWeek)?.label;
+  const handleFindExistedUser = (userName?: string): void => {
+    dispatch(
+      searchUserAction.request({ params: { userName } }, (response): void => {
+        handleOpenAddPlayerInExistedUserModal(response.data);
+      }),
+    );
+  };
 
-      return {
-        label: `${dayLabel} | ${startTime} - ${endTime}`,
-        value: dayLabel,
-      };
-    });
+  const schedulesOptions = schedulesOptionsByClassSchedule((formValues?.class?.data as TClass)?.schedules);
 
   useEffect(() => {
     if (formValues?.branch?.value) handleResetClasses();
@@ -148,11 +170,28 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
           dateOfBirth: data?.date_of_birth ? moment(data?.date_of_birth) : undefined,
           shirtNumber: data?.clothes_number,
           branch: data?.branch_id ? { label: data?.branch_name, value: String(data?.branch_id) } : undefined,
-          class: data?.class ? { label: data?.class?.name, value: String(data?.class?.id) } : undefined,
+          class: data?.class
+            ? {
+                label: data?.class?.name,
+                value: String(data?.class?.id),
+                data: optionsClasses?.find((item) => item.value === String(data?.class?.id)),
+              }
+            : undefined,
           parentName: data?.parent_name,
           phoneNumber: data?.mobile,
           address: data?.address,
           city: cityOptions?.find((item) => item.value === data?.city?.id),
+          schedules: data?.player_schedules?.map((item) => {
+            const startTime = formatISODateToDateTime(item.at_time, EFormat['HH:mm']);
+            const endTime = formatISODateToDateTime(item.at_time + item.duration_in_second * 1000, EFormat['HH:mm']);
+            const dayLabel = dataDayOfWeeksOptions.find((subItem) => subItem.value === item.day_of_week)?.label;
+
+            return {
+              label: `${dayLabel} | ${startTime} - ${endTime}`,
+              value: item.day_of_week,
+              data: item,
+            };
+          }),
           note: data?.note,
           referralCode: data?.referral_code_used,
         };
@@ -171,208 +210,247 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
     } else {
       form.resetFields();
       setFormValues({});
+      handleCloseAddPlayerInExistedUserModal();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible, form, data]);
 
   return (
-    <Modal
-      className="ModalPlayerForm"
-      title={data ? 'Sửa Học Viên' : 'Tạo mới Học Viên'}
-      visible={visible}
-      onClose={onClose}
-      width={480}
-      cancelButton={{ title: 'Huỷ Bỏ', disabled: loading, onClick: onClose }}
-      confirmButton={{ title: 'Đồng Ý', disabled: loading, onClick: handleSubmit }}
-    >
-      <div className="ModalPlayerForm-wrapper">
-        <Form form={form} onValuesChange={(_, values): void => setFormValues({ ...formValues, ...values })}>
-          <Row gutter={[16, 16]}>
-            <Col span={24}>
-              <Form.Item name="name" rules={[validationRules.required()]}>
-                <Input label="Tên" required placeholder="Nhập dữ liệu" active />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item name="dateOfBirth" rules={[validationRules.required()]}>
-                <DatePicker label="Ngày sinh" required placeholder="Chọn dữ liệu" active />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item name="shirtNumber">
-                <Input label="Số áo" placeholder="Nhập dữ liệu" active numberic useNumber />
-              </Form.Item>
-            </Col>
-            {!data && (
+    <>
+      <Modal
+        className="ModalPlayerForm"
+        title={data ? 'Sửa Học Viên' : 'Tạo mới Học Viên'}
+        visible={visible}
+        onClose={onClose}
+        width={480}
+        cancelButton={{ title: 'Huỷ Bỏ', disabled: loading, onClick: onClose }}
+        confirmButton={{ title: 'Đồng Ý', disabled: loading, onClick: handleSubmit }}
+      >
+        <div className="ModalPlayerForm-wrapper">
+          <Form form={form} onValuesChange={(value, values): void => setFormValues({ ...formValues, ...values })}>
+            <Row gutter={[16, 16]}>
               <Col span={24}>
-                <Form.Item name="branch" rules={[validationRules.required()]}>
-                  <Select
-                    label="Chi nhánh"
-                    placeholder="Chọn dữ liệu"
-                    required
-                    active
-                    showSearch
-                    options={optionsBranches}
-                    onLoadMore={handleLoadMoreBranches}
-                    onSearch={handleSearchBranches}
-                  />
+                <Form.Item name="name" rules={[validationRules.required()]}>
+                  <Input label="Tên" required placeholder="Nhập dữ liệu" active />
                 </Form.Item>
               </Col>
-            )}
-
-            {formValues?.branch && (
               <Col span={24}>
-                <Form.Item name="class" rules={[validationRules.required()]}>
-                  <Select
-                    label="Lớp học"
-                    placeholder="Chọn dữ liệu"
-                    active
-                    required
-                    showSearch
-                    options={optionsClasses}
-                    onLoadMore={handleLoadMoreClasses}
-                    onSearch={handleSearchClasses}
-                  />
+                <Form.Item name="dateOfBirth" rules={[validationRules.required()]}>
+                  <DatePicker label="Ngày sinh" required placeholder="Chọn dữ liệu" active />
                 </Form.Item>
               </Col>
-            )}
-
-            {formValues?.branch && formValues?.class && (
               <Col span={24}>
-                <Form.Item name="schedule" rules={[validationRules.required()]}>
-                  <CheckboxGroup label="Lịch tập" required options={schedulesOptions} />
+                <Form.Item name="shirtNumber">
+                  <Input label="Số áo" placeholder="Nhập dữ liệu" active numberic useNumber />
                 </Form.Item>
               </Col>
-            )}
-            <Col span={24}>
-              <Form.Item name="parentName" rules={[validationRules.required()]}>
-                <Input label="Tên bố/mẹ" required placeholder="Nhập dữ liệu" active />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item name="phoneNumber" rules={[validationRules.required()]}>
-                <Input
-                  label="Số điện thoại"
-                  required
-                  placeholder="Nhập dữ liệu"
-                  active
-                  numberic
-                  onBlur={(): void => {
-                    if (!formValues?.loginId) {
-                      const dataChanged = {
-                        loginId: formValues?.phoneNumber,
-                      };
-                      form.setFieldsValue(dataChanged);
-                      setFormValues({ ...formValues, ...dataChanged });
-                    }
-                  }}
-                />
-              </Form.Item>
-            </Col>
-            {!data && (
-              <>
+              {!data && (
                 <Col span={24}>
-                  <Form.Item name="loginId" rules={[validationRules.required()]}>
-                    <Input label="Tên đăng nhập" required placeholder="Nhập dữ liệu" active />
-                  </Form.Item>
-                </Col>
-                <Col span={24}>
-                  <Form.Item name="password" rules={[validationRules.required()]}>
-                    <Input
-                      label="Mật khẩu"
-                      required
-                      placeholder="Nhập dữ liệu"
-                      active
-                      suffixIcon={
-                        <Tooltip title="Sao chép thành công" trigger={['click']} placement="right">
-                          <Icon
-                            className="cursor-pointer"
-                            name={EIconName.Copy}
-                            color={EIconColor.DOVE_GRAY}
-                            onClick={(): void => {
-                              copyText(formValues?.password);
-                            }}
-                          />
-                        </Tooltip>
-                      }
-                    />
-                  </Form.Item>
-                </Col>
-              </>
-            )}
-
-            <Col span={24}>
-              <Form.Item name="address" rules={[validationRules.required()]}>
-                <Input label="Địa chỉ" required placeholder="Nhập dữ liệu" active />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item name="city" rules={[validationRules.required()]}>
-                <Select label="Thành phố" options={cityOptions} required placeholder="Chọn dữ liệu" active showSearch />
-              </Form.Item>
-            </Col>
-            {!data && (
-              <>
-                <Col span={24}>
-                  <Form.Item name="membershipFee" rules={[validationRules.required()]}>
-                    <Input
-                      label="Phí hội viên"
-                      required
-                      placeholder="Nhập dữ liệu"
-                      active
-                      numberic
-                      useNumber
-                      useComma
-                      suffixText="đ"
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={24}>
-                  <Form.Item name="kits">
-                    <CheckboxGroup label="Bộ hỗ trợ" options={kitFeeOptions} />
-                  </Form.Item>
-                </Col>
-                <Col span={24}>
-                  <Form.Item name="numberOfUnits" rules={[validationRules.required()]}>
-                    <Input
-                      label="Số buổi học"
-                      required
-                      placeholder="Nhập dữ liệu"
-                      active
-                      numberic
-                      useNumber
-                      suffixText="buổi"
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={24}>
-                  <Form.Item name="paymentType" rules={[validationRules.required()]}>
+                  <Form.Item name="branch" rules={[validationRules.required()]}>
                     <Select
-                      label="Phương thức thanh toán"
+                      label="Chi nhánh"
+                      placeholder="Chọn dữ liệu"
                       required
+                      active
+                      showSearch
+                      options={optionsBranches}
+                      onLoadMore={handleLoadMoreBranches}
+                      onSearch={handleSearchBranches}
+                    />
+                  </Form.Item>
+                </Col>
+              )}
+
+              {formValues?.branch && (
+                <Col span={24}>
+                  <Form.Item name="class" rules={[validationRules.required()]}>
+                    <Select
+                      label="Lớp học"
                       placeholder="Chọn dữ liệu"
                       active
-                      options={dataPaymentTypeOptions}
+                      required
+                      showSearch
+                      options={optionsClasses}
+                      onLoadMore={handleLoadMoreClasses}
+                      onSearch={handleSearchClasses}
                     />
                   </Form.Item>
                 </Col>
-              </>
-            )}
+              )}
+              {formValues?.branch && formValues?.class && (
+                <Col span={24}>
+                  <Form.Item name="schedule" rules={[validationRules.required()]}>
+                    <CheckboxGroup label="Lịch học" required options={schedulesOptions} />
+                  </Form.Item>
+                </Col>
+              )}
+              <Col span={24}>
+                <Form.Item name="parentName" rules={[validationRules.required()]}>
+                  <Input
+                    label="Tên bố/mẹ"
+                    required
+                    placeholder="Nhập dữ liệu"
+                    active
+                    disabled={isConfirmAddInExistedUser}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={24}>
+                <Form.Item name="phoneNumber" rules={[validationRules.required()]}>
+                  <Input
+                    label="Số điện thoại"
+                    required
+                    placeholder="Nhập dữ liệu"
+                    active
+                    numberic
+                    onBlur={(): void => {
+                      if (!formValues?.loginId) {
+                        const dataChanged = {
+                          loginId: formValues?.phoneNumber,
+                        };
+                        form.setFieldsValue(dataChanged);
+                        setFormValues({ ...formValues, ...dataChanged });
+                        handleFindExistedUser(formValues?.phoneNumber);
+                      }
+                    }}
+                    disabled={isConfirmAddInExistedUser}
+                  />
+                </Form.Item>
+              </Col>
+              {!data && (
+                <>
+                  <Col span={24}>
+                    <Form.Item name="loginId" rules={[validationRules.required()]}>
+                      <Input
+                        label="Tên đăng nhập"
+                        required
+                        placeholder="Nhập dữ liệu"
+                        active
+                        onSearch={handleFindExistedUser}
+                        disabled={isConfirmAddInExistedUser}
+                      />
+                    </Form.Item>
+                  </Col>
+                  {!isConfirmAddInExistedUser && (
+                    <Col span={24}>
+                      <Form.Item name="password" rules={[validationRules.required()]}>
+                        <Input
+                          label="Mật khẩu"
+                          required
+                          placeholder="Nhập dữ liệu"
+                          active
+                          suffixIcon={
+                            <Tooltip title="Sao chép thành công" trigger={['click']} placement="right">
+                              <Icon
+                                className="cursor-pointer"
+                                name={EIconName.Copy}
+                                color={EIconColor.DOVE_GRAY}
+                                onClick={(): void => {
+                                  copyText(formValues?.password);
+                                }}
+                              />
+                            </Tooltip>
+                          }
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
+                </>
+              )}
 
-            <Col span={24}>
-              <Form.Item name="note">
-                <TextArea label="Ghi chú" placeholder="Nhập dữ liệu" active />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item name="referralCode">
-                <Input label="Mã giới thiệu" placeholder="Nhập dữ liệu" active />
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </div>
-    </Modal>
+              <Col span={24}>
+                <Form.Item name="address" rules={[validationRules.required()]}>
+                  <Input
+                    label="Địa chỉ"
+                    required
+                    placeholder="Nhập dữ liệu"
+                    active
+                    disabled={isConfirmAddInExistedUser}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={24}>
+                <Form.Item name="city" rules={[validationRules.required()]}>
+                  <Select
+                    label="Thành phố"
+                    options={cityOptions}
+                    required
+                    placeholder="Chọn dữ liệu"
+                    active
+                    showSearch
+                    disabled={isConfirmAddInExistedUser}
+                  />
+                </Form.Item>
+              </Col>
+              {!data && (
+                <>
+                  <Col span={24}>
+                    <Form.Item name="membershipFee" rules={[validationRules.required()]}>
+                      <Input
+                        label="Phí hội viên"
+                        required
+                        placeholder="Nhập dữ liệu"
+                        active
+                        numberic
+                        useNumber
+                        useComma
+                        suffixText="đ"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Item name="kits">
+                      <CheckboxGroup label="Bộ hỗ trợ" options={kitFeeOptions} />
+                    </Form.Item>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Item name="numberOfUnits" rules={[validationRules.required()]}>
+                      <Input
+                        label="Số buổi học"
+                        required
+                        placeholder="Nhập dữ liệu"
+                        active
+                        numberic
+                        useNumber
+                        suffixText="buổi"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Item name="paymentType" rules={[validationRules.required()]}>
+                      <Select
+                        label="Phương thức thanh toán"
+                        required
+                        placeholder="Chọn dữ liệu"
+                        active
+                        options={dataPaymentTypeOptions}
+                      />
+                    </Form.Item>
+                  </Col>
+                </>
+              )}
+
+              <Col span={24}>
+                <Form.Item name="note">
+                  <TextArea label="Ghi chú" placeholder="Nhập dữ liệu" active />
+                </Form.Item>
+              </Col>
+              <Col span={24}>
+                <Form.Item name="referralCode">
+                  <Input label="Mã giới thiệu" placeholder="Nhập dữ liệu" active />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      </Modal>
+
+      <ModalAddPlayerInExistedUser
+        {...modalAddPlayerInExistedUserState}
+        onClose={handleCloseAddPlayerInExistedUserModal}
+        onSubmit={handleSubmitAddPlayerInExistedUserModal}
+      />
+    </>
   );
 };
 

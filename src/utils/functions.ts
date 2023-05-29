@@ -6,8 +6,10 @@ import moment from 'moment';
 import crypto from 'crypto';
 
 import { EFormat, ETypeNotification } from '@/common/enums';
-import { REGEX } from '@/common/constants';
+import { REGEX, dataDayOfWeeksOptions } from '@/common/constants';
 import env from '@/env';
+import { TSelectOption } from '@/components/Select';
+import { TSchedule } from '@/common/models';
 
 export const removeAccents = (str: string): string => {
   let strConverted = str;
@@ -398,4 +400,29 @@ export const totalNumberInArray = (data?: number[]): number => {
 
 export const capitalizeFirstLetter = (string: string): string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+export const schedulesOptionsByClassSchedule = (data?: TSchedule[]): TSelectOption[] => {
+  const schedulesOptions = data
+    ?.map((item) => {
+      const parseDayOfWeek = item.at_eras.split(',');
+      return parseDayOfWeek.map((subItem) => ({
+        ...item,
+        dayOfWeek: subItem,
+      }));
+    })
+    .flat()
+    .map((item) => {
+      const startTime = formatISODateToDateTime(item.at_time, EFormat['HH:mm']);
+      const endTime = formatISODateToDateTime(item.at_time + item.duration_in_second * 1000, EFormat['HH:mm']);
+      const dayLabel = dataDayOfWeeksOptions.find((subItem) => subItem.value === item.dayOfWeek)?.label;
+
+      return {
+        label: `${dayLabel} | ${startTime} - ${endTime}`,
+        value: item.dayOfWeek,
+        data: item,
+      };
+    });
+
+  return schedulesOptions || [];
 };

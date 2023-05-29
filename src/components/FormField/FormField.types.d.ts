@@ -14,6 +14,7 @@ export type TFormFieldProps = {
   style?: CSSProperties;
   active?: boolean;
   readOnlyText?: boolean;
+  readonly?: boolean;
   renderShowValue?: React.ReactNode;
   onClick?: () => void;
   onBlur?: () => void;

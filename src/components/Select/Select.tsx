@@ -27,6 +27,7 @@ const Select: React.FC<TSelectProps> = ({
   placement,
   active,
   placeholder,
+  readonly,
   onSearch,
   onLoadMore,
   onChange,
@@ -44,8 +45,10 @@ const Select: React.FC<TSelectProps> = ({
   };
 
   const handleFocus = (): void => {
-    ref.current?.focus();
-    setFocused(true);
+    if (!readonly) {
+      ref.current?.focus();
+      setFocused(true);
+    }
   };
 
   const handleBlur = (): void => {
@@ -116,6 +119,7 @@ const Select: React.FC<TSelectProps> = ({
       onClick={handleFocus}
       onBlur={handleBlur}
       disabled={disabled}
+      readonly={readonly}
       suffixIcon={
         allowClear && value?.value ? (
           <Icon
@@ -148,7 +152,7 @@ const Select: React.FC<TSelectProps> = ({
           className={classNames('Select-show-search')}
           ref={ref}
           value={keyword}
-          readOnly={!showSearch}
+          readOnly={!showSearch || readonly}
           placeholder={!value?.label ? placeholder : undefined}
           onFocus={handleFocus}
           onChange={(e): void => handleSearch(e.target.value)}

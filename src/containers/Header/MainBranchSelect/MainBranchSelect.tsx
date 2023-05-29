@@ -9,10 +9,10 @@ import { TBranch } from '@/common/models';
 import { TRootState } from '@/redux/reducers';
 import Helpers from '@/services/helpers';
 import { TDropdownMenuItem } from '@/components/DropdownMenu/DropdownMenu.types';
+import { useOptionsPaginate } from '@/utils/hooks';
 
 import { TMainBranchSelectProps } from './MainBranchSelect.type';
 import './MainBranchSelect.scss';
-import { useOptionsPaginate } from '@/utils/hooks';
 
 const MainBranchSelect: React.FC<TMainBranchSelectProps> = () => {
   const dispatch = useDispatch();
@@ -45,7 +45,7 @@ const MainBranchSelect: React.FC<TMainBranchSelectProps> = () => {
       active: currentBranch?.id === item.data.id,
       label: item.data.name,
       icon: EIconName.MapMarker,
-      data: item,
+      data: item?.data,
     })),
   ];
 

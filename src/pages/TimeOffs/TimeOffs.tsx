@@ -48,7 +48,7 @@ const TimeOffs: React.FC = () => {
   });
 
   const {
-    options: classesOptions,
+    options: optionsClasses,
     handleSearch: handleSearchClasses,
     handleLoadMore: handleLoadMoreClasses,
   } = useOptionsPaginate(
@@ -261,7 +261,7 @@ const TimeOffs: React.FC = () => {
                       }}
                       showSearch
                       allowClear
-                      options={classesOptions}
+                      options={optionsClasses}
                       onLoadMore={handleLoadMoreClasses}
                       onSearch={handleSearchClasses}
                       placement="topLeft"

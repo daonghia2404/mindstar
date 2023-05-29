@@ -18,6 +18,10 @@
     }
 
     .FormField {
+      &-show-value {
+        padding-top: 2.4rem;
+      }
+
       &-label {
         left: 0 !important;
         color: $dove-gray;
@@ -167,7 +171,6 @@
       }
 
       &-show-value {
-        padding-top: 2.4rem;
         font-size: 1.4rem;
         color: $mine-shaft;
       }
@@ -179,7 +182,7 @@
           right: 1.2rem;
         }
 
-        .ant-picker:not(.ant-picker-range) .ant-picker-input > input,
+        .ant-picker:not(.ant-picker-range) .ant-picker-input>input,
         .Select-show-value,
         .ant-input {
           height: 2.4rem;
@@ -241,7 +244,7 @@
           right: 1.2rem;
         }
 
-        .ant-picker:not(.ant-picker-range) .ant-picker-input > input,
+        .ant-picker:not(.ant-picker-range) .ant-picker-input>input,
         .Select-show-value,
         .ant-input {
           height: 2.8rem;

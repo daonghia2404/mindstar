@@ -3,6 +3,7 @@ export type TUser = {
   address: string;
   auditing_status: number;
   avatar: string;
+  branch: TBranch;
   branch_id: null;
   branch_name: string;
   class: TClass;
@@ -38,6 +39,7 @@ export type TUser = {
   referral_code_used?: string;
   number_of_units?: number;
   position?: string;
+  players?: TUser[];
 };
 
 export type TCity = {

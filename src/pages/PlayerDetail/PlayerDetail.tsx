@@ -21,6 +21,8 @@ import ModalPlayerForm from '@/pages/Players/ModalPlayerForm';
 import Status from '@/components/Status';
 
 import './PlayerDetail.scss';
+import ModalResetPassword from '@/pages/PlayerDetail/ModalResetPassword';
+import ModalChangeBranch from '@/pages/PlayerDetail/ModalChangeBranch';
 
 const PlayerDetail: React.FC = () => {
   const dispatch = useDispatch();
@@ -34,6 +36,12 @@ const PlayerDetail: React.FC = () => {
     visible: false,
   });
   const [modalDeletePlayerState, setModalDeletePlayerState] = useState<{ visible: boolean; data?: TUser }>({
+    visible: false,
+  });
+  const [modalResetPasswordState, setModalResetPasswordState] = useState<{ visible: boolean; data?: TUser }>({
+    visible: false,
+  });
+  const [modalChangeBranchState, setModalChangeBranchState] = useState<{ visible: boolean; data?: TUser }>({
     visible: false,
   });
 
@@ -51,6 +59,22 @@ const PlayerDetail: React.FC = () => {
 
   const handleCloseModalDeletePlayer = (): void => {
     setModalDeletePlayerState({ visible: false });
+  };
+
+  const handleOpenModalResetPassword = (data?: TUser): void => {
+    setModalResetPasswordState({ visible: true, data });
+  };
+
+  const handleCloseModalResetPassword = (): void => {
+    setModalResetPasswordState({ visible: false });
+  };
+
+  const handleOpenModalChangeBranch = (data?: TUser): void => {
+    setModalChangeBranchState({ visible: true, data });
+  };
+
+  const handleCloseModalChangeBranch = (): void => {
+    setModalChangeBranchState({ visible: false });
   };
 
   const handleUploadAvatar = (file: File): void => {
@@ -73,6 +97,45 @@ const PlayerDetail: React.FC = () => {
   const playerInfo = {
     avatar: playerState?.avatar ? getFullUrlStatics(playerState.avatar) : undefined,
     name: playerState?.name || EEmpty.DASH,
+    password: (
+      <Button
+        style={{ width: 'fit-content' }}
+        size="small"
+        title="Đặt lại mật khẩu"
+        styleType={EButtonStyleType.PURPLE_TRANSPARENT}
+        onClick={(): void => handleOpenModalResetPassword(playerState?.user)}
+      />
+    ),
+    branch: (
+      <Row justify="space-between" align="middle">
+        <Col>
+          {playerState?.branch ? (
+            <Tags
+              options={[
+                {
+                  value: String(playerState?.branch?.id),
+                  label: playerState?.branch?.name || EEmpty.DASH,
+                  data: {
+                    iconName: EIconName.MapMarker,
+                  },
+                },
+              ]}
+            />
+          ) : (
+            EEmpty.DASH
+          )}
+        </Col>
+        <Col>
+          <Button
+            style={{ width: 'fit-content' }}
+            size="small"
+            title="Đổi chi nhánh"
+            styleType={EButtonStyleType.PURPLE_TRANSPARENT}
+            onClick={(): void => handleOpenModalChangeBranch(playerState)}
+          />
+        </Col>
+      </Row>
+    ),
     status: ((): React.ReactNode => {
       const status = dataAuditingStatusOptions.find((item) => item.value === playerState?.auditing_status);
       return status ? <Status label={status?.label} styleType={status?.data?.statusType} /> : EEmpty.DASH;
@@ -239,14 +302,20 @@ const PlayerDetail: React.FC = () => {
               <Col span={12}>
                 <Input label="Số áo" readOnlyText active value={playerInfo?.shirtNumber} />
               </Col>
-              <Col span={24}>
+              <Col span={12}>
                 <Input label="Tên đăng nhập" readOnlyText active value={playerInfo?.username} />
+              </Col>
+              <Col span={12}>
+                <Input label="Mật khẩu" readOnlyText active renderShowValue={playerInfo?.password} />
+              </Col>
+              <Col span={24}>
+                <Input label="Chi nhánh" readOnlyText active renderShowValue={playerInfo?.branch} />
               </Col>
               <Col span={24}>
                 <Input label="Lớp học" readOnlyText active renderShowValue={playerInfo?.class} />
               </Col>
               <Col span={24}>
-                <Input label="Lịch tập" readOnlyText active renderShowValue={playerInfo?.schedules} />
+                <Input label="Lịch học" readOnlyText active renderShowValue={playerInfo?.schedules} />
               </Col>
               <Col span={12}>
                 <Input label="Số buổi còn lại" readOnlyText active renderShowValue={playerInfo?.numberOfUnits} />
@@ -267,6 +336,8 @@ const PlayerDetail: React.FC = () => {
 
       <ModalPlayerForm {...modalPlayerFormState} onClose={handleCloseModalPlayerForm} onSuccess={getPlayer} />
       <ModalDeletePlayer {...modalDeletePlayerState} onClose={handleCloseModalDeletePlayer} onSuccess={handleBack} />
+      <ModalResetPassword {...modalResetPasswordState} onClose={handleCloseModalResetPassword} />
+      <ModalChangeBranch {...modalChangeBranchState} onClose={handleCloseModalChangeBranch} onSuccess={getPlayer} />
     </div>
   );
 };

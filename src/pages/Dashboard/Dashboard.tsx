@@ -202,7 +202,7 @@ const Dashboard: React.FC = () => {
               </Col>
               <Col span={12} md={{ span: 8 }} lg={{ span: 8 }} xl={{ span: 4 }}>
                 <DashboardStaticCard
-                  title="Trải nghiệm miễn phí"
+                  title="Học thử miễn phí"
                   value={dashboardState?.free_trial_count || EEmpty.ZERO}
                   icon={EIconName.Rocket}
                 />
