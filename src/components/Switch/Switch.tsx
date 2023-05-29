@@ -7,14 +7,24 @@ import FormField from '@/components/FormField';
 import { TSwitchProps } from './Switch.types';
 import './Switch.scss';
 
-const Switch: React.FC<TSwitchProps> = ({ label, required, size, className, value, disabled, style, onChange }) => {
+const Switch: React.FC<TSwitchProps> = ({
+  label,
+  required,
+  size,
+  className,
+  value,
+  readOnlyText,
+  disabled,
+  style,
+  onChange,
+}) => {
   return (
     <FormField
       label={label}
       required={required}
       size={size}
+      readOnlyText={readOnlyText}
       className={classNames('Switch', className)}
-      // focused
       active
       disabled={disabled}
       style={style}

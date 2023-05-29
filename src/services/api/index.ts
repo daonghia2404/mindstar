@@ -20,3 +20,4 @@ export * from './time-off';
 export * from './upload';
 export * from './event';
 export * from './player';
+export * from './e-connect';

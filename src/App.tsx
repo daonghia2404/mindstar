@@ -45,6 +45,7 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.Branches} component={Pages.Branches} />
           <ProtectedRoute path={Paths.TimeOffs} component={Pages.TimeOffs} />
           <ProtectedRoute path={Paths.Managers} component={Pages.Managers} />
+          <ProtectedRoute path={Paths.Connects} component={Pages.Connects} />
           <ProtectedRoute path={Paths.ManagerDetail()} component={Pages.ManagerDetail} />
           <ProtectedRoute path={Paths.Classes} component={Pages.Classes} />
           <ProtectedRoute path={Paths.ClassDetail()} component={Pages.ClassDetail} />

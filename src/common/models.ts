@@ -273,3 +273,23 @@ export type TProduct = {
   product_name: string;
   selling_price: number;
 };
+
+export type TEConnect = {
+  account_name: string;
+  address: string;
+  auditing_status: number;
+  avatar?: string;
+  branch_id: number;
+  city?: string;
+  city_id: string;
+  cover_image?: string;
+  create_date: number;
+  feeds: [];
+  id: number;
+  is_agree_promotion: number;
+  mobile: string;
+  name: string;
+  registration_status: number;
+  update_date: number;
+  user_id: number;
+};
