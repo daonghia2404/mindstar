@@ -30,6 +30,7 @@ const ManagerDetail = lazy(() => retryLoadComponent(() => import('@/pages/Manage
 const Classes = lazy(() => retryLoadComponent(() => import('@/pages/Classes')));
 const ClassDetail = lazy(() => retryLoadComponent(() => import('@/pages/ClassDetail')));
 const Events = lazy(() => retryLoadComponent(() => import('@/pages/Events')));
+const Connects = lazy(() => retryLoadComponent(() => import('@/pages/Connects')));
 const Players = lazy(() => retryLoadComponent(() => import('@/pages/Players')));
 const PlayerDetail = lazy(() => retryLoadComponent(() => import('@/pages/PlayerDetail')));
 
@@ -49,6 +50,7 @@ export const Paths = {
   Home: '/',
 
   Dashboard: '/',
+  Connects: '/connects',
   RegisterBranch: '/register-branch',
   Branches: '/branches',
   Managers: '/managers',
@@ -62,13 +64,11 @@ export const Paths = {
   Login: '/',
   LoginDomain: '/login-domain',
   Register: '/register',
-
   Rest: '*',
 };
 
 export const Pages = {
   Home,
-
   Dashboard,
   RegisterBranch,
   Branches,
@@ -79,6 +79,7 @@ export const Pages = {
   Events,
   Players,
   PlayerDetail,
+  Connects,
 
   Login,
   LoginDomain,

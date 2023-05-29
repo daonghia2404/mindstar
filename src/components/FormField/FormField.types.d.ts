@@ -2,7 +2,7 @@ import { CSSProperties } from 'react';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
 
 export type TFormFieldProps = {
-  label: string;
+  label?: string;
   className?: string;
   required?: boolean;
   size?: SizeType;

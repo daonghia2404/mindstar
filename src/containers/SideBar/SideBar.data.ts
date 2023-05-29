@@ -164,7 +164,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         id: '3',
         title: 'E-Connects',
         icon: EIconName.Affiliate,
-        link: Paths.Dashboard,
+        link: Paths.Connects,
         activePaths: [],
       },
     ],
