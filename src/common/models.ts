@@ -4,6 +4,7 @@ export type TUser = {
   auditing_status: number;
   avatar: string;
   branch_id: null;
+  class: TClass;
   city: TCity;
   date_of_birth: number;
   id: number;
@@ -86,12 +87,6 @@ export type TSetting = {
 export type TBranch = {
   academy_id: number;
   address: string;
-  classname: string;
-  year: string;
-  hour: any;
-  explain: any;
-  avatar: any;
-  desc: string;
   auditing_status: number;
   city: TCity;
   count_player: number;
@@ -222,3 +217,12 @@ export type TOrder = {
 };
 
 export type TUploadFile = any;
+
+export type TTimeOff = {
+  at_date_time: number;
+  auditing_status: number;
+  branch: TBranch;
+  id: number;
+  player: TUser;
+  reason: string;
+};

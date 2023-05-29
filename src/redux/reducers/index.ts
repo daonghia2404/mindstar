@@ -11,6 +11,7 @@ import orderReducer from './order';
 import redeemReducer from './redeem';
 import scheduleReducer from './schedule';
 import settingReducer from './setting';
+import timeOffReducer from './time-off';
 import transactionReducer from './transaction';
 import uiReducer from './ui';
 import userReducer from './user';
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   redeemReducer,
   scheduleReducer,
   settingReducer,
+  timeOffReducer,
   transactionReducer,
   uiReducer,
   userReducer,

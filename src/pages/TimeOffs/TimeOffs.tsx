@@ -1,154 +1,146 @@
 import { Col, Row } from 'antd';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
 import Card from '@/components/Card';
-import Select, { TSelectOption } from '@/components/Select';
+import Select from '@/components/Select';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
 import Input from '@/components/Input';
-
-import './TimeOffs.scss';
 import { TRootState } from '@/redux/reducers';
 import Table from '@/components/Table';
 import Button, { EButtonStyleType } from '@/components/Button';
-import { EAuditingStatus } from '@/common/enums';
-import { EGetBranchesAction } from '@/redux/actions';
-import { TBranch } from '@/common/models';
+import { EEmpty } from '@/common/enums';
+import { TTimeOff } from '@/common/models';
 import { getFullUrlStatics } from '@/utils/functions';
 import DropdownMenu from '@/components/DropdownMenu';
 import { TDropdownMenuItem } from '@/components/DropdownMenu/DropdownMenu.types';
-import { TGetBranchesParams } from '@/services/api';
 import Avatar from '@/components/Avatar';
+import { EGetTimeOffsAction, getTimeOffsAction } from '@/redux/actions';
+import { TGetTimeOffsParams } from '@/services/api';
+import Tags from '@/components/Tags';
+
+import './TimeOffs.scss';
 
 const TimeOffs: React.FC = () => {
-  const [filterYear, setFilterYear] = useState<TSelectOption | undefined>({
-    label: String(moment().year()),
-    value: String(moment().year()),
-  });
-  const [getBranchesParamsRequest, setGetBranchesParamsRequest] = useState<TGetBranchesParams>({
+  const dispatch = useDispatch();
+
+  const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
+  const timeOffsState = useSelector((state: TRootState) => state.timeOffReducer.getTimeOffsResponse)?.data;
+  const getTimeOffsLoading = useSelector((state: TRootState) => state.loadingReducer[EGetTimeOffsAction.GET_TIME_OFFS]);
+
+  const [getTimeOffsParamsRequest, setGetTimeOffsParamsRequest] = useState<TGetTimeOffsParams>({
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
-    auditingStatuses: `${EAuditingStatus.ACTIVE},${EAuditingStatus.INACTIVE}`,
+    fromDate: moment({ year: 2000 }).valueOf(),
+    toDate: moment().valueOf(),
   });
-  const [modalBranchFormState, setModalBranchFormState] = useState<{ visible: boolean; data?: TBranch }>({
+
+  const [modalDeleteTimeOffState, setModalDeleteTimeOffState] = useState<{ visible: boolean; data?: TTimeOff }>({
     visible: false,
   });
-  const [modalDeleteBranchState, setModalDeleteBranchState] = useState<{ visible: boolean; data?: TBranch }>({
-    visible: false,
-  });
-  const handleOpenModalBranchForm = (data?: TBranch): void => {
-    setModalBranchFormState({ visible: true, data });
+
+  const handleOpenModalDeleteTimeOff = (data?: TTimeOff): void => {
+    setModalDeleteTimeOffState({ visible: true, data });
   };
-  const handleOpenModalDeleteBranch = (data?: TBranch): void => {
-    setModalDeleteBranchState({ visible: true, data });
+  const handleCloseModalDeleteTimeOff = (): void => {
+    setModalDeleteTimeOffState({ visible: false });
   };
+
   const handlePaginationChange = (page: number, size: number, sort?: string): void => {
-    setGetBranchesParamsRequest({
-      ...getBranchesParamsRequest,
+    setGetTimeOffsParamsRequest({
+      ...getTimeOffsParamsRequest,
       page,
       size,
       sort,
     });
   };
-  const dataTimeOff = [
-    { label: '10', value: '10' },
-    { label: '25', value: '25' },
-    { label: '50', value: '50' },
-    { label: '75', value: '75' },
-    { label: '100', value: '100' },
-  ];
-  const dataTableDropdownActions = (data?: TBranch): TDropdownMenuItem[] => [
-    {
-      value: 'setting',
-      label: 'Cài đặt',
-      icon: EIconName.Settings,
-      onClick: (): void => {},
-    },
-    {
-      value: 'edit',
-      label: 'Sửa',
-      icon: EIconName.Pencil,
-      onClick: (): void => {
-        handleOpenModalBranchForm(data);
-      },
-    },
+
+  const handleSearch = (keyword?: string): void => {
+    setGetTimeOffsParamsRequest({
+      ...getTimeOffsParamsRequest,
+      page: DEFAULT_PAGE,
+      search: keyword,
+    });
+  };
+
+  const dataTableDropdownActions = (data?: TTimeOff): TDropdownMenuItem[] => [
     {
       value: 'delete',
       label: 'Xoá',
       icon: EIconName.Trash,
       danger: true,
       onClick: (): void => {
-        handleOpenModalDeleteBranch(data);
+        handleOpenModalDeleteTimeOff(data);
       },
     },
   ];
+
   const columns = [
     {
       key: 'avatar',
       dataIndex: 'avatar',
       title: '',
-      render: (_: string, record: TBranch): React.ReactElement => (
+      width: 48,
+      render: (_: string, record: TTimeOff): React.ReactElement => (
         <div className="Table-info">
-          <Avatar size={48} image={getFullUrlStatics(record?.avatar)} />
+          <Avatar size={48} image={getFullUrlStatics(record?.player?.avatar)} />
         </div>
       ),
     },
     {
       key: 'name',
       dataIndex: 'name',
-      title: 'Name',
+      title: 'Tên',
       className: 'limit-width',
       sorter: true,
       keySort: 'name',
-      // width: 180,
-      render: (_: string, record: TBranch): React.ReactElement => (
+      width: 180,
+      render: (_: string, record: TTimeOff): React.ReactElement => (
         <div className="Table-info">
-          <div className="Table-info-title">{record?.name}</div>
-          <div className="Table-info-description">{record?.desc}</div>
+          <div className="Table-info-title">{record?.player?.name}</div>
+          {record?.player?.mobile ? (
+            <a href={`tel: ${record?.player?.mobile}`} className="Table-link">
+              {record?.player?.mobile}
+            </a>
+          ) : (
+            <div className="Table-info-description">{EEmpty.DASH}</div>
+          )}
         </div>
       ),
     },
     {
-      key: 'classname',
-      dataIndex: 'classname',
-      title: 'CLASS NAME',
-      className: 'limit-width',
-      render: (_: string, record: TBranch): React.ReactElement => (
-        <div className="Table-info">
-          <div className="Table-info-title">{record?.classname}</div>
-        </div>
-      ),
-    },
-    {
-      key: 'manager',
-      dataIndex: 'manager',
-      title: 'LESSON OFF',
-      className: 'limit-width',
-      sorter: true,
-      render: (_: string, record: TBranch): React.ReactElement => (
-        <div className="Table-info">
-          <div className="Table-info-title">{record?.year}</div>
-          <div className="Table-info-title">{record?.hour}</div>
-        </div>
-      ),
+      key: 'classes',
+      dataIndex: 'classes',
+      title: 'Lớp Học',
+      render: (_: string, record: TTimeOff): React.ReactElement =>
+        record?.player?.class ? (
+          <Tags
+            options={[
+              {
+                label: record?.player?.class.name,
+                value: String(record?.player?.class.id),
+                data: { iconName: EIconName.ChalkBoard },
+              },
+            ]}
+          />
+        ) : (
+          <>{EEmpty.DASH}</>
+        ),
     },
     {
       key: 'reason',
       dataIndex: 'reason',
-      title: 'REASON',
-      render: (_: string, record: TBranch): React.ReactElement => (
-        <div className="Table-info">
-          <div className="Table-info-title">{record?.explain}</div>
-        </div>
-      ),
+      title: 'Lý do',
+      render: (value: string): string => value || EEmpty.DASH,
     },
     {
       key: 'actions',
       dataIndex: 'actions',
       title: '',
       width: 40,
-      render: (_: string, record: TBranch): React.ReactElement => (
+      render: (_: string, record: TTimeOff): React.ReactElement => (
         <div onClick={(e): void => e.stopPropagation()}>
           <DropdownMenu placement="bottomRight" options={dataTableDropdownActions(record)}>
             <Button
@@ -162,77 +154,20 @@ const TimeOffs: React.FC = () => {
       ),
     },
   ];
-  const dataSource = [
-    {
-      key: '1',
-      name: 'Trinh Van Huan',
-      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
-      desc: 'Tập Sự',
-      classname: 'U13',
-      year: 'Tue 23/05/2023',
-      hour: '19:00',
-      explain: '12345',
-    },
-    {
-      key: '1',
-      name: 'Trinh Van Huan',
-      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
-      desc: 'Tập Sự',
-      classname: 'U13',
-      year: 'Tue 23/05/2023',
-      hour: '19:00',
-      explain: '12345',
-    },
-    {
-      key: '1',
-      name: 'Trinh Van Huan',
-      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
-      desc: 'Tập Sự',
-      classname: 'U13',
-      year: 'Tue 23/05/2023',
-      hour: '19:00',
-      explain: '12345',
-    },
-    {
-      key: '1',
-      name: 'Trinh Van Huan',
-      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
-      desc: 'Tập Sự',
-      classname: 'U13',
-      year: 'Tue 23/05/2023',
-      hour: '19:00',
-      explain: '12345',
-    },
-  ];
 
-  const dashboardState = useSelector((state: TRootState) => state.dashboardReducer.getDashboardResponse)?.data;
-  const getBranchesLoading = useSelector((state: TRootState) => state.loadingReducer[EGetBranchesAction.GET_BRANCHES]);
+  const getTimeOffs = useCallback(() => {
+    dispatch(getTimeOffsAction.request({ params: getTimeOffsParamsRequest, headers: { branchIds: currentBranchId } }));
+  }, [dispatch, getTimeOffsParamsRequest, currentBranchId]);
 
-  const yearsOptions = (): TSelectOption[] => {
-    if (dashboardState?.start_year) {
-      const options = [];
+  useEffect(() => {
+    getTimeOffs();
+  }, [getTimeOffs]);
 
-      const currentYear = moment().year();
-      // eslint-disable-next-line no-plusplus
-      for (let i = dashboardState.start_year; i <= currentYear; i++) {
-        options.push({ value: String(i), label: String(i) });
-      }
-
-      return [
-        {
-          value: '',
-          label: 'Tất cả',
-        },
-        ...options.reverse(),
-      ];
-    }
-    return [];
-  };
   return (
     <div className="TimeOffs">
       <Row gutter={[24, 24]}>
         <Col span={24}>
-          <Card className="Branches-filter">
+          <Card className="TimeOffs-filter">
             <Row gutter={[16, 16]}>
               <Col span={22}>
                 <Row gutter={[24, 24]}>
@@ -241,29 +176,26 @@ const TimeOffs: React.FC = () => {
                       style={{ minWidth: '24rem' }}
                       label="Tìm kiếm"
                       suffixIcon={<Icon name={EIconName.Search} color={EIconColor.TUNDORA} />}
-                      // onSearch={handleSearch}
+                      onSearch={handleSearch}
                     />
                   </Col>
                   <Col>
-                    <Select label="All Classes" options={dataTimeOff} placement="topLeft" size="middle" />
+                    <Select label="All Classes" options={[]} placement="topLeft" size="middle" />
                   </Col>
                 </Row>
-              </Col>
-              <Col span={2}>
-                <Select label="Năm" options={yearsOptions()} value={filterYear} onChange={setFilterYear} />
               </Col>
             </Row>
           </Card>
         </Col>
         <Col span={24}>
-          <Card className="Branches-table">
+          <Card className="TimeOffs-table">
             <Table
-              loading={getBranchesLoading}
+              loading={getTimeOffsLoading}
               columns={columns}
-              dataSources={dataSource}
-              page={10}
-              pageSize={50}
-              total={500}
+              dataSources={timeOffsState?.content || []}
+              page={getTimeOffsParamsRequest.page}
+              pageSize={getTimeOffsParamsRequest?.size}
+              total={timeOffsState?.total_elements}
               onPaginationChange={handlePaginationChange}
             />
           </Card>

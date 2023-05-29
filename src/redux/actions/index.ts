@@ -8,6 +8,7 @@ export * from './order';
 export * from './redeem';
 export * from './schedule';
 export * from './setting';
+export * from './time-off';
 export * from './transaction';
 export * from './ui';
 export * from './user';
