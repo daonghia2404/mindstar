@@ -4,6 +4,7 @@ import authSaga from './auth';
 import branchSaga from './branch';
 import classSaga from './class';
 import dashboardSaga from './dashboard';
+import eConnectSaga from './e-connect';
 import eventSaga from './event';
 import expenseSaga from './expense';
 import managerSaga from './manager';
@@ -22,6 +23,7 @@ const rootSaga = function* root(): Generator {
     fork(branchSaga),
     fork(classSaga),
     fork(dashboardSaga),
+    fork(eConnectSaga),
     fork(eventSaga),
     fork(expenseSaga),
     fork(managerSaga),

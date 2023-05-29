@@ -1,213 +1,122 @@
 import { Card, Col, Row } from 'antd';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import moment from 'moment';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Input from '@/components/Input';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import Table from '@/components/Table';
 import Switch from '@/components/Switch';
-import Status, { EStatusStyleType } from '@/components/Status';
-import { TSelectOption } from '@/components/Select';
-import { TGetBranchesParams } from '@/services/api';
+import { TGetEConnectsParams } from '@/services/api';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
-import { EAuditingStatus } from '@/common/enums';
-import { TBranch } from '@/common/models';
-import { TDropdownMenuItem } from '@/components/DropdownMenu/DropdownMenu.types';
-import DropdownMenu from '@/components/DropdownMenu';
-import Button, { EButtonStyleType } from '@/components/Button';
+import { EAuditingStatus, EEmpty } from '@/common/enums';
+import { TEConnect } from '@/common/models';
 import { TRootState } from '@/redux/reducers';
-import { EGetBranchesAction } from '@/redux/actions';
+import { EGetEConnectsAction, getEConnectsAction } from '@/redux/actions';
+import Avatar from '@/components/Avatar';
+import { getFullUrlStatics } from '@/utils/functions';
 
 import './Connects.scss';
 
 const Connects: React.FC = () => {
-  const [getBranchesParamsRequest, setGetBranchesParamsRequest] = useState<TGetBranchesParams>({
+  const dispatch = useDispatch();
+  const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
+  const getEConnectsLoading = useSelector(
+    (state: TRootState) => state.loadingReducer[EGetEConnectsAction.GET_E_CONNECTS],
+  );
+  const [getEConnectsParamsRequest, setGetEConnectsParamsRequest] = useState<TGetEConnectsParams>({
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
-    auditingStatuses: `${EAuditingStatus.ACTIVE},${EAuditingStatus.INACTIVE}`,
   });
-  const [modalBranchFormState, setModalBranchFormState] = useState<{ visible: boolean; data?: TBranch }>({
-    visible: false,
-  });
-  const [modalDeleteBranchState, setModalDeleteBranchState] = useState<{ visible: boolean; data?: TBranch }>({
-    visible: false,
-  });
-  const handleOpenModalBranchForm = (data?: TBranch): void => {
-    setModalBranchFormState({ visible: true, data });
-  };
-  const handleOpenModalDeleteBranch = (data?: TBranch): void => {
-    setModalDeleteBranchState({ visible: true, data });
-  };
+  const eConnectsState = useSelector((state: TRootState) => state.eConnectReducer.getEConnectsResponse)?.data;
+
   const handlePaginationChange = (page: number, size: number, sort?: string): void => {
-    setGetBranchesParamsRequest({
-      ...getBranchesParamsRequest,
+    setGetEConnectsParamsRequest({
+      ...getEConnectsParamsRequest,
       page,
       size,
       sort,
     });
   };
-  const dataTableDropdownActions = (data?: TBranch): TDropdownMenuItem[] => [
-    {
-      value: 'setting',
-      label: 'Cài đặt',
-      icon: EIconName.Settings,
-      onClick: (): void => {},
-    },
-    {
-      value: 'edit',
-      label: 'Sửa',
-      icon: EIconName.Pencil,
-      onClick: (): void => {
-        handleOpenModalBranchForm(data);
-      },
-    },
-    {
-      value: 'delete',
-      label: 'Xoá',
-      icon: EIconName.Trash,
-      danger: true,
-      onClick: (): void => {
-        handleOpenModalDeleteBranch(data);
-      },
-    },
-  ];
+
+  const handleSearch = (keyword?: string): void => {
+    setGetEConnectsParamsRequest({
+      ...getEConnectsParamsRequest,
+      page: DEFAULT_PAGE,
+      name: keyword,
+    });
+  };
+
   const columns = [
     {
       key: 'name',
       dataIndex: 'name',
-      title: 'Name',
+      title: 'Tên',
+      keySort: 'name',
       sorter: true,
-      render: (_: string, record: any): React.ReactElement => (
+      render: (_: string, record: TEConnect): React.ReactElement => (
         <div className="Table-info">
           <div className="Table-info-title">{record.name}</div>
-          <div className="Table-info-description">{record.post}</div>
+          <div className="Table-info-description">{record.feeds.length || EEmpty.ZERO}</div>
         </div>
       ),
     },
     {
       key: 'address',
       dataIndex: 'address',
-      title: 'ADDRESS',
-      // width: 180,
-      render: (_: string, record: any): React.ReactElement => (
-        <div className="Table-info">
-          <div className="Table-info-title">{record?.addres}</div>
-        </div>
-      ),
+      title: 'Địa chỉ',
+      render: (value: string): string => value || EEmpty.DASH,
     },
     {
       key: 'contact',
       dataIndex: 'contact',
-      title: 'CONTACT',
-      render: (_: string, record: any): React.ReactElement => (
-        <div className="Table-info">
-          <div className="Table-info-title">{record?.contact}</div>
-        </div>
-      ),
-    },
-    {
-      key: 'hotline',
-      dataIndex: 'hotline',
-      title: 'HOTLINE',
-      render: (_: string, record: any): React.ReactElement => (
-        <div className="Table-info">
-          <div className="Table-info-title">{record?.hotline}</div>
-        </div>
+      title: 'Liên hệ',
+      render: (_: string, record: TEConnect): React.ReactElement => (
+        <Row gutter={[16, 16]} align="middle">
+          <Col>
+            <Avatar size={48} image={getFullUrlStatics(record.avatar)} />
+          </Col>
+          <Col>
+            <div className="Table-info">
+              <div className="Table-info-title">{record?.account_name}</div>
+              {record.mobile ? (
+                <a href={`tel: ${record.mobile}`} className="Table-link" onClick={(e): void => e.stopPropagation()}>
+                  {record.mobile}
+                </a>
+              ) : (
+                <>{EEmpty.DASH}</>
+              )}
+            </div>
+          </Col>
+        </Row>
       ),
     },
     {
       key: 'status',
       dataIndex: 'status',
-      title: 'STATUS',
-      render: (_: string, record: TBranch): React.ReactElement => (
+      title: 'Trạng thái',
+      render: (_: string, record: TEConnect): React.ReactElement => (
         <div className="Table-info">
-          <Switch readOnlyText />
-        </div>
-      ),
-    },
-    {
-      key: 'actions',
-      dataIndex: 'actions',
-      title: '',
-      width: 40,
-      render: (_: string, record: TBranch): React.ReactElement => (
-        <div onClick={(e): void => e.stopPropagation()}>
-          <DropdownMenu placement="bottomRight" options={dataTableDropdownActions(record)}>
-            <Button
-              iconName={EIconName.DotsVertical}
-              iconColor={EIconColor.BLACK}
-              size="small"
-              styleType={EButtonStyleType.GENERAL_FORM}
-            />
-          </DropdownMenu>
+          <Switch readOnlyText value={record.auditing_status === EAuditingStatus.ACTIVE} />
         </div>
       ),
     },
   ];
-  const dataSource = [
-    {
-      key: '1',
-      name: 'Trinh Van Huan',
-      post: '0 posts',
-      addres: '99 nguyen van cu',
-      contact: 'Huan',
-      hotline: '0866753141',
-    },
-    {
-      key: '2',
-      name: 'Trinh Van Huan',
-      post: '0 posts',
-      addres: '99 nguyen van cu',
-      contact: 'Huan',
-      hotline: '0866753141',
-    },
-    {
-      key: '3',
-      name: 'Trinh Van Huan',
-      post: '0 posts',
-      addres: '99 nguyen van cu',
-      contact: 'Huan',
-      hotline: '0866753141',
-    },
-    {
-      key: '4',
-      name: 'Trinh Van Huan',
-      post: '0 posts',
-      addres: '99 nguyen van cu',
-      contact: 'Huan',
-      hotline: '0866753141',
-    },
-  ];
 
-  const dashboardState = useSelector((state: TRootState) => state.dashboardReducer.getDashboardResponse)?.data;
-  const getBranchesLoading = useSelector((state: TRootState) => state.loadingReducer[EGetBranchesAction.GET_BRANCHES]);
+  const getEConnects = useCallback(() => {
+    dispatch(
+      getEConnectsAction.request({ params: getEConnectsParamsRequest, headers: { branchIds: currentBranchId } }),
+    );
+  }, [dispatch, getEConnectsParamsRequest, currentBranchId]);
 
-  const yearsOptions = (): TSelectOption[] => {
-    if (dashboardState?.start_year) {
-      const options = [];
+  useEffect(() => {
+    getEConnects();
+  }, [getEConnects]);
 
-      const currentYear = moment().year();
-      // eslint-disable-next-line no-plusplus
-      for (let i = dashboardState.start_year; i <= currentYear; i++) {
-        options.push({ value: String(i), label: String(i) });
-      }
-
-      return [
-        {
-          value: '',
-          label: 'Tất cả',
-        },
-        ...options.reverse(),
-      ];
-    }
-    return [];
-  };
   return (
     <div className="Connects">
       <Row gutter={[24, 24]}>
         <Col span={24}>
-          <Card className="Branches-filter">
+          <Card className="EConnects-filter">
             <Row gutter={[16, 16]}>
               <Col span={22}>
                 <Row gutter={[24, 24]}>
@@ -216,7 +125,7 @@ const Connects: React.FC = () => {
                       style={{ minWidth: '24rem' }}
                       label="Tìm kiếm"
                       suffixIcon={<Icon name={EIconName.Search} color={EIconColor.TUNDORA} />}
-                      // onSearch={handleSearch}
+                      onSearch={handleSearch}
                     />
                   </Col>
                 </Row>
@@ -225,28 +134,24 @@ const Connects: React.FC = () => {
           </Card>
         </Col>
         <Col span={24}>
-          <Card className="Branches-table">
+          <Card className="EConnects-table">
             <div className="Connects-filter">
               <Row gutter={[16, 16]}>
                 <Col>
-                  <div>
-                    <Status label="Active" styleType={EStatusStyleType.SUCCESS} />
-                  </div>
-                </Col>
-                <Col>
-                  <div>
-                    <Status label="Inactive" styleType={EStatusStyleType.DANGER} />
+                  <div className="Table-total-item">
+                    <Icon name={EIconName.Affiliate} color={EIconColor.TUNDORA} />
+                    Tổng E-Connects: <strong>{eConnectsState?.total_elements || EEmpty.ZERO}</strong>
                   </div>
                 </Col>
               </Row>
             </div>
             <Table
-              loading={getBranchesLoading}
+              loading={getEConnectsLoading}
               columns={columns}
-              dataSources={dataSource}
-              page={10}
-              pageSize={50}
-              total={500}
+              dataSources={eConnectsState?.content || []}
+              page={getEConnectsParamsRequest.page}
+              pageSize={getEConnectsParamsRequest.size}
+              total={eConnectsState?.total_elements}
               onPaginationChange={handlePaginationChange}
             />
           </Card>

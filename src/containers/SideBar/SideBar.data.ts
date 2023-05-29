@@ -144,7 +144,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     title: 'Dịch vụ',
     icon: EIconName.TruckDelivery,
     link: Paths.Dashboard,
-    activePaths: [],
+    activePaths: [Paths.Connects],
     children: [
       {
         id: '1',
@@ -165,7 +165,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         title: 'E-Connects',
         icon: EIconName.Affiliate,
         link: Paths.Connects,
-        activePaths: [],
+        activePaths: [Paths.Connects],
       },
     ],
   },

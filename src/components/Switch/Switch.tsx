@@ -25,7 +25,6 @@ const Switch: React.FC<TSwitchProps> = ({
       size={size}
       readOnlyText={readOnlyText}
       className={classNames('Switch', className)}
-      // focused
       active
       disabled={disabled}
       style={style}

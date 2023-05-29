@@ -5,6 +5,7 @@ import authReducer from './auth';
 import branchReducer from './branch';
 import classReducer from './class';
 import dashboardReducer from './dashboard';
+import eConnectReducer from './e-connect';
 import eventReducer from './event';
 import expenseReducer from './expense';
 import managerReducer from './manager';
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   branchReducer,
   classReducer,
   dashboardReducer,
+  eConnectReducer,
   eventReducer,
   expenseReducer,
   managerReducer,
