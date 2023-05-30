@@ -24,7 +24,7 @@ export type TGetPlayerRequest = {
 
 export type TGetPlayerSuccess = {
   type: EGetPlayerAction.GET_PLAYER_SUCCESS;
-  payload: { response: TGetPlayerResponse };
+  payload: { response?: TGetPlayerResponse };
 };
 
 export type TGetPlayerFailed = { type: EGetPlayerAction.GET_PLAYER_FAILED };
@@ -45,7 +45,7 @@ export const getPlayerAction = {
   success: createActionCreator(
     EGetPlayerAction.GET_PLAYER_SUCCESS,
     (resolve) =>
-      (response: TGetPlayerResponse): TGetPlayerSuccess =>
+      (response?: TGetPlayerResponse): TGetPlayerSuccess =>
         resolve({ response }),
   ),
   failure: createActionCreator(

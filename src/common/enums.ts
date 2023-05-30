@@ -141,3 +141,9 @@ export enum EDayOfWeek {
   SATURDAY = '6',
   SUNDAY = '7',
 }
+
+export enum ETypeCheckIn {
+  NONE = -1,
+  PRESENT = 1,
+  ABSENT = 0,
+}

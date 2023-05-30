@@ -404,8 +404,9 @@ export const capitalizeFirstLetter = (string: string): string => {
 
 export const schedulesOptionsByClassSchedule = (data?: TSchedule[]): TSelectOption[] => {
   const schedulesOptions = data
+    ?.filter((item) => item.at_eras)
     ?.map((item) => {
-      const parseDayOfWeek = item.at_eras.split(',');
+      const parseDayOfWeek = item.at_eras.split(',')?.filter((subItem) => subItem);
       return parseDayOfWeek.map((subItem) => ({
         ...item,
         dayOfWeek: subItem,

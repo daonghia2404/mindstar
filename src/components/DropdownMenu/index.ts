@@ -1,5 +1,4 @@
 import DropdownMenu from './DropdownMenu';
-import { TDropdownMenuProps } from './DropdownMenu.types';
 
-export type { TDropdownMenuProps };
+export * from './DropdownMenu.types';
 export default DropdownMenu;

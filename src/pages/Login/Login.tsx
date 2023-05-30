@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Form, Row } from 'antd';
 import { Link, navigate } from '@reach/router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,9 +21,15 @@ const Login: React.FC = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const rememberAccountData = Helpers.getDataRememberAccount();
-  const isExistedRememberAccount = Boolean(rememberAccountData?.username);
+  const [isExistedRememberAccount, setIsExistedRememberAccount] = useState(Boolean(rememberAccountData?.username));
 
   const loginLoading = useSelector((state: TRootState) => state.loadingReducer[ELoginAction.LOGIN]);
+
+  const handleLoginAnotherAccount = (): void => {
+    Helpers.setDataRememberAccount({});
+    form.resetFields();
+    setIsExistedRememberAccount(false);
+  };
 
   const handleSubmit = (values: any): void => {
     const body = {
@@ -116,11 +122,14 @@ const Login: React.FC = () => {
           htmlType="submit"
           disabled={loginLoading}
         />
-        {/* <Button
-          title="Đăng nhập bằng tài khoản khác"
-          styleType={EButtonStyleType.PURPLE_TRANSPARENT}
-          style={{ margin: '-2rem 0 3.6rem' }}
-        /> */}
+        {isExistedRememberAccount && (
+          <Button
+            title="Đăng nhập bằng tài khoản khác"
+            styleType={EButtonStyleType.PURPLE_TRANSPARENT}
+            style={{ margin: '-2rem 0 3.6rem' }}
+            onClick={handleLoginAnotherAccount}
+          />
+        )}
         <Link to={LayoutPaths.Admin} className="Auth-link">
           Quên mật khẩu?
         </Link>

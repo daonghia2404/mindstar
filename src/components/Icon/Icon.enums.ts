@@ -54,6 +54,9 @@ export enum EIconName {
   Eye = 'Eye',
   Clock = 'Clock',
   Copy = 'Copy',
+  UserCheck = 'UserCheck',
+  UserCancel = 'UserCancel',
+  UserX = 'UserX',
 }
 
 export enum EIconColor {

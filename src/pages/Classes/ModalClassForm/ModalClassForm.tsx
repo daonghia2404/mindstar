@@ -70,9 +70,9 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
       const parseScheduleData = Object.keys(parseScheduleGroup)
         ?.map((item) => {
           const firstItem = parseScheduleGroup?.[item as unknown as number]?.[0];
-          const mergeDayOfWeek = parseScheduleGroup?.[item as unknown as number]
-            ?.map((subItem: TWorkTime) => subItem?.dayOfWeek)
-            ?.join(',');
+          const mergeDayOfWeek = _.uniq(
+            parseScheduleGroup?.[item as unknown as number]?.map((subItem: TWorkTime) => subItem?.dayOfWeek),
+          )?.join(',');
 
           return {
             at_eras: mergeDayOfWeek,
@@ -122,7 +122,7 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
           description: data?.description,
           schedules: data?.schedules
             ?.map((item) => {
-              const parseDayOfWeek = item.at_eras.split(',');
+              const parseDayOfWeek = item.at_eras.split(',')?.filter((subItem) => subItem);
               return parseDayOfWeek.map((subItem) => ({
                 ...item,
                 dayOfWeek: subItem,

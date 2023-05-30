@@ -21,3 +21,5 @@ export * from './upload';
 export * from './event';
 export * from './player';
 export * from './e-connect';
+export * from './attendance';
+export * from './practice';

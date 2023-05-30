@@ -1,3 +1,4 @@
+export * from './attendance';
 export * from './auth';
 export * from './branch';
 export * from './class';
@@ -8,6 +9,7 @@ export * from './expense';
 export * from './manager';
 export * from './order';
 export * from './player';
+export * from './practice';
 export * from './redeem';
 export * from './schedule';
 export * from './setting';

@@ -175,7 +175,8 @@ const PlayerDetail: React.FC = () => {
     schedules: ((): React.ReactNode => {
       const schedulesOptions = playerState?.player_schedules
         ?.map((item) => {
-          const parseDayOfWeek = item.day_of_week.split(',');
+          const parseDayOfWeek = item.day_of_week.split(',')?.filter((subItem) => subItem);
+
           return parseDayOfWeek.map((subItem) => ({
             ...item,
             day_of_week: subItem,

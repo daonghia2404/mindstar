@@ -1,0 +1,29 @@
+@import '@/assets/styles/_global.scss';
+
+.AttendanceCheckbox {
+  position: relative;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: .6rem;
+  border: 1px solid $silver-chalice;
+  background: $white;
+  cursor: pointer;
+  transition: $common-transition;
+  display: flex;
+
+  &.present {
+    background: $apple;
+    border-color: $apple;
+  }
+
+  &.absent {
+    background: $pomegranate;
+    border-color: $pomegranate;
+  }
+
+  .Icon {
+    width: 2.4rem;
+    height: 2.4rem;
+    margin: auto;
+  }
+}

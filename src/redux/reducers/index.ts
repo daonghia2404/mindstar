@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import { loadingReducer, errorReducer, successReducer } from './status';
+import attendanceReducer from './attendance';
 import authReducer from './auth';
 import branchReducer from './branch';
 import classReducer from './class';
@@ -11,6 +12,7 @@ import expenseReducer from './expense';
 import managerReducer from './manager';
 import orderReducer from './order';
 import playerReducer from './player';
+import practiceReducer from './practice';
 import redeemReducer from './redeem';
 import scheduleReducer from './schedule';
 import settingReducer from './setting';
@@ -24,6 +26,7 @@ const rootReducer = combineReducers({
   loadingReducer,
   errorReducer,
   successReducer,
+  attendanceReducer,
   authReducer,
   branchReducer,
   classReducer,
@@ -34,6 +37,7 @@ const rootReducer = combineReducers({
   managerReducer,
   orderReducer,
   playerReducer,
+  practiceReducer,
   redeemReducer,
   scheduleReducer,
   settingReducer,

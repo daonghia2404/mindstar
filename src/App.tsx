@@ -45,13 +45,15 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.Branches} component={Pages.Branches} />
           <ProtectedRoute path={Paths.TimeOffs} component={Pages.TimeOffs} />
           <ProtectedRoute path={Paths.Managers} component={Pages.Managers} />
-          <ProtectedRoute path={Paths.Connects} component={Pages.Connects} />
           <ProtectedRoute path={Paths.ManagerDetail()} component={Pages.ManagerDetail} />
           <ProtectedRoute path={Paths.Classes} component={Pages.Classes} />
           <ProtectedRoute path={Paths.ClassDetail()} component={Pages.ClassDetail} />
           <ProtectedRoute path={Paths.Events} component={Pages.Events} />
           <ProtectedRoute path={Paths.Players} component={Pages.Players} />
           <ProtectedRoute path={Paths.PlayerDetail()} component={Pages.PlayerDetail} />
+          <ProtectedRoute path={Paths.Connects} component={Pages.Connects} />
+          <ProtectedRoute path={Paths.Attendances} component={Pages.Attendances} />
+          <ProtectedRoute path={Paths.Practices} component={Pages.Practices} />
 
           <Redirect noThrow from={Paths.Rest} to={`${LayoutPaths.Admin}${Paths.Dashboard}`} />
         </Admin>
