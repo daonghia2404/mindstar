@@ -50,6 +50,7 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.Classes} component={Pages.Classes} />
           <ProtectedRoute path={Paths.ClassDetail()} component={Pages.ClassDetail} />
           <ProtectedRoute path={Paths.Events} component={Pages.Events} />
+          <ProtectedRoute path={Paths.Category} component={Pages.Category} />
           <ProtectedRoute path={Paths.Players} component={Pages.Players} />
           <ProtectedRoute path={Paths.PlayerDetail()} component={Pages.PlayerDetail} />
 

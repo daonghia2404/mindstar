@@ -181,7 +181,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         id: '1',
         title: 'Danh mục',
         icon: EIconName.Category,
-        link: Paths.Dashboard,
+        link: Paths.Category,
         activePaths: [],
       },
       {
