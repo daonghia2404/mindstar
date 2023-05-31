@@ -7,9 +7,9 @@ import Icon, { EIconColor } from '@/components/Icon';
 import { TTagsProps } from './Tags.types.d';
 import './Tags.scss';
 
-const Tags: React.FC<TTagsProps> = ({ options = [] }) => {
+const Tags: React.FC<TTagsProps> = ({ options = [], className }) => {
   return (
-    <div className="Tags flex flex-wrap">
+    <div className={classNames('Tags flex flex-wrap', className)}>
       {options.map((item) => (
         <div
           key={item.value}

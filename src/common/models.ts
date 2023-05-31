@@ -105,7 +105,16 @@ export type TSetting = {
   reactive_settings: unknown;
   reward_tiers: unknown;
   schedule_settings: unknown;
-  transaction_settings: unknown;
+  transaction_settings: {
+    fee_transaction_duration_in_days: number;
+    fee_transaction_duration_in_units: number;
+    fee_transaction_type_default: number;
+    fee_transaction_value: number;
+    fee_uniform_value: number;
+    short_description_of_the_shuttle_bus_registration_fee: string;
+    short_description_first_transaction_fee: string;
+    short_description_first_uniform_fee: string;
+  };
   transport_settings: unknown;
 };
 

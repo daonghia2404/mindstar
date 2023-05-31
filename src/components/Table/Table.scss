@@ -1,6 +1,12 @@
 @import '@/assets/styles/_global.scss';
 
 .Table {
+
+  .ant-table-row.hightlight>.ant-table-cell,
+  .ant-table-cell.hightlight {
+    background: rgba($selective-yellow, 0.15) !important;
+  }
+
   .ant-spin-dot-item {
     background: $selective-yellow;
   }
@@ -47,6 +53,10 @@
           border-top: 1px solid $alto;
           white-space: nowrap;
           text-transform: capitalize;
+
+          &.text-center {
+            text-align: center;
+          }
 
           &::before {
             display: none;

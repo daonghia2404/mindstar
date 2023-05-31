@@ -11,6 +11,7 @@ export type TTableProps = {
   pageSize?: number;
   total?: number;
   showPagination?: boolean;
+  rowClassName?: (record: any, index: number) => string | undefined;
   scroll?: {
     x?: number | string;
     y?: number | string;

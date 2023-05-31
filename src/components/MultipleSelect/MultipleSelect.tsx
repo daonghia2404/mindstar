@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Input, InputRef } from 'antd';
 import classNames from 'classnames';
 
-import { searchString } from '@/utils/functions';
+import { getFullUrlStatics, searchString } from '@/utils/functions';
 import { useDebounce } from '@/utils/hooks';
 import { ETimeoutDebounce } from '@/common/enums';
 import WrapperLazyLoad from '@/components/WrapperLazyLoad';
@@ -14,6 +14,8 @@ import { TSelectOption } from '@/components/Select';
 
 import { TMultipleSelectProps } from './MultipleSelect.types';
 import './MultipleSelect.scss';
+import Avatar from '@/components/Avatar';
+import Checkbox from '@/components/Checkbox';
 
 const MultipleSelect: React.FC<TMultipleSelectProps> = ({
   disabled,
@@ -28,6 +30,7 @@ const MultipleSelect: React.FC<TMultipleSelectProps> = ({
   active,
   placeholder,
   allowClear,
+  useAvatarOption,
   onSearch,
   onLoadMore,
   onChange,
@@ -92,8 +95,11 @@ const MultipleSelect: React.FC<TMultipleSelectProps> = ({
                   })}
                   onClick={(): void => handleChange(Boolean(isChecked), item)}
                 >
-                  {item.label}
-                  {isChecked && <Icon name={EIconName.Check} color={EIconColor.PURPLE_HEART} />}
+                  {useAvatarOption && <Avatar size={36} image={getFullUrlStatics(item?.data?.avatar)} />}
+                  <span>{item.label}</span>
+                  <div className="MultipleSelect-dropdown-item-checkbox">
+                    <Checkbox value={isChecked} size="large" />
+                  </div>
                 </div>
               );
             })}

@@ -322,7 +322,7 @@ const PlayerDetail: React.FC = () => {
                 <Input label="Số buổi còn lại" readOnlyText active renderShowValue={playerInfo?.numberOfUnits} />
               </Col>
               <Col span={12}>
-                <Input label="Phí hội viên" readOnlyText active renderShowValue={playerInfo?.membershipFee} />
+                <Input label="Học phí" readOnlyText active renderShowValue={playerInfo?.membershipFee} />
               </Col>
               <Col span={12}>
                 <Input label="Mã giới thiệu" readOnlyText active renderShowValue={playerInfo?.referralCode} />

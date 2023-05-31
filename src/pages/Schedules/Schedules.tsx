@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Col, Row } from 'antd';
 import moment, { Moment } from 'moment';
 import _ from 'lodash';
+import { navigate } from '@reach/router';
+import classNames from 'classnames';
 
 import { TRootState } from '@/redux/reducers';
 import Card from '@/components/Card';
@@ -13,6 +15,9 @@ import { EEmpty, EFormat } from '@/common/enums';
 import Table, { TTableColumn } from '@/components/Table';
 import { capitalizeFirstLetter, formatISODateToDateTime, getRangeMomentBetweenTwoDate } from '@/utils/functions';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
+import { TSchedule } from '@/common/models';
+import Tags from '@/components/Tags';
+import { Paths } from '@/pages/routers';
 
 import './Schedules.scss';
 
@@ -25,8 +30,11 @@ const Schedules: React.FC = () => {
   });
   const schedulesState = useSelector((state: TRootState) => state.scheduleReducer.getSchedulesResponse)?.data;
 
-  const schedulesData = schedulesState?.content?.filter((item) => item.at_time);
-  const parseScheduleOrder = _.orderBy(schedulesData, ['at_time'], 'asc');
+  const schedulesData = schedulesState?.content
+    ?.filter((item) => item.at_time && item.at_eras)
+    ?.map((item) => ({ ...item, orderValue: moment(item.at_time).format('HH') }));
+
+  const parseScheduleOrder = _.orderBy(schedulesData, ['orderValue'], 'asc');
 
   const parseSchedulesGroup = _.groupBy(
     parseScheduleOrder?.map((item) => {
@@ -35,16 +43,11 @@ const Schedules: React.FC = () => {
 
       return {
         ...item,
-        totalTime: `${startTime} - ${endTime}`,
+        totalTime: `${startTime}-${endTime}`,
       };
     }) || [],
     'totalTime',
   );
-  const parseSchedulesData = Object.keys(parseSchedulesGroup)?.map((item) => {
-    return {
-      time: item,
-    };
-  });
 
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
   const getSchedulesLoading = useSelector(
@@ -59,11 +62,36 @@ const Schedules: React.FC = () => {
       )?.map((item) => {
         const valueOf = item.valueOf();
         const dayOfWeek = item.day() === 0 ? 7 : item.day();
+        const isSameDayOfWeek = moment().day() === item.day();
 
         return {
           key: String(dayOfWeek),
           dataIndex: String(dayOfWeek),
           title: capitalizeFirstLetter(formatISODateToDateTime(valueOf, EFormat['dddd, DD'])),
+          className: classNames('text-center', { 'hightlight': isSameDayOfWeek }),
+          render: (value: any): React.ReactElement => {
+            const dataSchedules: TSchedule[] = value;
+            const isEmpty = dataSchedules.length === 0;
+            return isEmpty ? (
+              <>{EEmpty.DASH}</>
+            ) : (
+              <Tags
+                className="justify-center"
+                options={dataSchedules?.map((schedule) => {
+                  return {
+                    value: String(schedule?.class?.id),
+                    label: schedule?.class?.name,
+                    data: {
+                      iconName: EIconName.ChalkBoard,
+                    },
+                    onClick: (): void => {
+                      navigate(Paths.ClassDetail(String(schedule?.class?.id)));
+                    },
+                  };
+                })}
+              />
+            );
+          },
         };
       });
       return [
@@ -71,6 +99,8 @@ const Schedules: React.FC = () => {
           key: 'time',
           dataIndex: 'time',
           title: 'Thời gian',
+          className: 'nowrap text-center',
+          fixed: true,
         },
         ...columnsByWeek,
       ];
@@ -78,6 +108,22 @@ const Schedules: React.FC = () => {
 
     return [];
   };
+
+  const dataSources = Object.keys(parseSchedulesGroup)?.map((item) => {
+    const dataMatch = (dayOfWeekMatch: string): TSchedule[] =>
+      parseSchedulesGroup[item]?.filter((subItem) => subItem.at_eras.split(',').includes(dayOfWeekMatch));
+
+    return {
+      time: item,
+      '1': dataMatch('1'),
+      '2': dataMatch('2'),
+      '3': dataMatch('3'),
+      '4': dataMatch('4'),
+      '5': dataMatch('5'),
+      '6': dataMatch('6'),
+      '7': dataMatch('7'),
+    };
+  });
 
   const getSchedules = useCallback(() => {
     dispatch(
@@ -118,6 +164,13 @@ const Schedules: React.FC = () => {
         <Col span={24}>
           <Card className="Practices-table">
             <Table
+              rowClassName={(record): string | undefined => {
+                const [fromDate, toDate] = record.time.split('-');
+                const parseFromDate = moment(fromDate, EFormat['HH:mm']).valueOf();
+                const parseToDate = moment(toDate, EFormat['HH:mm']).valueOf();
+                const isSameTimeOfDay = moment().valueOf() >= parseFromDate && moment().valueOf() <= parseToDate;
+                return isSameTimeOfDay ? `hightlight` : undefined;
+              }}
               header={
                 <Row gutter={[16, 16]} justify="space-between" align="middle">
                   <Col>
@@ -129,7 +182,7 @@ const Schedules: React.FC = () => {
                 </Row>
               }
               columns={columns()}
-              dataSources={parseSchedulesData}
+              dataSources={dataSources}
               loading={getSchedulesLoading}
             />
           </Card>

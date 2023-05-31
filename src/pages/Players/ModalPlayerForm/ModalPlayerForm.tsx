@@ -272,8 +272,9 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
         setFormValues({ ...formValues, ...dataChanged });
       } else {
         const dataChanged = {
-          branch: currentBranch?.id ? [{ label: currentBranch?.name, value: String(currentBranch?.id) }] : undefined,
+          branch: currentBranch?.id ? { label: currentBranch?.name, value: String(currentBranch?.id) } : undefined,
           password: generateInitialPassword(),
+          numberOfUnits: settingsState?.transaction_settings?.fee_transaction_duration_in_units,
           kits: kitFeeOptions,
         };
 
@@ -371,6 +372,8 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
                         const dataChanged = {
                           class: option,
                           schedules: undefined,
+                          membershipFee:
+                            option?.data?.course_fee || settingsState?.transaction_settings?.fee_transaction_value,
                         };
                         form.setFieldsValue(dataChanged);
                         setFormValues({ ...formValues, ...dataChanged });
@@ -406,7 +409,7 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
                     active
                     numberic
                     onBlur={(): void => {
-                      if (!formValues?.loginId) {
+                      if (!data && !formValues?.loginId) {
                         const dataChanged = {
                           loginId: formValues?.phoneNumber,
                         };
@@ -489,7 +492,7 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
                   <Col span={24}>
                     <Form.Item name="membershipFee" rules={[validationRules.required()]}>
                       <Input
-                        label="Phí hội viên"
+                        label="Học phí"
                         required
                         placeholder="Nhập dữ liệu"
                         active
