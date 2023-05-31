@@ -60,6 +60,9 @@ import Coins from './Coins';
 import Eye from './Eye';
 import Clock from './Clock';
 import Copy from './Copy';
+import UserCancel from './UserCancel';
+import UserCheck from './UserCheck';
+import UserX from './UserX';
 
 const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
   const renderIcon = (): React.ReactElement => {
@@ -174,6 +177,12 @@ const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
         return <Clock color={color} />;
       case EIconName.Copy:
         return <Copy color={color} />;
+      case EIconName.UserCancel:
+        return <UserCancel color={color} />;
+      case EIconName.UserCheck:
+        return <UserCheck color={color} />;
+      case EIconName.UserX:
+        return <UserX color={color} />;
 
       default:
         return <></>;

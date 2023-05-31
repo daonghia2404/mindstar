@@ -32,6 +32,8 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
   const [form] = Form.useForm();
   const currentBranch = useSelector((state: TRootState) => state.uiReducer.branch);
 
+  const settingsState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data;
+
   const {
     options: optionsManagers,
     handleLoadMore: handleLoadMoreManagers,
@@ -70,9 +72,9 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
       const parseScheduleData = Object.keys(parseScheduleGroup)
         ?.map((item) => {
           const firstItem = parseScheduleGroup?.[item as unknown as number]?.[0];
-          const mergeDayOfWeek = parseScheduleGroup?.[item as unknown as number]
-            ?.map((subItem: TWorkTime) => subItem?.dayOfWeek)
-            ?.join(',');
+          const mergeDayOfWeek = _.uniq(
+            parseScheduleGroup?.[item as unknown as number]?.map((subItem: TWorkTime) => subItem?.dayOfWeek),
+          )?.join(',');
 
           return {
             at_eras: mergeDayOfWeek,
@@ -122,7 +124,7 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
           description: data?.description,
           schedules: data?.schedules
             ?.map((item) => {
-              const parseDayOfWeek = item.at_eras.split(',');
+              const parseDayOfWeek = item.at_eras.split(',')?.filter((subItem) => subItem);
               return parseDayOfWeek.map((subItem) => ({
                 ...item,
                 dayOfWeek: subItem,
@@ -142,6 +144,7 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
       } else {
         form.setFieldsValue({
           branch: currentBranch?.id ? { label: currentBranch?.name, value: String(currentBranch?.id) } : undefined,
+          membershipFee: settingsState?.transaction_settings?.fee_transaction_value,
           schedules: dataWorkingTimesDefault,
         });
       }
@@ -191,6 +194,7 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
                   required
                   active
                   showSearch
+                  useAvatarOption
                   options={optionsManagers}
                   onLoadMore={handleLoadMoreManagers}
                   onSearch={handleSearchManagers}
@@ -203,17 +207,8 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item name="membershipFee" rules={[validationRules.required()]}>
-                <Input
-                  label="Học phí"
-                  required
-                  placeholder="Nhập dữ liệu"
-                  active
-                  numberic
-                  useNumber
-                  useComma
-                  suffixText="đ"
-                />
+              <Form.Item name="membershipFee">
+                <Input label="Học phí" placeholder="Nhập dữ liệu" active numberic useNumber useComma suffixText="đ" />
               </Form.Item>
             </Col>
             <Col span={24}>

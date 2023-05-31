@@ -175,7 +175,8 @@ const PlayerDetail: React.FC = () => {
     schedules: ((): React.ReactNode => {
       const schedulesOptions = playerState?.player_schedules
         ?.map((item) => {
-          const parseDayOfWeek = item.day_of_week.split(',');
+          const parseDayOfWeek = item.day_of_week.split(',')?.filter((subItem) => subItem);
+
           return parseDayOfWeek.map((subItem) => ({
             ...item,
             day_of_week: subItem,
@@ -321,7 +322,7 @@ const PlayerDetail: React.FC = () => {
                 <Input label="Số buổi còn lại" readOnlyText active renderShowValue={playerInfo?.numberOfUnits} />
               </Col>
               <Col span={12}>
-                <Input label="Phí hội viên" readOnlyText active renderShowValue={playerInfo?.membershipFee} />
+                <Input label="Học phí" readOnlyText active renderShowValue={playerInfo?.membershipFee} />
               </Col>
               <Col span={12}>
                 <Input label="Mã giới thiệu" readOnlyText active renderShowValue={playerInfo?.referralCode} />

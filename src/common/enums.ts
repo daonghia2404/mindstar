@@ -84,6 +84,7 @@ export enum EFormat {
   'dddd, DD' = 'dddd, DD',
   'HH:mm' = 'HH:mm',
   'MM/YYYY' = 'MM/YYYY',
+  'wo, YYYY' = 'wo, YYYY',
   'dddd | DD/MM/YYYY - HH:mm' = 'dddd | DD/MM/YYYY - HH:mm',
 }
 
@@ -140,4 +141,10 @@ export enum EDayOfWeek {
   FRIDAY = '5',
   SATURDAY = '6',
   SUNDAY = '7',
+}
+
+export enum ETypeCheckIn {
+  NONE = -1,
+  PRESENT = 1,
+  ABSENT = 0,
 }

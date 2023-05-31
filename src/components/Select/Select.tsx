@@ -28,6 +28,7 @@ const Select: React.FC<TSelectProps> = ({
   active,
   placeholder,
   readonly,
+  style,
   onSearch,
   onLoadMore,
   onChange,
@@ -120,6 +121,7 @@ const Select: React.FC<TSelectProps> = ({
       onBlur={handleBlur}
       disabled={disabled}
       readonly={readonly}
+      style={style}
       suffixIcon={
         allowClear && value?.value ? (
           <Icon

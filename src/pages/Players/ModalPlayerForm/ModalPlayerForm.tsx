@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import _ from 'lodash';
 
 import Modal from '@/components/Modal';
 import Input from '@/components/Input';
@@ -13,6 +14,7 @@ import {
   createPlayerAction,
   getBranchesAction,
   getClassesAction,
+  getPlayerAction,
   searchUserAction,
   updatePlayerAction,
 } from '@/redux/actions';
@@ -39,7 +41,7 @@ import ModalAddPlayerInExistedUser from '@/pages/Players/ModalAddPlayerInExisted
 import { TModalPlayerFormProps } from './ModalPlayerForm.type';
 import './ModalPlayerForm.scss';
 
-const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClose, onSuccess }) => {
+const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataPractice, onClose, onSuccess }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [formValues, setFormValues] = useState<any>({});
@@ -74,6 +76,8 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
     handleSearch: handleSearchBranches,
   } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', 'branchName');
 
+  const playerState = useSelector((state: TRootState) => state.playerReducer.getPlayerResponse)?.data;
+
   const settingsState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data;
   const cityOptions = settingsState?.cities?.map((item) => ({ label: item.name, value: item.id }));
   const kitFeeOptions = settingsState?.kit_fee_definitions?.kit_fee_products?.map((item) => ({
@@ -95,6 +99,12 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
   };
 
   const handleCloseAddPlayerInExistedUserModal = (): void => {
+    const dataChanged = {
+      loginId: undefined,
+    };
+    form.setFieldsValue(dataChanged);
+    setFormValues({ ...formValues, ...dataChanged });
+
     setModalAddPlayerInExistedUserState({ visible: false });
   };
 
@@ -112,6 +122,38 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
 
   const handleSubmit = (): void => {
     form.validateFields().then((values) => {
+      const parseScheduleGroup: { [key: number]: any } = _.groupBy(
+        values?.schedules?.map((item: TSelectOption) => {
+          const startTime = item?.data?.at_time;
+          const endTime = item?.data?.duration_in_second;
+
+          return {
+            ...item?.data,
+            at_time: startTime,
+            duration_in_second: item?.data?.duration_in_second,
+            totalTime: startTime + endTime,
+          };
+        }) || [],
+        'totalTime',
+      );
+
+      const parseScheduleData = Object.keys(parseScheduleGroup)
+        ?.map((item) => {
+          const firstItem = parseScheduleGroup?.[item as unknown as number]?.[0];
+          const mergeDayOfWeek = _.uniq(
+            parseScheduleGroup?.[item as unknown as number]?.map((subItem: any) => {
+              return subItem?.day_of_week || subItem?.dayOfWeek;
+            }),
+          )?.join(',');
+
+          return {
+            day_of_week: mergeDayOfWeek,
+            at_time: firstItem?.at_time,
+            duration_in_second: firstItem?.duration_in_second,
+          };
+        })
+        .flat();
+
       const body = {
         user_id: modalAddPlayerInExistedUserState?.data?.id,
         name: values?.name,
@@ -127,10 +169,12 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
         city_id: values?.city?.value,
         fee: values?.membershipFee,
         fixed_eras: values?.schedules?.map((item: TSelectOption) => item.value)?.join(','),
+        player_schedules: parseScheduleData,
         kit_fee: values?.kits?.map((item: TSelectOption) => item.data),
         number_of_units: values?.numberOfUnits,
         payment_type: values?.paymentType?.value,
         note: values?.note,
+        referral_code: values?.referralCode,
       };
 
       if (data) {
@@ -164,7 +208,7 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
 
   useEffect(() => {
     if (visible) {
-      if (data) {
+      if (data && playerState) {
         const dataChanged = {
           name: data?.name,
           dateOfBirth: data?.date_of_birth ? moment(data?.date_of_birth) : undefined,
@@ -174,33 +218,63 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
             ? {
                 label: data?.class?.name,
                 value: String(data?.class?.id),
-                data: optionsClasses?.find((item) => item.value === String(data?.class?.id)),
+                data: {
+                  schedules: playerState?.class_schedules,
+                },
               }
             : undefined,
           parentName: data?.parent_name,
           phoneNumber: data?.mobile,
           address: data?.address,
-          city: cityOptions?.find((item) => item.value === data?.city?.id),
-          schedules: data?.player_schedules?.map((item) => {
-            const startTime = formatISODateToDateTime(item.at_time, EFormat['HH:mm']);
-            const endTime = formatISODateToDateTime(item.at_time + item.duration_in_second * 1000, EFormat['HH:mm']);
-            const dayLabel = dataDayOfWeeksOptions.find((subItem) => subItem.value === item.day_of_week)?.label;
+          city: cityOptions?.find((item) => item.value === data?.city_id),
+          schedules: data?.player_schedules
+            ?.filter((item) => item.day_of_week)
+            ?.map((item) => {
+              return item?.day_of_week
+                ?.split(',')
+                ?.filter((subItem) => subItem)
+                ?.map((subItem) => {
+                  const startTime = formatISODateToDateTime(item.at_time, EFormat['HH:mm']);
+                  const endTime = formatISODateToDateTime(
+                    item.at_time + item.duration_in_second * 1000,
+                    EFormat['HH:mm'],
+                  );
+                  const dayLabel = dataDayOfWeeksOptions.find((option) => option.value === subItem)?.label;
 
-            return {
-              label: `${dayLabel} | ${startTime} - ${endTime}`,
-              value: item.day_of_week,
-              data: item,
-            };
-          }),
-          note: data?.note,
-          referralCode: data?.referral_code_used,
+                  return {
+                    label: `${dayLabel} | ${startTime} - ${endTime}`,
+                    value: subItem,
+                    data: item,
+                  };
+                });
+            })
+            ?.flat(),
+          note: playerState?.note,
         };
+        form.setFieldsValue(dataChanged);
+        setFormValues({ ...formValues, ...dataChanged });
+      } else if (dataPractice) {
+        const dataChanged = {
+          name: dataPractice?.name,
+          dateOfBirth: dataPractice?.date_of_birth ? moment(dataPractice?.date_of_birth) : undefined,
+          branch: dataPractice?.branch_id
+            ? { label: dataPractice?.branch_name, value: String(dataPractice?.branch_id) }
+            : undefined,
+          parentName: dataPractice?.parent_name,
+          phoneNumber: dataPractice?.mobile,
+          address: dataPractice?.address,
+          password: generateInitialPassword(),
+          kits: kitFeeOptions,
+          city: cityOptions?.find((item) => item.value === dataPractice?.city_id),
+        };
+
         form.setFieldsValue(dataChanged);
         setFormValues({ ...formValues, ...dataChanged });
       } else {
         const dataChanged = {
-          branch: currentBranch?.id ? [{ label: currentBranch?.name, value: String(currentBranch?.id) }] : undefined,
+          branch: currentBranch?.id ? { label: currentBranch?.name, value: String(currentBranch?.id) } : undefined,
           password: generateInitialPassword(),
+          numberOfUnits: settingsState?.transaction_settings?.fee_transaction_duration_in_units,
           kits: kitFeeOptions,
         };
 
@@ -213,7 +287,19 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
       handleCloseAddPlayerInExistedUserModal();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible, form, data]);
+  }, [visible, form, data, playerState]);
+
+  const getPlayer = useCallback(() => {
+    if (data?.id && visible) {
+      dispatch(getPlayerAction.request({ paths: { id: data?.id } }));
+    } else {
+      dispatch(getPlayerAction.success(undefined));
+    }
+  }, [dispatch, visible, data]);
+
+  useEffect(() => {
+    getPlayer();
+  }, [getPlayer]);
 
   return (
     <>
@@ -256,6 +342,15 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
                       options={optionsBranches}
                       onLoadMore={handleLoadMoreBranches}
                       onSearch={handleSearchBranches}
+                      onChange={(option): void => {
+                        const dataChanged = {
+                          class: undefined,
+                          schedules: undefined,
+                          branch: option,
+                        };
+                        form.setFieldsValue(dataChanged);
+                        setFormValues({ ...formValues, ...dataChanged });
+                      }}
                     />
                   </Form.Item>
                 </Col>
@@ -273,13 +368,23 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
                       options={optionsClasses}
                       onLoadMore={handleLoadMoreClasses}
                       onSearch={handleSearchClasses}
+                      onChange={(option): void => {
+                        const dataChanged = {
+                          class: option,
+                          schedules: undefined,
+                          membershipFee:
+                            option?.data?.course_fee || settingsState?.transaction_settings?.fee_transaction_value,
+                        };
+                        form.setFieldsValue(dataChanged);
+                        setFormValues({ ...formValues, ...dataChanged });
+                      }}
                     />
                   </Form.Item>
                 </Col>
               )}
               {formValues?.branch && formValues?.class && (
                 <Col span={24}>
-                  <Form.Item name="schedule" rules={[validationRules.required()]}>
+                  <Form.Item name="schedules" rules={[validationRules.required()]}>
                     <CheckboxGroup label="Lịch học" required options={schedulesOptions} />
                   </Form.Item>
                 </Col>
@@ -304,7 +409,7 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
                     active
                     numberic
                     onBlur={(): void => {
-                      if (!formValues?.loginId) {
+                      if (!data && !formValues?.loginId) {
                         const dataChanged = {
                           loginId: formValues?.phoneNumber,
                         };
@@ -387,7 +492,7 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
                   <Col span={24}>
                     <Form.Item name="membershipFee" rules={[validationRules.required()]}>
                       <Input
-                        label="Phí hội viên"
+                        label="Học phí"
                         required
                         placeholder="Nhập dữ liệu"
                         active
@@ -435,11 +540,13 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, onClo
                   <TextArea label="Ghi chú" placeholder="Nhập dữ liệu" active />
                 </Form.Item>
               </Col>
-              <Col span={24}>
-                <Form.Item name="referralCode">
-                  <Input label="Mã giới thiệu" placeholder="Nhập dữ liệu" active />
-                </Form.Item>
-              </Col>
+              {!data && (
+                <Col span={24}>
+                  <Form.Item name="referralCode">
+                    <Input label="Mã giới thiệu" placeholder="Nhập dữ liệu" active />
+                  </Form.Item>
+                </Col>
+              )}
             </Row>
           </Form>
         </div>

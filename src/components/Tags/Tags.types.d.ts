@@ -5,5 +5,6 @@ export type TTagOption = TSelectOption & {
 };
 
 export type TTagsProps = {
+  className?: string;
   options?: TTagOption[];
 };

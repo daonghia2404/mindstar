@@ -8,6 +8,10 @@ export type TUser = {
   branch_name: string;
   class: TClass;
   city: TCity;
+  schedules?: TSchedule[];
+  class_schedules?: TSchedule[];
+  city_id?: string;
+  city_name?: string;
   date_of_birth: number;
   id: number;
   latest_login_at: number;
@@ -74,7 +78,14 @@ export type TRole = {
 
 export type TSetting = {
   academy_setting: unknown;
-  attendance_settings: unknown;
+  attendance_settings: {
+    is_multi_attendee_enable: boolean;
+    is_own_setting_enable: boolean;
+    is_time_off_setting_enable: boolean;
+    max_own: number;
+    max_time_off: number;
+    max_unit_per_lesson: number;
+  };
   categories: unknown;
   cities: TCity[];
   common_settings: {
@@ -94,7 +105,16 @@ export type TSetting = {
   reactive_settings: unknown;
   reward_tiers: unknown;
   schedule_settings: unknown;
-  transaction_settings: unknown;
+  transaction_settings: {
+    fee_transaction_duration_in_days: number;
+    fee_transaction_duration_in_units: number;
+    fee_transaction_type_default: number;
+    fee_transaction_value: number;
+    fee_uniform_value: number;
+    short_description_of_the_shuttle_bus_registration_fee: string;
+    short_description_first_transaction_fee: string;
+    short_description_first_uniform_fee: string;
+  };
   transport_settings: unknown;
 };
 
@@ -112,6 +132,8 @@ export type TBranch = {
   personal_contact: unknown;
   primary_contact: string;
   update_date: number;
+  branch_name?: string;
+  schedules?: TSchedule[];
 };
 
 export type TDashboard = {
@@ -292,4 +314,28 @@ export type TEConnect = {
   registration_status: number;
   update_date: number;
   user_id: number;
+};
+
+export type TAttendance = {
+  at_date: number;
+  at_date_time: number;
+  at_time: number;
+  auditing_status: number;
+  checked_in: number;
+  class: TClass;
+  class_id: number;
+  course_id: number;
+  create_date: number;
+  description: string;
+  duration_in_second: number;
+  has_time_off_request: unknown;
+  id: number;
+  lesson_paid_status: number;
+  player: TUser;
+  player_id: number;
+  time_off_list: unknown;
+  unit_value: number;
+  update_date: number;
+  user_type: string;
+  uuid: string;
 };

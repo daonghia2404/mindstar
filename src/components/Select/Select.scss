@@ -26,6 +26,8 @@
             &-value {
               position: absolute;
               transition: $common-transition;
+              padding-right: 2.4rem;
+              @include ellipsis(1);
 
               &.blur {
                 opacity: 0.5;

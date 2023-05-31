@@ -23,6 +23,7 @@ const Table: React.FC<TTableProps> = ({
   total,
   showPagination = true,
   scroll,
+  rowClassName,
   onRow,
   onPaginationChange,
 }) => {
@@ -54,7 +55,9 @@ const Table: React.FC<TTableProps> = ({
             triggerAsc: 'Sắp xếp tăng dần',
             emptyText: <Empty />,
           }}
-          rowClassName={classNames({ 'cursor-pointer': onRow })}
+          rowClassName={(record, index): string =>
+            classNames({ 'cursor-pointer': onRow }, rowClassName?.(record, index))
+          }
           pagination={false}
           columns={columns}
           dataSource={dataSources}

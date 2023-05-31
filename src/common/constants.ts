@@ -6,6 +6,7 @@ import {
   EPaymentType,
   ESalaryType,
   ETransactionStatus,
+  ETypeCheckIn,
 } from '@/common/enums';
 import { EIconColor } from '@/components/Icon';
 import { EStatusStyleType } from '@/components/Status';
@@ -121,4 +122,10 @@ export const dataDayOfWeeksOptions = [
   { value: EDayOfWeek.FRIDAY, label: 'Thứ 6' },
   { value: EDayOfWeek.SATURDAY, label: 'Thứ 7' },
   { value: EDayOfWeek.SUNDAY, label: 'CN' },
+];
+
+export const dataTypeCheckInOptions = [
+  { value: ETypeCheckIn.PRESENT, label: 'Có Mặt', data: { statusType: EStatusStyleType.SUCCESS } },
+  { value: ETypeCheckIn.ABSENT, label: 'Vắng Mặt', data: { statusType: EStatusStyleType.DANGER } },
+  { value: ETypeCheckIn.NONE, label: 'Chưa Điểm Danh', data: { statusType: EStatusStyleType.WARNING } },
 ];

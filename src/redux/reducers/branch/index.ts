@@ -5,6 +5,7 @@ import {
   TDeleteBranchResponse,
   TGetBranchesResponse,
   TGetCommonBranchesResponse,
+  TGetPublicBranchesResponse,
   TUpdateBranchResponse,
 } from '@/services/api/branch';
 import {
@@ -12,12 +13,14 @@ import {
   deleteBranchAction,
   getBranchesAction,
   getCommonBranchesAction,
+  getPublicBranchesAction,
   updateBranchAction,
 } from '@/redux/actions';
 import { createBranchUpdateState } from './create-branch';
 import { deleteBranchUpdateState } from './delete-branch';
 import { getBranchesUpdateState } from './get-branches';
 import { getCommonBranchesUpdateState } from './get-common-branches';
+import { getPublicBranchesUpdateState } from './get-public-branches';
 import { updateBranchUpdateState } from './update-branch';
 
 export type TBranchState = {
@@ -25,6 +28,7 @@ export type TBranchState = {
   deleteBranchResponse?: TDeleteBranchResponse;
   getBranchesResponse?: TGetBranchesResponse;
   getCommonBranchesResponse?: TGetCommonBranchesResponse;
+  getPublicBranchesResponse?: TGetPublicBranchesResponse;
   updateBranchResponse?: TUpdateBranchResponse;
 };
 
@@ -33,6 +37,7 @@ const initialState: TBranchState = {
   deleteBranchResponse: undefined,
   getBranchesResponse: undefined,
   getCommonBranchesResponse: undefined,
+  getPublicBranchesResponse: undefined,
   updateBranchResponse: undefined,
 };
 
@@ -41,6 +46,7 @@ const BranchReducer = createReducer(initialState, (handleAction) => [
   handleAction(deleteBranchAction.success, deleteBranchUpdateState),
   handleAction(getBranchesAction.success, getBranchesUpdateState),
   handleAction(getCommonBranchesAction.success, getCommonBranchesUpdateState),
+  handleAction(getPublicBranchesAction.success, getPublicBranchesUpdateState),
   handleAction(updateBranchAction.success, updateBranchUpdateState),
 ]);
 

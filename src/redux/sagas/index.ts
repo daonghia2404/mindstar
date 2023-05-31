@@ -1,5 +1,6 @@
 import { all, fork } from 'redux-saga/effects';
 
+import attendanceSaga from './attendance';
 import authSaga from './auth';
 import branchSaga from './branch';
 import classSaga from './class';
@@ -10,6 +11,7 @@ import expenseSaga from './expense';
 import managerSaga from './manager';
 import orderSaga from './order';
 import playerSaga from './player';
+import practiceSaga from './practice';
 import redeemSaga from './redeem';
 import scheduleSaga from './schedule';
 import settingSaga from './setting';
@@ -20,6 +22,7 @@ import userSaga from './user';
 
 const rootSaga = function* root(): Generator {
   yield all([
+    fork(attendanceSaga),
     fork(authSaga),
     fork(branchSaga),
     fork(classSaga),
@@ -30,6 +33,7 @@ const rootSaga = function* root(): Generator {
     fork(managerSaga),
     fork(orderSaga),
     fork(playerSaga),
+    fork(practiceSaga),
     fork(redeemSaga),
     fork(scheduleSaga),
     fork(settingSaga),

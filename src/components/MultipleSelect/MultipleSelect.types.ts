@@ -8,6 +8,7 @@ export type TMultipleSelectProps = TFormFieldProps & {
   showSearch?: boolean;
   disabled?: boolean;
   allowClear?: boolean;
+  useAvatarOption?: boolean;
   placeholder?: string;
   placement?: 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'top' | 'bottom';
   paginate?: {

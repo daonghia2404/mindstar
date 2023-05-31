@@ -70,7 +70,8 @@ const ClassDetail: React.FC = () => {
     schedules: ((): React.ReactNode => {
       const schedulesOptions = classState?.schedules
         ?.map((item) => {
-          const parseDayOfWeek = item.at_eras.split(',');
+          const parseDayOfWeek = item.at_eras.split(',')?.filter((subItem) => subItem);
+
           return parseDayOfWeek.map((subItem) => ({
             ...item,
             day_of_week: subItem,

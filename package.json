@@ -6,7 +6,7 @@
   "scripts": {
     "start": "env-cmd -f .env react-app-rewired --openssl-legacy-provider start",
     "build": "env-cmd -f .env react-app-rewired --openssl-legacy-provider build",
-    "build:netlify": "env-cmd -f .env react-app-rewired --openssl-legacy-provider build",
+    "build:netlify": "env-cmd -f .env.production react-app-rewired --openssl-legacy-provider build",
     "build:dev": "env-cmd -f .env.dev react-app-rewired --openssl-legacy-provider build",
     "build:production": "env-cmd -f .env.production react-app-rewired --openssl-legacy-provider build",
     "test": "react-app-rewired test",
