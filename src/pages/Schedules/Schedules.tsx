@@ -11,12 +11,7 @@ import DatePicker from '@/components/DatePicker';
 import { EGetSchedulesAction, getSchedulesAction } from '@/redux/actions';
 import { EFormat } from '@/common/enums';
 import Table, { TTableColumn } from '@/components/Table';
-import {
-  capitalizeFirstLetter,
-  convertDaysOfWeek,
-  formatISODateToDateTime,
-  getRangeMomentBetweenTwoDate,
-} from '@/utils/functions';
+import { capitalizeFirstLetter, formatISODateToDateTime, getRangeMomentBetweenTwoDate } from '@/utils/functions';
 
 import './Schedules.scss';
 
