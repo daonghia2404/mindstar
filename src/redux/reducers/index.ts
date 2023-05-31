@@ -4,6 +4,7 @@ import { loadingReducer, errorReducer, successReducer } from './status';
 import attendanceReducer from './attendance';
 import authReducer from './auth';
 import branchReducer from './branch';
+import categoryReducer from './category';
 import classReducer from './class';
 import dashboardReducer from './dashboard';
 import eConnectReducer from './e-connect';
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   attendanceReducer,
   authReducer,
   branchReducer,
+  categoryReducer,
   classReducer,
   dashboardReducer,
   eConnectReducer,

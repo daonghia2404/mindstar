@@ -167,10 +167,12 @@ export type TExpense = {
 };
 
 export type TCategory = {
+  academy_id: number;
   auditing_status: number;
   description: string;
   id: number;
   name: string;
+  products_count: number;
   type: unknown;
 };
 

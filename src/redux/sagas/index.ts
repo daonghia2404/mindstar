@@ -3,6 +3,7 @@ import { all, fork } from 'redux-saga/effects';
 import attendanceSaga from './attendance';
 import authSaga from './auth';
 import branchSaga from './branch';
+import categorySaga from './category';
 import classSaga from './class';
 import dashboardSaga from './dashboard';
 import eConnectSaga from './e-connect';
@@ -25,6 +26,7 @@ const rootSaga = function* root(): Generator {
     fork(attendanceSaga),
     fork(authSaga),
     fork(branchSaga),
+    fork(categorySaga),
     fork(classSaga),
     fork(dashboardSaga),
     fork(eConnectSaga),
