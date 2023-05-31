@@ -191,7 +191,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         id: '2',
         title: 'Sản phẩm',
         icon: EIconName.BoxSeam,
-        link: Paths.Dashboard,
+        link: Paths.ShopProducts,
         activePaths: [],
       },
       {

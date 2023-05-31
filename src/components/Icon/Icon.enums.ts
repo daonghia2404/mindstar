@@ -28,6 +28,7 @@ export enum EIconName {
   Checkbox = 'Checkbox',
   Affiliate = 'Affiliate',
   Category = 'Category',
+  ShopProducts = 'ShopProduct',
   BoxSeam = 'BoxSeam',
   Award = 'Award',
   Receipt = 'Receipt',
