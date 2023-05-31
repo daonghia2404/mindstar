@@ -21,6 +21,7 @@ export type TGetAttendancesMaterials = {
 
 export type TGetAttendancesResponse = TCommonResponse & {
   data: TCommonPaginate & {
+    attendance_count: { checked_in: number; count: number }[];
     content: TAttendance[];
   };
 };

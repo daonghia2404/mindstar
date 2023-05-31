@@ -74,6 +74,7 @@ const AuthorizedInstance = (baseURL: string): AxiosInstance => {
             const refreshTokenFailed = err?.response?.config?.url === '/oauth/token';
             if (refreshTokenFailed) {
               Helpers.clearTokens();
+              Helpers.setDataBranch({});
               navigate(LayoutPaths.Auth);
             }
           })

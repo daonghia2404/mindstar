@@ -9,9 +9,10 @@ import Card from '@/components/Card';
 import { TGetSchedulesParams } from '@/services/api';
 import DatePicker from '@/components/DatePicker';
 import { EGetSchedulesAction, getSchedulesAction } from '@/redux/actions';
-import { EFormat } from '@/common/enums';
+import { EEmpty, EFormat } from '@/common/enums';
 import Table, { TTableColumn } from '@/components/Table';
 import { capitalizeFirstLetter, formatISODateToDateTime, getRangeMomentBetweenTwoDate } from '@/utils/functions';
+import Icon, { EIconColor, EIconName } from '@/components/Icon';
 
 import './Schedules.scss';
 
@@ -22,10 +23,10 @@ const Schedules: React.FC = () => {
     fromDate: moment().startOf('week').valueOf(),
     toDate: moment().endOf('week').valueOf(),
   });
-  const schedulesState = useSelector(
-    (state: TRootState) => state.scheduleReducer.getSchedulesResponse,
-  )?.data?.content?.filter((item) => item.at_time);
-  const parseScheduleOrder = _.orderBy(schedulesState, ['at_time'], 'asc');
+  const schedulesState = useSelector((state: TRootState) => state.scheduleReducer.getSchedulesResponse)?.data;
+
+  const schedulesData = schedulesState?.content?.filter((item) => item.at_time);
+  const parseScheduleOrder = _.orderBy(schedulesData, ['at_time'], 'asc');
 
   const parseSchedulesGroup = _.groupBy(
     parseScheduleOrder?.map((item) => {
@@ -116,7 +117,21 @@ const Schedules: React.FC = () => {
         </Col>
         <Col span={24}>
           <Card className="Practices-table">
-            <Table columns={columns()} dataSources={parseSchedulesData} loading={getSchedulesLoading} />
+            <Table
+              header={
+                <Row gutter={[16, 16]} justify="space-between" align="middle">
+                  <Col>
+                    <div className="Table-total-item">
+                      <Icon name={EIconName.Calendar} color={EIconColor.TUNDORA} />
+                      Tổng Lịch Học: <strong>{schedulesState?.total_elements || EEmpty.ZERO}</strong>
+                    </div>
+                  </Col>
+                </Row>
+              }
+              columns={columns()}
+              dataSources={parseSchedulesData}
+              loading={getSchedulesLoading}
+            />
           </Card>
         </Col>
       </Row>

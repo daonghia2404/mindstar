@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { navigate } from '@reach/router';
 import moment, { Moment } from 'moment';
 
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataDegreeTypeOptions } from '@/common/constants';
-import { EEmpty, EFormat } from '@/common/enums';
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataTypeCheckInOptions } from '@/common/constants';
+import { EEmpty, EFormat, ETypeCheckIn } from '@/common/enums';
 import Button, { EButtonStyleType } from '@/components/Button';
 import Card from '@/components/Card';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
@@ -14,17 +13,16 @@ import { TGetAttendancesParams } from '@/services/api';
 import Table from '@/components/Table';
 import { TRootState } from '@/redux/reducers';
 import { EGetAttendancesAction, getAttendancesAction, getClassesAction } from '@/redux/actions';
-import { TUser } from '@/common/models';
+import { TAttendance } from '@/common/models';
 import Avatar from '@/components/Avatar';
 import { formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
-import { Paths } from '@/pages/routers';
 import DatePicker from '@/components/DatePicker';
-import Tags from '@/components/Tags';
 import Select, { TSelectOption } from '@/components/Select';
 import { useOptionsPaginate } from '@/utils/hooks';
+import ModalCheckIns from '@/pages/Attendances/ModalCheckIns';
+import Status from '@/components/Status';
 
 import './Attendances.scss';
-import ModalCheckIns from '@/pages/Attendances/ModalCheckIns';
 
 const Attendances: React.FC = () => {
   const dispatch = useDispatch();
@@ -87,9 +85,9 @@ const Attendances: React.FC = () => {
       dataIndex: 'avatar',
       title: '',
       width: 48,
-      render: (_: string, record: TUser): React.ReactElement => (
+      render: (_: string, record: TAttendance): React.ReactElement => (
         <div className="Table-image">
-          <Avatar size={48} image={getFullUrlStatics(record?.avatar)} />
+          <Avatar size={48} image={getFullUrlStatics(record?.player?.avatar)} />
         </div>
       ),
     },
@@ -97,87 +95,65 @@ const Attendances: React.FC = () => {
       key: 'name',
       dataIndex: 'name',
       title: 'Tên',
+      sorter: true,
+      keySort: 'name',
       className: 'limit-width',
-      width: 180,
-      render: (_: string, record: TUser): React.ReactElement => {
-        const dergeeType = dataDegreeTypeOptions.find((item) => item.value === record.degree_type);
+      render: (_: string, record: TAttendance): React.ReactElement => {
         return (
           <div className="Table-info">
-            <div className="Table-info-title">{record?.name || EEmpty.DASH}</div>
-            <div className="Table-info-description" style={{ color: dergeeType?.data?.color }}>
-              {dergeeType?.label}
+            <div className="Table-info-title">{record?.player?.name || EEmpty.DASH}</div>
+            <div className="Table-info-description">
+              {record?.player?.date_of_birth
+                ? formatISODateToDateTime(record.player?.date_of_birth, EFormat['DD/MM/YYYY'])
+                : EEmpty.DASH}
             </div>
           </div>
         );
       },
     },
     {
-      key: 'date_of_birth',
-      dataIndex: 'date_of_birth',
-      title: 'Ngày Sinh',
-      render: (_: string, record: TUser): string =>
-        record?.date_of_birth ? formatISODateToDateTime(record.date_of_birth, EFormat['DD/MM/YYYY']) : EEmpty.DASH,
-    },
-    {
       key: 'address',
       dataIndex: 'address',
       title: 'Địa chỉ',
       className: 'limit-width',
-      render: (value: string): string => value || EEmpty.DASH,
+      render: (_: string, record: TAttendance): React.ReactElement => {
+        return (
+          <div className="Table-info">
+            <div className="Table-info-title">{record?.player?.address || EEmpty.DASH}</div>
+            <div className="Table-info-description">{record?.player?.city_name || EEmpty.DASH}</div>
+          </div>
+        );
+      },
     },
     {
       key: 'mobile',
       dataIndex: 'mobile',
       title: 'Số điện thoại',
-      render: (value: string): React.ReactElement =>
-        value ? (
-          <a href={`tel: ${value}`} className="Table-link" onClick={(e): void => e.stopPropagation()}>
-            {value}
+      render: (_: string, record: TAttendance): React.ReactElement =>
+        record?.player?.mobile ? (
+          <a href={`tel: ${record?.player?.mobile}`} className="Table-link" onClick={(e): void => e.stopPropagation()}>
+            {record?.player?.mobile}
           </a>
         ) : (
           <>{EEmpty.DASH}</>
         ),
     },
     {
-      key: 'class',
-      dataIndex: 'class',
-      title: 'Lớp Học',
-      render: (_: string, record: TUser): React.ReactElement =>
-        record?.class ? (
-          <Tags
-            options={[
-              {
-                label: record?.class.name,
-                value: String(record?.class.id),
-                data: { iconName: EIconName.ChalkBoard },
-                onClick: (): void => {
-                  navigate(Paths.ClassDetail(String(record?.class.id)));
-                },
-              },
-            ]}
-          />
-        ) : (
-          <>{EEmpty.DASH}</>
-        ),
+      key: 'status',
+      dataIndex: 'status',
+      title: 'Trạng thái',
+      sorter: true,
+      keySort: 'auditing_status',
+      render: (_: string, record: TAttendance): React.ReactElement => {
+        const status = dataTypeCheckInOptions.find((item) => item.value === record.checked_in);
+        return status ? <Status label={status?.label} styleType={status?.data?.statusType} /> : <>{EEmpty.DASH}</>;
+      },
     },
     {
-      key: 'branch',
-      dataIndex: 'branch',
-      title: 'Chi nhánh',
-      render: (_: string, record: TUser): React.ReactElement =>
-        record?.branch_id ? (
-          <Tags
-            options={[
-              {
-                label: record?.branch_name,
-                value: String(record?.branch_id),
-                data: { iconName: EIconName.MapMarker },
-              },
-            ]}
-          />
-        ) : (
-          <>{EEmpty.DASH}</>
-        ),
+      key: 'description',
+      dataIndex: 'description',
+      title: 'Ghi chú',
+      render: (value: string): string => value || EEmpty.DASH,
     },
   ];
 
@@ -274,21 +250,30 @@ const Attendances: React.FC = () => {
                       <Col>
                         <div className="Table-total-item">
                           <Icon name={EIconName.UserCheck} color={EIconColor.TUNDORA} />
-                          Có Mặt: <strong>{EEmpty.ZERO}</strong>
+                          Có Mặt:{' '}
+                          <strong>
+                            {attendancesState?.attendance_count?.find(
+                              (item) => item.checked_in === ETypeCheckIn.PRESENT,
+                            )?.count || EEmpty.ZERO}
+                          </strong>
                         </div>
                       </Col>
                       <Col>
                         <div className="Table-total-item">
                           <Icon name={EIconName.UserX} color={EIconColor.TUNDORA} />
-                          Vắng Mặt: <strong>{EEmpty.ZERO}</strong>
+                          Vắng Mặt:{' '}
+                          <strong>
+                            {attendancesState?.attendance_count?.find((item) => item.checked_in === ETypeCheckIn.ABSENT)
+                              ?.count || EEmpty.ZERO}
+                          </strong>
                         </div>
                       </Col>
-                      <Col>
+                      {/* <Col>
                         <div className="Table-total-item">
                           <Icon name={EIconName.UserCancel} color={EIconColor.TUNDORA} />
                           Chưa Điểm Danh: <strong>{EEmpty.ZERO}</strong>
                         </div>
-                      </Col>
+                      </Col> */}
                     </Row>
                   </Col>
 

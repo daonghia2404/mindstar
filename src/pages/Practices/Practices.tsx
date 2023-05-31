@@ -23,6 +23,7 @@ import ModalPlayerForm from '@/pages/Players/ModalPlayerForm';
 import { Paths } from '@/pages/routers';
 
 import './Practices.scss';
+import ModalPracticeForm from '@/pages/Practices/ModalPracticeForm';
 
 const Practices: React.FC = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,9 @@ const Practices: React.FC = () => {
     visible: false,
   });
   const [modalDeletePracticeState, setModalDeletePracticeState] = useState<{ visible: boolean; data?: TUser }>({
+    visible: false,
+  });
+  const [modalPracticeFormState, setModalPracticeFormState] = useState<{ visible: boolean; data?: TUser }>({
     visible: false,
   });
 
@@ -60,6 +64,14 @@ const Practices: React.FC = () => {
 
   const handleCloseModalDeletePractice = (): void => {
     setModalDeletePracticeState({ visible: false });
+  };
+
+  const handleOpenModalPracticeForm = (data?: TUser): void => {
+    setModalPracticeFormState({ visible: true, data });
+  };
+
+  const handleCloseModalPracticeForm = (): void => {
+    setModalPracticeFormState({ visible: false });
   };
 
   const handleSearch = (keyword?: string): void => {
@@ -86,6 +98,14 @@ const Practices: React.FC = () => {
       icon: EIconName.Plus,
       onClick: (): void => {
         handleOpenModalPlayerForm(data);
+      },
+    },
+    {
+      value: 'edit',
+      label: 'Sửa',
+      icon: EIconName.Pencil,
+      onClick: (): void => {
+        handleOpenModalPracticeForm(data);
       },
     },
     {
@@ -291,6 +311,7 @@ const Practices: React.FC = () => {
         onClose={handleCloseModalDeletePractice}
         onSuccess={getPractices}
       />
+      <ModalPracticeForm {...modalPracticeFormState} onClose={handleCloseModalPracticeForm} onSuccess={getPractices} />
     </div>
   );
 };

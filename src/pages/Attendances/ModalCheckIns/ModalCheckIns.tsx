@@ -45,7 +45,7 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({ visible, getAttendancesP
       branch_id: currentBranchId,
       class_id: Number((getAttendancesParamsRequest?.classId as any)?.value),
       at_date: getAttendancesParamsRequest?.fromDate,
-      duration_in_second: 32400,
+      at_date_time: getAttendancesParamsRequest?.fromDate,
       player_check_in: attendancePlayersState?.map((item) => {
         const {
           [`${item.player_id}_checked_in`]: checked_in,
@@ -93,6 +93,28 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({ visible, getAttendancesP
   useEffect(() => {
     getAttendancePlayers();
   }, [getAttendancePlayers]);
+
+  useEffect(() => {
+    if (visible && attendancePlayersState) {
+      const dataChanged = attendancePlayersState?.reduce((result, item) => {
+        return {
+          ...result,
+          [`${item.player_id}_unit_value`]: unitLessonOptions.find(
+            (option) => option.value === String(item.unit_value),
+          ),
+          [`${item.player_id}_description`]: item.description,
+          [`${item.player_id}_checked_in`]: item.checked_in,
+        };
+      }, {});
+
+      form.setFieldsValue(dataChanged);
+      setFormValues({ ...formValues, ...dataChanged });
+    } else {
+      form.setFieldsValue({});
+      setFormValues({});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visible, form, attendancePlayersState]);
 
   return (
     <>
@@ -158,10 +180,10 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({ visible, getAttendancesP
                           <Form.Item name={`${item.player_id}_checked_in`}>
                             <AttendanceCheckbox
                               onChange={(data): void => {
-                                const isPresent = ![ETypeCheckIn.NONE, ETypeCheckIn.ABSENT, undefined].includes(data);
+                                const isNone = [ETypeCheckIn.NONE, undefined].includes(data);
                                 const dataChanged = {
                                   [`${item.player_id}_checked_in`]: data,
-                                  [`${item.player_id}_unit_value`]: isPresent ? unitLessonOptions[0] : undefined,
+                                  [`${item.player_id}_unit_value`]: isNone ? undefined : unitLessonOptions[0],
                                 };
                                 form.setFieldsValue(dataChanged);
                                 setFormValues({ ...formValues, ...dataChanged });

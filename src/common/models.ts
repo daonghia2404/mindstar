@@ -123,6 +123,8 @@ export type TBranch = {
   personal_contact: unknown;
   primary_contact: string;
   update_date: number;
+  branch_name?: string;
+  schedules?: TSchedule[];
 };
 
 export type TDashboard = {

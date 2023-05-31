@@ -46,6 +46,7 @@
           user-select: none;
           border-top: 1px solid $alto;
           white-space: nowrap;
+          text-transform: capitalize;
 
           &::before {
             display: none;
