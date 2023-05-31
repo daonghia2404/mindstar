@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Modal from '@/components/Modal';
 import { EButtonStyleType } from '@/components/Button';
-import { EEmpty, ETypeNotification } from '@/common/enums';
+import { ETypeNotification } from '@/common/enums';
 import { EDeleteBranchAction, deleteBranchAction } from '@/redux/actions';
 import { showNotification } from '@/utils/functions';
 import { TRootState } from '@/redux/reducers';
@@ -23,7 +23,7 @@ const ModalDeleteCategory: React.FC<TModalDeleteCategoryProps> = ({ visible, dat
   };
 
   const handleSubmitSuccess = (): void => {
-    showNotification(ETypeNotification.SUCCESS, 'Xoá Chi Nhánh Thành Công !');
+    showNotification(ETypeNotification.SUCCESS, 'Xoá Thành Công !');
     onClose?.();
     onSuccess?.();
   };
@@ -31,7 +31,7 @@ const ModalDeleteCategory: React.FC<TModalDeleteCategoryProps> = ({ visible, dat
   return (
     <Modal
       className="ModalDeleteCategory"
-      title="Xoá Chi Nhánh"
+      title="Delete"
       visible={visible}
       onClose={onClose}
       width={400}
@@ -49,11 +49,7 @@ const ModalDeleteCategory: React.FC<TModalDeleteCategoryProps> = ({ visible, dat
       }}
     >
       <div className="ModalDeleteCategory-wrapper">
-        <div className="Modal-text text-center">
-          Bạn có chắc chắn muốn xoá Chi Nhánh <strong>"{data?.name || EEmpty.DASH}"</strong> không?
-          <br />
-          Dữ liệu đã xoá không thể khôi phục.
-        </div>
+        <div className="Modal-text text-center">Do you want to delete ?</div>
       </div>
     </Modal>
   );

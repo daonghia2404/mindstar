@@ -1,6 +1,8 @@
+import { TBranch } from '@/common/models';
+
 export type TModalBranchFormProps = {
   visible: boolean;
-  data?: any;
+  data?: TBranch;
   onClose?: () => void;
   onSuccess?: () => void;
 };

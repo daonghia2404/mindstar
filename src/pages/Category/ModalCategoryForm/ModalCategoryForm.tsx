@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Modal from '@/components/Modal';
 import Input from '@/components/Input';
-import Select from '@/components/Select';
 import Switch from '@/components/Switch';
 import { TRootState } from '@/redux/reducers';
 import { ECreateBranchAction, EUpdateBranchAction, createBranchAction, updateBranchAction } from '@/redux/actions';
@@ -72,7 +71,7 @@ const ModalCategoryForm: React.FC<TModalCategoryFormProps> = ({ visible, data, o
   return (
     <Modal
       className="ModalCategoryForm"
-      title={data ? 'Sửa Chi Nhánh' : 'Tạo mới Chi Nhánh'}
+      title="UPDATE CATEGOTY"
       visible={visible}
       onClose={onClose}
       width={480}
@@ -84,19 +83,19 @@ const ModalCategoryForm: React.FC<TModalCategoryFormProps> = ({ visible, data, o
           <Row gutter={[16, 16]}>
             <Col span={24}>
               <Form.Item name="name" rules={[validationRules.required()]}>
-                <Input label="Tên" required placeholder="Nhập dữ liệu" active />
+                <Input label="Name" required placeholder="Nhập dữ liệu" active />
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item name="address" rules={[validationRules.required()]}>
-                <Input label="Địa chỉ" required placeholder="Nhập dữ liệu" active />
+              <Form.Item name="description" rules={[validationRules.required()]}>
+                <Input label="Description" required placeholder="Nhập dữ liệu" active />
               </Form.Item>
             </Col>
-            <Col span={24}>
+            {/* <Col span={24}>
               <Form.Item name="city" rules={[validationRules.required()]}>
                 <Select label="Thành phố" required options={cityOptions} placeholder="Chọn dữ liệu" active showSearch />
               </Form.Item>
-            </Col>
+            </Col> */}
             {/* <Col span={24}>
               <Form.Item name="hotline">
                 <Input label="Hotline" required numberic placeholder="Nhập dữ liệu" active />
@@ -105,7 +104,7 @@ const ModalCategoryForm: React.FC<TModalCategoryFormProps> = ({ visible, data, o
             {data && (
               <Col span={24}>
                 <Form.Item name="status">
-                  <Switch label="Trạng thái" />
+                  <Switch label="Status" />
                 </Form.Item>
               </Col>
             )}

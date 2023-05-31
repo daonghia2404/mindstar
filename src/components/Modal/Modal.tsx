@@ -32,7 +32,7 @@ const Modal: React.FC<TModalProps> = ({
       onCancel={onClose}
       wrapClassName={classNames('Modal-wrapper', wrapClassName)}
       className={classNames('Modal', className)}
-      closable
+      closable={false}
       closeIcon={<Icon name={EIconName.X} color={EIconColor.DOVE_GRAY} />}
     >
       {title && (

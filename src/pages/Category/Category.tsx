@@ -1,15 +1,12 @@
 import { Card, Col, Row } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import Input from '@/components/Input';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import Table from '@/components/Table';
 import Switch from '@/components/Switch';
-import Status, { EStatusStyleType } from '@/components/Status';
-import { TSelectOption } from '@/components/Select';
-import { getClasses, TGetBranchesParams } from '@/services/api';
+import { TGetBranchesParams } from '@/services/api';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
 import { EAuditingStatus } from '@/common/enums';
 import { TBranch } from '@/common/models';
@@ -17,14 +14,13 @@ import { TDropdownMenuItem } from '@/components/DropdownMenu/DropdownMenu.types'
 import DropdownMenu from '@/components/DropdownMenu';
 import Button, { EButtonStyleType } from '@/components/Button';
 import { TRootState } from '@/redux/reducers';
-import { EGetBranchesAction, getBranchesAction } from '@/redux/actions';
+import { EGetBranchesAction } from '@/redux/actions';
 import ModalCategoryForm from '@/pages/Category/ModalCategoryForm';
-import ModalDeleteCategory from '@/pages/Branches/ModalDeleteBranch';
+import ModalDeleteCategory from '@/pages/Category/ModalDeleteCategory';
 
 import './Category.scss';
 
 const Category: React.FC = () => {
-  const dispatch = useDispatch();
   const [getBranchesParamsRequest, setGetBranchesParamsRequest] = useState<TGetBranchesParams>({
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
@@ -51,12 +47,6 @@ const Category: React.FC = () => {
     });
   };
   const dataTableDropdownActions = (data?: TBranch): TDropdownMenuItem[] => [
-    {
-      value: 'setting',
-      label: 'Cài đặt',
-      icon: EIconName.Settings,
-      onClick: (): void => {},
-    },
     {
       value: 'edit',
       label: 'Sửa',
@@ -112,7 +102,7 @@ const Category: React.FC = () => {
       key: 'status',
       dataIndex: 'status',
       title: 'STATUS',
-      render: (_: string, record: TBranch): React.ReactElement => (
+      render: (): React.ReactElement => (
         <div className="Table-info">
           <Switch readOnlyText />
         </div>
@@ -164,29 +154,8 @@ const Category: React.FC = () => {
     },
   ];
 
-  const dashboardState = useSelector((state: TRootState) => state.dashboardReducer.getDashboardResponse)?.data;
   const getBranchesLoading = useSelector((state: TRootState) => state.loadingReducer[EGetBranchesAction.GET_BRANCHES]);
 
-  const yearsOptions = (): TSelectOption[] => {
-    if (dashboardState?.start_year) {
-      const options = [];
-
-      const currentYear = moment().year();
-      // eslint-disable-next-line no-plusplus
-      for (let i = dashboardState.start_year; i <= currentYear; i++) {
-        options.push({ value: String(i), label: String(i) });
-      }
-
-      return [
-        {
-          value: '',
-          label: 'Tất cả',
-        },
-        ...options.reverse(),
-      ];
-    }
-    return [];
-  };
   return (
     <div className="Category">
       <Row gutter={[24, 24]}>
@@ -210,20 +179,6 @@ const Category: React.FC = () => {
         </Col>
         <Col span={24}>
           <Card className="Branches-table">
-            <div className="Category-filter">
-              <Row gutter={[16, 16]}>
-                <Col>
-                  <div>
-                    <Status label="Active" styleType={EStatusStyleType.SUCCESS} />
-                  </div>
-                </Col>
-                <Col>
-                  <div>
-                    <Status label="Inactive" styleType={EStatusStyleType.DANGER} />
-                  </div>
-                </Col>
-              </Row>
-            </div>
             <Table
               loading={getBranchesLoading}
               columns={columns}
