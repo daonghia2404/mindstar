@@ -36,6 +36,7 @@ const PlayerDetail = lazy(() => retryLoadComponent(() => import('@/pages/PlayerD
 const Players = lazy(() => retryLoadComponent(() => import('@/pages/Players')));
 const Attendances = lazy(() => retryLoadComponent(() => import('@/pages/Attendances')));
 const Practices = lazy(() => retryLoadComponent(() => import('@/pages/Practices')));
+const Schedules = lazy(() => retryLoadComponent(() => import('@/pages/Schedules')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -65,6 +66,7 @@ export const Paths = {
   Connects: '/connects',
   Attendances: '/attendances',
   Practices: '/practices',
+  Schedules: '/schedules',
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -88,6 +90,7 @@ export const Pages = {
   Connects,
   Attendances,
   Practices,
+  Schedules,
 
   Login,
   LoginDomain,

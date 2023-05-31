@@ -121,7 +121,7 @@ const Dashboard: React.FC = () => {
   const getSchedules = useCallback(() => {
     dispatch(
       getSchedulesAction.request({
-        params: { page: DEFAULT_PAGE, size: 1, ...paramsYears },
+        params: { ...paramsYears },
         headers: { branchIds: currentBranchId },
       }),
     );

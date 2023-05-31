@@ -5,8 +5,8 @@ import ApiService from '@/services/api';
 // TYPES
 
 export type TGetSchedulesParams = {
-  page: number;
-  size: number;
+  page?: number;
+  size?: number;
   fromDate?: number;
   toDate?: number;
 };

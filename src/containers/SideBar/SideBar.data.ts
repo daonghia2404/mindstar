@@ -28,6 +28,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
       Paths.TimeOffs,
       Paths.Attendances,
       Paths.Practices,
+      Paths.Schedules,
     ],
     children: [
       {
@@ -93,8 +94,8 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         id: '6',
         title: 'Lịch học',
         icon: EIconName.Calendar,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.Schedules,
+        activePaths: [Paths.Schedules],
       },
       {
         id: '7',

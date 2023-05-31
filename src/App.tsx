@@ -54,6 +54,7 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.Connects} component={Pages.Connects} />
           <ProtectedRoute path={Paths.Attendances} component={Pages.Attendances} />
           <ProtectedRoute path={Paths.Practices} component={Pages.Practices} />
+          <ProtectedRoute path={Paths.Schedules} component={Pages.Schedules} />
 
           <Redirect noThrow from={Paths.Rest} to={`${LayoutPaths.Admin}${Paths.Dashboard}`} />
         </Admin>

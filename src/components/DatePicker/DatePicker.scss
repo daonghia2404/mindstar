@@ -31,6 +31,24 @@
       }
     }
 
+    .ant-picker-week-panel-row-selected td.ant-picker-cell-today .ant-picker-cell-inner::before,
+    .ant-picker-week-panel-row-selected:hover td.ant-picker-cell-today .ant-picker-cell-inner::before {
+      border-color: $white !important;
+    }
+
+    .ant-picker-week-panel-row-selected td:first-child {
+      border-radius: .4rem 0 0 .4rem;
+    }
+
+    .ant-picker-week-panel-row-selected td:last-child {
+      border-radius: 0 .4rem .4rem 0;
+    }
+
+    .ant-picker-week-panel-row-selected td,
+    .ant-picker-week-panel-row-selected:hover td {
+      background: $purple-heart;
+    }
+
     .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover {
       background: $white-lilac;
     }

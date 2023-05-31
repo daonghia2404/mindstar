@@ -2,7 +2,7 @@
 import { SyntheticEvent } from 'react';
 import { notification } from 'antd';
 import { Rule } from 'antd/lib/form';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import crypto from 'crypto';
 
 import { EFormat, ETypeNotification } from '@/common/enums';
@@ -426,4 +426,20 @@ export const schedulesOptionsByClassSchedule = (data?: TSchedule[]): TSelectOpti
     });
 
   return schedulesOptions || [];
+};
+
+export const getRangeMomentBetweenTwoDate = (
+  startDate: string | number,
+  endDate: string | number,
+  type = 'days',
+): Moment[] => {
+  const fromDate = moment(startDate);
+  const toDate = moment(endDate);
+  const diff = toDate.diff(fromDate, type as any);
+  const range = [];
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i <= diff; i++) {
+    range.push(moment(startDate).add(i, type as any));
+  }
+  return range;
 };
