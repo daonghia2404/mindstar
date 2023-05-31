@@ -6,10 +6,16 @@ import Modal from '@/components/Modal';
 import Input from '@/components/Input';
 import Switch from '@/components/Switch';
 import { TRootState } from '@/redux/reducers';
-import { ECreateBranchAction, EUpdateBranchAction, createBranchAction, updateBranchAction } from '@/redux/actions';
+import {
+  ECreateCategoryAction,
+  EUpdateCategoryAction,
+  createCategoryAction,
+  updateCategoryAction,
+} from '@/redux/actions';
 import { showNotification, validationRules } from '@/utils/functions';
-import { EAuditingStatus, ETypeNotification } from '@/common/enums';
+import { EAuditingStatus, ETypeCategory, ETypeNotification } from '@/common/enums';
 import { TModalCategoryFormProps } from './ModalCategoryForm.type';
+import TextArea from '@/components/TextArea';
 
 import './ModalCategoryForm.scss';
 
@@ -17,14 +23,11 @@ const ModalCategoryForm: React.FC<TModalCategoryFormProps> = ({ visible, data, o
   const dispatch = useDispatch();
   const [form] = Form.useForm();
 
-  const settingsState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data;
-  const cityOptions = settingsState?.cities?.map((item) => ({ label: item.name, value: item.id }));
-
   const createCategoryLoading = useSelector(
-    (state: TRootState) => state.loadingReducer[ECreateBranchAction.CREATE_BRANCH],
+    (state: TRootState) => state.loadingReducer[ECreateCategoryAction.CREATE_CATEGORY],
   );
   const updateCategoryLoading = useSelector(
-    (state: TRootState) => state.loadingReducer[EUpdateBranchAction.UPDATE_BRANCH],
+    (state: TRootState) => state.loadingReducer[EUpdateCategoryAction.UPDATE_CATEGORY],
   );
   const loading = createCategoryLoading || updateCategoryLoading;
 
@@ -32,22 +35,21 @@ const ModalCategoryForm: React.FC<TModalCategoryFormProps> = ({ visible, data, o
     form.validateFields().then((values) => {
       const body = {
         name: values?.name,
-        address: values?.address,
-        city_id: values?.city?.value,
-        auditing_status: values?.status ? EAuditingStatus.ACTIVE : EAuditingStatus.INACTIVE,
-        academy_id: 1,
+        description: values?.description || '',
+        auditing_status: !data || values?.status ? EAuditingStatus.ACTIVE : EAuditingStatus.INACTIVE,
+        type: ETypeCategory.PRODUCT,
       };
 
       if (data) {
-        dispatch(updateBranchAction.request({ body, paths: { id: data?.id } }, handleSubmitSuccess));
+        dispatch(updateCategoryAction.request({ body, paths: { id: data?.id } }, handleSubmitSuccess));
       } else {
-        dispatch(createBranchAction.request({ body }, handleSubmitSuccess));
+        dispatch(createCategoryAction.request({ body }, handleSubmitSuccess));
       }
     });
   };
 
   const handleSubmitSuccess = (): void => {
-    showNotification(ETypeNotification.SUCCESS, `${data ? 'Cập Nhật' : 'Tạo Mới'} Chi Nhánh Thành Công !`);
+    showNotification(ETypeNotification.SUCCESS, `${data ? 'Cập Nhật' : 'Tạo Mới'} Danh Mục Thành Công !`);
     onClose?.();
     onSuccess?.();
   };
@@ -57,8 +59,7 @@ const ModalCategoryForm: React.FC<TModalCategoryFormProps> = ({ visible, data, o
       if (data) {
         form.setFieldsValue({
           name: data?.name,
-          city: cityOptions?.find((item) => item.value === data?.city?.id),
-          address: data?.address,
+          description: data?.description,
           status: Boolean(data?.auditing_status),
         });
       }
@@ -71,7 +72,7 @@ const ModalCategoryForm: React.FC<TModalCategoryFormProps> = ({ visible, data, o
   return (
     <Modal
       className="ModalCategoryForm"
-      title="UPDATE CATEGOTY"
+      title={data ? 'Sửa Danh Mục' : 'Tạo mới Danh Mục'}
       visible={visible}
       onClose={onClose}
       width={480}
@@ -83,28 +84,18 @@ const ModalCategoryForm: React.FC<TModalCategoryFormProps> = ({ visible, data, o
           <Row gutter={[16, 16]}>
             <Col span={24}>
               <Form.Item name="name" rules={[validationRules.required()]}>
-                <Input label="Name" required placeholder="Nhập dữ liệu" active />
+                <Input label="Tên" required placeholder="Nhập dữ liệu" active />
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item name="description" rules={[validationRules.required()]}>
-                <Input label="Description" required placeholder="Nhập dữ liệu" active />
+              <Form.Item name="description">
+                <TextArea label="Mô tả" placeholder="Nhập dữ liệu" active />
               </Form.Item>
             </Col>
-            {/* <Col span={24}>
-              <Form.Item name="city" rules={[validationRules.required()]}>
-                <Select label="Thành phố" required options={cityOptions} placeholder="Chọn dữ liệu" active showSearch />
-              </Form.Item>
-            </Col> */}
-            {/* <Col span={24}>
-              <Form.Item name="hotline">
-                <Input label="Hotline" required numberic placeholder="Nhập dữ liệu" active />
-              </Form.Item>
-            </Col> */}
             {data && (
               <Col span={24}>
                 <Form.Item name="status">
-                  <Switch label="Status" />
+                  <Switch label="Trạng thái" />
                 </Form.Item>
               </Col>
             )}

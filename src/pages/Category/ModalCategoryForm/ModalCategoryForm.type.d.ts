@@ -1,8 +1,8 @@
-import { TBranch } from '@/common/models';
+import { TCategory } from '@/common/models';
 
 export type TModalCategoryFormProps = {
   visible: boolean;
-  data?: TBranch;
+  data?: TCategory;
   onClose?: () => void;
   onSuccess?: () => void;
 };

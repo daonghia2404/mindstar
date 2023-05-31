@@ -1,6 +1,7 @@
 export * from './attendance';
 export * from './auth';
 export * from './branch';
+export * from './category';
 export * from './class';
 export * from './dashboard';
 export * from './e-connect';

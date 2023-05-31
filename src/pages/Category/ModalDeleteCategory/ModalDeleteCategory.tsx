@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Modal from '@/components/Modal';
 import { EButtonStyleType } from '@/components/Button';
-import { ETypeNotification } from '@/common/enums';
-import { EDeleteBranchAction, deleteBranchAction } from '@/redux/actions';
+import { EEmpty, ETypeNotification } from '@/common/enums';
+import { EDeleteCategoryAction, deleteCategoryAction } from '@/redux/actions';
 import { showNotification } from '@/utils/functions';
 import { TRootState } from '@/redux/reducers';
 import { TModalDeleteCategoryProps } from './ModalDeleteCategory.type';
@@ -15,15 +15,15 @@ import './ModalDeleteCategory.scss';
 const ModalDeleteCategory: React.FC<TModalDeleteCategoryProps> = ({ visible, data, onClose, onSuccess }) => {
   const dispatch = useDispatch();
   const deleteCategoryLoading = useSelector(
-    (state: TRootState) => state.loadingReducer[EDeleteBranchAction.DELETE_BRANCH],
+    (state: TRootState) => state.loadingReducer[EDeleteCategoryAction.DELETE_CATEGORY],
   );
 
   const handleSubmit = (): void => {
-    dispatch(deleteBranchAction.request({ paths: { id: data?.id || '' } }, handleSubmitSuccess));
+    dispatch(deleteCategoryAction.request({ paths: { id: data?.id || '' } }, handleSubmitSuccess));
   };
 
   const handleSubmitSuccess = (): void => {
-    showNotification(ETypeNotification.SUCCESS, 'Xoá Thành Công !');
+    showNotification(ETypeNotification.SUCCESS, 'Xoá Danh Mục Thành Công !');
     onClose?.();
     onSuccess?.();
   };
@@ -49,7 +49,11 @@ const ModalDeleteCategory: React.FC<TModalDeleteCategoryProps> = ({ visible, dat
       }}
     >
       <div className="ModalDeleteCategory-wrapper">
-        <div className="Modal-text text-center">Do you want to delete ?</div>
+        <div className="Modal-text text-center">
+          Bạn có chắc chắn muốn xoá Danh Mục <strong>"{data?.name || EEmpty.DASH}"</strong> không?
+          <br />
+          Dữ liệu đã xoá không thể khôi phục.
+        </div>
       </div>
     </Modal>
   );
