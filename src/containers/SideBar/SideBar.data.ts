@@ -212,7 +212,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         id: '5',
         title: 'Đổi thưởng',
         icon: EIconName.ReceiptRefund,
-        link: Paths.Dashboard,
+        link: Paths.Redeems,
         activePaths: [],
       },
       {

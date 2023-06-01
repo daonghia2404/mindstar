@@ -38,6 +38,7 @@ const Attendances = lazy(() => retryLoadComponent(() => import('@/pages/Attendan
 const Practices = lazy(() => retryLoadComponent(() => import('@/pages/Practices')));
 const Schedules = lazy(() => retryLoadComponent(() => import('@/pages/Schedules')));
 const ShopProducts = lazy(() => retryLoadComponent(() => import('@/pages/ShopProducts')));
+const Redeems = lazy(() => retryLoadComponent(() => import('@/pages/Redeems')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -68,6 +69,7 @@ export const Paths = {
   Attendances: '/attendances',
   Practices: '/practices',
   Schedules: '/schedules',
+  Redeems: '/redeems',
   ShopProducts: '/shop-products',
 
   Login: '/',
@@ -84,6 +86,7 @@ export const Pages = {
   RegisterBranch,
   Branches,
   Managers,
+  Redeems,
   ManagerDetail,
   Classes,
   ClassDetail,
