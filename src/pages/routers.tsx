@@ -68,7 +68,7 @@ export const Paths = {
   Attendances: '/attendances',
   Practices: '/practices',
   Schedules: '/schedules',
-  ShopProducts: 'shopproducts',
+  ShopProducts: '/shop-products',
 
   Login: '/',
   LoginDomain: '/login-domain',

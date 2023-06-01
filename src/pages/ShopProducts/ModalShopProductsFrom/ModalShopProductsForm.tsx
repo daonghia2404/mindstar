@@ -6,13 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Modal from '@/components/Modal';
 import Input from '@/components/Input';
-import Select, { TSelectOption } from '@/components/Select';
+import { TSelectOption } from '@/components/Select';
 import { TRootState } from '@/redux/reducers';
 import {
   ECreateClassAction,
   EUpdateClassAction,
   createClassAction,
-  getBranchesAction,
   getManagersAction,
   updateClassAction,
 } from '@/redux/actions';
@@ -21,7 +20,7 @@ import { EFormat, ETypeNotification, EUserType } from '@/common/enums';
 import TextArea from '@/components/TextArea';
 import MultipleSelect from '@/components/MultipleSelect';
 import { useOptionsPaginate } from '@/utils/hooks';
-import WorkingTimes, { TWorkTime } from '@/components/WorkingTimes';
+import { TWorkTime } from '@/components/WorkingTimes';
 
 import { TModalShopProductsFormProps } from './ModalShopProductsForm.type';
 import './ModalShopProductsForm.scss';
@@ -37,12 +36,6 @@ const ModalShopProducts: React.FC<TModalShopProductsFormProps> = ({ visible, dat
   } = useOptionsPaginate(getManagersAction, 'managerReducer', 'getManagersResponse', undefined, {
     userType: EUserType.TEACHER,
   });
-
-  const {
-    options: optionsBranches,
-    handleLoadMore: handleLoadMoreBranches,
-    handleSearch: handleSearchBranches,
-  } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', 'branchName');
 
   const createClassLoading = useSelector((state: TRootState) => state.loadingReducer[ECreateClassAction.CREATE_CLASS]);
   const updateClassLoading = useSelector((state: TRootState) => state.loadingReducer[EUpdateClassAction.UPDATE_CLASS]);
@@ -106,7 +99,7 @@ const ModalShopProducts: React.FC<TModalShopProductsFormProps> = ({ visible, dat
   };
 
   const handleSubmitSuccess = (): void => {
-    showNotification(ETypeNotification.SUCCESS, `${data ? 'Cập Nhật' : 'Tạo Mới'} Lớp Học Thành Công !`);
+    showNotification(ETypeNotification.SUCCESS, `${data ? 'Cập Nhật' : 'Tạo Mới'} Sản Phẩm Thành Công !`);
     onClose?.();
     onSuccess?.();
   };
@@ -114,7 +107,7 @@ const ModalShopProducts: React.FC<TModalShopProductsFormProps> = ({ visible, dat
   return (
     <Modal
       className="ModalShopProducts"
-      title="Update Product"
+      title={data ? 'Sửa Sản Phẩm' : 'Tạo mới Sản Phẩm'}
       visible={visible}
       onClose={onClose}
       width={480}

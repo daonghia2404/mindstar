@@ -1,6 +1,6 @@
 import { Col, Row } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Card from '@/components/Card';
 import Select from '@/components/Select';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
@@ -12,7 +12,7 @@ import { TRootState } from '@/redux/reducers';
 import Table from '@/components/Table';
 import Button, { EButtonStyleType } from '@/components/Button';
 import { EAuditingStatus } from '@/common/enums';
-import { EGetBranchesAction, getClassesAction } from '@/redux/actions';
+import { EGetBranchesAction } from '@/redux/actions';
 import { TBranch } from '@/common/models';
 import { getFullUrlStatics } from '@/utils/functions';
 import DropdownMenu from '@/components/DropdownMenu';
@@ -24,7 +24,7 @@ import ModalDeleteShopProducts from './ModalDeleteShopProducts';
 import ModalShopProductsForm from './ModalShopProductsFrom';
 
 const ShopProducts: React.FC = () => {
-  const [getBranchesParamsRequest, setGetShopProductsParamsRequest] = useState<TGetBranchesParams>({
+  const [getShopProductsParamsRequest, setGetShopProductsParamsRequest] = useState<TGetBranchesParams>({
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
     auditingStatuses: `${EAuditingStatus.ACTIVE},${EAuditingStatus.INACTIVE}`,
@@ -35,7 +35,6 @@ const ShopProducts: React.FC = () => {
   const [modalDeleteShopProductsState, setModalDeleteShopProductsState] = useState<{ visible: boolean; data?: any }>({
     visible: false,
   });
-  console.log(modalShopProductsFormState);
   const handleOpenModalShopProductsForm = (data?: TBranch): void => {
     setModalShopProductsFormState({ visible: true, data });
   };
@@ -48,12 +47,20 @@ const ShopProducts: React.FC = () => {
   const handleCloseModalDeleteShopProducts = (data?: TBranch): void => {
     setModalDeleteShopProductsState({ visible: true, data });
   };
+
   const handlePaginationChange = (page: number, size: number, sort?: string): void => {
     setGetShopProductsParamsRequest({
-      ...getBranchesParamsRequest,
+      ...getShopProductsParamsRequest,
       page,
       size,
       sort,
+    });
+  };
+  const handleSearch = (keyword?: string): void => {
+    setGetShopProductsParamsRequest({
+      ...getShopProductsParamsRequest,
+      page: DEFAULT_PAGE,
+      // name: keyword,
     });
   };
   const dataTableDropdownActions = (data?: TBranch): TDropdownMenuItem[] => [
@@ -216,7 +223,7 @@ const ShopProducts: React.FC = () => {
                       style={{ minWidth: '24rem' }}
                       label="Tìm kiếm"
                       suffixIcon={<Icon name={EIconName.Search} color={EIconColor.TUNDORA} />}
-                      // onSearch={handleSearch}
+                      onSearch={handleSearch}
                     />
                   </Col>
                   <Col>

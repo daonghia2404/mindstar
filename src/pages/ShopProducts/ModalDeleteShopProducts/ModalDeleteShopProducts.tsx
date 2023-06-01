@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Modal from '@/components/Modal';
 import { EButtonStyleType } from '@/components/Button';
-import { ETypeNotification } from '@/common/enums';
+import { EEmpty, ETypeNotification } from '@/common/enums';
 import { EDeleteClassAction, deleteClassAction } from '@/redux/actions';
 import { showNotification } from '@/utils/functions';
 import { TRootState } from '@/redux/reducers';
@@ -21,7 +21,7 @@ const ModalDeleteShopProducts: React.FC<TModalDeleteShopProductsProps> = ({ visi
   };
 
   const handleSubmitSuccess = (): void => {
-    showNotification(ETypeNotification.SUCCESS, 'Xoá Thành Công !');
+    showNotification(ETypeNotification.SUCCESS, 'Xoá Sản Phẩm Thành Công !');
     onClose?.();
     onSuccess?.();
   };
@@ -29,7 +29,7 @@ const ModalDeleteShopProducts: React.FC<TModalDeleteShopProductsProps> = ({ visi
   return (
     <Modal
       className="ModalDeleteShopProducts"
-      title="DELETE"
+      title="Xoá Sản Phẩm"
       visible={visible}
       onClose={onClose}
       width={400}
@@ -47,7 +47,9 @@ const ModalDeleteShopProducts: React.FC<TModalDeleteShopProductsProps> = ({ visi
       }}
     >
       <div className="ModalDeleteShopProducts-wrapper">
-        <div className="Modal-text text-center">Are you sure you want to delete this product?</div>
+        <div className="Modal-text text-center">
+          Bạn có chắc chắn muốn xoá Sản Phẩm "{data?.name || EEmpty.DASH}" không? Dữ liệu đã xoá không thể khôi phục.
+        </div>
       </div>
     </Modal>
   );

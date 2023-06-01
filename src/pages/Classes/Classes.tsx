@@ -36,7 +36,6 @@ const Classes: React.FC = () => {
   const [modalDeleteClassState, setModalDeleteClassState] = useState<{ visible: boolean; data?: TClass }>({
     visible: false,
   });
-
   const [getClassesParamsRequest, setGetClassesParamsRequest] = useState<TGetClassesParams>({
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
