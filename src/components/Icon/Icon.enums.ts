@@ -68,6 +68,7 @@ export enum EIconColor {
   TUNDORA = '#454545',
   MINE_SHAFT = '#1F1F1F',
   SILVER = '#CCCCCC',
+  SILVER_CHALICE = '#AAAAAA',
   APPLE = '#43A047',
   POMEGRANATE = '#F44336',
   DOVE_GRAY = '#6E6E6E',

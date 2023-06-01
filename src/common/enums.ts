@@ -148,3 +148,13 @@ export enum ETypeCheckIn {
   PRESENT = 1,
   ABSENT = 0,
 }
+
+export enum ETypeCategory {
+  EXPENSE = 1,
+  PRODUCT = 1,
+}
+
+export enum ETypeProductUploadImages {
+  REWARDS = 'rewards',
+  PRODUCTS = 'products',
+}

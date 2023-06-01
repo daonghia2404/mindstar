@@ -178,21 +178,21 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     title: 'Cửa hàng',
     icon: EIconName.ShoppingCart,
     link: Paths.Dashboard,
-    activePaths: [],
+    activePaths: [Paths.Categories, Paths.Rewards, Paths.Products],
     children: [
       {
         id: '1',
         title: 'Danh mục',
         icon: EIconName.Category,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.Categories,
+        activePaths: [Paths.Categories],
       },
       {
         id: '2',
         title: 'Sản phẩm',
         icon: EIconName.BoxSeam,
-        link: Paths.ShopProducts,
-        activePaths: [],
+        link: Paths.Products,
+        activePaths: [Paths.Products],
       },
       {
         id: '3',
@@ -205,8 +205,8 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         id: '4',
         title: 'Phần thưởng',
         icon: EIconName.Award,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.Rewards,
+        activePaths: [Paths.Rewards],
       },
       {
         id: '5',

@@ -1,0 +1,89 @@
+@import '@/assets/styles/_global.scss';
+
+.UploadImages {
+  height: unset !important;
+
+  .FormField {
+    &-field {
+      padding-top: 2.4rem;
+    }
+  }
+
+  &-wrapper {
+    margin-bottom: 0.8rem;
+  }
+
+  &-item,
+  &-placeholder {
+    width: 9rem;
+    height: 9rem;
+    border-radius: .8rem;
+    overflow: hidden;
+    border: 1px solid $silver-chalice;
+    transition: $common-transition;
+    cursor: pointer;
+
+    &:hover {
+      border-color: $purple-heart;
+    }
+  }
+
+  &-item {
+    position: relative;
+
+    &:hover {
+      .UploadImages-item {
+        &-remove {
+          opacity: 1;
+        }
+      }
+    }
+
+    &-remove {
+      position: absolute;
+      cursor: pointer;
+      width: 2.4rem;
+      height: 2.4rem;
+      background: $pomegranate;
+      border-radius: .4rem;
+      top: 0.4rem;
+      right: 0.4rem;
+      display: flex;
+      transition: $common-transition;
+      opacity: 0;
+
+      .Icon {
+        width: 80%;
+        height: 80%;
+        margin: auto;
+      }
+    }
+
+    .ant-avatar,
+    .Avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+    }
+  }
+
+  &-placeholder {
+    display: flex;
+
+    &:hover {
+      .Icon svg {
+        stroke: $purple-heart;
+      }
+    }
+
+    .Icon {
+      width: 3.2rem;
+      height: 3.2rem;
+      margin: auto;
+
+      svg {
+        transition: $common-transition;
+      }
+    }
+  }
+}

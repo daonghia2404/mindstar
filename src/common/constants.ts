@@ -129,3 +129,12 @@ export const dataTypeCheckInOptions = [
   { value: ETypeCheckIn.ABSENT, label: 'Vắng Mặt', data: { statusType: EStatusStyleType.DANGER } },
   { value: ETypeCheckIn.NONE, label: 'Chưa Điểm Danh', data: { statusType: EStatusStyleType.WARNING } },
 ];
+
+export const dataPointsRangeOptions = [
+  { value: '1000-', label: '> 1000', data: { fromPoint: 1000, toPoint: undefined } },
+  { value: '800-1000', label: '800 - 1000', data: { fromPoint: 800, toPoint: 1000 } },
+  { value: '500-800', label: '500 - 800', data: { fromPoint: 500, toPoint: 800 } },
+  { value: '300-500', label: '300 - 500', data: { fromPoint: 300, toPoint: 500 } },
+  { value: '200-300', label: '200 - 300', data: { fromPoint: 200, toPoint: 300 } },
+  { value: '-200', label: '< 200', data: { fromPoint: undefined, toPoint: 200 } },
+];
