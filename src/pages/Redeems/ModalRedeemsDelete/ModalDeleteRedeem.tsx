@@ -9,12 +9,12 @@ import { EDeleteClassAction, deleteClassAction } from '@/redux/actions';
 import { showNotification } from '@/utils/functions';
 import { TRootState } from '@/redux/reducers';
 
-import { TModalRedeemsDeleteProps } from './ModalRedeemsDelete.type';
-import './ModalRedeemsDelete.scss';
+import { TModalDeleteRedeemProps } from './ModalDeleteRedeem.type';
+import './ModalDeleteRedeem.scss';
 
-const ModalRedeemsDelete: React.FC<TModalRedeemsDeleteProps> = ({ visible, data, onClose, onSuccess }) => {
+const ModalDeleteRedeem: React.FC<TModalDeleteRedeemProps> = ({ visible, data, onClose, onSuccess }) => {
   const dispatch = useDispatch();
-  const RedeemsDeleteLoading = useSelector(
+  const deleteDedeemsLoading = useSelector(
     (state: TRootState) => state.loadingReducer[EDeleteClassAction.DELETE_CLASS],
   );
 
@@ -23,15 +23,15 @@ const ModalRedeemsDelete: React.FC<TModalRedeemsDeleteProps> = ({ visible, data,
   };
 
   const handleSubmitSuccess = (): void => {
-    showNotification(ETypeNotification.SUCCESS, 'Xoá Sản Phẩm Thành Công !');
+    showNotification(ETypeNotification.SUCCESS, 'Xoá Đổi Thưởng Thành Công !');
     onClose?.();
     onSuccess?.();
   };
 
   return (
     <Modal
-      className="ModalRedeemsDelete"
-      title="Xoá Sản Phẩm "
+      className="ModalDeleteRedeem"
+      title="Xoá Đổi Thưởng"
       visible={visible}
       onClose={onClose}
       width={400}
@@ -39,18 +39,18 @@ const ModalRedeemsDelete: React.FC<TModalRedeemsDeleteProps> = ({ visible, data,
         title: 'Huỷ Bỏ',
         onClick: onClose,
         styleType: EButtonStyleType.GENERAL_FORM,
-        disabled: RedeemsDeleteLoading,
+        disabled: deleteDedeemsLoading,
       }}
       confirmButton={{
         title: 'Đồng Ý',
         onClick: handleSubmit,
         styleType: EButtonStyleType.DANGER,
-        disabled: RedeemsDeleteLoading,
+        disabled: deleteDedeemsLoading,
       }}
     >
-      <div className="ModalRedeemsDelete-wrapper">
+      <div className="ModalDeleteRedeem-wrapper">
         <div className="Modal-text text-center">
-          Bạn có chắc chắn muốn xoá sản phẩm <strong>"{data?.name || EEmpty.DASH}"</strong> không?
+          Bạn có chắc chắn muốn xoá Đổi Thưởng <strong>"{data?.name || EEmpty.DASH}"</strong> không?
           <br />
           Dữ liệu đã xoá không thể khôi phục.
         </div>
@@ -59,4 +59,4 @@ const ModalRedeemsDelete: React.FC<TModalRedeemsDeleteProps> = ({ visible, data,
   );
 };
 
-export default ModalRedeemsDelete;
+export default ModalDeleteRedeem;

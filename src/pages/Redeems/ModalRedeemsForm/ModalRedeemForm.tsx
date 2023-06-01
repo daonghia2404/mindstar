@@ -24,29 +24,29 @@ import { useOptionsPaginate } from '@/utils/hooks';
 import WorkingTimes, { TWorkTime } from '@/components/WorkingTimes';
 import { dataWorkingTimesDefault } from '@/components/WorkingTimes/WorkingTimes.data';
 
-import { TModalRedeemsFormProps } from './ModalRedeemsForm.type';
-import './ModalRedeemsForm.scss';
+import { TModalRedeemFormProps } from './ModalRedeemForm.type';
+import './ModalRedeemForm.scss';
 
-const ModalRedeemsForm: React.FC<TModalRedeemsFormProps> = ({ visible, data, onClose, onSuccess }) => {
+const ModalRedeemForm: React.FC<TModalRedeemFormProps> = ({ visible, data, onClose, onSuccess }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const currentBranch = useSelector((state: TRootState) => state.uiReducer.branch);
 
   const settingsState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data;
 
-  const {
-    options: optionsManagers,
-    handleLoadMore: handleLoadMoreManagers,
-    handleSearch: handleSearchManagers,
-  } = useOptionsPaginate(getManagersAction, 'managerReducer', 'getManagersResponse', undefined, {
-    userType: EUserType.TEACHER,
-  });
+  // const {
+  //   options: optionsManagers,
+  //   handleLoadMore: handleLoadMoreManagers,
+  //   handleSearch: handleSearchManagers,
+  // } = useOptionsPaginate(getManagersAction, 'managerReducer', 'getManagersResponse', undefined, {
+  //   userType: EUserType.TEACHER,
+  // });
 
-  const {
-    options: optionsBranches,
-    handleLoadMore: handleLoadMoreBranches,
-    handleSearch: handleSearchBranches,
-  } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', 'branchName');
+  // const {
+  //   options: optionsBranches,
+  //   handleLoadMore: handleLoadMoreBranches,
+  //   handleSearch: handleSearchBranches,
+  // } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', 'branchName');
 
   const createClassLoading = useSelector((state: TRootState) => state.loadingReducer[ECreateClassAction.CREATE_CLASS]);
   const updateClassLoading = useSelector((state: TRootState) => state.loadingReducer[EUpdateClassAction.UPDATE_CLASS]);
@@ -110,7 +110,7 @@ const ModalRedeemsForm: React.FC<TModalRedeemsFormProps> = ({ visible, data, onC
   };
 
   const handleSubmitSuccess = (): void => {
-    showNotification(ETypeNotification.SUCCESS, `${data ? 'Cập Nhật' : 'Tạo Mới'} Sản Phẩm Thành Công !`);
+    showNotification(ETypeNotification.SUCCESS, `${data ? 'Cập Nhật' : 'Tạo Mới'}  Đổi Thưởng Thành Công !`);
     onClose?.();
     onSuccess?.();
   };
@@ -156,15 +156,15 @@ const ModalRedeemsForm: React.FC<TModalRedeemsFormProps> = ({ visible, data, onC
 
   return (
     <Modal
-      className="ModalRedeemsForm"
-      title={data ? 'Sửa Sản Phẩm ' : 'Tạo Mới Sản Phẩm '}
+      className="ModalRedeemForm"
+      title={data ? 'Sửa Đổi Thưởng ' : 'Tạo Mới Đổi Thưởng '}
       visible={visible}
       onClose={onClose}
       width={480}
       cancelButton={{ title: 'Huỷ Bỏ', disabled: loading, onClick: onClose }}
       confirmButton={{ title: 'Đồng Ý', disabled: loading, onClick: handleSubmit }}
     >
-      <div className="ModalRedeemsForm-wrapper">
+      <div className="ModalRedeemForm-wrapper">
         <Form form={form}>
           <Row gutter={[16, 16]}>
             <Col span={24}>
@@ -185,15 +185,15 @@ const ModalRedeemsForm: React.FC<TModalRedeemsFormProps> = ({ visible, data, onC
                   required
                   active
                   showSearch
-                  options={optionsBranches}
-                  onLoadMore={handleLoadMoreBranches}
-                  onSearch={handleSearchBranches}
+                  // options={optionsBranches}
+                  // onLoadMore={handleLoadMoreBranches}
+                  // onSearch={handleSearchBranches}
                 />
               </Form.Item>
             </Col>
             <Col span={24}>
               <Form.Item name="branch" rules={[validationRules.required()]}>
-                <Input label="Branch" required placeholder="Acazia Long Bien" active />
+                <Input label="Branch" required placeholder="Nhập dữ liệu" active />
               </Form.Item>
             </Col>
             <Col span={24}>
@@ -210,9 +210,9 @@ const ModalRedeemsForm: React.FC<TModalRedeemsFormProps> = ({ visible, data, onC
                   active
                   showSearch
                   useAvatarOption
-                  options={optionsManagers}
-                  onLoadMore={handleLoadMoreManagers}
-                  onSearch={handleSearchManagers}
+                  // options={optionsManagers}
+                  // onLoadMore={handleLoadMoreManagers}
+                  // onSearch={handleSearchManagers}
                 />
               </Form.Item>
             </Col>
@@ -228,4 +228,4 @@ const ModalRedeemsForm: React.FC<TModalRedeemsFormProps> = ({ visible, data, onC
   );
 };
 
-export default ModalRedeemsForm;
+export default ModalRedeemForm;

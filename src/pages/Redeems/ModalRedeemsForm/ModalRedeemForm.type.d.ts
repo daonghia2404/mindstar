@@ -1,4 +1,4 @@
-export type TModalRedeemsDeleteProps = {
+export type TModalRedeemFormProps = {
   visible: boolean;
   data?: any;
   onClose?: () => void;

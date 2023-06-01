@@ -1,3 +1,3 @@
-import ModalRedeemsDelete from './ModalRedeemsDelete';
+import ModalDeleteRedeem from './ModalDeleteRedeem';
 
-export default ModalRedeemsDelete;
+export default ModalDeleteRedeem;

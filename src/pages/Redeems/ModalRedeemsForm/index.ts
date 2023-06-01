@@ -1,3 +1,3 @@
-import ModalRedeemsForm from './ModalRedeemsForm';
+import ModalRedeemForm from './ModalRedeemForm';
 
-export default ModalRedeemsForm;
+export default ModalRedeemForm;

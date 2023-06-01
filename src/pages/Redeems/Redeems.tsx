@@ -21,7 +21,7 @@ import { TGetBranchesParams } from '@/services/api';
 import Avatar from '@/components/Avatar';
 import Status, { EStatusStyleType } from '@/components/Status';
 import ModalRedeemsForm from './ModalRedeemsForm';
-import ModalRedeemsDelete from './ModalRedeemsDelete';
+import ModalDeleteRedeems from './ModalRedeemsDelete';
 
 const Redeems: React.FC = () => {
   const [getRedeemsParamsRequest, setGetRedeemsParamsRequest] = useState<TGetBranchesParams>({
@@ -111,8 +111,17 @@ const Redeems: React.FC = () => {
       dataIndex: 'reward',
       title: 'REWARD',
       render: (_: string, record: any): React.ReactElement => (
-        <div className="Table-info-image">
-          <Avatar className="Table-info-image-img" shape="square" size={48} image={getFullUrlStatics(record?.avatar)} />
+        <div className="Table-info">
+          <Avatar shape="square" size={48} image={getFullUrlStatics(record?.avatar)} />
+        </div>
+      ),
+    },
+    {
+      key: 'checkupload',
+      dataIndex: 'checkupload',
+      title: '',
+      render: (_: string, record: any): React.ReactElement => (
+        <div className="Table-info">
           <div className="Table-info-title">{record?.checkupload}</div>
         </div>
       ),
@@ -230,13 +239,6 @@ const Redeems: React.FC = () => {
       point: 'Points',
     },
   ];
-  const dataDreaksTimeOff = [
-    { label: '10', value: '10' },
-    { label: '25', value: '25' },
-    { label: '50', value: '50' },
-    { label: '75', value: '75' },
-    { label: '100', value: '100' },
-  ];
   const getRedeemsLoading = useSelector((state: TRootState) => state.loadingReducer[EGetBranchesAction.GET_BRANCHES]);
   return (
     <div className="Redeems">
@@ -255,7 +257,7 @@ const Redeems: React.FC = () => {
                     />
                   </Col>
                   <Col>
-                    <Select label="All Status" options={dataDreaksTimeOff} placement="topLeft" size="middle" />
+                    <Select label="All Status" placement="topLeft" size="middle" />
                   </Col>
                 </Row>
               </Col>
@@ -277,7 +279,7 @@ const Redeems: React.FC = () => {
         </Col>
       </Row>
       <ModalRedeemsForm {...modalRedeemsFormState} onClose={handleCloseModalRedeemsForm} />
-      <ModalRedeemsDelete {...modalDeleteRedeemsState} onClose={handleCloseModalDeleteRedeems} />
+      <ModalDeleteRedeems {...modalDeleteRedeemsState} onClose={handleCloseModalDeleteRedeems} />
     </div>
   );
 };
