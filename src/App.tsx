@@ -55,8 +55,10 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.Attendances} component={Pages.Attendances} />
           <ProtectedRoute path={Paths.Practices} component={Pages.Practices} />
           <ProtectedRoute path={Paths.Schedules} component={Pages.Schedules} />
+          <ProtectedRoute path={Paths.Categories} component={Pages.Categories} />
+          <ProtectedRoute path={Paths.Rewards} component={Pages.Rewards} />
+          <ProtectedRoute path={Paths.Products} component={Pages.Products} />
           <ProtectedRoute path={Paths.Redeems} component={Pages.Redeems} />
-          <ProtectedRoute path={Paths.ShopProducts} component={Pages.ShopProducts} />
 
           <Redirect noThrow from={Paths.Rest} to={`${LayoutPaths.Admin}${Paths.Dashboard}`} />
         </Admin>

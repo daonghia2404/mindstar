@@ -35,7 +35,7 @@ const ModalBranchForm: React.FC<TModalBranchFormProps> = ({ visible, data, onClo
         name: values?.name,
         address: values?.address,
         city_id: values?.city?.value,
-        auditing_status: values?.status ? EAuditingStatus.ACTIVE : EAuditingStatus.INACTIVE,
+        auditing_status: !data || values?.status ? EAuditingStatus.ACTIVE : EAuditingStatus.INACTIVE,
         academy_id: 1,
       };
 

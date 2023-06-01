@@ -3,6 +3,7 @@ import { all, fork } from 'redux-saga/effects';
 import attendanceSaga from './attendance';
 import authSaga from './auth';
 import branchSaga from './branch';
+import categorySaga from './category';
 import classSaga from './class';
 import dashboardSaga from './dashboard';
 import eConnectSaga from './e-connect';
@@ -12,7 +13,9 @@ import managerSaga from './manager';
 import orderSaga from './order';
 import playerSaga from './player';
 import practiceSaga from './practice';
+import productSaga from './product';
 import redeemSaga from './redeem';
+import rewardSaga from './reward';
 import scheduleSaga from './schedule';
 import settingSaga from './setting';
 import timeOffSaga from './time-off';
@@ -25,6 +28,7 @@ const rootSaga = function* root(): Generator {
     fork(attendanceSaga),
     fork(authSaga),
     fork(branchSaga),
+    fork(categorySaga),
     fork(classSaga),
     fork(dashboardSaga),
     fork(eConnectSaga),
@@ -34,7 +38,9 @@ const rootSaga = function* root(): Generator {
     fork(orderSaga),
     fork(playerSaga),
     fork(practiceSaga),
+    fork(productSaga),
     fork(redeemSaga),
+    fork(rewardSaga),
     fork(scheduleSaga),
     fork(settingSaga),
     fork(timeOffSaga),

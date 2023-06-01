@@ -167,10 +167,12 @@ export type TExpense = {
 };
 
 export type TCategory = {
+  academy_id: number;
   auditing_status: number;
   description: string;
   id: number;
   name: string;
+  products_count: number;
   type: unknown;
 };
 
@@ -294,6 +296,24 @@ export type TProduct = {
   product_id: number;
   product_name: string;
   selling_price: number;
+  attributes: unknown;
+  auditing_status: number;
+  category: TCategory;
+  category_id: number;
+  code: string;
+  create_date: number;
+  description: string;
+  discount: number;
+  id: number;
+  image: string;
+  images: TImage[];
+  name: string;
+  popular: number;
+  price: number;
+  product_variant: unknown;
+  retail_price: number;
+  seller_info: unknown;
+  update_date: number;
 };
 
 export type TEConnect = {
@@ -338,4 +358,33 @@ export type TAttendance = {
   update_date: number;
   user_type: string;
   uuid: string;
+};
+
+export type TReward = {
+  attributes: unknown;
+  auditing_status: number;
+  code: string;
+  create_date: number;
+  description: string;
+  expired_date_time: number;
+  id: number;
+  image: string;
+  images: TImage[];
+  linked_product_id: string;
+  name: string;
+  point_value: number;
+  product_variant: unknown;
+  quantity_sold: number;
+  remaining_days: number;
+  seller_info: unknown;
+  tier_point: number;
+  update_date: number;
+};
+
+export type TImage = {
+  file_index: number;
+  image: string;
+  product_id: number;
+  product_variant_id: unknown;
+  static_file_id: number;
 };
