@@ -21,7 +21,7 @@ import { TGetBranchesParams } from '@/services/api';
 import Avatar from '@/components/Avatar';
 import Status, { EStatusStyleType } from '@/components/Status';
 import ModalRedeemsForm from './ModalRedeemsForm';
-import ModalDeleteRedeems from './ModalRedeemsDelete';
+import ModalDeleteRedeem from './ModalRedeemsDelete';
 
 const Redeems: React.FC = () => {
   const [getRedeemsParamsRequest, setGetRedeemsParamsRequest] = useState<TGetBranchesParams>({
@@ -279,7 +279,7 @@ const Redeems: React.FC = () => {
         </Col>
       </Row>
       <ModalRedeemsForm {...modalRedeemsFormState} onClose={handleCloseModalRedeemsForm} />
-      <ModalDeleteRedeems {...modalDeleteRedeemsState} onClose={handleCloseModalDeleteRedeems} />
+      <ModalDeleteRedeem {...modalDeleteRedeemsState} onClose={handleCloseModalDeleteRedeems} />
     </div>
   );
 };
