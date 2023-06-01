@@ -296,6 +296,24 @@ export type TProduct = {
   product_id: number;
   product_name: string;
   selling_price: number;
+  attributes: unknown;
+  auditing_status: number;
+  category: TCategory;
+  category_id: number;
+  code: string;
+  create_date: number;
+  description: string;
+  discount: number;
+  id: number;
+  image: string;
+  images: TImage[];
+  name: string;
+  popular: number;
+  price: number;
+  product_variant: unknown;
+  retail_price: number;
+  seller_info: unknown;
+  update_date: number;
 };
 
 export type TEConnect = {

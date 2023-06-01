@@ -11,6 +11,7 @@ export * from './manager';
 export * from './order';
 export * from './player';
 export * from './practice';
+export * from './product';
 export * from './redeem';
 export * from './reward';
 export * from './schedule';

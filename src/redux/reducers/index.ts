@@ -14,6 +14,7 @@ import managerReducer from './manager';
 import orderReducer from './order';
 import playerReducer from './player';
 import practiceReducer from './practice';
+import productReducer from './product';
 import redeemReducer from './redeem';
 import rewardReducer from './reward';
 import scheduleReducer from './schedule';
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
   orderReducer,
   playerReducer,
   practiceReducer,
+  productReducer,
   redeemReducer,
   rewardReducer,
   scheduleReducer,

@@ -1,45 +1,49 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
 
 import Modal from '@/components/Modal';
 import Input from '@/components/Input';
 import { TRootState } from '@/redux/reducers';
 import {
-  ECreateRewardAction,
-  EDeleteUploadImagesProductsAction,
-  EUpdateRewardAction,
+  ECreateProductAction,
+  EUpdateProductAction,
   EUploadImagesProductAction,
-  createRewardAction,
-  deleteUploadImagesProductsAction,
-  getRewardAction,
-  updateRewardAction,
+  createProductAction,
+  getCategoriesAction,
+  getProductAction,
+  updateProductAction,
   uploadImagesProductAction,
 } from '@/redux/actions';
 import { renderEachFirstLetterOfWord, showNotification, validationRules } from '@/utils/functions';
 import { EAuditingStatus, ETypeNotification, ETypeProductUploadImages } from '@/common/enums';
 import TextArea from '@/components/TextArea';
-import DatePicker from '@/components/DatePicker';
+import { TProduct } from '@/common/models';
 import UploadImages, { TUploadImages } from '@/components/UploadImages';
-import { TReward } from '@/common/models';
+import {
+  EDeleteUploadImagesProductsAction,
+  deleteUploadImagesProductsAction,
+} from '@/redux/actions/upload/delete-upload-images-products';
 import Switch from '@/components/Switch';
+import Select from '@/components/Select';
+import { useOptionsPaginate } from '@/utils/hooks';
 
-import { TModalRewardFormProps } from './ModalRewardForm.type';
-import './ModalRewardForm.scss';
+import { TModalProductFormProps } from './ModalProductForm.type';
+import './ModalProductForm.scss';
 
-const ModalRewardForm: React.FC<TModalRewardFormProps> = ({ visible, data, onClose, onSuccess }) => {
+const ModalShopProducts: React.FC<TModalProductFormProps> = ({ visible, data, onClose, onSuccess }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [formValues, setFormValues] = useState<any>({});
+  const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
 
-  const rewardState = useSelector((state: TRootState) => state.rewardReducer.getRewardResponse)?.data;
+  const productState = useSelector((state: TRootState) => state.productReducer.getProductResponse)?.data;
 
-  const createRewardLoading = useSelector(
-    (state: TRootState) => state.loadingReducer[ECreateRewardAction.CREATE_REWARD],
+  const createProductLoading = useSelector(
+    (state: TRootState) => state.loadingReducer[ECreateProductAction.CREATE_PRODUCT],
   );
-  const updateRewardLoading = useSelector(
-    (state: TRootState) => state.loadingReducer[EUpdateRewardAction.UPDATE_REWARD],
+  const updateProductLoading = useSelector(
+    (state: TRootState) => state.loadingReducer[EUpdateProductAction.UPDATE_PRODUCT],
   );
   const uploadImagesProductLoading = useSelector(
     (state: TRootState) => state.loadingReducer[EUploadImagesProductAction.UPLOAD_IMAGES_PRODUCT],
@@ -47,34 +51,50 @@ const ModalRewardForm: React.FC<TModalRewardFormProps> = ({ visible, data, onClo
   const deleteUploadImagesProduct = useSelector(
     (state: TRootState) => state.loadingReducer[EDeleteUploadImagesProductsAction.DELETE_UPLOAD_IMAGES_PRODUCTS],
   );
-  const loading = createRewardLoading || updateRewardLoading || uploadImagesProductLoading || deleteUploadImagesProduct;
+  const loading =
+    createProductLoading || updateProductLoading || uploadImagesProductLoading || deleteUploadImagesProduct;
+
+  const {
+    options: optionsCategories,
+    handleLoadMore: handleLoadMoreCategories,
+    handleSearch: handleSearchCategories,
+    handleReset: handleResetCategories,
+  } = useOptionsPaginate(
+    getCategoriesAction,
+    'categoryReducer',
+    'getCategoriesResponse',
+    undefined,
+    { auditingStatuses: EAuditingStatus.ACTIVE },
+    { branchIds: currentBranchId },
+  );
 
   const handleSubmit = (): void => {
     form.validateFields().then((values) => {
       const body = {
         code: values?.code,
         description: values?.description,
-        expired_date_time: values?.expireDate?.valueOf(),
         name: values?.name,
-        point_value: values?.point,
+        category_id: values?.category?.value,
+        selling_price: values?.sellingPrice,
+        retail_price: values?.retailPrice,
         auditing_status: !data || values?.status ? EAuditingStatus.ACTIVE : EAuditingStatus.INACTIVE,
       };
 
       if (data) {
         dispatch(
-          updateRewardAction.request({ body, paths: { id: data?.id } }, (response): void =>
+          updateProductAction.request({ body, paths: { id: data?.id } }, (response): void =>
             handleUploadImages(response?.data, values?.images),
           ),
         );
       } else {
         dispatch(
-          createRewardAction.request({ body }, (response): void => handleUploadImages(response?.data, values?.images)),
+          createProductAction.request({ body }, (response): void => handleUploadImages(response?.data, values?.images)),
         );
       }
     });
   };
 
-  const handleUploadImages = (response: TReward, images: TUploadImages[]): void => {
+  const handleUploadImages = (response: TProduct, images: TUploadImages[]): void => {
     const uploadImages = images?.filter((item) => item.file) || [];
     const deleteImages = images?.filter((item) => item.delete) || [];
 
@@ -90,7 +110,7 @@ const ModalRewardForm: React.FC<TModalRewardFormProps> = ({ visible, data, onClo
         uploadImagesProductAction.request(
           {
             body,
-            paths: { id: response.id, productType: ETypeProductUploadImages.REWARDS },
+            paths: { id: response.id, productType: ETypeProductUploadImages.PRODUCTS },
           },
           (): void => {
             if (callSuccess || deleteImages.length === 0) handleSubmitSuccess();
@@ -106,7 +126,7 @@ const ModalRewardForm: React.FC<TModalRewardFormProps> = ({ visible, data, onClo
           {
             paths: {
               id: response.id,
-              productType: ETypeProductUploadImages.REWARDS,
+              productType: ETypeProductUploadImages.PRODUCTS,
               imageIds: deleteImages?.map((item) => item.value)?.join(','),
             },
           },
@@ -126,25 +146,28 @@ const ModalRewardForm: React.FC<TModalRewardFormProps> = ({ visible, data, onClo
   };
 
   const handleSubmitSuccess = (): void => {
-    showNotification(ETypeNotification.SUCCESS, `${data ? 'Cập Nhật' : 'Tạo Mới'} Phần Thưởng Thành Công !`);
+    showNotification(ETypeNotification.SUCCESS, `${data ? 'Cập Nhật' : 'Tạo Mới'} Sản Phẩm Thành Công !`);
     onClose?.();
     onSuccess?.();
   };
 
   useEffect(() => {
     if (visible) {
-      if (data && rewardState) {
+      handleResetCategories();
+
+      if (data && productState) {
         const dataChanged = {
-          images: rewardState?.images?.map((item) => ({
+          images: productState?.images?.map((item) => ({
             value: item.static_file_id,
             url: item.image,
             fileIndex: item.file_index,
           })),
           name: data?.name,
           code: data?.code,
+          sellingPrice: data?.selling_price,
+          retailPrice: data?.retail_price,
           description: data?.description,
-          point: data?.point_value,
-          expireDate: data?.expired_date_time ? moment(data.expired_date_time) : undefined,
+          category: data?.category ? { label: data?.category?.name, value: String(data?.category?.id) } : undefined,
           status: Boolean(data?.auditing_status),
         };
         form.setFieldsValue(dataChanged);
@@ -161,32 +184,32 @@ const ModalRewardForm: React.FC<TModalRewardFormProps> = ({ visible, data, onClo
       setFormValues({});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible, form, data, rewardState]);
+  }, [visible, form, data, productState]);
 
-  const getReward = useCallback(() => {
+  const getProduct = useCallback(() => {
     if (data?.id && visible) {
-      dispatch(getRewardAction.request({ paths: { id: data?.id } }));
+      dispatch(getProductAction.request({ paths: { id: data?.id } }));
     } else {
-      dispatch(getRewardAction.success(undefined));
+      dispatch(getProductAction.success(undefined));
     }
   }, [dispatch, visible, data]);
 
   useEffect(() => {
-    getReward();
-  }, [getReward]);
+    getProduct();
+  }, [getProduct]);
 
   return (
     <Modal
-      className="ModalRewardForm"
-      title={data ? 'Sửa Phần Thưởng' : 'Tạo mới Phần Thưởng'}
+      className="ModalShopProducts"
+      title={data ? 'Sửa Sản Phẩm' : 'Tạo mới Sản Phẩm'}
       visible={visible}
       onClose={onClose}
       width={540}
       cancelButton={{ title: 'Huỷ Bỏ', disabled: loading, onClick: onClose }}
       confirmButton={{ title: 'Đồng Ý', disabled: loading, onClick: handleSubmit }}
     >
-      <div className="ModalRewardForm-wrapper">
-        <Form form={form} onValuesChange={(value, values): void => setFormValues({ ...formValues, ...values })}>
+      <div className="ModalShopProducts-wrapper">
+        <Form form={form} onValuesChange={(_, values): void => setFormValues({ ...formValues, ...values })}>
           <Row gutter={[16, 16]}>
             <Col span={24}>
               <Form.Item name="images" rules={[validationRules.required()]}>
@@ -218,18 +241,49 @@ const ModalRewardForm: React.FC<TModalRewardFormProps> = ({ visible, data, onClo
               </Form.Item>
             </Col>
             <Col span={24}>
+              <Form.Item name="category">
+                <Select
+                  label="Danh mục"
+                  placeholder="Chọn dữ liệu"
+                  active
+                  showSearch
+                  options={optionsCategories}
+                  onLoadMore={handleLoadMoreCategories}
+                  onSearch={handleSearchCategories}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
               <Form.Item name="description">
                 <TextArea label="Mô tả" placeholder="Nhập dữ liệu" active />
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item name="point" rules={[validationRules.required()]}>
-                <Input label="Điểm" required placeholder="Nhập dữ liệu" active useNumber numberic />
+              <Form.Item name="retailPrice" rules={[validationRules.required()]}>
+                <Input
+                  label="Giá niêm yết"
+                  placeholder="Nhập dữ liệu"
+                  active
+                  required
+                  numberic
+                  useNumber
+                  useComma
+                  suffixText="đ"
+                />
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item name="expireDate" rules={[validationRules.required()]}>
-                <DatePicker label="Ngày hết hạn" required placeholder="Chọn dữ liệu" active />
+              <Form.Item name="sellingPrice" rules={[validationRules.required()]}>
+                <Input
+                  required
+                  label="Giá bán"
+                  placeholder="Nhập dữ liệu"
+                  active
+                  numberic
+                  useNumber
+                  useComma
+                  suffixText="đ"
+                />
               </Form.Item>
             </Col>
             {data && (
@@ -246,4 +300,4 @@ const ModalRewardForm: React.FC<TModalRewardFormProps> = ({ visible, data, onClo
   );
 };
 
-export default ModalRewardForm;
+export default ModalShopProducts;

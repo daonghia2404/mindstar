@@ -52,7 +52,7 @@ const Input: React.FC<TInputProps> = ({
         if (changedValue === '') {
           onChange?.('');
         } else if (useComma) {
-          onChange?.(Number(changedValue?.replaceAll(/[.,\s]/g, '')) || '');
+          onChange?.(Number(changedValue?.replaceAll(/[.,\s]/g, '')));
         } else {
           onChange?.(isNumbericPass ? Number(changedValue) : Number(value) || '');
         }
@@ -83,7 +83,10 @@ const Input: React.FC<TInputProps> = ({
 
   const commonProps = {
     ref,
-    value: numberic && useComma && useNumber && value ? formatNumberWithCommas(Number(value || 0)) : value,
+    value:
+      numberic && useComma && useNumber && typeof value === 'number'
+        ? formatNumberWithCommas(Number(value || 0))
+        : value,
     disabled,
     placeholder,
     style: styleForm,

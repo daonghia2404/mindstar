@@ -155,7 +155,7 @@ const Select: React.FC<TSelectProps> = ({
           ref={ref}
           value={keyword}
           readOnly={!showSearch || readonly}
-          placeholder={!value?.label && focused ? placeholder : undefined}
+          placeholder={(!value?.label && focused) || (!value?.label && active) ? placeholder : undefined}
           onFocus={handleFocus}
           onChange={(e): void => handleSearch(e.target.value)}
         />

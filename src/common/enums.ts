@@ -156,4 +156,5 @@ export enum ETypeCategory {
 
 export enum ETypeProductUploadImages {
   REWARDS = 'rewards',
+  PRODUCTS = 'products',
 }

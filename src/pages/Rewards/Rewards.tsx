@@ -30,7 +30,7 @@ const Rewards: React.FC = () => {
 
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
   const getRewardsLoading = useSelector((state: TRootState) => state.loadingReducer[EGetRewardsAction.GET_REWARDS]);
-  const classsState = useSelector((state: TRootState) => state.rewardReducer.getRewardsResponse)?.data;
+  const rewardsState = useSelector((state: TRootState) => state.rewardReducer.getRewardsResponse)?.data;
   const [modalRewardFormState, setModalRewardFormState] = useState<{ visible: boolean; data?: TReward }>({
     visible: false,
   });
@@ -245,7 +245,7 @@ const Rewards: React.FC = () => {
                   <Col>
                     <div className="Table-total-item">
                       <Icon name={EIconName.Award} color={EIconColor.TUNDORA} />
-                      Tổng Phần Thưởng: <strong>{classsState?.total_elements || EEmpty.ZERO}</strong>
+                      Tổng Phần Thưởng: <strong>{rewardsState?.total_elements || EEmpty.ZERO}</strong>
                     </div>
                   </Col>
                   <Col>
@@ -261,10 +261,10 @@ const Rewards: React.FC = () => {
               }
               loading={getRewardsLoading}
               columns={columns}
-              dataSources={classsState?.content || []}
+              dataSources={rewardsState?.content || []}
               page={getRewardsParamsRequest?.page}
               pageSize={getRewardsParamsRequest?.size}
-              total={classsState?.total_elements}
+              total={rewardsState?.total_elements}
               onPaginationChange={handlePaginationChange}
             />
           </Card>

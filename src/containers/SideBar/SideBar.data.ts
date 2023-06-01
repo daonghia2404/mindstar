@@ -178,7 +178,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     title: 'Cửa hàng',
     icon: EIconName.ShoppingCart,
     link: Paths.Dashboard,
-    activePaths: [Paths.Categories, Paths.Rewards],
+    activePaths: [Paths.Categories, Paths.Rewards, Paths.Products],
     children: [
       {
         id: '1',
@@ -191,8 +191,8 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         id: '2',
         title: 'Sản phẩm',
         icon: EIconName.BoxSeam,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.Products,
+        activePaths: [Paths.Products],
       },
       {
         id: '3',
