@@ -24,3 +24,4 @@ export * from './e-connect';
 export * from './attendance';
 export * from './practice';
 export * from './category';
+export * from './reward';

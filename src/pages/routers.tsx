@@ -31,13 +31,14 @@ const ManagerDetail = lazy(() => retryLoadComponent(() => import('@/pages/Manage
 const Classes = lazy(() => retryLoadComponent(() => import('@/pages/Classes')));
 const ClassDetail = lazy(() => retryLoadComponent(() => import('@/pages/ClassDetail')));
 const Events = lazy(() => retryLoadComponent(() => import('@/pages/Events')));
-const Category = lazy(() => retryLoadComponent(() => import('@/pages/Category')));
 const Connects = lazy(() => retryLoadComponent(() => import('@/pages/Connects')));
 const PlayerDetail = lazy(() => retryLoadComponent(() => import('@/pages/PlayerDetail')));
 const Players = lazy(() => retryLoadComponent(() => import('@/pages/Players')));
 const Attendances = lazy(() => retryLoadComponent(() => import('@/pages/Attendances')));
 const Practices = lazy(() => retryLoadComponent(() => import('@/pages/Practices')));
 const Schedules = lazy(() => retryLoadComponent(() => import('@/pages/Schedules')));
+const Categories = lazy(() => retryLoadComponent(() => import('@/pages/Categories')));
+const Rewards = lazy(() => retryLoadComponent(() => import('@/pages/Rewards')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -68,7 +69,8 @@ export const Paths = {
   Attendances: '/attendances',
   Practices: '/practices',
   Schedules: '/schedules',
-  Category: '/category',
+  Categories: '/categories',
+  Rewards: '/rewards',
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -82,7 +84,6 @@ export const Pages = {
   Dashboard,
   RegisterBranch,
   Branches,
-  Category,
   Managers,
   ManagerDetail,
   Classes,
@@ -94,6 +95,8 @@ export const Pages = {
   Attendances,
   Practices,
   Schedules,
+  Categories,
+  Rewards,
 
   Login,
   LoginDomain,

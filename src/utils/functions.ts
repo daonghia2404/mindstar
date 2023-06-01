@@ -443,3 +443,13 @@ export const getRangeMomentBetweenTwoDate = (
   }
   return range;
 };
+
+export const renderEachFirstLetterOfWord = (str?: string): string => {
+  if (!str) return '';
+
+  return removeAccents(
+    str.split(/\s/).reduce((result, word) => {
+      return result + word.slice(0, 1);
+    }, ''),
+  ).toUpperCase();
+};

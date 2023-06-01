@@ -14,13 +14,13 @@ import DropdownMenu from '@/components/DropdownMenu';
 import Button, { EButtonStyleType } from '@/components/Button';
 import { TRootState } from '@/redux/reducers';
 import { EGetCategoriesAction, getCategoriesAction } from '@/redux/actions';
-import ModalCategoryForm from '@/pages/Category/ModalCategoryForm';
-import ModalDeleteCategory from '@/pages/Category/ModalDeleteCategory';
+import ModalCategoryForm from '@/pages/Categories/ModalCategoryForm';
+import ModalDeleteCategory from '@/pages/Categories/ModalDeleteCategory';
 import Status from '@/components/Status';
 
-import './Category.scss';
+import './Categories.scss';
 
-const Category: React.FC = () => {
+const Categories: React.FC = () => {
   const dispatch = useDispatch();
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
 
@@ -157,7 +157,7 @@ const Category: React.FC = () => {
   }, [getCategories]);
 
   return (
-    <div className="Category">
+    <div className="Categories">
       <Row gutter={[24, 24]}>
         <Col span={24}>
           <Card className="Categories-filter">
@@ -220,4 +220,4 @@ const Category: React.FC = () => {
   );
 };
 
-export default Category;
+export default Categories;

@@ -243,3 +243,11 @@ a {
     }
   }
 }
+
+.word-break-all {
+  word-break: break-all;
+}
+
+.ellipsis-2 {
+  @include ellipsis(2);
+}

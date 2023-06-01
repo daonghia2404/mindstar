@@ -49,13 +49,14 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.Classes} component={Pages.Classes} />
           <ProtectedRoute path={Paths.ClassDetail()} component={Pages.ClassDetail} />
           <ProtectedRoute path={Paths.Events} component={Pages.Events} />
-          <ProtectedRoute path={Paths.Category} component={Pages.Category} />
           <ProtectedRoute path={Paths.Players} component={Pages.Players} />
           <ProtectedRoute path={Paths.PlayerDetail()} component={Pages.PlayerDetail} />
           <ProtectedRoute path={Paths.Connects} component={Pages.Connects} />
           <ProtectedRoute path={Paths.Attendances} component={Pages.Attendances} />
           <ProtectedRoute path={Paths.Practices} component={Pages.Practices} />
           <ProtectedRoute path={Paths.Schedules} component={Pages.Schedules} />
+          <ProtectedRoute path={Paths.Categories} component={Pages.Categories} />
+          <ProtectedRoute path={Paths.Rewards} component={Pages.Rewards} />
 
           <Redirect noThrow from={Paths.Rest} to={`${LayoutPaths.Admin}${Paths.Dashboard}`} />
         </Admin>

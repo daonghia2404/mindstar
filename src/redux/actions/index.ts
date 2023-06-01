@@ -12,6 +12,7 @@ export * from './order';
 export * from './player';
 export * from './practice';
 export * from './redeem';
+export * from './reward';
 export * from './schedule';
 export * from './setting';
 export * from './time-off';
