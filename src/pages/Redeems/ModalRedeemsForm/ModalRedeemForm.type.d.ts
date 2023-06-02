@@ -1,6 +1,8 @@
+import { TRedeem } from '@/common/models';
+
 export type TModalRedeemFormProps = {
   visible: boolean;
-  data?: any;
+  data?: TRedeem;
   onClose?: () => void;
   onSuccess?: () => void;
 };

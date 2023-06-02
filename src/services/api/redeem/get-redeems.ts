@@ -7,8 +7,9 @@ import ApiService from '@/services/api';
 export type TGetRedeemsParams = {
   page: number;
   size: number;
-  fromDate?: number;
-  toDate?: number;
+  sort?: string;
+  search?: string;
+  orderStatuses?: string;
 };
 
 export type TGetRedeemsMaterials = {
@@ -25,6 +26,6 @@ export type TGetRedeemsResponse = TCommonResponse & {
 // FUNCTION
 
 export const getRedeems = async ({ params, headers }: TGetRedeemsMaterials): Promise<TGetRedeemsResponse> => {
-  const response = await ApiService.get(`v1/api/admin/redeems`, { params, headers });
+  const response = await ApiService.get(`/v1/api/admin/redeems`, { params, headers });
   return response.data;
 };

@@ -3,6 +3,8 @@ export type TUser = {
   address: string;
   auditing_status: number;
   avatar: string;
+  user_id?: number;
+  player_id?: number;
   branch: TBranch;
   branch_id: null;
   branch_name: string;

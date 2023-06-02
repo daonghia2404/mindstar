@@ -52,6 +52,7 @@ export const dataOrderStatusOptions = [
     label: 'Đang Xử Lý',
     data: {
       color: EIconColor.SELECTIVE_YELLOW,
+      statusType: EStatusStyleType.WARNING,
     },
   },
   {
@@ -59,6 +60,7 @@ export const dataOrderStatusOptions = [
     label: 'Xác Nhận',
     data: {
       color: EIconColor.CERULEAN,
+      statusType: EStatusStyleType.SUCCESS,
     },
   },
   {
@@ -66,6 +68,7 @@ export const dataOrderStatusOptions = [
     label: 'Đã Huỷ',
     data: {
       color: EIconColor.POMEGRANATE,
+      statusType: EStatusStyleType.DANGER,
     },
   },
   {
@@ -73,6 +76,7 @@ export const dataOrderStatusOptions = [
     label: 'Hoàn Trả',
     data: {
       color: EIconColor.SELECTIVE_YELLOW,
+      statusType: EStatusStyleType.WARNING,
     },
   },
   {
@@ -80,6 +84,7 @@ export const dataOrderStatusOptions = [
     label: 'Đang Giao',
     data: {
       color: EIconColor.PURPLE_HEART,
+      statusType: EStatusStyleType.SUCCESS,
     },
   },
   {
@@ -87,6 +92,7 @@ export const dataOrderStatusOptions = [
     label: 'Chuẩn Bị Vận Chuyển',
     data: {
       color: EIconColor.CERULEAN,
+      statusType: EStatusStyleType.WARNING,
     },
   },
   {
@@ -94,6 +100,7 @@ export const dataOrderStatusOptions = [
     label: 'Hoàn Thành',
     data: {
       color: EIconColor.APPLE,
+      statusType: EStatusStyleType.SUCCESS,
     },
   },
 ];
