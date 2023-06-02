@@ -41,6 +41,7 @@ const Categories = lazy(() => retryLoadComponent(() => import('@/pages/Categorie
 const Rewards = lazy(() => retryLoadComponent(() => import('@/pages/Rewards')));
 const Products = lazy(() => retryLoadComponent(() => import('@/pages/Products')));
 const Redeems = lazy(() => retryLoadComponent(() => import('@/pages/Redeems')));
+const Customer = lazy(() => retryLoadComponent(() => import('@/pages/Customer')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -68,6 +69,7 @@ export const Paths = {
   Players: '/players',
   PlayerDetail: (id?: string): string => `/players/${id || ':id'}`,
   Connects: '/connects',
+  Customer: '/customer',
   Attendances: '/attendances',
   Practices: '/practices',
   Schedules: '/schedules',
@@ -89,6 +91,7 @@ export const Pages = {
   RegisterBranch,
   Branches,
   Managers,
+  Customer,
   Redeems,
   ManagerDetail,
   Classes,
