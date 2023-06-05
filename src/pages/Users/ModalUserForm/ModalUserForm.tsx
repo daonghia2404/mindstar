@@ -22,7 +22,7 @@ import {
   showNotification,
   validationRules,
 } from '@/utils/functions';
-import { ETypeNotification, EUserType } from '@/common/enums';
+import { EAuditingStatus, ETypeNotification, EUserType } from '@/common/enums';
 import DatePicker from '@/components/DatePicker';
 import { dataUserTypeOptions } from '@/common/constants';
 import { useOptionsPaginate } from '@/utils/hooks';
@@ -30,6 +30,7 @@ import { TUser } from '@/common/models';
 import UploadImage from '@/components/UploadImage';
 import Tooltip from '@/components/Tooltip';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
+import Switch from '@/components/Switch';
 
 import { TModalUserFormProps } from './ModalUserForm.type';
 import './ModalUserForm.scss';
@@ -67,6 +68,7 @@ const ModalUserForm: React.FC<TModalUserFormProps> = ({ visible, data, onClose, 
         raw_password: values?.password,
         user_name: values?.loginId,
         user_type: values?.role?.value,
+        auditing_status: !data || values?.status ? EAuditingStatus.ACTIVE : EAuditingStatus.INACTIVE,
       };
 
       if (data) {
@@ -114,6 +116,7 @@ const ModalUserForm: React.FC<TModalUserFormProps> = ({ visible, data, onClose, 
           phoneNumber: data?.mobile,
           name: data?.name,
           role: dataUserTypeOptions.find((item) => item.value === data.user_type),
+          status: Boolean(data?.auditing_status),
         });
       } else {
         form.setFieldsValue({
@@ -229,6 +232,13 @@ const ModalUserForm: React.FC<TModalUserFormProps> = ({ visible, data, onClose, 
                 />
               </Form.Item>
             </Col>
+            {data && (
+              <Col span={24}>
+                <Form.Item name="status">
+                  <Switch label="Trạng thái" />
+                </Form.Item>
+              </Col>
+            )}
           </Row>
         </Form>
       </div>
