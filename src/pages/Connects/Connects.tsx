@@ -71,7 +71,7 @@ const Connects: React.FC = () => {
       dataIndex: 'contact',
       title: 'Liên hệ',
       render: (_: string, record: TEConnect): React.ReactElement => (
-        <Row gutter={[16, 16]} align="middle">
+        <Row gutter={[16, 16]} align="middle" wrap={false}>
           <Col>
             <Avatar size={48} image={getFullUrlStatics(record.avatar)} />
           </Col>

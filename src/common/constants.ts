@@ -145,3 +145,12 @@ export const dataPointsRangeOptions = [
   { value: '200-300', label: '200 - 300', data: { fromPoint: 200, toPoint: 300 } },
   { value: '-200', label: '< 200', data: { fromPoint: undefined, toPoint: 200 } },
 ];
+
+export const dataAcademySizeOptions = [
+  { value: 1, label: '0-100' },
+  { value: 2, label: '101-200' },
+  { value: 3, label: '201-300' },
+  { value: 4, label: '301-500' },
+  { value: 5, label: '501-1000' },
+  { value: 6, label: '>1000' },
+];

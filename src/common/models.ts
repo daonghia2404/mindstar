@@ -390,3 +390,25 @@ export type TImage = {
   product_variant_id: unknown;
   static_file_id: number;
 };
+
+export type TAcademy = {
+  account_name: string;
+  account_number: string;
+  address: string;
+  auditing_status: number;
+  bank_name: string;
+  branches: TBranch[];
+  city: TCity;
+  create_date: number;
+  description: string;
+  director: string;
+  id: number;
+  language: unknown;
+  logo: string;
+  name: string;
+  personal_contact: TUser;
+  primary_contact: string;
+  qr_code: string;
+  size: number;
+  update_date: number;
+};

@@ -2,7 +2,36 @@
 
 .UploadImage {
   height: unset !important;
-  border: none;
+
+  &.object-fit-contain {
+    .Avatar {
+      .ant-avatar {
+        &>img {
+          object-fit: contain;
+        }
+      }
+    }
+  }
+
+  &.auto-size {
+    .Upload {
+      width: unset;
+    }
+
+    .Avatar {
+      .ant-avatar {
+        width: 100% !important;
+        height: 12rem !important;
+        background: $catskill-white;
+      }
+    }
+  }
+
+  &:not(.readonly-text) {
+    .Upload {
+      margin-bottom: 0.8rem;
+    }
+  }
 
   .Upload {
     &:hover {
@@ -15,7 +44,7 @@
   }
 
   .FormField-field {
-    padding-top: 2.8rem;
+    padding-top: 2.4rem;
   }
 
   .Upload-wrapper,

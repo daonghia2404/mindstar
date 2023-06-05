@@ -11,6 +11,10 @@
     border: none;
     padding: 0 !important;
 
+    .Upload * {
+      pointer-events: none;
+    }
+
     &.active {
       .FormField-suffix-text {
         bottom: 0;

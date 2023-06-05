@@ -58,6 +58,7 @@ export enum EIconName {
   UserCheck = 'UserCheck',
   UserCancel = 'UserCancel',
   UserX = 'UserX',
+  DeviceFloppy = 'DeviceFloppy',
 }
 
 export enum EIconColor {

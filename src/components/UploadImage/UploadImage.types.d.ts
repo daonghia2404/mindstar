@@ -5,5 +5,8 @@ export type TUploadImageProps = TFormFieldProps & {
   sizeImage?: number;
   shape?: 'circle' | 'square';
   disabled?: boolean;
+  autoSize?: boolean;
+  defaultImage?: boolean;
+  objectFitContain?: boolean;
   onChange?: (value: any) => void;
 };

@@ -122,7 +122,7 @@ const Redeems: React.FC = () => {
       dataIndex: 'reward',
       title: 'Phần thưởng',
       render: (_: string, record: TRedeem): React.ReactElement => (
-        <Row gutter={[16, 16]} align="middle">
+        <Row gutter={[16, 16]} align="middle" wrap={false}>
           <Col>
             <Avatar shape="square" size={72} image={getFullUrlStatics(record?.product_image_path)} defaultImage />
           </Col>

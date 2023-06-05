@@ -302,15 +302,14 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     id: '8',
     title: 'Cài đặt',
     icon: EIconName.Settings,
-    link: Paths.Dashboard,
-    activePaths: [],
+    activePaths: [Paths.SettingsGeneral],
     children: [
       {
         id: '1',
         title: 'Cài đặt chung',
         icon: EIconName.Adjustments,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.SettingsGeneral,
+        activePaths: [Paths.SettingsGeneral],
       },
       {
         id: '2',

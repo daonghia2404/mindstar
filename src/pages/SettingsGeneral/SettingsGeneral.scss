@@ -1,0 +1,19 @@
+@import '@/assets/styles/_global.scss';
+
+.SettingsGeneral {
+  .Card {
+    height: 100%;
+  }
+
+  &-logo,
+  &-qr-code {
+    height: 13.4rem;
+    border-radius: .4rem;
+    background: $catskill-white;
+    @include centerOriginImage;
+  }
+
+  &-qr-code {
+    width: 13.4rem;
+  }
+}
