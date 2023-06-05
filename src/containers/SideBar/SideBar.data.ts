@@ -229,14 +229,14 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     title: 'CRM',
     icon: EIconName.Database,
     link: Paths.Dashboard,
-    activePaths: [],
+    activePaths: [Paths.Customers],
     children: [
       {
         id: '1',
         title: 'Khách hàng',
         icon: EIconName.Users,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.Customers,
+        activePaths: [Paths.Customers],
       },
       {
         id: '2',

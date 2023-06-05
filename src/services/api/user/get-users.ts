@@ -7,13 +7,19 @@ import ApiService from '@/services/api';
 export type TGetUsersParams = {
   page: number;
   size: number;
+  userType?: string;
   sort?: string;
   search?: string;
   auditingStatuses?: string;
 };
 
+export type TGetUsersPaths = {
+  suffix: string;
+};
+
 export type TGetUsersMaterials = {
   params?: TGetUsersParams;
+  paths?: TGetUsersPaths;
   headers?: THeaderBranchIds;
 };
 
@@ -25,7 +31,7 @@ export type TGetUsersResponse = TCommonResponse & {
 
 // FUNCTION
 
-export const getUsers = async ({ params, headers }: TGetUsersMaterials): Promise<TGetUsersResponse> => {
-  const response = await ApiService.get(`/v1/api/admin/users/user-type-restricted=player,teacher`, { params, headers });
+export const getUsers = async ({ params, headers, paths }: TGetUsersMaterials): Promise<TGetUsersResponse> => {
+  const response = await ApiService.get(`/v1/api/admin/users/${paths?.suffix}`, { params, headers });
   return response.data;
 };

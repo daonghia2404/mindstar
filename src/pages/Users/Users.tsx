@@ -224,7 +224,13 @@ const Users: React.FC = () => {
   ];
 
   const getUsers = useCallback(() => {
-    dispatch(getUsersAction.request({ params: getUsersParamsRequest, headers: { branchIds: currentBranchId } }));
+    dispatch(
+      getUsersAction.request({
+        paths: { suffix: 'user-type-restricted=player,teacher' },
+        params: getUsersParamsRequest,
+        headers: { branchIds: currentBranchId },
+      }),
+    );
   }, [dispatch, getUsersParamsRequest, currentBranchId]);
 
   useEffect(() => {

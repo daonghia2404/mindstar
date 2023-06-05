@@ -2,6 +2,7 @@ import {
   EAuditingStatus,
   EDayOfWeek,
   EDegreeType,
+  ELevel,
   EOrderStatus,
   EPaymentType,
   ESalaryType,
@@ -162,4 +163,12 @@ export const dataUserTypeOptions = [
   { value: EUserType.TEACHER, label: 'Giáo Viên', data: { tagType: ETagType.NORMAL } },
   { value: EUserType.MANAGER, label: 'Quản Lý', data: { tagType: ETagType.WARNING } },
   { value: EUserType.PLAYER, label: 'Học Viên', data: { tagType: ETagType.SUCCESS } },
+];
+
+export const dataLevelOptions = [
+  { value: ELevel.DIAMOND, label: 'Kim cương', data: { color: EIconColor.CERULEAN } },
+  { value: ELevel.GOLD, label: 'Vàng', data: { color: EIconColor.SELECTIVE_YELLOW } },
+  { value: ELevel.SILVER, label: 'Bạc', data: { color: EIconColor.SILVER } },
+  { value: ELevel.FRIENDLY, label: 'Thân thiết', data: { color: EIconColor.APPLE } },
+  { value: ELevel.COMMON, label: 'Tiềm năng', data: { color: EIconColor.PURPLE_HEART } },
 ];

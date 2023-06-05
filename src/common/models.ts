@@ -9,7 +9,11 @@ export type TUser = {
   branch_id: null;
   branch_name: string;
   class: TClass;
+  device_list?: string[];
   city: TCity;
+  level_id: number;
+  total_spending?: number;
+  level_name: string;
   schedules?: TSchedule[];
   class_schedules?: TSchedule[];
   city_id?: string;
@@ -17,7 +21,6 @@ export type TUser = {
   date_of_birth: number;
   id: number;
   latest_login_at: number;
-  level_id: null;
   merchant: TMerchant[];
   mobile: string;
   salary_type?: string;
