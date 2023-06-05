@@ -19,6 +19,26 @@
     color: $mine-shaft;
     white-space: nowrap;
 
+    &.WARNING {
+      background: rgba($selective-yellow, 0.15);
+      color: $selective-yellow;
+    }
+
+    &.DANGER {
+      background: rgba($pomegranate, 0.1);
+      color: $pomegranate;
+    }
+
+    &.SUCCESS {
+      background: rgba($apple, 0.1);
+      color: $apple;
+    }
+
+    &.NORMAL {
+      background: rgba($cerulean, 0.1);
+      color: $cerulean;
+    }
+
     &.onclick {
       transition: $common-transition;
       cursor: pointer;

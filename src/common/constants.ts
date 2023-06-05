@@ -7,9 +7,11 @@ import {
   ESalaryType,
   ETransactionStatus,
   ETypeCheckIn,
+  EUserType,
 } from '@/common/enums';
 import { EIconColor } from '@/components/Icon';
 import { EStatusStyleType } from '@/components/Status';
+import { ETagType } from '@/components/Tags';
 
 /* eslint-disable no-useless-escape */
 export const REGEX = {
@@ -153,4 +155,11 @@ export const dataAcademySizeOptions = [
   { value: 4, label: '301-500' },
   { value: 5, label: '501-1000' },
   { value: 6, label: '>1000' },
+];
+
+export const dataUserTypeOptions = [
+  { value: EUserType.ADMIN, label: 'Admin', data: { tagType: ETagType.DANGER } },
+  { value: EUserType.TEACHER, label: 'Giáo Viên', data: { tagType: ETagType.NORMAL } },
+  { value: EUserType.MANAGER, label: 'Quản Lý', data: { tagType: ETagType.WARNING } },
+  { value: EUserType.PLAYER, label: 'Học Viên', data: { tagType: ETagType.SUCCESS } },
 ];

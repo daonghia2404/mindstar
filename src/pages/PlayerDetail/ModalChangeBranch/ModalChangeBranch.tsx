@@ -31,7 +31,7 @@ const ModalChangeBranch: React.FC<TModalChangeBranchProps> = ({ visible, data, o
     (state: TRootState) => state.loadingReducer[EChangePlayersBranchAction.CHANGE_PLAYERS_BRANCH],
   );
 
-  const childPlayersState = useSelector((state: TRootState) => state.userReducer.getChildPlayersResponse)?.data
+  const childPlayersState = useSelector((state: TRootState) => state.playerReducer.getChildPlayersResponse)?.data
     ?.players;
 
   const {

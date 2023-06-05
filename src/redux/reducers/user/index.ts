@@ -1,47 +1,65 @@
 import { createReducer } from 'deox';
 
 import {
-  TChangePlayersBranchResponse,
-  TGetChildPlayersResponse,
+  TCreateUserResponse,
+  TDeleteUserResponse,
   TGetMyProfileResponse,
+  TGetUserResponse,
+  TGetUsersResponse,
   TResetPasswordResponse,
   TSearchUserResponse,
+  TUpdateUserResponse,
 } from '@/services/api/user';
 import {
-  changePlayersBranchAction,
-  getChildPlayersAction,
+  createUserAction,
+  deleteUserAction,
   getMyProfileAction,
+  getUserAction,
+  getUsersAction,
   resetPasswordAction,
   searchUserAction,
+  updateUserAction,
 } from '@/redux/actions';
-import { changePlayersBranchUpdateState } from './change-players-branch';
-import { getChildPlayersUpdateState } from './get-child-players';
+import { createUserUpdateState } from './create-user';
+import { deleteUserUpdateState } from './delete-user';
 import { getMyProfileUpdateState } from './get-my-profile';
+import { getUserUpdateState } from './get-user';
+import { getUsersUpdateState } from './get-users';
 import { resetPasswordUpdateState } from './reset-password';
 import { searchUserUpdateState } from './search-user';
+import { updateUserUpdateState } from './update-user';
 
 export type TUserState = {
-  changePlayersBranchResponse?: TChangePlayersBranchResponse;
-  getChildPlayersResponse?: TGetChildPlayersResponse;
+  createUserResponse?: TCreateUserResponse;
+  deleteUserResponse?: TDeleteUserResponse;
   getMyProfileResponse?: TGetMyProfileResponse;
+  getUserResponse?: TGetUserResponse;
+  getUsersResponse?: TGetUsersResponse;
   resetPasswordResponse?: TResetPasswordResponse;
   searchUserResponse?: TSearchUserResponse;
+  updateUserResponse?: TUpdateUserResponse;
 };
 
 const initialState: TUserState = {
-  changePlayersBranchResponse: undefined,
-  getChildPlayersResponse: undefined,
+  createUserResponse: undefined,
+  deleteUserResponse: undefined,
   getMyProfileResponse: undefined,
+  getUserResponse: undefined,
+  getUsersResponse: undefined,
   resetPasswordResponse: undefined,
   searchUserResponse: undefined,
+  updateUserResponse: undefined,
 };
 
 const UserReducer = createReducer(initialState, (handleAction) => [
-  handleAction(changePlayersBranchAction.success, changePlayersBranchUpdateState),
-  handleAction(getChildPlayersAction.success, getChildPlayersUpdateState),
+  handleAction(createUserAction.success, createUserUpdateState),
+  handleAction(deleteUserAction.success, deleteUserUpdateState),
   handleAction(getMyProfileAction.success, getMyProfileUpdateState),
+  handleAction(getUserAction.success, getUserUpdateState),
+  handleAction(getUsersAction.success, getUsersUpdateState),
   handleAction(resetPasswordAction.success, resetPasswordUpdateState),
   handleAction(searchUserAction.success, searchUserUpdateState),
+  handleAction(updateUserAction.success, updateUserUpdateState),
 ]);
 
 export default UserReducer;

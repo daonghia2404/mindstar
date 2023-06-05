@@ -62,8 +62,8 @@ const ModalAcademyForm: React.FC<TModalAcademyFormProps> = ({ visible, data, onC
   };
 
   const handleUploadImages = (response: TAcademy, values: any): void => {
-    const isUploadLogo = values?.logo !== getFullUrlStatics(data?.logo);
-    const isUploadQrCode = values?.qrCode !== getFullUrlStatics(data?.qr_code);
+    const isUploadLogo = values?.logo && values?.logo !== getFullUrlStatics(data?.logo);
+    const isUploadQrCode = values?.qrCode && values?.qrCode !== getFullUrlStatics(data?.qr_code);
 
     if (!isUploadLogo && !isUploadQrCode) {
       handleSubmitSuccess();
@@ -208,7 +208,7 @@ const ModalAcademyForm: React.FC<TModalAcademyFormProps> = ({ visible, data, onC
             </Col>
             <Col span={24}>
               <Form.Item name="qrCode">
-                <UploadImage label="QR code" defaultImage active sizeImage={120} objectFitContain />
+                <UploadImage label="QR code" defaultImage active sizeImage={120} objectFitContain center />
               </Form.Item>
             </Col>
           </Row>

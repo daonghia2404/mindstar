@@ -189,8 +189,6 @@ const ModalShopProducts: React.FC<TModalProductFormProps> = ({ visible, data, on
   const getProduct = useCallback(() => {
     if (data?.id && visible) {
       dispatch(getProductAction.request({ paths: { id: data?.id } }));
-    } else {
-      dispatch(getProductAction.success(undefined));
     }
   }, [dispatch, visible, data]);
 

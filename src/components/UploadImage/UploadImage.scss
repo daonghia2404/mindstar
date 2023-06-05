@@ -3,6 +3,11 @@
 .UploadImage {
   height: unset !important;
 
+  &.center {
+    width: fit-content;
+    margin: 0 auto;
+  }
+
   &.object-fit-contain {
     .Avatar {
       .ant-avatar {

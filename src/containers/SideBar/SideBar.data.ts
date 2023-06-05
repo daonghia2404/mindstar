@@ -302,7 +302,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     id: '8',
     title: 'Cài đặt',
     icon: EIconName.Settings,
-    activePaths: [Paths.SettingsGeneral],
+    activePaths: [Paths.SettingsGeneral, Paths.Users],
     children: [
       {
         id: '1',
@@ -312,23 +312,23 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         activePaths: [Paths.SettingsGeneral],
       },
       {
+        id: '4',
+        title: 'Dữ liệu cấu hình',
+        icon: EIconName.Database,
+        link: Paths.Dashboard,
+        activePaths: [],
+      },
+      {
         id: '2',
         title: 'Quyền truy cập',
         icon: EIconName.UsersGroup,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.Users,
+        activePaths: [Paths.Users],
       },
       {
         id: '3',
         title: 'Gói dịch vụ',
         icon: EIconName.BusinessPlan,
-        link: Paths.Dashboard,
-        activePaths: [],
-      },
-      {
-        id: '4',
-        title: 'Dữ liệu cấu hình',
-        icon: EIconName.Database,
         link: Paths.Dashboard,
         activePaths: [],
       },

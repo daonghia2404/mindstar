@@ -17,17 +17,19 @@ import {
   getPlayerAction,
   searchUserAction,
   updatePlayerAction,
+  uploadAvatarUserAction,
 } from '@/redux/actions';
 import {
   copyText,
   formatCurrency,
   formatISODateToDateTime,
   generateInitialPassword,
+  getFullUrlStatics,
   schedulesOptionsByClassSchedule,
   showNotification,
   validationRules,
 } from '@/utils/functions';
-import { EFormat, ETypeNotification } from '@/common/enums';
+import { EFormat, ETypeNotification, EUserType } from '@/common/enums';
 import DatePicker from '@/components/DatePicker';
 import { dataDayOfWeeksOptions, dataPaymentTypeOptions } from '@/common/constants';
 import TextArea from '@/components/TextArea';
@@ -40,6 +42,7 @@ import ModalAddPlayerInExistedUser from '@/pages/Players/ModalAddPlayerInExisted
 
 import { TModalPlayerFormProps } from './ModalPlayerForm.type';
 import './ModalPlayerForm.scss';
+import UploadImage from '@/components/UploadImage';
 
 const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataPractice, onClose, onSuccess }) => {
   const dispatch = useDispatch();
@@ -178,11 +181,30 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
       };
 
       if (data) {
-        dispatch(updatePlayerAction.request({ body, paths: { id: data?.id } }, handleSubmitSuccess));
+        dispatch(
+          updatePlayerAction.request({ body, paths: { id: data?.id } }, (response): void =>
+            handleUploadAvatar(response.data, values),
+          ),
+        );
       } else {
-        dispatch(createPlayerAction.request({ body }, handleSubmitSuccess));
+        dispatch(createPlayerAction.request({ body }, (response): void => handleUploadAvatar(response.data, values)));
       }
     });
+  };
+
+  const handleUploadAvatar = (response: TUser, values: any): void => {
+    const isUploadAvatar = values?.avatar !== getFullUrlStatics(data?.avatar);
+    if (!isUploadAvatar) handleSubmitSuccess();
+    else {
+      const formData = new FormData();
+      formData.append('file', values?.avatar);
+      dispatch(
+        uploadAvatarUserAction.request(
+          { body: formData, paths: { id: response?.id || '', userType: EUserType.PLAYER } },
+          handleSubmitSuccess,
+        ),
+      );
+    }
   };
 
   const handleSubmitSuccess = (): void => {
@@ -210,6 +232,7 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
     if (visible) {
       if (data && playerState) {
         const dataChanged = {
+          avatar: data?.avatar ? getFullUrlStatics(data.avatar) : undefined,
           name: data?.name,
           dateOfBirth: data?.date_of_birth ? moment(data?.date_of_birth) : undefined,
           shirtNumber: data?.clothes_number,
@@ -292,8 +315,6 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
   const getPlayer = useCallback(() => {
     if (data?.id && visible) {
       dispatch(getPlayerAction.request({ paths: { id: data?.id } }));
-    } else {
-      dispatch(getPlayerAction.success(undefined));
     }
   }, [dispatch, visible, data]);
 
@@ -315,6 +336,11 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
         <div className="ModalPlayerForm-wrapper">
           <Form form={form} onValuesChange={(value, values): void => setFormValues({ ...formValues, ...values })}>
             <Row gutter={[16, 16]}>
+              <Col span={24}>
+                <Form.Item name="avatar">
+                  <UploadImage label="Ảnh đại diện" active sizeImage={100} center />
+                </Form.Item>
+              </Col>
               <Col span={24}>
                 <Form.Item name="name" rules={[validationRules.required()]}>
                   <Input label="Tên" required placeholder="Nhập dữ liệu" active />

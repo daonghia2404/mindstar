@@ -60,6 +60,7 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.Products} component={Pages.Products} />
           <ProtectedRoute path={Paths.Redeems} component={Pages.Redeems} />
           <ProtectedRoute path={Paths.SettingsGeneral} component={Pages.SettingsGeneral} />
+          <ProtectedRoute path={Paths.Users} component={Pages.Users} />
 
           <Redirect noThrow from={Paths.Rest} to={`${LayoutPaths.Admin}${Paths.Dashboard}`} />
         </Admin>

@@ -42,6 +42,7 @@ const Rewards = lazy(() => retryLoadComponent(() => import('@/pages/Rewards')));
 const Products = lazy(() => retryLoadComponent(() => import('@/pages/Products')));
 const Redeems = lazy(() => retryLoadComponent(() => import('@/pages/Redeems')));
 const SettingsGeneral = lazy(() => retryLoadComponent(() => import('@/pages/SettingsGeneral')));
+const Users = lazy(() => retryLoadComponent(() => import('@/pages/Users')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -77,6 +78,7 @@ export const Paths = {
   Products: '/products',
   Redeems: '/redeems',
   SettingsGeneral: '/settings/general',
+  Users: '/users',
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -106,6 +108,7 @@ export const Pages = {
   Rewards,
   Products,
   SettingsGeneral,
+  Users,
 
   Login,
   LoginDomain,

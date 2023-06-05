@@ -22,6 +22,7 @@ const UploadImage: React.FC<TUploadImageProps> = ({
   defaultImage,
   autoSize,
   objectFitContain,
+  center,
   onChange,
 }) => {
   const [previewImage, setPreviewImage] = useState<string>();
@@ -57,7 +58,12 @@ const UploadImage: React.FC<TUploadImageProps> = ({
       required={required}
       size={size}
       readOnlyText={readOnlyText}
-      className={classNames('UploadImage', { 'auto-size': autoSize }, { 'object-fit-contain': objectFitContain })}
+      className={classNames(
+        'UploadImage',
+        { 'auto-size': autoSize },
+        { 'object-fit-contain': objectFitContain },
+        { center },
+      )}
     >
       <Upload accept=".jpg, .png, .jpeg" disabled={disabled} onChange={handleUploadChange}>
         <div className="UploadImage-wrapper">

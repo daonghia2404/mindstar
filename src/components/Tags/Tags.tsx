@@ -13,7 +13,7 @@ const Tags: React.FC<TTagsProps> = ({ options = [], className }) => {
       {options.map((item) => (
         <div
           key={item.value}
-          className={classNames('Tags-item flex items-center', { 'onclick': item.onClick })}
+          className={classNames('Tags-item flex items-center', { 'onclick': item.onClick }, item.data?.tagType)}
           onClick={(): void => item.onClick?.(item)}
         >
           {!['undefined'].includes(typeof item.data?.avatar) && <Avatar size={24} image={item.data?.avatar} />}

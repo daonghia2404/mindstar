@@ -131,6 +131,8 @@ export enum EUserType {
   PLAYER = 'player',
   TEACHER = 'teacher',
   MANAGER = 'manager',
+  ADMIN = 'admin',
+  USER = 'user',
 }
 
 export enum EDayOfWeek {
