@@ -20,6 +20,7 @@ import redeemReducer from './redeem';
 import rewardReducer from './reward';
 import scheduleReducer from './schedule';
 import settingReducer from './setting';
+import supplierReducer from './supplier';
 import timeOffReducer from './time-off';
 import transactionReducer from './transaction';
 import uiReducer from './ui';
@@ -49,6 +50,7 @@ const rootReducer = combineReducers({
   rewardReducer,
   scheduleReducer,
   settingReducer,
+  supplierReducer,
   timeOffReducer,
   transactionReducer,
   uiReducer,

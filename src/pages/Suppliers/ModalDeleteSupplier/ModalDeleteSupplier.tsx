@@ -5,33 +5,33 @@ import { useDispatch, useSelector } from 'react-redux';
 import Modal from '@/components/Modal';
 import { EButtonStyleType } from '@/components/Button';
 import { EEmpty, ETypeNotification } from '@/common/enums';
-import { EDeleteProductAction, deleteProductAction } from '@/redux/actions';
+import { EDeleteSupplierAction, deleteSupplierAction } from '@/redux/actions';
 import { showNotification } from '@/utils/functions';
 import { TRootState } from '@/redux/reducers';
 
-import { TModalDeleteProductProps } from './ModalDeleteProduct.type';
-import './ModalDeleteProduct.scss';
+import { TModalDeleteSupplierProps } from './ModalDeleteSupplier.type';
+import './ModalDeleteSupplier.scss';
 
-const ModalDeleteProduct: React.FC<TModalDeleteProductProps> = ({ visible, data, onClose, onSuccess }) => {
+const ModalDeleteSupplier: React.FC<TModalDeleteSupplierProps> = ({ visible, data, onClose, onSuccess }) => {
   const dispatch = useDispatch();
-  const deleteProductLoading = useSelector(
-    (state: TRootState) => state.loadingReducer[EDeleteProductAction.DELETE_PRODUCT],
+  const deleteSupplierLoading = useSelector(
+    (state: TRootState) => state.loadingReducer[EDeleteSupplierAction.DELETE_SUPPLIER],
   );
 
   const handleSubmit = (): void => {
-    dispatch(deleteProductAction.request({ paths: { id: data?.id || '' } }, handleSubmitSuccess));
+    dispatch(deleteSupplierAction.request({ paths: { id: data?.id || '' } }, handleSubmitSuccess));
   };
 
   const handleSubmitSuccess = (): void => {
-    showNotification(ETypeNotification.SUCCESS, 'Xoá Sản Phẩm Thành Công !');
+    showNotification(ETypeNotification.SUCCESS, 'Xoá Nhà Phân Phối Thành Công !');
     onClose?.();
     onSuccess?.();
   };
 
   return (
     <Modal
-      className="ModalDeleteProduct"
-      title="Xoá Sản Phẩm"
+      className="ModalDeleteSupplier"
+      title="Xoá Nhà Phân Phối"
       visible={visible}
       onClose={onClose}
       width={400}
@@ -39,18 +39,18 @@ const ModalDeleteProduct: React.FC<TModalDeleteProductProps> = ({ visible, data,
         title: 'Huỷ Bỏ',
         onClick: onClose,
         styleType: EButtonStyleType.GENERAL_FORM,
-        disabled: deleteProductLoading,
+        disabled: deleteSupplierLoading,
       }}
       confirmButton={{
         title: 'Đồng Ý',
         onClick: handleSubmit,
         styleType: EButtonStyleType.DANGER,
-        disabled: deleteProductLoading,
+        disabled: deleteSupplierLoading,
       }}
     >
-      <div className="ModalDeleteProduct-wrapper">
+      <div className="ModalDeleteSupplier-wrapper">
         <div className="Modal-text text-center">
-          Bạn có chắc chắn muốn xoá Sản Phẩm <strong>"{data?.name || EEmpty.DASH}"</strong> không?
+          Bạn có chắc chắn muốn xoá Nhà Phân Phối <strong>"{data?.name || EEmpty.DASH}"</strong> không?
           <br />
           Dữ liệu đã xoá không thể khôi phục.
         </div>
@@ -59,4 +59,4 @@ const ModalDeleteProduct: React.FC<TModalDeleteProductProps> = ({ visible, data,
   );
 };
 
-export default ModalDeleteProduct;
+export default ModalDeleteSupplier;

@@ -27,3 +27,4 @@ export * from './category';
 export * from './reward';
 export * from './product';
 export * from './academy';
+export * from './supplier';

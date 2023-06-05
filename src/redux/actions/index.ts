@@ -17,6 +17,7 @@ export * from './redeem';
 export * from './reward';
 export * from './schedule';
 export * from './setting';
+export * from './supplier';
 export * from './time-off';
 export * from './transaction';
 export * from './ui';

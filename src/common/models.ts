@@ -415,3 +415,18 @@ export type TAcademy = {
   size: number;
   update_date: number;
 };
+
+export type TSupplier = {
+  address: string;
+  auditing_status: number;
+  contact_name: string;
+  contact_number: string;
+  create_date: number;
+  id: number;
+  logo: string;
+  name: string;
+  note: string;
+  tax_id: unknown;
+  total_provided: number;
+  update_date: number;
+};

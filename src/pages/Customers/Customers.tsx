@@ -10,7 +10,7 @@ import Input from '@/components/Input';
 import { TRootState } from '@/redux/reducers';
 import Table from '@/components/Table';
 import { EEmpty, EFormat, EUserType } from '@/common/enums';
-import { EGetBranchesAction, getUsersAction } from '@/redux/actions';
+import { EGetUsersAction, getUsersAction } from '@/redux/actions';
 import { formatCurrency, formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
 import { TGetUsersParams } from '@/services/api';
 import Avatar from '@/components/Avatar';
@@ -25,7 +25,7 @@ const Customers: React.FC = () => {
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
 
   const usersState = useSelector((state: TRootState) => state.userReducer.getUsersResponse)?.data;
-  const getCustomersLoading = useSelector((state: TRootState) => state.loadingReducer[EGetBranchesAction.GET_BRANCHES]);
+  const getCustomersLoading = useSelector((state: TRootState) => state.loadingReducer[EGetUsersAction.GET_USERS]);
 
   const [getUsersParamsRequest, setGetUsersParamsRequest] = useState<TGetUsersParams>({
     page: DEFAULT_PAGE,
