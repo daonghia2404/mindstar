@@ -166,8 +166,6 @@ const ModalRewardForm: React.FC<TModalRewardFormProps> = ({ visible, data, onClo
   const getReward = useCallback(() => {
     if (data?.id && visible) {
       dispatch(getRewardAction.request({ paths: { id: data?.id } }));
-    } else {
-      dispatch(getRewardAction.success(undefined));
     }
   }, [dispatch, visible, data]);
 

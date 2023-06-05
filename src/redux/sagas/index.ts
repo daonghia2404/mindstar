@@ -1,5 +1,6 @@
 import { all, fork } from 'redux-saga/effects';
 
+import academySaga from './academy';
 import attendanceSaga from './attendance';
 import authSaga from './auth';
 import branchSaga from './branch';
@@ -25,6 +26,7 @@ import userSaga from './user';
 
 const rootSaga = function* root(): Generator {
   yield all([
+    fork(academySaga),
     fork(attendanceSaga),
     fork(authSaga),
     fork(branchSaga),

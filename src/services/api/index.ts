@@ -26,3 +26,4 @@ export * from './practice';
 export * from './category';
 export * from './reward';
 export * from './product';
+export * from './academy';

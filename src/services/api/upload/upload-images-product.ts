@@ -1,3 +1,4 @@
+import { ETypeProductUploadImages } from '@/common/enums';
 import ApiService from '@/services/api';
 
 // TYPES
@@ -24,8 +25,16 @@ export const uploadImagesProduct = async ({
   params,
   body,
 }: TUploadImagesProductMaterials): Promise<TUploadImagesProductResponse> => {
-  const response = await ApiService.post(`/v1/api/admin/${paths?.productType}/${paths?.id}/upload-images`, body, {
-    params,
-  });
+  const showSuffix = [ETypeProductUploadImages.PRODUCTS, ETypeProductUploadImages.REWARDS].includes(
+    paths?.productType as ETypeProductUploadImages,
+  );
+
+  const response = await ApiService.post(
+    `/v1/api/admin/${paths?.productType}/${paths?.id}/upload${showSuffix ? '-images' : ''}`,
+    body,
+    {
+      params,
+    },
+  );
   return response.data;
 };

@@ -2,14 +2,17 @@ import {
   EAuditingStatus,
   EDayOfWeek,
   EDegreeType,
+  ELevel,
   EOrderStatus,
   EPaymentType,
   ESalaryType,
   ETransactionStatus,
   ETypeCheckIn,
+  EUserType,
 } from '@/common/enums';
 import { EIconColor } from '@/components/Icon';
 import { EStatusStyleType } from '@/components/Status';
+import { ETagType } from '@/components/Tags';
 
 /* eslint-disable no-useless-escape */
 export const REGEX = {
@@ -52,6 +55,7 @@ export const dataOrderStatusOptions = [
     label: 'Đang Xử Lý',
     data: {
       color: EIconColor.SELECTIVE_YELLOW,
+      statusType: EStatusStyleType.WARNING,
     },
   },
   {
@@ -59,6 +63,7 @@ export const dataOrderStatusOptions = [
     label: 'Xác Nhận',
     data: {
       color: EIconColor.CERULEAN,
+      statusType: EStatusStyleType.SUCCESS,
     },
   },
   {
@@ -66,6 +71,7 @@ export const dataOrderStatusOptions = [
     label: 'Đã Huỷ',
     data: {
       color: EIconColor.POMEGRANATE,
+      statusType: EStatusStyleType.DANGER,
     },
   },
   {
@@ -73,6 +79,7 @@ export const dataOrderStatusOptions = [
     label: 'Hoàn Trả',
     data: {
       color: EIconColor.SELECTIVE_YELLOW,
+      statusType: EStatusStyleType.WARNING,
     },
   },
   {
@@ -80,6 +87,7 @@ export const dataOrderStatusOptions = [
     label: 'Đang Giao',
     data: {
       color: EIconColor.PURPLE_HEART,
+      statusType: EStatusStyleType.SUCCESS,
     },
   },
   {
@@ -87,6 +95,7 @@ export const dataOrderStatusOptions = [
     label: 'Chuẩn Bị Vận Chuyển',
     data: {
       color: EIconColor.CERULEAN,
+      statusType: EStatusStyleType.WARNING,
     },
   },
   {
@@ -94,6 +103,7 @@ export const dataOrderStatusOptions = [
     label: 'Hoàn Thành',
     data: {
       color: EIconColor.APPLE,
+      statusType: EStatusStyleType.SUCCESS,
     },
   },
 ];
@@ -137,4 +147,28 @@ export const dataPointsRangeOptions = [
   { value: '300-500', label: '300 - 500', data: { fromPoint: 300, toPoint: 500 } },
   { value: '200-300', label: '200 - 300', data: { fromPoint: 200, toPoint: 300 } },
   { value: '-200', label: '< 200', data: { fromPoint: undefined, toPoint: 200 } },
+];
+
+export const dataAcademySizeOptions = [
+  { value: 1, label: '0-100' },
+  { value: 2, label: '101-200' },
+  { value: 3, label: '201-300' },
+  { value: 4, label: '301-500' },
+  { value: 5, label: '501-1000' },
+  { value: 6, label: '>1000' },
+];
+
+export const dataUserTypeOptions = [
+  { value: EUserType.ADMIN, label: 'Admin', data: { tagType: ETagType.DANGER } },
+  { value: EUserType.TEACHER, label: 'Giáo Viên', data: { tagType: ETagType.NORMAL } },
+  { value: EUserType.MANAGER, label: 'Quản Lý', data: { tagType: ETagType.WARNING } },
+  { value: EUserType.PLAYER, label: 'Học Viên', data: { tagType: ETagType.SUCCESS } },
+];
+
+export const dataLevelOptions = [
+  { value: ELevel.DIAMOND, label: 'Kim cương', data: { color: EIconColor.CERULEAN } },
+  { value: ELevel.GOLD, label: 'Vàng', data: { color: EIconColor.SELECTIVE_YELLOW } },
+  { value: ELevel.SILVER, label: 'Bạc', data: { color: EIconColor.SILVER } },
+  { value: ELevel.FRIENDLY, label: 'Thân thiết', data: { color: EIconColor.APPLE } },
+  { value: ELevel.COMMON, label: 'Tiềm năng', data: { color: EIconColor.PURPLE_HEART } },
 ];

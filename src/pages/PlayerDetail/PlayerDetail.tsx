@@ -9,20 +9,20 @@ import Card from '@/components/Card';
 import Input from '@/components/Input';
 import UploadImage from '@/components/UploadImage';
 import { Paths } from '@/pages/routers';
-import { getPlayerAction, uploadAvatarUserAction } from '@/redux/actions';
+import { getPlayerAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
-import { EEmpty, EFormat, ETypeNotification, EUserType } from '@/common/enums';
-import { formatCurrency, formatISODateToDateTime, getFullUrlStatics, showNotification } from '@/utils/functions';
+import { EEmpty, EFormat } from '@/common/enums';
+import { formatCurrency, formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
 import { dataAuditingStatusOptions, dataDayOfWeeksOptions } from '@/common/constants';
 import Tags from '@/components/Tags';
 import { TUser } from '@/common/models';
 import ModalDeletePlayer from '@/pages/Players/ModalDeletePlayer';
 import ModalPlayerForm from '@/pages/Players/ModalPlayerForm';
 import Status from '@/components/Status';
-
-import './PlayerDetail.scss';
 import ModalResetPassword from '@/pages/PlayerDetail/ModalResetPassword';
 import ModalChangeBranch from '@/pages/PlayerDetail/ModalChangeBranch';
+
+import './PlayerDetail.scss';
 
 const PlayerDetail: React.FC = () => {
   const dispatch = useDispatch();
@@ -75,19 +75,6 @@ const PlayerDetail: React.FC = () => {
 
   const handleCloseModalChangeBranch = (): void => {
     setModalChangeBranchState({ visible: false });
-  };
-
-  const handleUploadAvatar = (file: File): void => {
-    const formData = new FormData();
-    formData.append('file', file);
-    dispatch(
-      uploadAvatarUserAction.request(
-        { body: formData, paths: { id: playerState?.id || '', userType: EUserType.PLAYER } },
-        (): void => {
-          showNotification(ETypeNotification.SUCCESS, 'Thay Đổi Ảnh Đại Diện Thành Công !');
-        },
-      ),
-    );
   };
 
   const handleBack = (): void => {
@@ -258,13 +245,7 @@ const PlayerDetail: React.FC = () => {
           <Card title="Thông tin cá nhân">
             <Row gutter={[16, 16]}>
               <Col span={12}>
-                <UploadImage
-                  label="Ảnh đại diện"
-                  readOnlyText
-                  active
-                  value={playerInfo?.avatar}
-                  onChange={handleUploadAvatar}
-                />
+                <UploadImage label="Ảnh đại diện" readOnlyText active value={playerInfo?.avatar} />
               </Col>
               <Col span={12} />
               <Col span={12}>

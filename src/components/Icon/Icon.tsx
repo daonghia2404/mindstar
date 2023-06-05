@@ -63,6 +63,8 @@ import Copy from './Copy';
 import UserCancel from './UserCancel';
 import UserCheck from './UserCheck';
 import UserX from './UserX';
+import DeviceFloppy from './DeviceFloppy';
+import Devices from './Devices';
 
 const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
   const renderIcon = (): React.ReactElement => {
@@ -183,6 +185,10 @@ const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
         return <UserCheck color={color} />;
       case EIconName.UserX:
         return <UserX color={color} />;
+      case EIconName.DeviceFloppy:
+        return <DeviceFloppy color={color} />;
+      case EIconName.Devices:
+        return <Devices color={color} />;
 
       default:
         return <></>;

@@ -1,28 +1,17 @@
 import React, { useEffect } from 'react';
 import { Col, Form, Row } from 'antd';
-import moment from 'moment';
-import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Modal from '@/components/Modal';
 import Input from '@/components/Input';
-import Select, { TSelectOption } from '@/components/Select';
+import Select from '@/components/Select';
 import { TRootState } from '@/redux/reducers';
-import {
-  ECreateClassAction,
-  EUpdateClassAction,
-  createClassAction,
-  getBranchesAction,
-  getManagersAction,
-  updateClassAction,
-} from '@/redux/actions';
-import { formatISODateToDateTime, showNotification, validationRules } from '@/utils/functions';
-import { EFormat, ETypeNotification, EUserType } from '@/common/enums';
-import TextArea from '@/components/TextArea';
-import MultipleSelect from '@/components/MultipleSelect';
+import { EUpdateRedeemAction, getPlayersAction, updateRedeemAction } from '@/redux/actions';
+import { showNotification, validationRules } from '@/utils/functions';
+import { EAuditingStatus, ETypeNotification } from '@/common/enums';
 import { useOptionsPaginate } from '@/utils/hooks';
-import WorkingTimes, { TWorkTime } from '@/components/WorkingTimes';
-import { dataWorkingTimesDefault } from '@/components/WorkingTimes/WorkingTimes.data';
+import { dataOrderStatusOptions } from '@/common/constants';
+import TextArea from '@/components/TextArea';
 
 import { TModalRedeemFormProps } from './ModalRedeemForm.type';
 import './ModalRedeemForm.scss';
@@ -30,81 +19,39 @@ import './ModalRedeemForm.scss';
 const ModalRedeemForm: React.FC<TModalRedeemFormProps> = ({ visible, data, onClose, onSuccess }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const currentBranch = useSelector((state: TRootState) => state.uiReducer.branch);
 
-  const settingsState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data;
+  const {
+    options: optionsPlayers,
+    handleLoadMore: handleLoadMorePlayers,
+    handleSearch: handleSearchPlayers,
+    handleReset: handleResetPlayers,
+  } = useOptionsPaginate(getPlayersAction, 'playerReducer', 'getPlayersResponse', undefined, {
+    userIds: data?.customer_info?.user_id,
+    auditingStatuses: EAuditingStatus.ACTIVE,
+  });
 
-  // const {
-  //   options: optionsManagers,
-  //   handleLoadMore: handleLoadMoreManagers,
-  //   handleSearch: handleSearchManagers,
-  // } = useOptionsPaginate(getManagersAction, 'managerReducer', 'getManagersResponse', undefined, {
-  //   userType: EUserType.TEACHER,
-  // });
-
-  // const {
-  //   options: optionsBranches,
-  //   handleLoadMore: handleLoadMoreBranches,
-  //   handleSearch: handleSearchBranches,
-  // } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', 'branchName');
-
-  const createClassLoading = useSelector((state: TRootState) => state.loadingReducer[ECreateClassAction.CREATE_CLASS]);
-  const updateClassLoading = useSelector((state: TRootState) => state.loadingReducer[EUpdateClassAction.UPDATE_CLASS]);
-  const loading = createClassLoading || updateClassLoading;
+  const updateRedeemLoading = useSelector(
+    (state: TRootState) => state.loadingReducer[EUpdateRedeemAction.UPDATE_REDEEM],
+  );
+  const loading = updateRedeemLoading;
 
   const handleSubmit = (): void => {
     form.validateFields().then((values) => {
-      const parseScheduleGroup: { [key: number]: any } = _.groupBy(
-        values?.schedules?.map((item: TWorkTime) => {
-          const startTime = moment(item.startTime, EFormat['HH:mm:ss']).valueOf();
-          const endTime = moment(item.endTime, EFormat['HH:mm:ss']).valueOf();
-
-          return {
-            ...item,
-            at_time: startTime,
-            duration_in_second: (endTime - startTime) / 1000,
-            totalTime: startTime + endTime,
-          };
-        }) || [],
-        'totalTime',
-      );
-
-      const parseScheduleData = Object.keys(parseScheduleGroup)
-        ?.map((item) => {
-          const firstItem = parseScheduleGroup?.[item as unknown as number]?.[0];
-          const mergeDayOfWeek = _.uniq(
-            parseScheduleGroup?.[item as unknown as number]?.map((subItem: TWorkTime) => subItem?.dayOfWeek),
-          )?.join(',');
-
-          return {
-            at_eras: mergeDayOfWeek,
-            at_time: firstItem?.at_time,
-            duration_in_second: firstItem?.duration_in_second,
-          };
-        })
-        .flat();
-
-      const parseScheduleManagerId = values?.managers
-        ?.map((item: TSelectOption) => {
-          return parseScheduleData?.map((subItem) => ({
-            manager_id: Number(item.value),
-            ...subItem,
-          }));
-        })
-        ?.flat();
-
       const body = {
-        branch_id: values?.branch ? Number(values?.branch?.value) : undefined,
-        name: values?.name,
-        description: values?.description || '',
-        course_fee: values?.membershipFee,
-        schedules: parseScheduleManagerId,
+        customer_address: values?.address,
+        customer_mobile: values?.phoneNumber,
+        note: values?.note,
+        player_id: values?.player ? Number(values?.player?.value) : undefined,
+        redeem_status: values?.status?.value,
+        user_id: data?.customer_info?.user_id,
+        product_id: data?.product_id,
+        customer_name: data?.customer_info?.name,
+        point_used: data?.point_used,
+        // issue_time: 4600000,
       };
 
       if (data) {
-        dispatch(updateClassAction.request({ body, paths: { id: data?.id } }, handleSubmitSuccess));
-      } else {
-        dispatch(createClassAction.request({ body }, handleSubmitSuccess));
+        dispatch(updateRedeemAction.request({ body, paths: { id: data?.id } }, handleSubmitSuccess));
       }
     });
   };
@@ -115,49 +62,36 @@ const ModalRedeemForm: React.FC<TModalRedeemFormProps> = ({ visible, data, onClo
     onSuccess?.();
   };
 
-  //   useEffect(() => {
-  //     if (visible) {
-  //       if (data) {
-  //         form.setFieldsValue({
-  //           branch: data?.branch ? { label: data?.branch?.name, value: String(data?.branch?.id) } : undefined,
-  //           name: data?.name,
-  //           description: data?.description,
-  //           schedules: data?.schedules
-  //             ?.map((item) => {
-  //               const parseDayOfWeek = item.at_eras.split(',')?.filter((subItem) => subItem);
-  //               return parseDayOfWeek.map((subItem) => ({
-  //                 ...item,
-  //                 dayOfWeek: subItem,
-  //               }));
-  //             })
-  //             .flat()
-  //             .map((item) => {
-  //               return {
-  //                 dayOfWeek: item.dayOfWeek,
-  //                 startTime: formatISODateToDateTime(item.at_time, EFormat['HH:mm:ss']),
-  //                 endTime: formatISODateToDateTime(item.at_time + item.duration_in_second * 1000, EFormat['HH:mm:ss']),
-  //               };
-  //             }),
-  //           membershipFee: data?.course_fee,
-  //           managers: data?.managers?.map((item) => ({ label: item.name, value: String(item.id) })),
-  //         });
-  //       } else {
-  //         form.setFieldsValue({
-  //           branch: currentBranch?.id ? { label: currentBranch?.name, value: String(currentBranch?.id) } : undefined,
-  //           membershipFee: settingsState?.transaction_settings?.fee_transaction_value,
-  //           schedules: dataWorkingTimesDefault,
-  //         });
-  //       }
-  //     } else {
-  //       form.resetFields();
-  //     }
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   }, [visible, form, data]);
+  useEffect(() => {
+    if (visible) {
+      if (data) {
+        const dataChanged = {
+          name: data?.product_name,
+          point: data?.point_used,
+          status: dataOrderStatusOptions.find((item) => item.value === data?.redeem_status),
+          branch: data?.branch ? { label: data?.branch?.name, value: String(data?.branch?.id) } : undefined,
+          account: data?.customer_info
+            ? { label: data?.customer_info?.name, value: String(data?.customer_info?.id) }
+            : undefined,
+          player: data?.player_profile
+            ? { label: data?.player_profile?.name, value: String(data?.player_profile?.player_id) }
+            : undefined,
+          address: data?.player_profile?.address,
+          phoneNumber: data?.player_profile?.mobile,
+        };
+        handleResetPlayers();
+        form.setFieldsValue(dataChanged);
+      }
+    } else {
+      form.resetFields();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visible, form, data]);
 
   return (
     <Modal
       className="ModalRedeemForm"
-      title={data ? 'Sửa Đổi Thưởng ' : 'Tạo Mới Đổi Thưởng '}
+      title={data ? 'Sửa Đổi Thưởng' : 'Tạo Mới Đổi Thưởng'}
       visible={visible}
       onClose={onClose}
       width={480}
@@ -168,57 +102,64 @@ const ModalRedeemForm: React.FC<TModalRedeemFormProps> = ({ visible, data, onClo
         <Form form={form}>
           <Row gutter={[16, 16]}>
             <Col span={24}>
-              <Form.Item name="name" rules={[validationRules.required()]}>
-                <Input label="Reward name" required placeholder="Nhập dữ liệu" active />
+              <Form.Item name="name">
+                <Input label="Tên phần thưởng" placeholder="Nhập dữ liệu" active disabled />
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item name="point" rules={[validationRules.required()]}>
-                <Input label="Points used" required placeholder="Nhập dữ liệu" active />
+              <Form.Item name="point">
+                <Input label="Số điểm đổi thưởng" placeholder="Nhập dữ liệu" active disabled numberic useNumber />
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item name="redeemstatus" rules={[validationRules.required()]}>
+              <Form.Item name="status" rules={[validationRules.required()]}>
                 <Select
-                  label="Redeem status"
-                  placeholder="Pending"
-                  required
-                  active
-                  showSearch
-                  // options={optionsBranches}
-                  // onLoadMore={handleLoadMoreBranches}
-                  // onSearch={handleSearchBranches}
-                />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item name="branch" rules={[validationRules.required()]}>
-                <Input label="Branch" required placeholder="Nhập dữ liệu" active />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item name="acount" rules={[validationRules.required()]}>
-                <Input label="Acount" required placeholder="Nhập dữ liệu" active />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item name="player" rules={[validationRules.required()]}>
-                <MultipleSelect
-                  label="Player"
+                  label="Trạng thái đổi thưởng"
                   placeholder="Chọn dữ liệu"
                   required
                   active
                   showSearch
-                  useAvatarOption
-                  // options={optionsManagers}
-                  // onLoadMore={handleLoadMoreManagers}
-                  // onSearch={handleSearchManagers}
+                  options={dataOrderStatusOptions}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item name="branch">
+                <Select label="Chi nhánh" placeholder="Nhập dữ liệu" active disabled />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item name="account">
+                <Select label="Tài khoản" placeholder="Nhập dữ liệu" active disabled />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item name="player" rules={[validationRules.required()]}>
+                <Select
+                  label="Học viên"
+                  placeholder="Chọn dữ liệu"
+                  required
+                  active
+                  showSearch
+                  options={optionsPlayers}
+                  onLoadMore={handleLoadMorePlayers}
+                  onSearch={handleSearchPlayers}
                 />
               </Form.Item>
             </Col>
             <Col span={24}>
               <Form.Item name="address" rules={[validationRules.required()]}>
-                <Input label="Address" required placeholder="Nhập dữ liệu" active />
+                <Input label="Địa chỉ" required placeholder="Nhập dữ liệu" active />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item name="phoneNumber" rules={[validationRules.required()]}>
+                <Input label="Số điện thoại" required placeholder="Nhập dữ liệu" active numberic />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item name="note">
+                <TextArea label="Ghi chú" placeholder="Nhập dữ liệu" active />
               </Form.Item>
             </Col>
           </Row>

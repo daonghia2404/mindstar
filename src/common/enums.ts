@@ -131,6 +131,8 @@ export enum EUserType {
   PLAYER = 'player',
   TEACHER = 'teacher',
   MANAGER = 'manager',
+  ADMIN = 'admin',
+  USER = 'user',
 }
 
 export enum EDayOfWeek {
@@ -157,4 +159,18 @@ export enum ETypeCategory {
 export enum ETypeProductUploadImages {
   REWARDS = 'rewards',
   PRODUCTS = 'products',
+  ACADEMIES = 'academies',
+}
+
+export enum ETypeImageAcademy {
+  LOGO = '1',
+  QR_CODE = '2',
+}
+
+export enum ELevel {
+  DIAMOND = 4,
+  GOLD = 3,
+  SILVER = 2,
+  FRIENDLY = 1,
+  COMMON = 0,
 }

@@ -1,25 +1,34 @@
 import { all, takeLatest } from 'redux-saga/effects';
 
 import {
-  changePlayersBranchAction,
-  getChildPlayersAction,
+  createUserAction,
+  deleteUserAction,
   getMyProfileAction,
+  getUserAction,
+  getUsersAction,
   resetPasswordAction,
   searchUserAction,
+  updateUserAction,
 } from '@/redux/actions';
 
-import { changePlayersBranchSaga } from './change-players-branch';
-import { getChildPlayersSaga } from './get-child-players';
+import { createUserSaga } from './create-user';
+import { deleteUserSaga } from './delete-user';
 import { getMyProfileSaga } from './get-my-profile';
+import { getUserSaga } from './get-user';
+import { getUsersSaga } from './get-users';
 import { resetPasswordSaga } from './reset-password';
 import { searchUserSaga } from './search-user';
+import { updateUserSaga } from './update-user';
 
 export default function* root(): Generator {
   yield all([
-    takeLatest(changePlayersBranchAction.request.type, changePlayersBranchSaga),
-    takeLatest(getChildPlayersAction.request.type, getChildPlayersSaga),
+    takeLatest(createUserAction.request.type, createUserSaga),
+    takeLatest(deleteUserAction.request.type, deleteUserSaga),
     takeLatest(getMyProfileAction.request.type, getMyProfileSaga),
+    takeLatest(getUserAction.request.type, getUserSaga),
+    takeLatest(getUsersAction.request.type, getUsersSaga),
     takeLatest(resetPasswordAction.request.type, resetPasswordSaga),
     takeLatest(searchUserAction.request.type, searchUserSaga),
+    takeLatest(updateUserAction.request.type, updateUserSaga),
   ]);
 }

@@ -13,14 +13,17 @@ import {
   createManagerAction,
   getClassesAction,
   updateManagerAction,
+  uploadAvatarUserAction,
 } from '@/redux/actions';
-import { showNotification, validationRules } from '@/utils/functions';
+import { getFullUrlStatics, showNotification, validationRules } from '@/utils/functions';
 import { ETypeNotification, EUserType } from '@/common/enums';
 import DatePicker from '@/components/DatePicker';
 import { dataDegreeTypeOptions, dataSalaryTypeOptions } from '@/common/constants';
 import TextArea from '@/components/TextArea';
 import MultipleSelect from '@/components/MultipleSelect';
 import { useOptionsPaginate } from '@/utils/hooks';
+import { TUser } from '@/common/models';
+import UploadImage from '@/components/UploadImage';
 
 import { TModalManagerFormProps } from './ModalManagerForm.type';
 import './ModalManagerForm.scss';
@@ -73,11 +76,30 @@ const ModalManagerForm: React.FC<TModalManagerFormProps> = ({ visible, data, onC
       };
 
       if (data) {
-        dispatch(updateManagerAction.request({ body, paths: { id: data?.id } }, handleSubmitSuccess));
+        dispatch(
+          updateManagerAction.request({ body, paths: { id: data?.id } }, (response): void =>
+            handleUploadAvatar(response.data, values),
+          ),
+        );
       } else {
-        dispatch(createManagerAction.request({ body }, handleSubmitSuccess));
+        dispatch(createManagerAction.request({ body }, (response): void => handleUploadAvatar(response.data, values)));
       }
     });
+  };
+
+  const handleUploadAvatar = (response: TUser, values: any): void => {
+    const isUploadAvatar = values?.avatar && values?.avatar !== getFullUrlStatics(data?.avatar);
+    if (!isUploadAvatar) handleSubmitSuccess();
+    else {
+      const formData = new FormData();
+      formData.append('file', values?.avatar);
+      dispatch(
+        uploadAvatarUserAction.request(
+          { body: formData, paths: { id: response?.id || '', userType: EUserType.MANAGER } },
+          handleSubmitSuccess,
+        ),
+      );
+    }
   };
 
   const handleSubmitSuccess = (): void => {
@@ -90,6 +112,7 @@ const ModalManagerForm: React.FC<TModalManagerFormProps> = ({ visible, data, onC
     if (visible) {
       if (data) {
         form.setFieldsValue({
+          avatar: data?.avatar ? getFullUrlStatics(data.avatar) : undefined,
           name: data?.name,
           dateOfBirth: data?.date_of_birth ? moment(data?.date_of_birth) : undefined,
           phoneNumber: data?.mobile,
@@ -126,6 +149,11 @@ const ModalManagerForm: React.FC<TModalManagerFormProps> = ({ visible, data, onC
       <div className="ModalManagerForm-wrapper">
         <Form form={form}>
           <Row gutter={[16, 16]}>
+            <Col span={24}>
+              <Form.Item name="avatar">
+                <UploadImage label="Ảnh đại diện" active sizeImage={100} center />
+              </Form.Item>
+            </Col>
             <Col span={24}>
               <Form.Item name="name" rules={[validationRules.required()]}>
                 <Input label="Tên" required placeholder="Nhập dữ liệu" active />

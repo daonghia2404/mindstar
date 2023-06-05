@@ -9,18 +9,18 @@ import Card from '@/components/Card';
 import Input from '@/components/Input';
 import UploadImage from '@/components/UploadImage';
 import { Paths } from '@/pages/routers';
-import { getManagerAction, uploadAvatarUserAction } from '@/redux/actions';
+import { getManagerAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
-import { EEmpty, EFormat, ETypeNotification, EUserType } from '@/common/enums';
-import { formatCurrency, formatISODateToDateTime, getFullUrlStatics, showNotification } from '@/utils/functions';
+import { EEmpty, EFormat } from '@/common/enums';
+import { formatCurrency, formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
 import { dataAuditingStatusOptions, dataDegreeTypeOptions, dataSalaryTypeOptions } from '@/common/constants';
 import Tags from '@/components/Tags';
 import { TUser } from '@/common/models';
 import ModalDeleteManager from '@/pages/Managers/ModalDeleteManager';
 import ModalManagerForm from '@/pages/Managers/ModalManagerForm';
+import Status from '@/components/Status';
 
 import './ManagerDetail.scss';
-import Status from '@/components/Status';
 
 const ManagerDetail: React.FC = () => {
   const dispatch = useDispatch();
@@ -51,19 +51,6 @@ const ManagerDetail: React.FC = () => {
 
   const handleCloseModalDeleteManager = (): void => {
     setModalDeleteManagerState({ visible: false });
-  };
-
-  const handleUploadAvatar = (file: File): void => {
-    const formData = new FormData();
-    formData.append('file', file);
-    dispatch(
-      uploadAvatarUserAction.request(
-        { body: formData, paths: { id: managerState?.id || '', userType: EUserType.MANAGER } },
-        (): void => {
-          showNotification(ETypeNotification.SUCCESS, 'Thay Đổi Ảnh Đại Diện Thành Công !');
-        },
-      ),
-    );
   };
 
   const handleBack = (): void => {
@@ -155,13 +142,7 @@ const ManagerDetail: React.FC = () => {
           <Card title="Thông tin cá nhân">
             <Row gutter={[16, 16]}>
               <Col span={12}>
-                <UploadImage
-                  label="Ảnh đại diện"
-                  readOnlyText
-                  active
-                  value={managerInfo?.avatar}
-                  onChange={handleUploadAvatar}
-                />
+                <UploadImage label="Ảnh đại diện" readOnlyText active value={managerInfo?.avatar} />
               </Col>
               <Col span={12} />
               <Col span={12}>

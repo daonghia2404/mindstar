@@ -1,6 +1,9 @@
 import { createActionCreator } from 'deox';
 
-import { TChangePlayersBranchMaterials, TChangePlayersBranchResponse } from '@/services/api/user/change-players-branch';
+import {
+  TChangePlayersBranchMaterials,
+  TChangePlayersBranchResponse,
+} from '@/services/api/player/change-players-branch';
 
 // CONSTANTS
 

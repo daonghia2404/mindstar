@@ -3,11 +3,17 @@ export type TUser = {
   address: string;
   auditing_status: number;
   avatar: string;
+  user_id?: number;
+  player_id?: number;
   branch: TBranch;
   branch_id: null;
   branch_name: string;
   class: TClass;
+  device_list?: string[];
   city: TCity;
+  level_id: number;
+  total_spending?: number;
+  level_name: string;
   schedules?: TSchedule[];
   class_schedules?: TSchedule[];
   city_id?: string;
@@ -15,7 +21,6 @@ export type TUser = {
   date_of_birth: number;
   id: number;
   latest_login_at: number;
-  level_id: null;
   merchant: TMerchant[];
   mobile: string;
   salary_type?: string;
@@ -387,4 +392,26 @@ export type TImage = {
   product_id: number;
   product_variant_id: unknown;
   static_file_id: number;
+};
+
+export type TAcademy = {
+  account_name: string;
+  account_number: string;
+  address: string;
+  auditing_status: number;
+  bank_name: string;
+  branches: TBranch[];
+  city: TCity;
+  create_date: number;
+  description: string;
+  director: string;
+  id: number;
+  language: unknown;
+  logo: string;
+  name: string;
+  personal_contact: TUser;
+  primary_contact: string;
+  qr_code: string;
+  size: number;
+  update_date: number;
 };

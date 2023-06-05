@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import classNames from 'classnames';
 
 import FormField from '@/components/FormField';
 import Avatar from '@/components/Avatar';
@@ -18,6 +19,10 @@ const UploadImage: React.FC<TUploadImageProps> = ({
   readOnlyText,
   value,
   disabled,
+  defaultImage,
+  autoSize,
+  objectFitContain,
+  center,
   onChange,
 }) => {
   const [previewImage, setPreviewImage] = useState<string>();
@@ -47,13 +52,27 @@ const UploadImage: React.FC<TUploadImageProps> = ({
   }, [value]);
 
   return (
-    <FormField active label={label} required={required} size={size} readOnlyText={readOnlyText} className="UploadImage">
+    <FormField
+      active
+      label={label}
+      required={required}
+      size={size}
+      readOnlyText={readOnlyText}
+      className={classNames(
+        'UploadImage',
+        { 'auto-size': autoSize },
+        { 'object-fit-contain': objectFitContain },
+        { center },
+      )}
+    >
       <Upload accept=".jpg, .png, .jpeg" disabled={disabled} onChange={handleUploadChange}>
         <div className="UploadImage-wrapper">
-          <Avatar size={sizeImage} shape={shape} image={previewImage} />
-          <div className="UploadImage-placeholder flex items-center justify-center">
-            <Icon name={EIconName.Pencil} color={EIconColor.WHITE} />
-          </div>
+          <Avatar size={sizeImage} shape={shape} image={previewImage} defaultImage={defaultImage} />
+          {!readOnlyText && (
+            <div className="UploadImage-placeholder flex items-center justify-center">
+              <Icon name={EIconName.Pencil} color={EIconColor.WHITE} />
+            </div>
+          )}
         </div>
       </Upload>
     </FormField>

@@ -41,7 +41,9 @@ const Categories = lazy(() => retryLoadComponent(() => import('@/pages/Categorie
 const Rewards = lazy(() => retryLoadComponent(() => import('@/pages/Rewards')));
 const Products = lazy(() => retryLoadComponent(() => import('@/pages/Products')));
 const Redeems = lazy(() => retryLoadComponent(() => import('@/pages/Redeems')));
-const Customer = lazy(() => retryLoadComponent(() => import('@/pages/Customer')));
+const SettingsGeneral = lazy(() => retryLoadComponent(() => import('@/pages/SettingsGeneral')));
+const Users = lazy(() => retryLoadComponent(() => import('@/pages/Users')));
+const Customers = lazy(() => retryLoadComponent(() => import('@/pages/Customers')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -69,7 +71,6 @@ export const Paths = {
   Players: '/players',
   PlayerDetail: (id?: string): string => `/players/${id || ':id'}`,
   Connects: '/connects',
-  Customer: '/customer',
   Attendances: '/attendances',
   Practices: '/practices',
   Schedules: '/schedules',
@@ -77,6 +78,9 @@ export const Paths = {
   Rewards: '/rewards',
   Products: '/products',
   Redeems: '/redeems',
+  SettingsGeneral: '/settings/general',
+  Users: '/users',
+  Customers: '/customers',
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -91,7 +95,6 @@ export const Pages = {
   RegisterBranch,
   Branches,
   Managers,
-  Customer,
   Redeems,
   ManagerDetail,
   Classes,
@@ -106,6 +109,9 @@ export const Pages = {
   Categories,
   Rewards,
   Products,
+  SettingsGeneral,
+  Users,
+  Customers,
 
   Login,
   LoginDomain,

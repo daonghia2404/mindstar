@@ -1,3 +1,5 @@
+import { TUser } from '@/common/models';
+import { TCommonResponse } from '@/common/types';
 import ApiService from '@/services/api';
 
 // TYPES
@@ -12,7 +14,9 @@ export type TUpdatePlayerMaterials = {
   body?: TUpdatePlayerBody;
 };
 
-export type TUpdatePlayerResponse = unknown;
+export type TUpdatePlayerResponse = TCommonResponse & {
+  data: TUser;
+};
 
 // FUNCTION
 

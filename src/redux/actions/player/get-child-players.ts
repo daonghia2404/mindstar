@@ -1,6 +1,6 @@
 import { createActionCreator } from 'deox';
 
-import { TGetChildPlayersMaterials, TGetChildPlayersResponse } from '@/services/api/user/get-child-players';
+import { TGetChildPlayersMaterials, TGetChildPlayersResponse } from '@/services/api/player/get-child-players';
 
 // CONSTANTS
 

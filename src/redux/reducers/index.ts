@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import { loadingReducer, errorReducer, successReducer } from './status';
+import academyReducer from './academy';
 import attendanceReducer from './attendance';
 import authReducer from './auth';
 import branchReducer from './branch';
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   loadingReducer,
   errorReducer,
   successReducer,
+  academyReducer,
   attendanceReducer,
   authReducer,
   branchReducer,
