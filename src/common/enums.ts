@@ -174,3 +174,12 @@ export enum ELevel {
   FRIENDLY = 1,
   COMMON = 0,
 }
+
+export enum ETransactionType {
+  TOURNAMENT = 6,
+  OTHER_SALES_AND_SERVICES = 5,
+  GIFT_AND_CONTRIBUTIONS = 4,
+  SPONSORSHIP = 3,
+  MEMBERSHIP_FEE = 2,
+  PRODUCT = 1,
+}

@@ -7,6 +7,7 @@ import {
   EPaymentType,
   ESalaryType,
   ETransactionStatus,
+  ETransactionType,
   ETypeCheckIn,
   EUserType,
 } from '@/common/enums';
@@ -171,4 +172,13 @@ export const dataLevelOptions = [
   { value: ELevel.SILVER, label: 'Bạc', data: { color: EIconColor.SILVER } },
   { value: ELevel.FRIENDLY, label: 'Thân thiết', data: { color: EIconColor.APPLE } },
   { value: ELevel.COMMON, label: 'Tiềm năng', data: { color: EIconColor.PURPLE_HEART } },
+];
+
+export const dataTransactionTypeOptions = [
+  { value: ETransactionType.PRODUCT, label: 'Sản phẩm' },
+  { value: ETransactionType.MEMBERSHIP_FEE, label: 'Học phí' },
+  { value: ETransactionType.SPONSORSHIP, label: 'Tài trợ' },
+  { value: ETransactionType.GIFT_AND_CONTRIBUTIONS, label: 'Đóng góp & Quà tặng' },
+  { value: ETransactionType.OTHER_SALES_AND_SERVICES, label: 'Dịch vụ & Bán hàng khác' },
+  { value: ETransactionType.TOURNAMENT, label: 'Giải đấu' },
 ];

@@ -9,6 +9,10 @@ export type TGetTransactionsParams = {
   size: number;
   fromDate?: number;
   toDate?: number;
+  name?: string;
+  sort?: string;
+  transactionDetailType?: string;
+  paymentTypes?: string;
 };
 
 export type TGetTransactionsMaterials = {
