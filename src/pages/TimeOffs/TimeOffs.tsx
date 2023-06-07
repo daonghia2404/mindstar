@@ -193,6 +193,7 @@ const TimeOffs: React.FC = () => {
       key: 'reason',
       dataIndex: 'reason',
       title: 'Lý do',
+      className: 'limit-width',
       render: (value: string): string => value || EEmpty.DASH,
     },
     {

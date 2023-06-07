@@ -221,6 +221,7 @@ export type TClass = {
   id: number;
   name: string;
   auditing_status: number;
+  class_name: string;
   branch: TBranch;
   branch_id: number;
   create_date: number;
@@ -347,6 +348,7 @@ export type TAttendance = {
   at_date: number;
   at_date_time: number;
   at_time: number;
+  branch: TBranch;
   auditing_status: number;
   checked_in: number;
   class: TClass;

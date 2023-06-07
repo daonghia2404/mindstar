@@ -19,6 +19,7 @@ import { TUser } from '@/common/models';
 import ModalDeleteManager from '@/pages/Managers/ModalDeleteManager';
 import ModalManagerForm from '@/pages/Managers/ModalManagerForm';
 import Status from '@/components/Status';
+import AttendancesTable from '@/pages/ManagerDetail/AttendancesTable';
 
 import './ManagerDetail.scss';
 
@@ -138,13 +139,15 @@ const ManagerDetail: React.FC = () => {
             </Col>
           </Row>
         </Col>
-        <Col span={24} md={{ span: 12 }}>
+        <Col span={24} md={{ span: 12 }} xl={{ span: 12 }} xxl={{ span: 9 }}>
           <Card title="Thông tin cá nhân">
             <Row gutter={[16, 16]}>
               <Col span={12}>
                 <UploadImage label="Ảnh đại diện" readOnlyText active value={managerInfo?.avatar} />
               </Col>
-              <Col span={12} />
+              <Col span={12}>
+                <Input label="Trạng thái" readOnlyText active renderShowValue={managerInfo?.status} />
+              </Col>
               <Col span={12}>
                 <Input label="Họ và tên" readOnlyText active value={managerInfo?.name} />
               </Col>
@@ -160,15 +163,15 @@ const ManagerDetail: React.FC = () => {
               <Col span={12}>
                 <Input label="Số điện thoại" readOnlyText active value={managerInfo?.phoneNumber} />
               </Col>
+              <Col span={24}>
+                <Input label="Ghi chú" readOnlyText active value={managerInfo?.note} />
+              </Col>
             </Row>
           </Card>
         </Col>
-        <Col span={24} md={{ span: 12 }}>
+        <Col span={24} md={{ span: 12 }} xl={{ span: 12 }} xxl={{ span: 9 }}>
           <Card title="Thông tin công việc">
             <Row gutter={[16, 16]}>
-              <Col span={24}>
-                <Input label="Trạng thái" readOnlyText active renderShowValue={managerInfo?.status} />
-              </Col>
               <Col span={12}>
                 <Input
                   label="Trình độ"
@@ -190,10 +193,12 @@ const ManagerDetail: React.FC = () => {
               <Col span={24}>
                 <Input label="Tổng thu nhập" readOnlyText active value={managerInfo?.totalIncome} />
               </Col>
-              <Col span={24}>
-                <Input label="Ghi chú" readOnlyText active value={managerInfo?.note} />
-              </Col>
             </Row>
+          </Card>
+        </Col>
+        <Col span={24} md={{ span: 12 }} xl={{ span: 12 }} xxl={{ span: 6 }}>
+          <Card title="Thông tin điểm danh">
+            <AttendancesTable />
           </Card>
         </Col>
       </Row>

@@ -91,6 +91,17 @@ const Redeems: React.FC = () => {
   ];
   const columns = [
     {
+      key: 'avatar',
+      dataIndex: 'avatar',
+      title: '',
+      width: 48,
+      render: (_: string, record: TRedeem): React.ReactElement => (
+        <div className="Table-image">
+          <Avatar size={48} image={getFullUrlStatics(record?.player_profile?.avatar)} />
+        </div>
+      ),
+    },
+    {
       key: 'name',
       dataIndex: 'name',
       title: 'Tên',

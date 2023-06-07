@@ -1,0 +1,66 @@
+@import '@/assets/styles/_global.scss';
+
+.AttendancesTable {
+  .Table {
+
+    tr {
+      &:last-child {
+        .AttendancesTable-circle {
+          &::before {
+            display: none;
+          }
+        }
+      }
+    }
+
+    td {
+      &:nth-child(2) {
+        padding-left: 0 !important;
+      }
+
+      &:first-child {
+        border: none !important;
+      }
+    }
+
+    .ant-table-thead {
+      display: none;
+    }
+  }
+
+  &-circle {
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    display: flex;
+
+    &.PRESENT {
+      &::before {
+        background: $apple;
+      }
+    }
+
+    &.ABSENT {
+      &::before {
+        background: $pomegranate;
+      }
+    }
+
+    &::before {
+      position: absolute;
+      width: 1px;
+      height: calc(100% - 3.2rem);
+      top: calc(50% + 1.6rem);
+      left: calc(50% - 1px);
+      background: $alto;
+      content: '';
+    }
+
+    .Icon {
+      width: 2.4rem;
+      height: 2.4rem;
+      margin: auto;
+    }
+  }
+}

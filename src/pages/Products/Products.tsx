@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Card from '@/components/Card';
 import Select, { TSelectOption } from '@/components/Select';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataAuditingStatusOptions } from '@/common/constants';
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataProductStatusOptions } from '@/common/constants';
 import Input from '@/components/Input';
 import { TRootState } from '@/redux/reducers';
 import Table from '@/components/Table';
@@ -180,7 +180,7 @@ const Products: React.FC = () => {
       sorter: true,
       keySort: 'auditing_status',
       render: (_: string, record: TProduct): React.ReactElement => {
-        const status = dataAuditingStatusOptions.find((item) => item.value === record.auditing_status);
+        const status = dataProductStatusOptions.find((item) => item.value === record.auditing_status);
         return status ? <Status label={status?.label} styleType={status?.data?.statusType} /> : <>{EEmpty.DASH}</>;
       },
     },

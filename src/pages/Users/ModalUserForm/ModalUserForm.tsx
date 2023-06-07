@@ -214,7 +214,7 @@ const ModalUserForm: React.FC<TModalUserFormProps> = ({ visible, data, onClose, 
             <Col span={24}>
               <Form.Item name="role" rules={[validationRules.required()]}>
                 <Select
-                  label="Phân quyền"
+                  label="Vai trò"
                   required
                   placeholder="Chọn dữ liệu"
                   active
