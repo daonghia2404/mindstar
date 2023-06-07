@@ -31,7 +31,7 @@ const ModalDeleteCategory: React.FC<TModalDeleteCategoryProps> = ({ visible, dat
   return (
     <Modal
       className="ModalDeleteCategory"
-      title="Delete"
+      title="Xoá Danh Mục"
       visible={visible}
       onClose={onClose}
       width={400}

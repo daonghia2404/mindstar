@@ -10,6 +10,8 @@ import Select, { TSelectOption } from '@/components/Select';
 import { TRootState } from '@/redux/reducers';
 import {
   ECreatePlayerAction,
+  EGetBranchesAction,
+  EGetClassesAction,
   EUpdatePlayerAction,
   createPlayerAction,
   getBranchesAction,
@@ -68,6 +70,7 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
     getClassesAction,
     'classReducer',
     'getClassesResponse',
+    EGetClassesAction.GET_CLASSES,
     undefined,
     {},
     { branchIds: formValues?.branch?.value || '' },
@@ -77,7 +80,13 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
     options: optionsBranches,
     handleLoadMore: handleLoadMoreBranches,
     handleSearch: handleSearchBranches,
-  } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', 'branchName');
+  } = useOptionsPaginate(
+    getBranchesAction,
+    'branchReducer',
+    'getBranchesResponse',
+    EGetBranchesAction.GET_BRANCHES,
+    'branchName',
+  );
 
   const playerState = useSelector((state: TRootState) => state.playerReducer.getPlayerResponse)?.data;
 

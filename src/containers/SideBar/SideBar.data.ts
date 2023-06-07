@@ -148,14 +148,14 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     title: 'Dịch vụ',
     icon: EIconName.TruckDelivery,
     link: Paths.Dashboard,
-    activePaths: [Paths.Connects],
+    activePaths: [Paths.BusStops, Paths.Connects],
     children: [
       {
         id: '1',
         title: 'Điểm đón',
         icon: EIconName.Map,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.BusStops,
+        activePaths: [Paths.BusStops],
       },
       {
         id: '2',

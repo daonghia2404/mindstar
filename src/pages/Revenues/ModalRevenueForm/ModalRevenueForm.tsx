@@ -8,6 +8,8 @@ import Input from '@/components/Input';
 import { TRootState } from '@/redux/reducers';
 import {
   ECreateTransactionAction,
+  EGetBranchesAction,
+  EGetPlayersAction,
   EUpdateTransactionAction,
   createTransactionAction,
   getBranchesAction,
@@ -35,7 +37,13 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
     options: optionsBranches,
     handleLoadMore: handleLoadMoreBranches,
     handleSearch: handleSearchBranches,
-  } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', 'branchName');
+  } = useOptionsPaginate(
+    getBranchesAction,
+    'branchReducer',
+    'getBranchesResponse',
+    EGetBranchesAction.GET_BRANCHES,
+    'branchName',
+  );
 
   const {
     options: optionsPlayers,
@@ -46,6 +54,7 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
     getPlayersAction,
     'playerReducer',
     'getPlayersResponse',
+    EGetPlayersAction.GET_PLAYERS,
     undefined,
     {
       auditingStatuses: EAuditingStatus.ACTIVE,

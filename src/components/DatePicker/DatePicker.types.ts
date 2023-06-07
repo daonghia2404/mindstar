@@ -8,6 +8,7 @@ export type TDatePickerProps = TFormFieldProps & {
   disabled?: boolean;
   allowClear?: boolean;
   format?: string;
+  showNow?: boolean;
   showTime?: boolean;
   picker?: 'time' | 'date' | 'week' | 'month' | 'quarter' | 'year';
   onChange?: (value: any) => void;

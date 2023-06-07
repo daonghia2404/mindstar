@@ -82,6 +82,7 @@ export enum EFormat {
   'DD/MM/YYYY - HH:mm' = 'DD/MM/YYYY - HH:mm',
   'HH:mm:ss' = 'HH:mm:ss',
   'dddd, DD' = 'dddd, DD',
+  'dddd' = 'dddd',
   'HH:mm' = 'HH:mm',
   'MM/YYYY' = 'MM/YYYY',
   'wo, YYYY' = 'wo, YYYY',

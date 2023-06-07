@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import DropdownMenu from '@/components/DropdownMenu';
 import Icon, { EIconName, EIconColor } from '@/components/Icon';
-import { getCommonBranchesAction, uiActions } from '@/redux/actions';
+import { EGetCommonBranchesAction, getCommonBranchesAction, uiActions } from '@/redux/actions';
 import { EAuditingStatus } from '@/common/enums';
 import { TBranch } from '@/common/models';
 import { TRootState } from '@/redux/reducers';
@@ -23,6 +23,7 @@ const MainBranchSelect: React.FC<TMainBranchSelectProps> = () => {
     getCommonBranchesAction,
     'branchReducer',
     'getCommonBranchesResponse',
+    EGetCommonBranchesAction.GET_COMMON_BRANCHES,
     undefined,
     {
       auditingStatuses: `${EAuditingStatus.ACTIVE}`,

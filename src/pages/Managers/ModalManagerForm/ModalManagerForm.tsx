@@ -9,6 +9,7 @@ import Select, { TSelectOption } from '@/components/Select';
 import { TRootState } from '@/redux/reducers';
 import {
   ECreateManagerAction,
+  EGetClassesAction,
   EUpdateManagerAction,
   createManagerAction,
   getClassesAction,
@@ -37,13 +38,13 @@ const ModalManagerForm: React.FC<TModalManagerFormProps> = ({ visible, data, onC
     options: optionsClasses,
     handleLoadMore: handleLoadMoreClasses,
     handleSearch: handleSearchClasses,
-  } = useOptionsPaginate(getClassesAction, 'classReducer', 'getClassesResponse');
+  } = useOptionsPaginate(getClassesAction, 'classReducer', 'getClassesResponse', EGetClassesAction.GET_CLASSES);
 
   // const {
   //   options: optionsBranches,
   //   handleLoadMore: handleLoadMoreBranches,
   //   handleSearch: handleSearchBranches,
-  // } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', 'branchName');
+  // } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', EGetBranchesAction.GET_BRANCHES, 'branchName');
 
   const settingsState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data;
   const cityOptions = settingsState?.cities?.map((item) => ({ label: item.name, value: item.id }));

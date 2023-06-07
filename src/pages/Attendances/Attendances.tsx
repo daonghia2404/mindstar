@@ -12,7 +12,7 @@ import Input from '@/components/Input';
 import { TGetAttendancesParams } from '@/services/api';
 import Table from '@/components/Table';
 import { TRootState } from '@/redux/reducers';
-import { EGetAttendancesAction, getAttendancesAction, getClassesAction } from '@/redux/actions';
+import { EGetAttendancesAction, EGetClassesAction, getAttendancesAction, getClassesAction } from '@/redux/actions';
 import { TAttendance } from '@/common/models';
 import Avatar from '@/components/Avatar';
 import { formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
@@ -42,6 +42,7 @@ const Attendances: React.FC = () => {
     getClassesAction,
     'classReducer',
     'getClassesResponse',
+    EGetClassesAction.GET_CLASSES,
     undefined,
     {},
     { branchIds: currentBranchId },

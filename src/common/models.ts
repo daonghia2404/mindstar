@@ -211,6 +211,7 @@ export type TSchedule = {
   create_date: number;
   duration_in_second: number;
   event: TEvent;
+  pickup_time: number;
   id: number;
   repeat_type: number;
   update_date: number;
@@ -429,5 +430,27 @@ export type TSupplier = {
   note: string;
   tax_id: unknown;
   total_provided: number;
+  update_date: number;
+};
+
+export type TBusStop = {
+  bus_schedules: TSchedule[];
+  auditing_status: number;
+  branch_name: string;
+  branch_id: number;
+  create_date: number;
+  id: number;
+  update_date: number;
+  name: string;
+};
+
+export type TBusStopPlayer = {
+  player: TUser;
+  day_of_week: string;
+  auditing_status: number;
+  bus_stop_id: number;
+  create_date: number;
+  id: number;
+  player_id: number;
   update_date: number;
 };

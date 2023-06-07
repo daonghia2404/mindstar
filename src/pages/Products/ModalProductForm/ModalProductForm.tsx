@@ -7,6 +7,7 @@ import Input from '@/components/Input';
 import { TRootState } from '@/redux/reducers';
 import {
   ECreateProductAction,
+  EGetCategoriesAction,
   EUpdateProductAction,
   EUploadImagesProductAction,
   createProductAction,
@@ -63,6 +64,7 @@ const ModalShopProducts: React.FC<TModalProductFormProps> = ({ visible, data, on
     getCategoriesAction,
     'categoryReducer',
     'getCategoriesResponse',
+    EGetCategoriesAction.GET_CATEGORIES,
     undefined,
     { auditingStatuses: EAuditingStatus.ACTIVE },
     { branchIds: currentBranchId },

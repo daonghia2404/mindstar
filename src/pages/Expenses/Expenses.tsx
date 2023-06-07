@@ -13,7 +13,7 @@ import { TDropdownMenuItem } from '@/components/DropdownMenu/DropdownMenu.types'
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import Input from '@/components/Input';
 import Table from '@/components/Table';
-import { EGetExpensesAction, getCategoriesAction, getExpensesAction } from '@/redux/actions';
+import { EGetCategoriesAction, EGetExpensesAction, getCategoriesAction, getExpensesAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
 import { TGetExpensesParams } from '@/services/api';
 import { formatCurrency, formatISODateToDateTime } from '@/utils/functions';
@@ -50,9 +50,16 @@ const Expenses: React.FC = () => {
     options: optionsCategories,
     handleLoadMore: handleLoadMoreCategories,
     handleSearch: handleSearchCategories,
-  } = useOptionsPaginate(getCategoriesAction, 'categoryReducer', 'getCategoriesResponse', undefined, {
-    type: ETypeCategory.EXPENSE,
-  });
+  } = useOptionsPaginate(
+    getCategoriesAction,
+    'categoryReducer',
+    'getCategoriesResponse',
+    EGetCategoriesAction.GET_CATEGORIES,
+    undefined,
+    {
+      type: ETypeCategory.EXPENSE,
+    },
+  );
 
   const handleOpenModalRevenueForm = (data?: TExpense): void => {
     setModalRevenueFormState({ visible: true, data });

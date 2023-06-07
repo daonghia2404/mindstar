@@ -17,7 +17,7 @@ import { capitalizeFirstLetter, formatISODateToDateTime, getFullUrlStatics } fro
 import DropdownMenu from '@/components/DropdownMenu';
 import { TDropdownMenuItem } from '@/components/DropdownMenu/DropdownMenu.types';
 import Avatar from '@/components/Avatar';
-import { EGetTimeOffsAction, getClassesAction, getTimeOffsAction } from '@/redux/actions';
+import { EGetClassesAction, EGetTimeOffsAction, getClassesAction, getTimeOffsAction } from '@/redux/actions';
 import { TGetTimeOffsParams } from '@/services/api';
 import Tags from '@/components/Tags';
 import { Paths } from '@/pages/routers';
@@ -55,6 +55,7 @@ const TimeOffs: React.FC = () => {
     getClassesAction,
     'classReducer',
     'getClassesResponse',
+    EGetClassesAction.GET_CLASSES,
     undefined,
     {},
     { branchIds: currentBranchId },

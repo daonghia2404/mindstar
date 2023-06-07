@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
 import { TSelectOption } from '@/components/Select';
 import { getTotalPage } from '@/utils/functions';
+import { TRootState } from '@/redux/reducers';
 
 type TScroll = {
   x: number;
@@ -75,6 +76,7 @@ export const useOptionsPaginate = (
   actions: any,
   reducer: string,
   response: string,
+  loadingAction: string,
   keySearch = 'name',
   params?: { [key: string]: any },
   headers?: { [key: string]: any },
@@ -87,6 +89,7 @@ export const useOptionsPaginate = (
   const dispatch = useDispatch();
 
   const total = useSelector((state: any) => state?.[reducer]?.[response])?.data?.total_elements;
+  const loading = useSelector((state: TRootState) => state.loadingReducer[loadingAction]);
   const [options, setOptions] = useState<TSelectOption[]>([]);
   const [paramsRequest, setParamsRequest] = useState({
     page: DEFAULT_PAGE,
@@ -104,7 +107,7 @@ export const useOptionsPaginate = (
 
   const handleLoadMore = (): void => {
     const isLoadMore = paramsRequest.page < getTotalPage(total, paramsRequest.size);
-    if (isLoadMore) {
+    if (!loading && isLoadMore) {
       setParamsRequest({
         ...paramsRequest,
         page: paramsRequest.page + 1,

@@ -8,6 +8,10 @@ import Input from '@/components/Input';
 import { TRootState } from '@/redux/reducers';
 import {
   ECreateExpenseAction,
+  EGetBranchesAction,
+  EGetCategoriesAction,
+  EGetManagersAction,
+  EGetPlayersAction,
   EUpdateExpenseAction,
   createExpenseAction,
   getBranchesAction,
@@ -37,16 +41,29 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({ visible, data, onC
     options: optionsBranches,
     handleLoadMore: handleLoadMoreBranches,
     handleSearch: handleSearchBranches,
-  } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', 'branchName');
+  } = useOptionsPaginate(
+    getBranchesAction,
+    'branchReducer',
+    'getBranchesResponse',
+    EGetBranchesAction.GET_BRANCHES,
+    'branchName',
+  );
 
   const {
     options: optionsCategories,
     handleLoadMore: handleLoadMoreCategories,
     handleSearch: handleSearchCategories,
     handleReset: handleResetCategories,
-  } = useOptionsPaginate(getCategoriesAction, 'categoryReducer', 'getCategoriesResponse', undefined, {
-    type: ETypeCategory.EXPENSE,
-  });
+  } = useOptionsPaginate(
+    getCategoriesAction,
+    'categoryReducer',
+    'getCategoriesResponse',
+    EGetCategoriesAction.GET_CATEGORIES,
+    undefined,
+    {
+      type: ETypeCategory.EXPENSE,
+    },
+  );
 
   const {
     options: optionsPlayers,
@@ -57,6 +74,7 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({ visible, data, onC
     getPlayersAction,
     'playerReducer',
     'getPlayersResponse',
+    EGetPlayersAction.GET_PLAYERS,
     undefined,
     {
       auditingStatuses: EAuditingStatus.ACTIVE,
@@ -73,6 +91,7 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({ visible, data, onC
     getManagersAction,
     'managerReducer',
     'getManagersResponse',
+    EGetManagersAction.GET_MANAGERS,
     undefined,
     {
       auditingStatuses: EAuditingStatus.ACTIVE,

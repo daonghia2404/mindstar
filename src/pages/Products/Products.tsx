@@ -10,7 +10,7 @@ import { TRootState } from '@/redux/reducers';
 import Table from '@/components/Table';
 import Button, { EButtonStyleType } from '@/components/Button';
 import { EAuditingStatus, EEmpty } from '@/common/enums';
-import { EGetProductsAction, getCategoriesAction, getProductsAction } from '@/redux/actions';
+import { EGetCategoriesAction, EGetProductsAction, getCategoriesAction, getProductsAction } from '@/redux/actions';
 import { TProduct } from '@/common/models';
 import { formatCurrency, getFullUrlStatics } from '@/utils/functions';
 import DropdownMenu from '@/components/DropdownMenu';
@@ -52,6 +52,7 @@ const Products: React.FC = () => {
     getCategoriesAction,
     'categoryReducer',
     'getCategoriesResponse',
+    EGetCategoriesAction.GET_CATEGORIES,
     undefined,
     { auditingStatuses: EAuditingStatus.ACTIVE },
     { branchIds: currentBranchId },

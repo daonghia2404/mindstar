@@ -9,6 +9,7 @@ import Select from '@/components/Select';
 import { TRootState } from '@/redux/reducers';
 import {
   ECreateUserAction,
+  EGetBranchesAction,
   EUpdateUserAction,
   createUserAction,
   getBranchesAction,
@@ -46,7 +47,13 @@ const ModalUserForm: React.FC<TModalUserFormProps> = ({ visible, data, onClose, 
     options: optionsBranches,
     handleLoadMore: handleLoadMoreBranches,
     handleSearch: handleSearchBranches,
-  } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', 'branchName');
+  } = useOptionsPaginate(
+    getBranchesAction,
+    'branchReducer',
+    'getBranchesResponse',
+    EGetBranchesAction.GET_BRANCHES,
+    'branchName',
+  );
 
   const settingsState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data;
   const cityOptions = settingsState?.cities?.map((item) => ({ label: item.name, value: item.id }));

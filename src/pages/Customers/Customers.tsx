@@ -66,6 +66,7 @@ const Customers: React.FC = () => {
       key: 'name',
       dataIndex: 'name',
       title: 'Tên',
+      className: 'limit-width',
       sorter: true,
       keySort: 'name',
       render: (_: string, record: TUser): React.ReactElement => (
