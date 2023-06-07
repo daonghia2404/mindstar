@@ -23,7 +23,7 @@ const ModalDeleteRevenue: React.FC<TModalDeleteRevenueProps> = ({ visible, data,
   };
 
   const handleSubmitSuccess = (): void => {
-    showNotification(ETypeNotification.SUCCESS, 'Xoá Doanh Thu Thành Công !');
+    showNotification(ETypeNotification.SUCCESS, 'Xoá Hoá đơn Doanh Thu Thành Công !');
     onClose?.();
     onSuccess?.();
   };

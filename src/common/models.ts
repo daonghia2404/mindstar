@@ -158,6 +158,7 @@ export type TDashboard = {
 
 export type TExpense = {
   amount: number;
+  branch: TBranch;
   at_date: number;
   auditing_status: number;
   category: TCategory;

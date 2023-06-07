@@ -5,10 +5,11 @@ import ApiService from '@/services/api';
 // TYPES
 
 export type TGetCategoriesParams = {
-  page: number;
-  size: number;
+  page?: number;
+  size?: number;
   sort?: string;
   name?: string;
+  type?: number;
 };
 
 export type TGetCategoriesMaterials = {

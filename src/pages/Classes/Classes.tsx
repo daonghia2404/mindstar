@@ -124,19 +124,20 @@ const Classes: React.FC = () => {
       key: 'branch',
       dataIndex: 'branch',
       title: 'Chi nhánh',
-      render: (_: string, record: TClass): React.ReactElement => {
-        return (
+      render: (_: string, record: TClass): React.ReactElement =>
+        record?.branch ? (
           <Tags
             options={[
               {
-                label: record?.branch?.name,
-                value: String(record?.branch?.id),
+                label: record?.branch.name,
+                value: String(record?.branch.id),
                 data: { iconName: EIconName.MapMarker },
               },
             ]}
           />
-        );
-      },
+        ) : (
+          <>{EEmpty.DASH}</>
+        ),
     },
     {
       key: 'teachers',

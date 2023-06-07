@@ -125,7 +125,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     title: 'Giao dịch',
     icon: EIconName.CreditCard,
     link: Paths.Dashboard,
-    activePaths: [Paths.Revenues],
+    activePaths: [Paths.Revenues, Paths.Expenses],
     children: [
       {
         id: '1',
@@ -138,8 +138,8 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         id: '2',
         title: 'Chi phí',
         icon: EIconName.Coins,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.Expenses,
+        activePaths: [Paths.Expenses],
       },
     ],
   },

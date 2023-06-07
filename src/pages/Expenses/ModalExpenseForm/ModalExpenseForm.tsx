@@ -7,25 +7,27 @@ import Modal from '@/components/Modal';
 import Input from '@/components/Input';
 import { TRootState } from '@/redux/reducers';
 import {
-  ECreateTransactionAction,
-  EUpdateTransactionAction,
-  createTransactionAction,
+  ECreateExpenseAction,
+  EUpdateExpenseAction,
+  createExpenseAction,
   getBranchesAction,
+  getCategoriesAction,
+  getManagersAction,
   getPlayersAction,
-  updateTransactionAction,
+  updateExpenseAction,
 } from '@/redux/actions';
 import { showNotification, validationRules } from '@/utils/functions';
-import { EAuditingStatus, ETransactionStatus, ETransactionType, ETypeNotification } from '@/common/enums';
+import { EAuditingStatus, ETypeCategory, ETypeNotification } from '@/common/enums';
 import TextArea from '@/components/TextArea';
 import DatePicker from '@/components/DatePicker';
 import { useOptionsPaginate } from '@/utils/hooks';
 import Select from '@/components/Select';
-import { dataPaymentTypeOptions, dataTransactionStatusOptions, dataTransactionTypeOptions } from '@/common/constants';
+import { dataPaymentTypeOptions } from '@/common/constants';
 
-import { TModalRevenueFormProps } from './ModalRevenueForm.type';
-import './ModalRevenueForm.scss';
+import { TModalExpenseFormProps } from './ModalExpenseForm.type';
+import './ModalExpenseForm.scss';
 
-const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onClose, onSuccess }) => {
+const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({ visible, data, onClose, onSuccess }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [formValues, setFormValues] = useState<any>({});
@@ -36,6 +38,15 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
     handleLoadMore: handleLoadMoreBranches,
     handleSearch: handleSearchBranches,
   } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', 'branchName');
+
+  const {
+    options: optionsCategories,
+    handleLoadMore: handleLoadMoreCategories,
+    handleSearch: handleSearchCategories,
+    handleReset: handleResetCategories,
+  } = useOptionsPaginate(getCategoriesAction, 'categoryReducer', 'getCategoriesResponse', undefined, {
+    type: ETypeCategory.EXPENSE,
+  });
 
   const {
     options: optionsPlayers,
@@ -53,55 +64,73 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
     { branchIds: formValues?.branch?.value || '' },
   );
 
-  const createTransactionLoading = useSelector(
-    (state: TRootState) => state.loadingReducer[ECreateTransactionAction.CREATE_TRANSACTION],
+  const {
+    options: optionsManagers,
+    handleLoadMore: handleLoadMoreManagers,
+    handleSearch: handleSearchManagers,
+    handleReset: handleResetManagers,
+  } = useOptionsPaginate(
+    getManagersAction,
+    'managerReducer',
+    'getManagersResponse',
+    undefined,
+    {
+      auditingStatuses: EAuditingStatus.ACTIVE,
+    },
+    { branchIds: formValues?.branch?.value || '' },
   );
-  const updateTransactionLoading = useSelector(
-    (state: TRootState) => state.loadingReducer[EUpdateTransactionAction.UPDATE_TRANSACTION],
+
+  const createExpenseLoading = useSelector(
+    (state: TRootState) => state.loadingReducer[ECreateExpenseAction.CREATE_EXPENSE],
   );
-  const loading = createTransactionLoading || updateTransactionLoading;
+  const updateExpenseLoading = useSelector(
+    (state: TRootState) => state.loadingReducer[EUpdateExpenseAction.UPDATE_EXPENSE],
+  );
+  const loading = createExpenseLoading || updateExpenseLoading;
 
   const handleSubmit = (): void => {
     form.validateFields().then((values) => {
       const body = {
+        branch_id: values?.branch ? Number(values?.branch?.value) : undefined,
         amount: values?.amount,
+        manager_id: values?.manager ? Number(values?.manager?.value) : undefined,
         player_id: values?.player ? Number(values?.player?.value) : undefined,
         at_date: values?.atDate?.valueOf(),
-        branch_id: values?.branch?.value,
+        category_id: values?.expenseType ? Number(values?.expenseType?.value) : undefined,
+        note: values?.note,
         payment_type: values?.paymentType?.value,
-        short_description: values?.description,
-        title: values?.title,
-        transaction_detail_type: values?.transactionType?.value,
-        transaction_status: values?.transactionStatus?.value,
       };
 
       if (data) {
-        dispatch(updateTransactionAction.request({ body, paths: { id: data?.id } }, handleSubmitSuccess));
+        dispatch(updateExpenseAction.request({ body, paths: { id: data?.id } }, handleSubmitSuccess));
       } else {
-        dispatch(createTransactionAction.request({ body }, handleSubmitSuccess));
+        dispatch(createExpenseAction.request({ body }, handleSubmitSuccess));
       }
     });
   };
 
   const handleSubmitSuccess = (): void => {
-    showNotification(ETypeNotification.SUCCESS, `${data ? 'Cập Nhật' : 'Tạo Mới'} Hoá đơn Doanh Thu Thành Công !`);
+    showNotification(ETypeNotification.SUCCESS, `${data ? 'Cập Nhật' : 'Tạo Mới'} Hoá đơn Chi Phí Thành Công !`);
     onClose?.();
     onSuccess?.();
   };
 
   useEffect(() => {
     if (visible) {
+      handleResetCategories();
+
       if (data) {
         const dataChanged = {
-          amount: data?.amount,
-          player: data?.buyer ? { label: data?.buyer?.name, value: String(data?.buyer?.id) } : undefined,
-          atDate: data?.at_date ? moment(data.at_date) : undefined,
           branch: data?.branch ? { label: data?.branch?.name, value: String(data?.branch?.id) } : undefined,
+          amount: data?.amount,
+          manager: data?.receiver ? { label: data?.receiver?.name, value: String(data?.receiver?.id) } : undefined,
+          player: data?.receiver ? { label: data?.receiver?.name, value: String(data?.receiver?.id) } : undefined,
+          atDate: data?.at_date ? moment(data.at_date) : undefined,
+          expenseType: data?.category
+            ? { label: data?.category?.name, value: String(data?.category?.id), data: data?.category }
+            : undefined,
+          note: data?.note,
           paymentType: dataPaymentTypeOptions.find((item) => item.value === data?.payment_type),
-          description: data?.short_description,
-          title: data?.title,
-          transactionType: dataTransactionTypeOptions.find((item) => item.value === data?.transaction_detail_type),
-          transactionStatus: dataTransactionStatusOptions.find((item) => item.value === data?.transaction_status),
         };
         form.setFieldsValue(dataChanged);
         setFormValues({ ...formValues, ...dataChanged });
@@ -122,34 +151,36 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
   useEffect(() => {
     if (formValues?.branch) {
       handleResetPlayers();
+      handleResetManagers();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValues.branch]);
 
   return (
     <Modal
-      className="ModalRevenueForm"
-      title={data ? 'Sửa Doanh Thu' : 'Tạo mới Doanh Thu'}
+      className="ModalExpenseForm"
+      title={data ? 'Sửa Chi Phí' : 'Tạo mới Chi Phí'}
       visible={visible}
       onClose={onClose}
       width={540}
       cancelButton={{ title: 'Huỷ Bỏ', disabled: loading, onClick: onClose }}
       confirmButton={{ title: 'Đồng Ý', disabled: loading, onClick: handleSubmit }}
     >
-      <div className="ModalRevenueForm-wrapper">
+      <div className="ModalExpenseForm-wrapper">
         <Form form={form} onValuesChange={(value, values): void => setFormValues({ ...formValues, ...values })}>
           <Row gutter={[16, 16]}>
             <Col span={24}>
-              <Form.Item name="transactionType" rules={[validationRules.required()]}>
+              <Form.Item name="expenseType" rules={[validationRules.required()]}>
                 <Select
-                  label="Loại doanh thu"
+                  label="Loại chi phí"
                   placeholder="Chọn dữ liệu"
                   required
                   active
                   disabled={Boolean(data)}
-                  options={dataTransactionTypeOptions.filter(
-                    (item) => ![ETransactionType.PRODUCT, ETransactionType.MEMBERSHIP_FEE].includes(item.value),
-                  )}
+                  showSearch
+                  options={optionsCategories}
+                  onSearch={handleSearchCategories}
+                  onLoadMore={handleLoadMoreCategories}
                 />
               </Form.Item>
             </Col>
@@ -168,6 +199,7 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
                   onChange={(option): void => {
                     const dataChanged = {
                       branch: option,
+                      manager: undefined,
                       player: undefined,
                     };
 
@@ -177,41 +209,40 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
                 />
               </Form.Item>
             </Col>
-            {formValues?.transactionType && (
-              <>
-                {[
-                  ETransactionType.SPONSORSHIP,
-                  ETransactionType.GIFT_AND_CONTRIBUTIONS,
-                  ETransactionType.OTHER_SALES_AND_SERVICES,
-                  ETransactionType.TOURNAMENT,
-                ].includes(formValues?.transactionType?.value) ? (
-                  <Col span={24}>
-                    <Form.Item name="title" rules={[validationRules.required()]}>
-                      <Input label="Tiêu đề" required placeholder="Nhập dữ liệu" active />
-                    </Form.Item>
-                  </Col>
-                ) : (
-                  <>
-                    {formValues?.branch && (
-                      <Col span={24}>
-                        <Form.Item name="player" rules={[validationRules.required()]}>
-                          <Select
-                            label="Học viên"
-                            placeholder="Chọn dữ liệu"
-                            required
-                            active
-                            showSearch
-                            disabled={Boolean(data)}
-                            options={optionsPlayers}
-                            onLoadMore={handleLoadMorePlayers}
-                            onSearch={handleSearchPlayers}
-                          />
-                        </Form.Item>
-                      </Col>
-                    )}
-                  </>
-                )}
-              </>
+            {formValues?.branch && formValues?.expenseType?.data?.id === 1 && (
+              <Col span={24}>
+                <Form.Item name="player" rules={[validationRules.required()]}>
+                  <Select
+                    label="Học viên"
+                    placeholder="Chọn dữ liệu"
+                    required
+                    active
+                    showSearch
+                    disabled={Boolean(data)}
+                    options={optionsPlayers}
+                    onLoadMore={handleLoadMorePlayers}
+                    onSearch={handleSearchPlayers}
+                  />
+                </Form.Item>
+              </Col>
+            )}
+
+            {formValues?.branch && formValues?.expenseType?.data?.id === 2 && (
+              <Col span={24}>
+                <Form.Item name="manager" rules={[validationRules.required()]}>
+                  <Select
+                    label="Giáo viên"
+                    placeholder="Chọn dữ liệu"
+                    required
+                    active
+                    showSearch
+                    disabled={Boolean(data)}
+                    options={optionsManagers}
+                    onLoadMore={handleLoadMoreManagers}
+                    onSearch={handleSearchManagers}
+                  />
+                </Form.Item>
+              </Col>
             )}
 
             <Col span={24}>
@@ -245,21 +276,7 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item name="transactionStatus" rules={[validationRules.required()]}>
-                <Select
-                  label="Trạng thái"
-                  placeholder="Chọn dữ liệu"
-                  required
-                  active
-                  disabled={Boolean(data)}
-                  options={dataTransactionStatusOptions.filter((item) =>
-                    [ETransactionStatus.NEW, ETransactionStatus.PAID].includes(item.value),
-                  )}
-                />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item name="description">
+              <Form.Item name="note">
                 <TextArea label="Mô tả" placeholder="Nhập dữ liệu" active />
               </Form.Item>
             </Col>
@@ -270,4 +287,4 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
   );
 };
 
-export default ModalRevenueForm;
+export default ModalExpenseForm;

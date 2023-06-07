@@ -46,6 +46,7 @@ const Users = lazy(() => retryLoadComponent(() => import('@/pages/Users')));
 const Customers = lazy(() => retryLoadComponent(() => import('@/pages/Customers')));
 const Suppliers = lazy(() => retryLoadComponent(() => import('@/pages/Suppliers')));
 const Revenues = lazy(() => retryLoadComponent(() => import('@/pages/Revenues')));
+const Expenses = lazy(() => retryLoadComponent(() => import('@/pages/Expenses')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -85,6 +86,7 @@ export const Paths = {
   Customers: '/customers',
   Suppliers: '/suppliers',
   Revenues: '/revenues',
+  Expenses: '/expenses',
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -118,6 +120,7 @@ export const Pages = {
   Customers,
   Suppliers,
   Revenues,
+  Expenses,
 
   Login,
   LoginDomain,

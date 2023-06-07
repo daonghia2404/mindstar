@@ -3,14 +3,9 @@ import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import moment, { Moment } from 'moment';
 
-import {
-  DEFAULT_PAGE,
-  DEFAULT_PAGE_SIZE,
-  dataPaymentTypeOptions,
-  dataTransactionTypeOptions,
-} from '@/common/constants';
-import { EEmpty, EFormat, EPaymentType, ETransactionType } from '@/common/enums';
-import { TTransaction } from '@/common/models';
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataPaymentTypeOptions } from '@/common/constants';
+import { EEmpty, EFormat, EPaymentType, ETypeCategory } from '@/common/enums';
+import { TExpense } from '@/common/models';
 import Button, { EButtonStyleType } from '@/components/Button';
 import Card from '@/components/Card';
 import DropdownMenu from '@/components/DropdownMenu';
@@ -18,41 +13,48 @@ import { TDropdownMenuItem } from '@/components/DropdownMenu/DropdownMenu.types'
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import Input from '@/components/Input';
 import Table from '@/components/Table';
-import { EGetTransactionsAction, getTransactionsAction } from '@/redux/actions';
+import { EGetExpensesAction, getCategoriesAction, getExpensesAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
-import { TGetTransactionsParams } from '@/services/api';
+import { TGetExpensesParams } from '@/services/api';
 import { formatCurrency, formatISODateToDateTime } from '@/utils/functions';
-import ModalDeleteRevenue from '@/pages/Revenues/ModalDeleteRevenue';
-import ModalRevenueForm from '@/pages/Revenues/ModalRevenueForm';
+import ModalDeleteRevenue from '@/pages/Expenses/ModalDeleteExpense';
+import ModalRevenueForm from '@/pages/Expenses/ModalExpenseForm';
 import Select from '@/components/Select';
 import DatePicker from '@/components/DatePicker';
 import Tags from '@/components/Tags';
 
-import './Revenues.scss';
+import './Expenses.scss';
+import { useOptionsPaginate } from '@/utils/hooks';
 
-const Revenues: React.FC = () => {
+const Expenses: React.FC = () => {
   const dispatch = useDispatch();
 
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
-  const getTransactionsLoading = useSelector(
-    (state: TRootState) => state.loadingReducer[EGetTransactionsAction.GET_TRANSACTIONS],
-  );
-  const transactionsState = useSelector((state: TRootState) => state.transactionReducer.getTransactionsResponse)?.data;
-  const [modalRewardFormState, setModalRevenueFormState] = useState<{ visible: boolean; data?: TTransaction }>({
+  const getExpensesLoading = useSelector((state: TRootState) => state.loadingReducer[EGetExpensesAction.GET_EXPENSES]);
+  const expensesState = useSelector((state: TRootState) => state.expenseReducer.getExpensesResponse)?.data;
+  const [modalRewardFormState, setModalRevenueFormState] = useState<{ visible: boolean; data?: TExpense }>({
     visible: false,
   });
-  const [modalDeleteRewardState, setModalDeleteRevenueState] = useState<{ visible: boolean; data?: TTransaction }>({
+  const [modalDeleteRewardState, setModalDeleteRevenueState] = useState<{ visible: boolean; data?: TExpense }>({
     visible: false,
   });
 
-  const [getTransactionsParamsRequest, setGetTransactionsParamsRequest] = useState<TGetTransactionsParams>({
+  const [getExpensesParamsRequest, setGetExpensesParamsRequest] = useState<TGetExpensesParams>({
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
     fromDate: moment().startOf('month')?.valueOf(),
     toDate: moment().endOf('month')?.valueOf(),
   });
 
-  const handleOpenModalRevenueForm = (data?: TTransaction): void => {
+  const {
+    options: optionsCategories,
+    handleLoadMore: handleLoadMoreCategories,
+    handleSearch: handleSearchCategories,
+  } = useOptionsPaginate(getCategoriesAction, 'categoryReducer', 'getCategoriesResponse', undefined, {
+    type: ETypeCategory.EXPENSE,
+  });
+
+  const handleOpenModalRevenueForm = (data?: TExpense): void => {
     setModalRevenueFormState({ visible: true, data });
   };
 
@@ -60,7 +62,7 @@ const Revenues: React.FC = () => {
     setModalRevenueFormState({ visible: false });
   };
 
-  const handleOpenModalDeleteRevenue = (data?: TTransaction): void => {
+  const handleOpenModalDeleteRevenue = (data?: TExpense): void => {
     setModalDeleteRevenueState({ visible: true, data });
   };
 
@@ -69,23 +71,23 @@ const Revenues: React.FC = () => {
   };
 
   const handleSearch = (keyword?: string): void => {
-    setGetTransactionsParamsRequest({
-      ...getTransactionsParamsRequest,
+    setGetExpensesParamsRequest({
+      ...getExpensesParamsRequest,
       page: DEFAULT_PAGE,
-      name: keyword,
+      search: keyword,
     });
   };
 
   const handlePaginationChange = (page: number, size: number, sort?: string): void => {
-    setGetTransactionsParamsRequest({
-      ...getTransactionsParamsRequest,
+    setGetExpensesParamsRequest({
+      ...getExpensesParamsRequest,
       page,
       size,
       sort,
     });
   };
 
-  const dataTableDropdownActions = (data?: TTransaction): TDropdownMenuItem[] => [
+  const dataTableDropdownActions = (data?: TExpense): TDropdownMenuItem[] => [
     {
       value: 'edit',
       label: 'Sửa',
@@ -111,13 +113,15 @@ const Revenues: React.FC = () => {
       dataIndex: 'name',
       title: 'Đối tượng',
       sorter: true,
-      keySort: 'buyer_name',
+      keySort: 'category_name',
       className: 'limit-width',
-      render: (_: string, record: TTransaction): React.ReactElement => {
+      render: (_: string, record: TExpense): React.ReactElement => {
         return (
           <div className="Table-info">
-            <div className="Table-info-title">{record?.title || record?.buyer?.name || EEmpty.DASH}</div>
-            {!record.title && <div className="Table-info-description">{record?.buyer_class?.name || EEmpty.DASH}</div>}
+            <div className="Table-info-title">{record?.category?.name || EEmpty.DASH}</div>
+            {record.receiver?.id && (
+              <div className="Table-info-description">{record?.receiver?.name || EEmpty.DASH}</div>
+            )}
           </div>
         );
       },
@@ -128,11 +132,11 @@ const Revenues: React.FC = () => {
       title: 'Tổng giá trị',
       sorter: true,
       keySort: 'amount',
-      render: (_: string, record: TTransaction): React.ReactElement => {
+      render: (_: string, record: TExpense): React.ReactElement => {
         return (
           <div className="Table-info">
-            <div className="Table-info-title" style={{ color: EIconColor.APPLE }}>
-              + {formatCurrency({ amount: record.amount || EEmpty.ZERO, showSuffix: true })}
+            <div className="Table-info-title" style={{ color: EIconColor.POMEGRANATE }}>
+              - {formatCurrency({ amount: record.amount || EEmpty.ZERO, showSuffix: true })}
             </div>
             <div className="Table-info-description">
               {dataPaymentTypeOptions.find((item) => item.value === record?.payment_type)?.label || EEmpty.DASH}
@@ -148,42 +152,31 @@ const Revenues: React.FC = () => {
       sorter: true,
       keySort: 'at_date',
       className: 'nowrap',
-      render: (_: string, record: TTransaction): string =>
+      render: (_: string, record: TExpense): string =>
         record.at_date ? formatISODateToDateTime(record.at_date, EFormat['DD/MM/YYYY - HH:mm']) : EEmpty.DASH,
-    },
-    {
-      key: 'type',
-      dataIndex: 'type',
-      title: 'Loại',
-      className: 'nowrap',
-      sorter: true,
-      keySort: 'transaction_detail_type',
-      render: (_: string, record: TTransaction): string => {
-        const currentRevenue = dataTransactionTypeOptions.find((item) => item.value === record.transaction_detail_type);
-        return currentRevenue ? currentRevenue.label : EEmpty.DASH;
-      },
     },
     {
       key: 'branch',
       dataIndex: 'branch',
       title: 'Chi nhánh',
-      render: (_: string, record: TTransaction): React.ReactElement => {
-        return (
+      render: (_: string, record: TExpense): React.ReactElement =>
+        record?.branch ? (
           <Tags
             options={[
               {
-                label: record?.branch?.name,
-                value: String(record?.branch?.id),
+                label: record?.branch.name,
+                value: String(record?.branch.id),
                 data: { iconName: EIconName.MapMarker },
               },
             ]}
           />
-        );
-      },
+        ) : (
+          <>{EEmpty.DASH}</>
+        ),
     },
     {
-      key: 'short_description',
-      dataIndex: 'short_description',
+      key: 'note',
+      dataIndex: 'note',
       title: 'Ghi chú',
       render: (value: string): string => value || EEmpty.DASH,
     },
@@ -192,7 +185,7 @@ const Revenues: React.FC = () => {
       dataIndex: 'actions',
       title: '',
       width: 40,
-      render: (_: string, record: TTransaction): React.ReactElement => (
+      render: (_: string, record: TExpense): React.ReactElement => (
         <div onClick={(e): void => e.stopPropagation()}>
           <DropdownMenu placement="bottomRight" options={dataTableDropdownActions(record)}>
             <Button
@@ -207,26 +200,26 @@ const Revenues: React.FC = () => {
     },
   ];
 
-  const getTransactions = useCallback(() => {
-    if (getTransactionsParamsRequest.fromDate && getTransactionsParamsRequest.toDate) {
+  const getExpenses = useCallback(() => {
+    if (getExpensesParamsRequest.fromDate && getExpensesParamsRequest.toDate) {
       dispatch(
-        getTransactionsAction.request({
-          params: getTransactionsParamsRequest,
+        getExpensesAction.request({
+          params: getExpensesParamsRequest,
           headers: { branchIds: currentBranchId },
         }),
       );
     }
-  }, [dispatch, getTransactionsParamsRequest, currentBranchId]);
+  }, [dispatch, getExpensesParamsRequest, currentBranchId]);
 
   useEffect(() => {
-    getTransactions();
-  }, [getTransactions]);
+    getExpenses();
+  }, [getExpenses]);
 
   return (
-    <div className="Revenues">
+    <div className="Expenses">
       <Row gutter={[24, 24]}>
         <Col span={24}>
-          <Card className="Revenues-filter">
+          <Card className="Expenses-filter">
             <Row gutter={[16, 16]} justify="space-between">
               <Col>
                 <Row gutter={[16, 16]}>
@@ -240,20 +233,19 @@ const Revenues: React.FC = () => {
                   </Col>
                   <Col>
                     <Select
-                      label="Loại doanh thu"
+                      label="Loại chi phí"
                       placeholder="Chọn dữ liệu"
-                      value={dataTransactionTypeOptions.find(
-                        (item) =>
-                          item.value ===
-                          Number(getTransactionsParamsRequest.transactionDetailType as unknown as ETransactionType),
-                      )}
-                      options={dataTransactionTypeOptions}
+                      value={optionsCategories.find((item) => item.value === getExpensesParamsRequest.categoryIds)}
+                      showSearch
+                      options={optionsCategories}
+                      onSearch={handleSearchCategories}
+                      onLoadMore={handleLoadMoreCategories}
                       allowClear
                       onChange={(option): void => {
-                        setGetTransactionsParamsRequest({
-                          ...getTransactionsParamsRequest,
+                        setGetExpensesParamsRequest({
+                          ...getExpensesParamsRequest,
                           page: DEFAULT_PAGE,
-                          transactionDetailType: option?.value,
+                          categoryIds: option?.value,
                         });
                       }}
                     />
@@ -264,13 +256,13 @@ const Revenues: React.FC = () => {
                       placeholder="Chọn dữ liệu"
                       value={dataPaymentTypeOptions.find(
                         (item) =>
-                          item.value === Number(getTransactionsParamsRequest.paymentTypes as unknown as EPaymentType),
+                          item.value === Number(getExpensesParamsRequest.paymentTypes as unknown as EPaymentType),
                       )}
                       options={dataPaymentTypeOptions}
                       allowClear
                       onChange={(option): void => {
-                        setGetTransactionsParamsRequest({
-                          ...getTransactionsParamsRequest,
+                        setGetExpensesParamsRequest({
+                          ...getExpensesParamsRequest,
                           page: DEFAULT_PAGE,
                           paymentTypes: option?.value,
                         });
@@ -283,14 +275,14 @@ const Revenues: React.FC = () => {
                 <Row gutter={[16, 16]}>
                   <Col>
                     <DatePicker
-                      value={moment(getTransactionsParamsRequest.fromDate)}
+                      value={moment(getExpensesParamsRequest.fromDate)}
                       label="Tháng"
                       picker="month"
                       format={EFormat['MM/YYYY']}
                       placeholder=" "
                       onChange={(data: Moment): void => {
-                        setGetTransactionsParamsRequest({
-                          ...getTransactionsParamsRequest,
+                        setGetExpensesParamsRequest({
+                          ...getExpensesParamsRequest,
                           page: DEFAULT_PAGE,
                           fromDate: data?.clone()?.startOf('month')?.valueOf(),
                           toDate: data?.clone()?.endOf('month')?.valueOf(),
@@ -304,7 +296,7 @@ const Revenues: React.FC = () => {
           </Card>
         </Col>
         <Col span={24}>
-          <Card className="Revenues-table">
+          <Card className="Expenses-table">
             <Table
               header={
                 <Row gutter={[16, 16]} justify="space-between" align="middle">
@@ -313,15 +305,15 @@ const Revenues: React.FC = () => {
                       <Col>
                         <div className="Table-total-item">
                           <Icon name={EIconName.Receipt} color={EIconColor.TUNDORA} />
-                          Tổng Hoá Đơn: <strong>{transactionsState?.total_elements || EEmpty.ZERO}</strong>
+                          Tổng Hoá Đơn: <strong>{expensesState?.total_elements || EEmpty.ZERO}</strong>
                         </div>
                       </Col>
                       <Col>
                         <div className="Table-total-item">
-                          <Icon name={EIconName.PigMoney} color={EIconColor.TUNDORA} />
-                          Tổng Doanh Thu:{' '}
+                          <Icon name={EIconName.Coins} color={EIconColor.TUNDORA} />
+                          Tổng Chi Phí:{' '}
                           <strong>
-                            {formatCurrency({ amount: transactionsState?.sub_total || EEmpty.ZERO, showSuffix: true })}
+                            {formatCurrency({ amount: expensesState?.sub_total || EEmpty.ZERO, showSuffix: true })}
                           </strong>
                         </div>
                       </Col>
@@ -329,7 +321,7 @@ const Revenues: React.FC = () => {
                   </Col>
                   <Col>
                     <Button
-                      title="Tạo mới Doanh Thu"
+                      title="Tạo mới Chi Phí"
                       styleType={EButtonStyleType.PURPLE}
                       iconName={EIconName.Plus}
                       iconColor={EIconColor.WHITE}
@@ -338,26 +330,22 @@ const Revenues: React.FC = () => {
                   </Col>
                 </Row>
               }
-              loading={getTransactionsLoading}
+              loading={getExpensesLoading}
               columns={columns}
-              dataSources={transactionsState?.content || []}
-              page={getTransactionsParamsRequest?.page}
-              pageSize={getTransactionsParamsRequest?.size}
-              total={transactionsState?.total_elements}
+              dataSources={expensesState?.content || []}
+              page={getExpensesParamsRequest?.page}
+              pageSize={getExpensesParamsRequest?.size}
+              total={expensesState?.total_elements}
               onPaginationChange={handlePaginationChange}
             />
           </Card>
         </Col>
       </Row>
 
-      <ModalRevenueForm {...modalRewardFormState} onClose={handleCloseModalRevenueForm} onSuccess={getTransactions} />
-      <ModalDeleteRevenue
-        {...modalDeleteRewardState}
-        onClose={handleCloseModalDeleteRevenue}
-        onSuccess={getTransactions}
-      />
+      <ModalRevenueForm {...modalRewardFormState} onClose={handleCloseModalRevenueForm} onSuccess={getExpenses} />
+      <ModalDeleteRevenue {...modalDeleteRewardState} onClose={handleCloseModalDeleteRevenue} onSuccess={getExpenses} />
     </div>
   );
 };
 
-export default Revenues;
+export default Expenses;

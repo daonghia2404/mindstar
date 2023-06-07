@@ -153,7 +153,7 @@ export enum ETypeCheckIn {
 
 export enum ETypeCategory {
   EXPENSE = 1,
-  PRODUCT = 1,
+  PRODUCT = 2,
 }
 
 export enum ETypeProductUploadImages {

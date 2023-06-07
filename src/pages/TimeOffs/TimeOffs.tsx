@@ -127,8 +127,8 @@ const TimeOffs: React.FC = () => {
       ),
     },
     {
-      key: 'branch',
-      dataIndex: 'branch',
+      key: 'class',
+      dataIndex: 'class',
       title: 'Lớp Học',
       render: (_: string, record: TTimeOff): React.ReactElement =>
         record?.player?.class ? (
