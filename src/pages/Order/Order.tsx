@@ -3,6 +3,7 @@ import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
+import { EStatusStyleType } from '@/components/Status/Status.enums';
 import { TClass } from '@/common/models';
 import Button, { EButtonStyleType } from '@/components/Button';
 import Card from '@/components/Card';
@@ -19,6 +20,9 @@ import './Order.scss';
 import Select from '@/components/Select';
 import ModalOrderForm from './ModalOrderForm';
 import ModalDeleteOrder from './ModalDeleteOrder';
+import Status from '@/components/Status';
+import { EEmpty } from '@/common/enums';
+import Avatar from '@/components/Avatar';
 
 const Order: React.FC = () => {
   const dispatch = useDispatch();
@@ -114,7 +118,9 @@ const Order: React.FC = () => {
         return (
           <div className="Table-info">
             <div className="Table-info-title">{record?.name}</div>
-            <div className="Table-info-description">{record?.phone}</div>
+            <a href="tel: 0963258850" className="Table-link">
+              {record?.phone}
+            </a>
             <div className="Table-info-description">{record?.address}</div>
           </div>
         );
@@ -124,13 +130,18 @@ const Order: React.FC = () => {
       key: 'product',
       dataIndex: 'product',
       title: 'Sản Phẩm',
-      render: (_: string, record: any): React.ReactElement => {
-        return (
-          <div className="Table-info">
-            <div className="Table-info-title">{record?.product}</div>
-          </div>
-        );
-      },
+      render: (_: string, record: any): React.ReactElement => (
+        <Row gutter={[16, 16]} align="middle" wrap={false}>
+          <Col>
+            <Avatar shape="square" size={72} image={record?.image} defaultImage />
+          </Col>
+          <Col>
+            <div className="Table-info">
+              <div className="Table-info-title">{record?.product || EEmpty.DASH}</div>
+            </div>
+          </Col>
+        </Row>
+      ),
     },
     {
       key: 'quantity',
@@ -193,7 +204,7 @@ const Order: React.FC = () => {
       render: (_: string, record: any): React.ReactElement => {
         return (
           <div className="Table-info">
-            <div className="Table-info-title">{record?.status}</div>
+            <Status label={record?.label} styleType={EStatusStyleType.SUCCESS} />
           </div>
         );
       },
@@ -234,6 +245,7 @@ const Order: React.FC = () => {
     {
       id: '1',
       name: 'Trinh Van Huan',
+      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
       phone: '0866743141',
       address: '190 NGo Xuan Quang',
       product: 'Product',
@@ -243,11 +255,12 @@ const Order: React.FC = () => {
       date: 'Ngày 30 Tháng 5, 2023',
       hour: '09:34',
       payment: 'New',
-      status: 'Hoàn Thành',
+      label: 'Hoàn Thành',
     },
     {
       id: '1',
       name: 'Trinh Van Huan',
+      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
       phone: '0866743141',
       address: '190 NGo Xuan Quang',
       product: 'Product',
@@ -257,12 +270,13 @@ const Order: React.FC = () => {
       date: 'Ngày 30 Tháng 5, 2023',
       hour: '09:34',
       payment: 'New',
-      status: 'Hoàn Thành',
+      label: 'Hoàn Thành',
     },
     {
       id: '2',
       name: 'Trinh Van Huan',
       phone: '0866743141',
+      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
       address: '190 NGo Xuan Quang',
       product: 'Product',
       quantity: '1',
@@ -271,12 +285,13 @@ const Order: React.FC = () => {
       date: 'Ngày 30 Tháng 5, 2023',
       hour: '09:34',
       payment: 'New',
-      status: 'Hoàn Thành',
+      label: 'Hoàn Thành',
     },
     {
       id: '3',
       name: 'Trinh Van Huan',
       phone: '0866743141',
+      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
       address: '190 NGo Xuan Quang',
       product: 'Product',
       quantity: '1',
@@ -285,12 +300,13 @@ const Order: React.FC = () => {
       date: 'Ngày 30 Tháng 5, 2023',
       hour: '09:34',
       payment: 'New',
-      status: 'Hoàn Thành',
+      label: 'Hoàn Thành',
     },
     {
       id: '4',
       name: 'Trinh Van Huan',
       phone: '0866743141',
+      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
       address: '190 NGo Xuan Quang',
       product: 'Product',
       quantity: '1',
@@ -299,12 +315,13 @@ const Order: React.FC = () => {
       date: 'Ngày 30 Tháng 5, 2023',
       hour: '09:34',
       payment: 'New',
-      status: 'Hoàn Thành',
+      label: 'Hoàn Thành',
     },
     {
       id: '5',
       name: 'Trinh Van Huan',
       phone: '0866743141',
+      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
       address: '190 NGo Xuan Quang',
       product: 'Product',
       quantity: '1',
@@ -313,7 +330,7 @@ const Order: React.FC = () => {
       date: 'Ngày 30 Tháng 5, 2023',
       hour: '09:34',
       payment: 'New',
-      status: 'Hoàn Thành',
+      label: 'Hoàn Thành',
     },
   ];
 
