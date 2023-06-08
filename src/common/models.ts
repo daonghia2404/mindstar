@@ -458,3 +458,13 @@ export type TBusStopPlayer = {
   player_id: number;
   update_date: number;
 };
+
+export type TPickupAttendance = {
+  bus_stop_id: number;
+  bus_stop_name: string;
+  id: number;
+  pickup_status: number;
+  pickup_time: number;
+  player: TUser;
+  player_id: number;
+};

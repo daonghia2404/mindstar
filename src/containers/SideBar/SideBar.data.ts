@@ -166,7 +166,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     title: 'Dịch vụ',
     icon: EIconName.TruckDelivery,
     link: Paths.Dashboard,
-    activePaths: [Paths.BusStops, Paths.Connects],
+    activePaths: [Paths.BusStops, Paths.PickupAttendances, Paths.Connects],
     children: [
       {
         id: '4-1',
@@ -178,9 +178,10 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
       {
         id: '4-2',
         title: 'Điểm danh',
+        headerTitle: 'Điểm danh Điểm đón',
         icon: EIconName.Checkbox,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.PickupAttendances,
+        activePaths: [Paths.PickupAttendances],
       },
       {
         id: '4-3',

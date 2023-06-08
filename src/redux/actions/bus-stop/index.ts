@@ -4,5 +4,8 @@ export * from './delete-bus-stop-player';
 export * from './delete-bus-stop';
 export * from './get-bus-stop-players';
 export * from './get-bus-stops';
+export * from './get-pickup-attendance-players';
+export * from './get-pickup-attendances';
 export * from './update-bus-stop-player';
 export * from './update-bus-stop';
+export * from './update-pickup-attendances';

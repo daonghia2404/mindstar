@@ -1,0 +1,20 @@
+@import '@/assets/styles/_global.scss';
+
+.ModalCheckIns {
+  &-info {
+    &-title {
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: $mine-shaft;
+    }
+  }
+
+  .ant-col:last-child>.ModalCheckIns-item {
+    border: none;
+  }
+
+  &-item {
+    padding: 1.2rem 0;
+    border-bottom: 1px solid $silver;
+  }
+}

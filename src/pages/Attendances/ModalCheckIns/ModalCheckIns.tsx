@@ -68,12 +68,17 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
           checked_in: typeof checked_in === 'number' ? checked_in : ETypeCheckIn.NONE,
           description: description || '',
           unit_value: unit_value ? Number(unit_value?.value) : 0,
-          [keyId]: item?.[keyId],
+          [managers ? 'teacher_id' : 'player_id']: item?.[keyId],
         };
       }),
     };
 
-    dispatch(updateAttendancesAction.request({ isManager: managers, body }, handleSubmitSuccess));
+    dispatch(
+      updateAttendancesAction.request(
+        { isManager: managers, body: managers ? [body] : body, headers: { branchIds: body.branch_id } },
+        handleSubmitSuccess,
+      ),
+    );
   };
 
   const handleSubmitSuccess = (): void => {

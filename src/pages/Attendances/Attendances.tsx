@@ -158,10 +158,21 @@ const Attendances: React.FC<TAttendanceProps> = ({ managers }) => {
       dataIndex: 'status',
       title: 'Trạng thái',
       sorter: true,
-      keySort: 'auditing_status',
+      keySort: 'checked_in',
       render: (_: string, record: TAttendance): React.ReactElement => {
         const status = dataTypeCheckInOptions.find((item) => item.value === record.checked_in);
-        return status ? <Status label={status?.label} styleType={status?.data?.statusType} /> : <>{EEmpty.DASH}</>;
+        return status ? (
+          <Row gutter={[8, 8]} wrap={false} align="middle">
+            <Col>
+              <Status label={status?.label} styleType={status?.data?.statusType} />
+            </Col>
+            <Col>
+              <div className="Table-info-description">{record.unit_value > 1 ? `x ${record.unit_value}` : ''}</div>
+            </Col>
+          </Row>
+        ) : (
+          <>{EEmpty.DASH}</>
+        );
       },
     },
     {

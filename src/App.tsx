@@ -67,6 +67,7 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.Revenues} component={Pages.Revenues} />
           <ProtectedRoute path={Paths.Expenses} component={Pages.Expenses} />
           <ProtectedRoute path={Paths.BusStops} component={Pages.BusStops} />
+          <ProtectedRoute path={Paths.PickupAttendances} component={Pages.PickupAttendances} />
 
           <Redirect noThrow from={Paths.Rest} to={`${LayoutPaths.Admin}${Paths.Dashboard}`} />
         </Admin>
