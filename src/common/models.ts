@@ -362,6 +362,8 @@ export type TAttendance = {
   lesson_paid_status: number;
   player: TUser;
   player_id: number;
+  manager_profile: TUser;
+  manager_id: number;
   time_off_list: unknown;
   unit_value: number;
   update_date: number;

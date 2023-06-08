@@ -303,7 +303,7 @@ const TimeOffs: React.FC = () => {
                   <Col>
                     <div className="Table-total-item">
                       <Icon name={EIconName.ClockCancel} color={EIconColor.TUNDORA} />
-                      Tổng Thời Gian Nghỉ: <strong>{timeOffsState?.total_elements || EEmpty.ZERO}</strong>
+                      Tổng Yêu cầu nghỉ: <strong>{timeOffsState?.total_elements || EEmpty.ZERO}</strong>
                     </div>
                   </Col>
                 </Row>

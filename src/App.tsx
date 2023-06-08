@@ -52,7 +52,8 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.Players} component={Pages.Players} />
           <ProtectedRoute path={Paths.PlayerDetail()} component={Pages.PlayerDetail} />
           <ProtectedRoute path={Paths.Connects} component={Pages.Connects} />
-          <ProtectedRoute path={Paths.Attendances} component={Pages.Attendances} />
+          <ProtectedRoute path={Paths.AttendancesManagers} component={Pages.Attendances} managers />
+          <ProtectedRoute path={Paths.AttendancesPlayers} component={Pages.Attendances} />
           <ProtectedRoute path={Paths.Practices} component={Pages.Practices} />
           <ProtectedRoute path={Paths.Schedules} component={Pages.Schedules} />
           <ProtectedRoute path={Paths.Categories} component={Pages.Categories} />

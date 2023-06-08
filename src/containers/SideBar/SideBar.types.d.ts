@@ -8,6 +8,7 @@ export type TSideBarData = {
   link?: string;
   activePaths: string[];
   hide?: boolean;
+  headerTitle?: string;
   icon?: string;
   children?: TSideBarData[];
 };

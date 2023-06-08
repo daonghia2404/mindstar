@@ -3,7 +3,7 @@ import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { navigate } from '@reach/router';
 
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataDegreeTypeOptions } from '@/common/constants';
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
 import { EEmpty, EFormat } from '@/common/enums';
 import Button, { EButtonStyleType } from '@/components/Button';
 import Card from '@/components/Card';
@@ -12,7 +12,7 @@ import Input from '@/components/Input';
 import { TGetPlayersParams } from '@/services/api';
 import Table from '@/components/Table';
 import { TRootState } from '@/redux/reducers';
-import { EGetPlayersAction, getPlayersAction } from '@/redux/actions';
+import { EGetClassesAction, EGetPlayersAction, getClassesAction, getPlayersAction } from '@/redux/actions';
 import DropdownMenu from '@/components/DropdownMenu';
 import { TUser } from '@/common/models';
 import { TDropdownMenuItem } from '@/components/DropdownMenu/DropdownMenu.types';
@@ -22,6 +22,8 @@ import ModalPlayerForm from '@/pages/Players/ModalPlayerForm';
 import ModalDeletePlayer from '@/pages/Players/ModalDeletePlayer';
 import { Paths } from '@/pages/routers';
 import Tags from '@/components/Tags';
+import Select, { TSelectOption } from '@/components/Select';
+import { useOptionsPaginate } from '@/utils/hooks';
 
 import './Players.scss';
 
@@ -42,6 +44,20 @@ const Players: React.FC = () => {
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
   });
+
+  const {
+    options: optionsClasses,
+    handleSearch: handleSearchClasses,
+    handleLoadMore: handleLoadMoreClasses,
+  } = useOptionsPaginate(
+    getClassesAction,
+    'classReducer',
+    'getClassesResponse',
+    EGetClassesAction.GET_CLASSES,
+    undefined,
+    {},
+    { branchIds: currentBranchId },
+  );
 
   const handleOpenModalPlayerForm = (data?: TUser): void => {
     setModalPlayerFormState({ visible: true, data });
@@ -123,23 +139,17 @@ const Players: React.FC = () => {
       className: 'limit-width',
       width: 180,
       render: (_: string, record: TUser): React.ReactElement => {
-        const dergeeType = dataDegreeTypeOptions.find((item) => item.value === record.degree_type);
         return (
           <div className="Table-info">
             <div className="Table-info-title">{record?.name || EEmpty.DASH}</div>
-            <div className="Table-info-description" style={{ color: dergeeType?.data?.color }}>
-              {dergeeType?.label}
+            <div className="Table-info-description">
+              {record?.date_of_birth
+                ? formatISODateToDateTime(record.date_of_birth, EFormat['DD/MM/YYYY'])
+                : EEmpty.DASH}
             </div>
           </div>
         );
       },
-    },
-    {
-      key: 'date_of_birth',
-      dataIndex: 'date_of_birth',
-      title: 'Ngày Sinh',
-      render: (_: string, record: TUser): string =>
-        record?.date_of_birth ? formatISODateToDateTime(record.date_of_birth, EFormat['DD/MM/YYYY']) : EEmpty.DASH,
     },
     {
       key: 'address',
@@ -223,7 +233,15 @@ const Players: React.FC = () => {
   ];
 
   const getPlayers = useCallback(() => {
-    dispatch(getPlayersAction.request({ params: getPlayersParamsRequest, headers: { branchIds: currentBranchId } }));
+    dispatch(
+      getPlayersAction.request({
+        params: {
+          ...getPlayersParamsRequest,
+          classIds: (getPlayersParamsRequest?.classIds as unknown as TSelectOption)?.value,
+        },
+        headers: { branchIds: currentBranchId },
+      }),
+    );
   }, [dispatch, getPlayersParamsRequest, currentBranchId]);
 
   useEffect(() => {
@@ -242,6 +260,25 @@ const Players: React.FC = () => {
                   label="Tìm kiếm"
                   suffixIcon={<Icon name={EIconName.Search} color={EIconColor.TUNDORA} />}
                   onSearch={handleSearch}
+                />
+              </Col>
+              <Col>
+                <Select
+                  label="Lớp học"
+                  value={getPlayersParamsRequest?.classIds as any}
+                  onChange={(options): void => {
+                    setGetPlayersParamsRequest({
+                      ...getPlayersParamsRequest,
+                      page: DEFAULT_PAGE,
+                      classIds: options as any,
+                    });
+                  }}
+                  showSearch
+                  allowClear
+                  options={optionsClasses}
+                  onLoadMore={handleLoadMoreClasses}
+                  onSearch={handleSearchClasses}
+                  placement="topLeft"
                 />
               </Col>
             </Row>

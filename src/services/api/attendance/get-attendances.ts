@@ -17,6 +17,7 @@ export type TGetAttendancesParams = {
 export type TGetAttendancesMaterials = {
   params?: TGetAttendancesParams;
   headers?: THeaderBranchIds;
+  isManager?: boolean;
 };
 
 export type TGetAttendancesResponse = TCommonResponse & {
@@ -31,7 +32,11 @@ export type TGetAttendancesResponse = TCommonResponse & {
 export const getAttendances = async ({
   params,
   headers,
+  isManager,
 }: TGetAttendancesMaterials): Promise<TGetAttendancesResponse> => {
-  const response = await ApiService.get(`/v1/api/admin/attendances`, { params, headers });
+  const response = await ApiService.get(`/v1/api/admin/attendances${isManager ? '/teacher-view' : ''}`, {
+    params,
+    headers,
+  });
   return response.data;
 };

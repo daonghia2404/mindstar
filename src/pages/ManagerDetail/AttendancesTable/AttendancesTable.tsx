@@ -9,9 +9,9 @@ import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataTypeCheckInOptions } from '@/commo
 import { EEmpty, EFormat, ETypeCheckIn } from '@/common/enums';
 import { TAttendance } from '@/common/models';
 import { formatISODateToDateTime } from '@/utils/functions';
-import { EGetPlayerAttendancesAction, getPlayerAttendancesAction } from '@/redux/actions';
+import { EGetManagerAttendancesAction, getManagerAttendancesAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
-import { TGetPlayerAttendancesParams } from '@/services/api';
+import { TGetManagerAttendancesParams } from '@/services/api';
 import Icon from '@/components/Icon';
 
 import './AttendancesTable.scss';
@@ -20,22 +20,22 @@ const AttendancesTable: React.FC<TAttendancesTableProps> = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
-  const getPlayerAttendancesLoading = useSelector(
-    (state: TRootState) => state.loadingReducer[EGetPlayerAttendancesAction.GET_PLAYER_ATTENDANCES],
+  const getManagerAttendancesLoading = useSelector(
+    (state: TRootState) => state.loadingReducer[EGetManagerAttendancesAction.GET_MANAGER_ATTENDANCES],
   );
   const attendancesState = useSelector(
-    (state: TRootState) => state.attendanceReducer.getPlayerAttendancesResponse,
+    (state: TRootState) => state.attendanceReducer.getManagerAttendancesResponse,
   )?.data;
 
-  const [getPlayerAttendancesParamsRequest, setGetPlayerAttendancesParamsRequest] =
-    useState<TGetPlayerAttendancesParams>({
+  const [getManagerAttendancesParamsRequest, setGetManagerAttendancesParamsRequest] =
+    useState<TGetManagerAttendancesParams>({
       page: DEFAULT_PAGE,
       size: DEFAULT_PAGE_SIZE,
     });
 
   const handlePaginationChange = (page: number, size: number, sort?: string): void => {
-    setGetPlayerAttendancesParamsRequest({
-      ...getPlayerAttendancesParamsRequest,
+    setGetManagerAttendancesParamsRequest({
+      ...getManagerAttendancesParamsRequest,
       page,
       size,
       sort,
@@ -88,29 +88,29 @@ const AttendancesTable: React.FC<TAttendancesTableProps> = () => {
     },
   ];
 
-  const getPlayerAttendances = useCallback(() => {
+  const getManagerAttendances = useCallback(() => {
     dispatch(
-      getPlayerAttendancesAction.request({
+      getManagerAttendancesAction.request({
         paths: { id },
-        params: getPlayerAttendancesParamsRequest,
+        params: getManagerAttendancesParamsRequest,
         headers: { branchIds: currentBranchId },
       }),
     );
-  }, [dispatch, getPlayerAttendancesParamsRequest, id, currentBranchId]);
+  }, [dispatch, getManagerAttendancesParamsRequest, id, currentBranchId]);
 
   useEffect(() => {
-    getPlayerAttendances();
-  }, [getPlayerAttendances]);
+    getManagerAttendances();
+  }, [getManagerAttendances]);
 
   return (
     <div className="AttendancesTable">
       <Table
         columns={columns}
         dataSources={attendancesState?.content || []}
-        page={getPlayerAttendancesParamsRequest?.page}
-        pageSize={getPlayerAttendancesParamsRequest?.size}
+        page={getManagerAttendancesParamsRequest?.page}
+        pageSize={getManagerAttendancesParamsRequest?.size}
         total={attendancesState?.total_elements}
-        loading={getPlayerAttendancesLoading}
+        loading={getManagerAttendancesLoading}
         onPaginationChange={handlePaginationChange}
         showPagination={false}
       />

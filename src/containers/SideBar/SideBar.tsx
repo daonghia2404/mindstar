@@ -10,7 +10,7 @@ import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import { TRootState } from '@/redux/reducers';
 
 import { dataSideBar } from './SideBar.data';
-import { TSideBarProps } from './SideBar.types.d';
+import { TSideBarData, TSideBarProps } from './SideBar.types.d';
 import './SideBar.scss';
 
 const { Panel } = Collapse;
@@ -22,6 +22,60 @@ const SideBar: React.FC<TSideBarProps> = ({ onCloseMenu }) => {
     id: [...pathname.split('/')].pop(),
   };
 
+  const renderPanel = (item: TSideBarData): React.ReactNode => {
+    const isHidden = item.hide;
+    const isChildren = item.children && item.children?.length > 0;
+
+    const renderPanelHeader = (): React.ReactNode => {
+      return (
+        <div
+          className={classNames('SideBar-list-item flex items-center', {
+            active: item.activePaths.includes(pathname),
+          })}
+          onClick={(): void => {
+            if (!isChildren && item.link) {
+              onCloseMenu?.();
+              navigate(item.link);
+            }
+          }}
+        >
+          {item.icon && (
+            <div className="SideBar-list-item-icon">
+              <Icon name={item.icon as EIconName} color={EIconColor.DOVE_GRAY} />
+            </div>
+          )}
+
+          <div className="SideBar-list-item-title">{item.title}</div>
+          {isChildren && (
+            <div className="SideBar-list-item-arrow">
+              <Icon name={EIconName.AngleDown} color={EIconColor.DOVE_GRAY} />
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    const renderPanelChildren = (): React.ReactNode => {
+      return isChildren ? (
+        <div className="SideBar-list-children">
+          <Collapse expandIconPosition="right" expandIcon={(): React.ReactNode => <></>}>
+            {item.children?.filter((subItem) => !subItem.hide).map((subItem) => renderPanel(subItem))}
+          </Collapse>
+        </div>
+      ) : (
+        <></>
+      );
+    };
+
+    return isHidden ? (
+      <></>
+    ) : (
+      <Panel key={item.id} collapsible={isChildren ? undefined : 'disabled'} header={renderPanelHeader()}>
+        {renderPanelChildren()}
+      </Panel>
+    );
+  };
+
   return (
     <div className="SideBar">
       <Link to={Paths.Dashboard} className="SideBar-logo">
@@ -30,67 +84,7 @@ const SideBar: React.FC<TSideBarProps> = ({ onCloseMenu }) => {
       </Link>
 
       <Collapse className="SideBar-list" expandIconPosition="right" expandIcon={(): React.ReactNode => <></>}>
-        {dataSideBar(dataLocation).map((item) => {
-          const isChildren = item.children && item.children?.length > 0;
-
-          return (
-            <Panel
-              key={item.id}
-              collapsible={isChildren ? undefined : 'disabled'}
-              header={
-                <div
-                  className={classNames('SideBar-list-item flex items-center', {
-                    active: item.activePaths.includes(pathname),
-                  })}
-                  onClick={(): void => {
-                    if (!isChildren && item.link) {
-                      onCloseMenu?.();
-                      navigate(item.link);
-                    }
-                  }}
-                >
-                  <div className="SideBar-list-item-icon">
-                    <Icon name={item.icon as EIconName} color={EIconColor.DOVE_GRAY} />
-                  </div>
-                  <div className="SideBar-list-item-title">{item.title}</div>
-                  {isChildren && (
-                    <div className="SideBar-list-item-arrow">
-                      <Icon name={EIconName.AngleDown} color={EIconColor.DOVE_GRAY} />
-                    </div>
-                  )}
-                </div>
-              }
-            >
-              {isChildren ? (
-                <div className="SideBar-list-children">
-                  {item.children
-                    ?.filter((subItem) => !subItem.hide)
-                    .map((subItem) => (
-                      <div
-                        key={subItem.id}
-                        className={classNames('SideBar-list-item flex items-center', {
-                          active: subItem.activePaths.includes(pathname),
-                        })}
-                        onClick={(): void => {
-                          if (subItem.link) {
-                            onCloseMenu?.();
-                            navigate(subItem.link);
-                          }
-                        }}
-                      >
-                        <div className="SideBar-list-item-icon">
-                          <Icon name={subItem.icon as EIconName} color={EIconColor.DOVE_GRAY} />
-                        </div>
-                        <div className="SideBar-list-item-title">{subItem.title}</div>
-                      </div>
-                    ))}
-                </div>
-              ) : (
-                <></>
-              )}
-            </Panel>
-          );
-        })}
+        {dataSideBar(dataLocation).map((item) => renderPanel(item))}
       </Collapse>
     </div>
   );

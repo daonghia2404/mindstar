@@ -123,7 +123,7 @@ const Select: React.FC<TSelectProps> = ({
       readonly={readonly}
       style={style}
       suffixIcon={
-        allowClear && value?.value ? (
+        allowClear && !['undefined', 'null'].includes(typeof value?.value) ? (
           <Icon
             className="cursor-pointer"
             name={EIconName.X}

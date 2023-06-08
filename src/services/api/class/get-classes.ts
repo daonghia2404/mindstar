@@ -9,6 +9,7 @@ export type TGetClassesParams = {
   size: number;
   sort?: string;
   name?: string;
+  auditingStatuses?: string;
 };
 
 export type TGetClassesMaterials = {

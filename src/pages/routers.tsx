@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import React, { lazy, Suspense } from 'react';
 import { Redirect, RouteComponentProps } from '@reach/router';
 
@@ -75,7 +76,8 @@ export const Paths = {
   Players: '/players',
   PlayerDetail: (id?: string): string => `/players/${id || ':id'}`,
   Connects: '/connects',
-  Attendances: '/attendances',
+  AttendancesPlayers: '/attendances/players',
+  AttendancesManagers: '/attendances/managers',
   Practices: '/practices',
   Schedules: '/schedules',
   Categories: '/categories',
@@ -132,6 +134,7 @@ export const Pages = {
 
 interface IRouteProps extends RouteComponentProps {
   component: React.FC;
+  managers?: boolean;
 }
 
 export const AuthRoute: React.FC<IRouteProps> = ({ component: Component, ...rest }) => {

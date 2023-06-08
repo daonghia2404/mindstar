@@ -24,6 +24,7 @@ import Tags from '@/components/Tags';
 import { Paths } from '@/pages/routers';
 
 import './Branches.scss';
+import Select, { TSelectOption } from '@/components/Select';
 
 const Branches: React.FC = () => {
   const dispatch = useDispatch();
@@ -34,7 +35,6 @@ const Branches: React.FC = () => {
   const [getBranchesParamsRequest, setGetBranchesParamsRequest] = useState<TGetBranchesParams>({
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
-    auditingStatuses: `${EAuditingStatus.ACTIVE},${EAuditingStatus.INACTIVE}`,
   });
 
   const [modalBranchFormState, setModalBranchFormState] = useState<{ visible: boolean; data?: TBranch }>({
@@ -192,7 +192,16 @@ const Branches: React.FC = () => {
   ];
 
   const getBranches = useCallback(() => {
-    dispatch(getBranchesAction.request({ params: getBranchesParamsRequest }));
+    dispatch(
+      getBranchesAction.request({
+        params: {
+          ...getBranchesParamsRequest,
+          auditingStatuses: getBranchesParamsRequest?.auditingStatuses
+            ? (getBranchesParamsRequest?.auditingStatuses as unknown as TSelectOption)?.value
+            : `${EAuditingStatus.ACTIVE},${EAuditingStatus.INACTIVE}`,
+        },
+      }),
+    );
   }, [dispatch, getBranchesParamsRequest]);
 
   useEffect(() => {
@@ -211,6 +220,21 @@ const Branches: React.FC = () => {
                   label="Tìm kiếm"
                   suffixIcon={<Icon name={EIconName.Search} color={EIconColor.TUNDORA} />}
                   onSearch={handleSearch}
+                />
+              </Col>
+              <Col>
+                <Select
+                  label="Trạng thái"
+                  value={getBranchesParamsRequest?.auditingStatuses as any}
+                  onChange={(options): void => {
+                    setGetBranchesParamsRequest({
+                      ...getBranchesParamsRequest,
+                      page: DEFAULT_PAGE,
+                      auditingStatuses: options as any,
+                    });
+                  }}
+                  allowClear
+                  options={dataAuditingStatusOptions}
                 />
               </Col>
             </Row>
