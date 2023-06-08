@@ -14,6 +14,7 @@ import ImageMenuBar from '@/assets/images/image-menu-bar.png';
 
 import { THeaderProps } from './Header.types.d';
 import './Header.scss';
+import { TSideBarData } from '@/containers/SideBar';
 
 const Header: React.FC<THeaderProps> = ({ onOpenMenu }) => {
   const { pathname } = useLocation();
@@ -31,13 +32,23 @@ const Header: React.FC<THeaderProps> = ({ onOpenMenu }) => {
     setModalLogoutState({ visible: true });
   };
 
-  const headerTitle =
-    [
-      ...dataSideBar(dataLocation).filter((item) => !item.children || item.children.length === 0),
-      ...dataSideBar(dataLocation)
-        .map((item) => item.children)
-        .flat(),
-    ].find((item) => item?.link === pathname)?.title || 'MindStar';
+  const renderHeaderTitle = (): string => {
+    const arrSidebarItem: TSideBarData[] = [];
+
+    const parseDataSidebar = (data: TSideBarData[]): void => {
+      data.forEach((item) => {
+        const isChildren = item.children && item.children.length > 0;
+        if (isChildren) parseDataSidebar(item.children as TSideBarData[]);
+        else arrSidebarItem.push(item);
+      });
+    };
+
+    parseDataSidebar(dataSideBar(dataLocation));
+
+    const sideBarItem = arrSidebarItem.find((item) => item?.link === pathname);
+
+    return sideBarItem?.headerTitle || sideBarItem?.title || 'MindStar';
+  };
 
   const dataAccountDropdownMenu = [
     {
@@ -65,7 +76,7 @@ const Header: React.FC<THeaderProps> = ({ onOpenMenu }) => {
             <img src={ImageMenuBar} alt="" />
           </div>
 
-          <div className="Header-title nowrap">{headerTitle}</div>
+          <div className="Header-title nowrap">{renderHeaderTitle()}</div>
         </div>
         <div className="Header-item flex items-center">
           <MainBranchSelect />

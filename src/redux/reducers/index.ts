@@ -5,6 +5,7 @@ import academyReducer from './academy';
 import attendanceReducer from './attendance';
 import authReducer from './auth';
 import branchReducer from './branch';
+import busStopReducer from './bus-stop';
 import categoryReducer from './category';
 import classReducer from './class';
 import dashboardReducer from './dashboard';
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
   attendanceReducer,
   authReducer,
   branchReducer,
+  busStopReducer,
   categoryReducer,
   classReducer,
   dashboardReducer,

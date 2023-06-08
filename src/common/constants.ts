@@ -7,10 +7,11 @@ import {
   EPaymentType,
   ESalaryType,
   ETransactionStatus,
+  ETransactionType,
   ETypeCheckIn,
   EUserType,
 } from '@/common/enums';
-import { EIconColor } from '@/components/Icon';
+import { EIconColor, EIconName } from '@/components/Icon';
 import { EStatusStyleType } from '@/components/Status';
 import { ETagType } from '@/components/Tags';
 
@@ -113,6 +114,11 @@ export const dataAuditingStatusOptions = [
   { value: EAuditingStatus.INACTIVE, label: 'Ngừng Hoạt Động', data: { statusType: EStatusStyleType.DANGER } },
 ];
 
+export const dataProductStatusOptions = [
+  { value: EAuditingStatus.ACTIVE, label: 'Đang Bán', data: { statusType: EStatusStyleType.SUCCESS } },
+  { value: EAuditingStatus.INACTIVE, label: 'Ngừng Bán', data: { statusType: EStatusStyleType.DANGER } },
+];
+
 export const dataDegreeTypeOptions = [
   { value: EDegreeType.BEGINNER, label: 'Tập Sự', data: { color: EIconColor.CERULEAN } },
   { value: EDegreeType.INTERMEDIATE, label: 'Trung Cấp', data: { color: EIconColor.SELECTIVE_YELLOW } },
@@ -135,9 +141,21 @@ export const dataDayOfWeeksOptions = [
 ];
 
 export const dataTypeCheckInOptions = [
-  { value: ETypeCheckIn.PRESENT, label: 'Có Mặt', data: { statusType: EStatusStyleType.SUCCESS } },
-  { value: ETypeCheckIn.ABSENT, label: 'Vắng Mặt', data: { statusType: EStatusStyleType.DANGER } },
-  { value: ETypeCheckIn.NONE, label: 'Chưa Điểm Danh', data: { statusType: EStatusStyleType.WARNING } },
+  {
+    value: ETypeCheckIn.PRESENT,
+    label: 'Có Mặt',
+    data: { statusType: EStatusStyleType.SUCCESS, color: EIconColor.APPLE, iconName: EIconName.Check },
+  },
+  {
+    value: ETypeCheckIn.ABSENT,
+    label: 'Vắng Mặt',
+    data: { statusType: EStatusStyleType.DANGER, color: EIconColor.POMEGRANATE, iconName: EIconName.X },
+  },
+  {
+    value: ETypeCheckIn.NONE,
+    label: 'Chưa Điểm Danh',
+    data: { statusType: EStatusStyleType.WARNING, color: EIconColor.SELECTIVE_YELLOW },
+  },
 ];
 
 export const dataPointsRangeOptions = [
@@ -171,4 +189,13 @@ export const dataLevelOptions = [
   { value: ELevel.SILVER, label: 'Bạc', data: { color: EIconColor.SILVER } },
   { value: ELevel.FRIENDLY, label: 'Thân thiết', data: { color: EIconColor.APPLE } },
   { value: ELevel.COMMON, label: 'Tiềm năng', data: { color: EIconColor.PURPLE_HEART } },
+];
+
+export const dataTransactionTypeOptions = [
+  { value: ETransactionType.PRODUCT, label: 'Sản phẩm' },
+  { value: ETransactionType.MEMBERSHIP_FEE, label: 'Học phí' },
+  { value: ETransactionType.SPONSORSHIP, label: 'Tài trợ' },
+  { value: ETransactionType.GIFT_AND_CONTRIBUTIONS, label: 'Đóng góp & Quà tặng' },
+  { value: ETransactionType.OTHER_SALES_AND_SERVICES, label: 'Dịch vụ & Bán hàng khác' },
+  { value: ETransactionType.TOURNAMENT, label: 'Giải đấu' },
 ];

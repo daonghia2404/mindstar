@@ -4,6 +4,7 @@ import academySaga from './academy';
 import attendanceSaga from './attendance';
 import authSaga from './auth';
 import branchSaga from './branch';
+import busStopSaga from './bus-stop';
 import categorySaga from './category';
 import classSaga from './class';
 import dashboardSaga from './dashboard';
@@ -31,6 +32,7 @@ const rootSaga = function* root(): Generator {
     fork(attendanceSaga),
     fork(authSaga),
     fork(branchSaga),
+    fork(busStopSaga),
     fork(categorySaga),
     fork(classSaga),
     fork(dashboardSaga),

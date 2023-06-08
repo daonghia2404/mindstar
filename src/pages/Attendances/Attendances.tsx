@@ -12,7 +12,7 @@ import Input from '@/components/Input';
 import { TGetAttendancesParams } from '@/services/api';
 import Table from '@/components/Table';
 import { TRootState } from '@/redux/reducers';
-import { EGetAttendancesAction, getAttendancesAction, getClassesAction } from '@/redux/actions';
+import { EGetAttendancesAction, EGetClassesAction, getAttendancesAction, getClassesAction } from '@/redux/actions';
 import { TAttendance } from '@/common/models';
 import Avatar from '@/components/Avatar';
 import { formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
@@ -22,9 +22,10 @@ import { useOptionsPaginate } from '@/utils/hooks';
 import ModalCheckIns from '@/pages/Attendances/ModalCheckIns';
 import Status from '@/components/Status';
 
+import { TAttendanceProps } from './Attendances.types';
 import './Attendances.scss';
 
-const Attendances: React.FC = () => {
+const Attendances: React.FC<TAttendanceProps> = ({ managers }) => {
   const dispatch = useDispatch();
 
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
@@ -42,6 +43,7 @@ const Attendances: React.FC = () => {
     getClassesAction,
     'classReducer',
     'getClassesResponse',
+    EGetClassesAction.GET_CLASSES,
     undefined,
     {},
     { branchIds: currentBranchId },
@@ -87,7 +89,7 @@ const Attendances: React.FC = () => {
       width: 48,
       render: (_: string, record: TAttendance): React.ReactElement => (
         <div className="Table-image">
-          <Avatar size={48} image={getFullUrlStatics(record?.player?.avatar)} />
+          <Avatar size={48} image={getFullUrlStatics(record?.manager_profile?.avatar || record?.player?.avatar)} />
         </div>
       ),
     },
@@ -101,10 +103,15 @@ const Attendances: React.FC = () => {
       render: (_: string, record: TAttendance): React.ReactElement => {
         return (
           <div className="Table-info">
-            <div className="Table-info-title">{record?.player?.name || EEmpty.DASH}</div>
+            <div className="Table-info-title">
+              {record?.manager_profile?.name || record?.player?.name || EEmpty.DASH}
+            </div>
             <div className="Table-info-description">
-              {record?.player?.date_of_birth
-                ? formatISODateToDateTime(record.player?.date_of_birth, EFormat['DD/MM/YYYY'])
+              {record?.manager_profile?.date_of_birth || record?.player?.date_of_birth
+                ? formatISODateToDateTime(
+                    record?.manager_profile?.date_of_birth || record.player?.date_of_birth,
+                    EFormat['DD/MM/YYYY'],
+                  )
                 : EEmpty.DASH}
             </div>
           </div>
@@ -119,8 +126,12 @@ const Attendances: React.FC = () => {
       render: (_: string, record: TAttendance): React.ReactElement => {
         return (
           <div className="Table-info">
-            <div className="Table-info-title">{record?.player?.address || EEmpty.DASH}</div>
-            <div className="Table-info-description">{record?.player?.city_name || EEmpty.DASH}</div>
+            <div className="Table-info-title">
+              {record?.manager_profile?.address || record?.player?.address || EEmpty.DASH}
+            </div>
+            <div className="Table-info-description">
+              {record?.manager_profile?.city?.name || record?.player?.city_name || EEmpty.DASH}
+            </div>
           </div>
         );
       },
@@ -130,9 +141,13 @@ const Attendances: React.FC = () => {
       dataIndex: 'mobile',
       title: 'Số điện thoại',
       render: (_: string, record: TAttendance): React.ReactElement =>
-        record?.player?.mobile ? (
-          <a href={`tel: ${record?.player?.mobile}`} className="Table-link" onClick={(e): void => e.stopPropagation()}>
-            {record?.player?.mobile}
+        record?.manager_profile?.mobile || record?.player?.mobile ? (
+          <a
+            href={`tel: ${record?.manager_profile?.mobile || record?.player?.mobile}`}
+            className="Table-link"
+            onClick={(e): void => e.stopPropagation()}
+          >
+            {record?.manager_profile?.mobile || record?.player?.mobile}
           </a>
         ) : (
           <>{EEmpty.DASH}</>
@@ -143,10 +158,21 @@ const Attendances: React.FC = () => {
       dataIndex: 'status',
       title: 'Trạng thái',
       sorter: true,
-      keySort: 'auditing_status',
+      keySort: 'checked_in',
       render: (_: string, record: TAttendance): React.ReactElement => {
         const status = dataTypeCheckInOptions.find((item) => item.value === record.checked_in);
-        return status ? <Status label={status?.label} styleType={status?.data?.statusType} /> : <>{EEmpty.DASH}</>;
+        return status ? (
+          <Row gutter={[8, 8]} wrap={false} align="middle">
+            <Col>
+              <Status label={status?.label} styleType={status?.data?.statusType} />
+            </Col>
+            <Col>
+              <div className="Table-info-description">{record.unit_value > 1 ? `x ${record.unit_value}` : ''}</div>
+            </Col>
+          </Row>
+        ) : (
+          <>{EEmpty.DASH}</>
+        );
       },
     },
     {
@@ -161,6 +187,7 @@ const Attendances: React.FC = () => {
     if (getAttendancesParamsRequest.classId) {
       dispatch(
         getAttendancesAction.request({
+          isManager: managers,
           params: {
             ...getAttendancesParamsRequest,
             classId: (getAttendancesParamsRequest?.classId as unknown as TSelectOption)?.value,
@@ -169,6 +196,7 @@ const Attendances: React.FC = () => {
         }),
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, getAttendancesParamsRequest, currentBranchId]);
 
   useEffect(() => {
@@ -200,25 +228,27 @@ const Attendances: React.FC = () => {
                     onSearch={handleSearch}
                   />
                 </Col>
-                <Col>
-                  <Select
-                    label="Lớp học"
-                    placeholder="Chọn dữ liệu"
-                    value={getAttendancesParamsRequest?.classId as any}
-                    active
-                    showSearch
-                    options={optionsClasses}
-                    onLoadMore={handleLoadMoreClasses}
-                    onSearch={handleSearchClasses}
-                    onChange={(option): void => {
-                      setGetAttendancesParamsRequest({
-                        ...getAttendancesParamsRequest,
-                        page: DEFAULT_PAGE,
-                        classId: option as any,
-                      });
-                    }}
-                  />
-                </Col>
+                {!managers && (
+                  <Col>
+                    <Select
+                      label="Lớp học"
+                      placeholder="Chọn dữ liệu"
+                      value={getAttendancesParamsRequest?.classId as any}
+                      active
+                      showSearch
+                      options={optionsClasses}
+                      onLoadMore={handleLoadMoreClasses}
+                      onSearch={handleSearchClasses}
+                      onChange={(option): void => {
+                        setGetAttendancesParamsRequest({
+                          ...getAttendancesParamsRequest,
+                          page: DEFAULT_PAGE,
+                          classId: option as any,
+                        });
+                      }}
+                    />
+                  </Col>
+                )}
               </Row>
 
               <Col>
@@ -302,6 +332,7 @@ const Attendances: React.FC = () => {
 
       <ModalCheckIns
         {...modalCheckInsState}
+        managers={managers}
         getAttendancesParamsRequest={getAttendancesParamsRequest}
         onClose={handleCloseModalCheckIns}
         onSuccess={getAttendances}

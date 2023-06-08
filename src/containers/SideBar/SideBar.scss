@@ -48,15 +48,14 @@
   .ant-collapse-item-active {
     background: rgba($amber, 0.15);
 
-    .ant-collapse-header {
+    &>.ant-collapse-content-box .ant-collapse-header,
+    &>.ant-collapse-header {
       .SideBar-list-item {
         background: rgba($amber, 0.15);
-      }
-    }
 
-    .SideBar-list-item {
-      &-arrow {
-        transform: rotate(180deg);
+        &-arrow {
+          transform: rotate(180deg);
+        }
       }
     }
   }

@@ -60,6 +60,8 @@ export enum EIconName {
   UserX = 'UserX',
   DeviceFloppy = 'DeviceFloppy',
   Devices = 'Devices',
+  Lock = 'Lock',
+  ArrowExchange = 'ArrowExchange',
 }
 
 export enum EIconColor {

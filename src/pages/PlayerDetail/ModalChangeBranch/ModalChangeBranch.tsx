@@ -7,6 +7,8 @@ import { EButtonStyleType } from '@/components/Button';
 import { EEmpty, ETypeNotification } from '@/common/enums';
 import {
   EChangePlayersBranchAction,
+  EGetBranchesAction,
+  EGetClassesAction,
   changePlayersBranchAction,
   getBranchesAction,
   getChildPlayersAction,
@@ -38,7 +40,13 @@ const ModalChangeBranch: React.FC<TModalChangeBranchProps> = ({ visible, data, o
     options: optionsBranches,
     handleLoadMore: handleLoadMoreBranches,
     handleSearch: handleSearchBranches,
-  } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', 'branchName');
+  } = useOptionsPaginate(
+    getBranchesAction,
+    'branchReducer',
+    'getBranchesResponse',
+    EGetBranchesAction.GET_BRANCHES,
+    'branchName',
+  );
 
   const {
     options: optionsClasses,
@@ -49,6 +57,7 @@ const ModalChangeBranch: React.FC<TModalChangeBranchProps> = ({ visible, data, o
     getClassesAction,
     'classReducer',
     'getClassesResponse',
+    EGetClassesAction.GET_CLASSES,
     undefined,
     {},
     { branchIds: formValues?.targetBranch?.value || '' },

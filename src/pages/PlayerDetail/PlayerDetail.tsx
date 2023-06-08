@@ -21,6 +21,7 @@ import ModalPlayerForm from '@/pages/Players/ModalPlayerForm';
 import Status from '@/components/Status';
 import ModalResetPassword from '@/pages/PlayerDetail/ModalResetPassword';
 import ModalChangeBranch from '@/pages/PlayerDetail/ModalChangeBranch';
+import AttendancesTable from '@/pages/PlayerDetail/AttendancesTable';
 
 import './PlayerDetail.scss';
 
@@ -84,15 +85,6 @@ const PlayerDetail: React.FC = () => {
   const playerInfo = {
     avatar: playerState?.avatar ? getFullUrlStatics(playerState.avatar) : undefined,
     name: playerState?.name || EEmpty.DASH,
-    password: (
-      <Button
-        style={{ width: 'fit-content' }}
-        size="small"
-        title="Đặt lại mật khẩu"
-        styleType={EButtonStyleType.PURPLE_TRANSPARENT}
-        onClick={(): void => handleOpenModalResetPassword(playerState?.user)}
-      />
-    ),
     branch: (
       <Row justify="space-between" align="middle">
         <Col>
@@ -111,15 +103,6 @@ const PlayerDetail: React.FC = () => {
           ) : (
             EEmpty.DASH
           )}
-        </Col>
-        <Col>
-          <Button
-            style={{ width: 'fit-content' }}
-            size="small"
-            title="Đổi chi nhánh"
-            styleType={EButtonStyleType.PURPLE_TRANSPARENT}
-            onClick={(): void => handleOpenModalChangeBranch(playerState)}
-          />
         </Col>
       </Row>
     ),
@@ -221,6 +204,24 @@ const PlayerDetail: React.FC = () => {
               <Row gutter={[16, 16]}>
                 <Col>
                   <Button
+                    title="Đặt lại mật khẩu"
+                    iconName={EIconName.Lock}
+                    iconColor={EIconColor.PURPLE_HEART}
+                    styleType={EButtonStyleType.PURPLE_TRANSPARENT}
+                    onClick={(): void => handleOpenModalResetPassword(playerState?.user)}
+                  />
+                </Col>
+                <Col>
+                  <Button
+                    title="Đổi chi nhánh"
+                    iconName={EIconName.ArrowExchange}
+                    iconColor={EIconColor.PURPLE_HEART}
+                    styleType={EButtonStyleType.PURPLE_TRANSPARENT}
+                    onClick={(): void => handleOpenModalChangeBranch(playerState)}
+                  />
+                </Col>
+                <Col>
+                  <Button
                     title="Sửa"
                     styleType={EButtonStyleType.PURPLE}
                     iconName={EIconName.Pencil}
@@ -241,13 +242,15 @@ const PlayerDetail: React.FC = () => {
             </Col>
           </Row>
         </Col>
-        <Col span={24} md={{ span: 12 }}>
-          <Card title="Thông tin cá nhân">
+        <Col span={24} md={{ span: 12 }} xl={{ span: 12 }} xxl={{ span: 9 }}>
+          <Card title="Thông tin học viên">
             <Row gutter={[16, 16]}>
               <Col span={12}>
                 <UploadImage label="Ảnh đại diện" readOnlyText active value={playerInfo?.avatar} />
               </Col>
-              <Col span={12} />
+              <Col span={12}>
+                <Input label="Trạng thái" readOnlyText active renderShowValue={playerInfo?.status} />
+              </Col>
               <Col span={12}>
                 <Input label="Họ và tên" readOnlyText active value={playerInfo?.name} />
               </Col>
@@ -266,34 +269,34 @@ const PlayerDetail: React.FC = () => {
               <Col span={12}>
                 <Input label="Số điện thoại" readOnlyText active value={playerInfo?.phoneNumber} />
               </Col>
-            </Row>
-          </Card>
-        </Col>
-        <Col span={24} md={{ span: 12 }}>
-          <Card title="Thông tin học viên">
-            <Row gutter={[16, 16]}>
               <Col span={12}>
-                <Input label="Trạng thái" readOnlyText active renderShowValue={playerInfo?.status} />
+                <Input label="Tên đăng nhập" readOnlyText active value={playerInfo?.username} />
               </Col>
               <Col span={12}>
                 <Input label="Ngày tham gia" readOnlyText active value={playerInfo?.createDate} />
               </Col>
               <Col span={12}>
-                <Input label="Vị trí" readOnlyText active value={playerInfo?.position} />
+                <Input label="Mã giới thiệu" readOnlyText active renderShowValue={playerInfo?.referralCode} />
+              </Col>
+              <Col span={24}>
+                <Input label="Ghi chú" readOnlyText active value={playerInfo?.note} />
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+        <Col span={24} md={{ span: 12 }} xl={{ span: 12 }} xxl={{ span: 9 }}>
+          <Card title="Thông tin khoá học">
+            <Row gutter={[16, 16]}>
+              <Col span={12}>
+                <Input label="Vai trò" readOnlyText active value={playerInfo?.position} />
               </Col>
               <Col span={12}>
                 <Input label="Số áo" readOnlyText active value={playerInfo?.shirtNumber} />
               </Col>
               <Col span={12}>
-                <Input label="Tên đăng nhập" readOnlyText active value={playerInfo?.username} />
-              </Col>
-              <Col span={12}>
-                <Input label="Mật khẩu" readOnlyText active renderShowValue={playerInfo?.password} />
-              </Col>
-              <Col span={24}>
                 <Input label="Chi nhánh" readOnlyText active renderShowValue={playerInfo?.branch} />
               </Col>
-              <Col span={24}>
+              <Col span={12}>
                 <Input label="Lớp học" readOnlyText active renderShowValue={playerInfo?.class} />
               </Col>
               <Col span={24}>
@@ -305,13 +308,12 @@ const PlayerDetail: React.FC = () => {
               <Col span={12}>
                 <Input label="Học phí" readOnlyText active renderShowValue={playerInfo?.membershipFee} />
               </Col>
-              <Col span={12}>
-                <Input label="Mã giới thiệu" readOnlyText active renderShowValue={playerInfo?.referralCode} />
-              </Col>
-              <Col span={24}>
-                <Input label="Ghi chú" readOnlyText active value={playerInfo?.note} />
-              </Col>
             </Row>
+          </Card>
+        </Col>
+        <Col span={24} md={{ span: 12 }} xl={{ span: 12 }} xxl={{ span: 6 }}>
+          <Card title="Thông tin điểm danh">
+            <AttendancesTable />
           </Card>
         </Col>
       </Row>

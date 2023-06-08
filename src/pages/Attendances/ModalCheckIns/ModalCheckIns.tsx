@@ -16,7 +16,13 @@ import Input from '@/components/Input';
 import { TModalCheckInsProps } from './ModalCheckIns.type';
 import './ModalCheckIns.scss';
 
-const ModalCheckIns: React.FC<TModalCheckInsProps> = ({ visible, getAttendancesParamsRequest, onClose, onSuccess }) => {
+const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
+  visible,
+  managers,
+  getAttendancesParamsRequest,
+  onClose,
+  onSuccess,
+}) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [formValues, setFormValues] = useState<any>({});
@@ -25,6 +31,9 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({ visible, getAttendancesP
   const updateAttendancesLoading = useSelector(
     (state: TRootState) => state.loadingReducer[EUpdateAttendancesAction.UPDATE_ATTENDANCES],
   );
+
+  const keyId = managers ? 'manager_id' : 'player_id';
+  const keyModule = managers ? 'manager_profile' : 'player';
 
   const settingsState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data
     ?.attendance_settings?.max_unit_per_lesson;
@@ -43,26 +52,33 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({ visible, getAttendancesP
   const handleSubmit = (): void => {
     const body = {
       branch_id: currentBranchId,
-      class_id: Number((getAttendancesParamsRequest?.classId as any)?.value),
+      class_id: getAttendancesParamsRequest?.classId
+        ? Number((getAttendancesParamsRequest?.classId as any)?.value)
+        : undefined,
       at_date: getAttendancesParamsRequest?.fromDate,
       at_date_time: getAttendancesParamsRequest?.fromDate,
-      player_check_in: attendancePlayersState?.map((item) => {
+      [managers ? 'teacher_check_in' : 'player_check_in']: attendancePlayersState?.map((item) => {
         const {
-          [`${item.player_id}_checked_in`]: checked_in,
-          [`${item.player_id}_description`]: description,
-          [`${item.player_id}_unit_value`]: unit_value,
+          [`${item?.[keyId]}_checked_in`]: checked_in,
+          [`${item?.[keyId]}_description`]: description,
+          [`${item?.[keyId]}_unit_value`]: unit_value,
         } = formValues;
 
         return {
           checked_in: typeof checked_in === 'number' ? checked_in : ETypeCheckIn.NONE,
           description: description || '',
           unit_value: unit_value ? Number(unit_value?.value) : 0,
-          player_id: item.player_id,
+          [managers ? 'teacher_id' : 'player_id']: item?.[keyId],
         };
       }),
     };
 
-    dispatch(updateAttendancesAction.request({ body }, handleSubmitSuccess));
+    dispatch(
+      updateAttendancesAction.request(
+        { isManager: managers, body: managers ? [body] : body, headers: { branchIds: body.branch_id } },
+        handleSubmitSuccess,
+      ),
+    );
   };
 
   const handleSubmitSuccess = (): void => {
@@ -80,6 +96,7 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({ visible, getAttendancesP
     ) {
       dispatch(
         getAttendancePlayersAction.request({
+          isManager: managers,
           params: {
             fromDate: getAttendancesParamsRequest?.fromDate,
             toDate: getAttendancesParamsRequest?.toDate,
@@ -88,6 +105,7 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({ visible, getAttendancesP
         }),
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getAttendancesParamsRequest, visible, dispatch]);
 
   useEffect(() => {
@@ -99,11 +117,9 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({ visible, getAttendancesP
       const dataChanged = attendancePlayersState?.reduce((result, item) => {
         return {
           ...result,
-          [`${item.player_id}_unit_value`]: unitLessonOptions.find(
-            (option) => option.value === String(item.unit_value),
-          ),
-          [`${item.player_id}_description`]: item.description,
-          [`${item.player_id}_checked_in`]: item.checked_in,
+          [`${item?.[keyId]}_unit_value`]: unitLessonOptions.find((option) => option.value === String(item.unit_value)),
+          [`${item?.[keyId]}_description`]: item.description,
+          [`${item?.[keyId]}_checked_in`]: item.checked_in,
         };
       }, {});
 
@@ -141,18 +157,18 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({ visible, getAttendancesP
                     <div className="ModalCheckIns-item">
                       <Row gutter={[16, 16]} wrap={false} align="middle">
                         <Col>
-                          <Avatar size={48} image={getFullUrlStatics(item.player.avatar)} />
+                          <Avatar size={48} image={getFullUrlStatics(item?.[keyModule]?.avatar)} />
                         </Col>
                         <Col span={8}>
                           <div className="ModalCheckIns-info">
-                            <div className="ModalCheckIns-info-title">{item.player.name}</div>
-                            {item.player.mobile ? (
+                            <div className="ModalCheckIns-info-title">{item?.[keyModule]?.name}</div>
+                            {item?.[keyModule]?.mobile ? (
                               <a
-                                href={`tel: ${item.player.mobile}`}
+                                href={`tel: ${item?.[keyModule]?.mobile}`}
                                 className="ModalCheckIns-link"
                                 onClick={(e): void => e.stopPropagation()}
                               >
-                                {item.player.mobile}
+                                {item?.[keyModule]?.mobile}
                               </a>
                             ) : (
                               <div className="ModalCheckIns-info-description">{EEmpty.DASH}</div>
@@ -160,30 +176,30 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({ visible, getAttendancesP
                           </div>
                         </Col>
                         <Col>
-                          <Form.Item name={`${item.player_id}_unit_value`}>
+                          <Form.Item name={`${item?.[keyId]}_unit_value`}>
                             <Select
                               label="Số buổi"
                               options={unitLessonOptions}
                               disabled={[ETypeCheckIn.NONE, ETypeCheckIn.ABSENT, undefined].includes(
-                                formValues[`${item.player_id}_checked_in`],
+                                formValues[`${item?.[keyId]}_checked_in`],
                               )}
                               style={{ width: '12rem' }}
                             />
                           </Form.Item>
                         </Col>
                         <Col>
-                          <Form.Item name={`${item.player_id}_description`}>
+                          <Form.Item name={`${item?.[keyId]}_description`}>
                             <Input label="Ghi chú" />
                           </Form.Item>
                         </Col>
                         <Col>
-                          <Form.Item name={`${item.player_id}_checked_in`}>
+                          <Form.Item name={`${item?.[keyId]}_checked_in`}>
                             <AttendanceCheckbox
                               onChange={(data): void => {
                                 const isNone = [ETypeCheckIn.NONE, undefined].includes(data);
                                 const dataChanged = {
-                                  [`${item.player_id}_checked_in`]: data,
-                                  [`${item.player_id}_unit_value`]: isNone ? undefined : unitLessonOptions[0],
+                                  [`${item?.[keyId]}_checked_in`]: data,
+                                  [`${item?.[keyId]}_unit_value`]: isNone ? undefined : unitLessonOptions[0],
                                 };
                                 form.setFieldsValue(dataChanged);
                                 setFormValues({ ...formValues, ...dataChanged });

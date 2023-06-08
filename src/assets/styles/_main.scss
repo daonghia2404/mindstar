@@ -251,3 +251,7 @@ a {
 .ellipsis-2 {
   @include ellipsis(2);
 }
+
+.text-capitalize {
+  text-transform: capitalize;
+}

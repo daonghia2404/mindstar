@@ -12,6 +12,7 @@ export type TGetAttendancePlayersParams = {
 
 export type TGetAttendancePlayersMaterials = {
   params?: TGetAttendancePlayersParams;
+  isManager?: boolean;
 };
 
 export type TGetAttendancePlayersResponse = TCommonResponse & {
@@ -24,7 +25,8 @@ export type TGetAttendancePlayersResponse = TCommonResponse & {
 
 export const getAttendancePlayers = async ({
   params,
+  isManager,
 }: TGetAttendancePlayersMaterials): Promise<TGetAttendancePlayersResponse> => {
-  const response = await ApiService.get(`/v1/api/admin/attendances/player`, { params });
+  const response = await ApiService.get(`/v1/api/admin/attendances/${isManager ? 'teacher' : 'player'}`, { params });
   return response.data;
 };

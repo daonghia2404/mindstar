@@ -65,7 +65,8 @@ const Customers: React.FC = () => {
     {
       key: 'name',
       dataIndex: 'name',
-      title: 'Tên',
+      title: 'Phụ huynh',
+      className: 'limit-width',
       sorter: true,
       keySort: 'name',
       render: (_: string, record: TUser): React.ReactElement => (
@@ -80,13 +81,6 @@ const Customers: React.FC = () => {
           )}
         </div>
       ),
-    },
-    {
-      key: 'address',
-      dataIndex: 'address',
-      title: 'Địa chỉ',
-      className: 'limit-width',
-      render: (value: string): string => value || EEmpty.DASH,
     },
     {
       key: 'players',
@@ -107,6 +101,13 @@ const Customers: React.FC = () => {
         ) : (
           <>{EEmpty.DASH}</>
         ),
+    },
+    {
+      key: 'address',
+      dataIndex: 'address',
+      title: 'Địa chỉ',
+      className: 'limit-width',
+      render: (value: string): string => value || EEmpty.DASH,
     },
     {
       key: 'earnPoints',

@@ -23,7 +23,7 @@ const ModalDeleteTimeOff: React.FC<TModalDeleteTimeOffProps> = ({ visible, data,
   };
 
   const handleSubmitSuccess = (): void => {
-    showNotification(ETypeNotification.SUCCESS, 'Xoá Thời Gian Nghỉ Thành Công !');
+    showNotification(ETypeNotification.SUCCESS, 'Xoá Yêu Cầu Nghỉ Thành Công !');
     onClose?.();
     onSuccess?.();
   };
@@ -31,7 +31,7 @@ const ModalDeleteTimeOff: React.FC<TModalDeleteTimeOffProps> = ({ visible, data,
   return (
     <Modal
       className="ModalDeleteTimeOff"
-      title="Xoá Thời Gian Nghỉ"
+      title="Xoá Yêu Cầu Nghỉ"
       visible={visible}
       onClose={onClose}
       width={400}
@@ -50,7 +50,7 @@ const ModalDeleteTimeOff: React.FC<TModalDeleteTimeOffProps> = ({ visible, data,
     >
       <div className="ModalDeleteTimeOff-wrapper">
         <div className="Modal-text text-center">
-          Bạn có chắc chắn muốn xoá Thời Gian Nghỉ của <strong>"{data?.player?.name || EEmpty.DASH}"</strong> không?
+          Bạn có chắc chắn muốn xoá Yêu Cầu Nghỉ của <strong>"{data?.player?.name || EEmpty.DASH}"</strong> không?
           <br />
           Dữ liệu đã xoá không thể khôi phục.
         </div>

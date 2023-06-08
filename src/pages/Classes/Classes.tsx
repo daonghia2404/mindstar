@@ -3,8 +3,8 @@ import { navigate } from '@reach/router';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
-import { EEmpty } from '@/common/enums';
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataAuditingStatusOptions } from '@/common/constants';
+import { EAuditingStatus, EEmpty } from '@/common/enums';
 import { TClass } from '@/common/models';
 import Button, { EButtonStyleType } from '@/components/Button';
 import Card from '@/components/Card';
@@ -20,9 +20,11 @@ import { TRootState } from '@/redux/reducers';
 import { TGetClassesParams } from '@/services/api';
 import { getFullUrlStatics } from '@/utils/functions';
 import ModalDeleteClass from '@/pages/Classes/ModalDeleteClass';
+import ModalClassForm from '@/pages/Classes/ModalClassForm';
+import Select, { TSelectOption } from '@/components/Select';
+import Status from '@/components/Status';
 
 import './Classes.scss';
-import ModalClassForm from '@/pages/Classes/ModalClassForm';
 
 const Classes: React.FC = () => {
   const dispatch = useDispatch();
@@ -124,19 +126,20 @@ const Classes: React.FC = () => {
       key: 'branch',
       dataIndex: 'branch',
       title: 'Chi nhánh',
-      render: (_: string, record: TClass): React.ReactElement => {
-        return (
+      render: (_: string, record: TClass): React.ReactElement =>
+        record?.branch ? (
           <Tags
             options={[
               {
-                label: record?.branch?.name,
-                value: String(record?.branch?.id),
+                label: record?.branch.name,
+                value: String(record?.branch.id),
                 data: { iconName: EIconName.MapMarker },
               },
             ]}
           />
-        );
-      },
+        ) : (
+          <>{EEmpty.DASH}</>
+        ),
     },
     {
       key: 'teachers',
@@ -157,6 +160,17 @@ const Classes: React.FC = () => {
         ) : (
           <>{EEmpty.DASH}</>
         ),
+    },
+    {
+      key: 'status',
+      dataIndex: 'status',
+      title: 'Trạng thái',
+      sorter: true,
+      keySort: 'auditing_status',
+      render: (_: string, record: TClass): React.ReactElement => {
+        const status = dataAuditingStatusOptions.find((item) => item.value === record.auditing_status);
+        return status ? <Status label={status?.label} styleType={status?.data?.statusType} /> : <>{EEmpty.DASH}</>;
+      },
     },
     {
       key: 'description',
@@ -187,7 +201,17 @@ const Classes: React.FC = () => {
   ];
 
   const getClasses = useCallback(() => {
-    dispatch(getClassesAction.request({ params: getClassesParamsRequest, headers: { branchIds: currentBranchId } }));
+    dispatch(
+      getClassesAction.request({
+        params: {
+          ...getClassesParamsRequest,
+          auditingStatuses: getClassesParamsRequest?.auditingStatuses
+            ? (getClassesParamsRequest?.auditingStatuses as unknown as TSelectOption)?.value
+            : `${EAuditingStatus.ACTIVE},${EAuditingStatus.INACTIVE}`,
+        },
+        headers: { branchIds: currentBranchId },
+      }),
+    );
   }, [dispatch, getClassesParamsRequest, currentBranchId]);
 
   useEffect(() => {
@@ -206,6 +230,21 @@ const Classes: React.FC = () => {
                   label="Tìm kiếm"
                   suffixIcon={<Icon name={EIconName.Search} color={EIconColor.TUNDORA} />}
                   onSearch={handleSearch}
+                />
+              </Col>
+              <Col>
+                <Select
+                  label="Trạng thái"
+                  value={getClassesParamsRequest?.auditingStatuses as any}
+                  onChange={(options): void => {
+                    setGetClassesParamsRequest({
+                      ...getClassesParamsRequest,
+                      page: DEFAULT_PAGE,
+                      auditingStatuses: options as any,
+                    });
+                  }}
+                  allowClear
+                  options={dataAuditingStatusOptions}
                 />
               </Col>
             </Row>

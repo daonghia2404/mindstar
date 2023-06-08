@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import React, { lazy, Suspense } from 'react';
 import { Redirect, RouteComponentProps } from '@reach/router';
 
@@ -45,6 +46,10 @@ const SettingsGeneral = lazy(() => retryLoadComponent(() => import('@/pages/Sett
 const Users = lazy(() => retryLoadComponent(() => import('@/pages/Users')));
 const Customers = lazy(() => retryLoadComponent(() => import('@/pages/Customers')));
 const Suppliers = lazy(() => retryLoadComponent(() => import('@/pages/Suppliers')));
+const Revenues = lazy(() => retryLoadComponent(() => import('@/pages/Revenues')));
+const Expenses = lazy(() => retryLoadComponent(() => import('@/pages/Expenses')));
+const BusStops = lazy(() => retryLoadComponent(() => import('@/pages/BusStops')));
+const PickupAttendances = lazy(() => retryLoadComponent(() => import('@/pages/PickupAttendances')));
 const Order = lazy(() => retryLoadComponent(() => import('@/pages/Order')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
@@ -73,7 +78,8 @@ export const Paths = {
   Players: '/players',
   PlayerDetail: (id?: string): string => `/players/${id || ':id'}`,
   Connects: '/connects',
-  Attendances: '/attendances',
+  AttendancesPlayers: '/attendances/players',
+  AttendancesManagers: '/attendances/managers',
   Practices: '/practices',
   Schedules: '/schedules',
   Order: '/order',
@@ -85,6 +91,10 @@ export const Paths = {
   Users: '/users',
   Customers: '/customers',
   Suppliers: '/suppliers',
+  Revenues: '/revenues',
+  Expenses: '/expenses',
+  BusStops: '/transports',
+  PickupAttendances: '/transports/attendances',
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -118,6 +128,10 @@ export const Pages = {
   Users,
   Customers,
   Suppliers,
+  Revenues,
+  Expenses,
+  BusStops,
+  PickupAttendances,
 
   Login,
   LoginDomain,
@@ -126,6 +140,7 @@ export const Pages = {
 
 interface IRouteProps extends RouteComponentProps {
   component: React.FC;
+  managers?: boolean;
 }
 
 export const AuthRoute: React.FC<IRouteProps> = ({ component: Component, ...rest }) => {

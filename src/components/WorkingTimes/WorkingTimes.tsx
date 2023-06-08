@@ -16,7 +16,14 @@ import './WorkingTimes.scss';
 
 const { RangePicker } = DatePicker;
 
-const WorkingTimes: React.FC<TWorkingTimesProps> = ({ value = [], label, size, required, onChange }) => {
+const WorkingTimes: React.FC<TWorkingTimesProps> = ({
+  value = [],
+  label,
+  size,
+  required,
+  showTime = true,
+  onChange,
+}) => {
   const handleToggleDayOfWeek = (data: TSelectOption): void => {
     const isExisted = value.find((item) => item.dayOfWeek === data.value);
     if (isExisted) {
@@ -71,41 +78,43 @@ const WorkingTimes: React.FC<TWorkingTimesProps> = ({ value = [], label, size, r
         ))}
       </div>
 
-      <div className="WorkingTimes-times">
-        {dataDayOfWeeksOptions.map((item) => {
-          const workTimeData = value.find((workTime) => workTime.dayOfWeek === item.value);
-          if (!workTimeData) return <></>;
+      {showTime && (
+        <div className="WorkingTimes-times">
+          {dataDayOfWeeksOptions.map((item) => {
+            const workTimeData = value.find((workTime) => workTime.dayOfWeek === item.value);
+            if (!workTimeData) return <></>;
 
-          const startTime = workTimeData.startTime ? moment(workTimeData.startTime, EFormat['HH:mm:ss']) : undefined;
-          const endTime = workTimeData.endTime ? moment(workTimeData.endTime, EFormat['HH:mm:ss']) : undefined;
-          const isValidValue = startTime && endTime;
+            const startTime = workTimeData.startTime ? moment(workTimeData.startTime, EFormat['HH:mm:ss']) : undefined;
+            const endTime = workTimeData.endTime ? moment(workTimeData.endTime, EFormat['HH:mm:ss']) : undefined;
+            const isValidValue = startTime && endTime;
 
-          return (
-            <div key={item.value} className="WorkingTimes-times-item flex items-center">
-              <span className="WorkingTimes-times-item-label">{item.label}:</span>
-              <div className="WorkingTimes-times-item-picker">
-                <RangePicker
-                  format={EFormat['HH:mm']}
-                  value={isValidValue ? [startTime, endTime] : undefined}
-                  picker="time"
-                  allowClear={false}
-                  allowEmpty={[false, false]}
-                  locale={{
-                    ...vi,
-                    lang: {
-                      ...vi.lang,
-                      ok: 'Chọn',
-                    },
-                  }}
-                  dropdownClassName="WorkingTimes-times-item-picker-dropdown"
-                  onChange={(values, formatString): void => handleChangeTimes(values, formatString, item)}
-                  suffixIcon={<Icon name={EIconName.Clock} color={EIconColor.DOVE_GRAY} />}
-                />
+            return (
+              <div key={item.value} className="WorkingTimes-times-item flex items-center">
+                <span className="WorkingTimes-times-item-label">{item.label}:</span>
+                <div className="WorkingTimes-times-item-picker">
+                  <RangePicker
+                    format={EFormat['HH:mm']}
+                    value={isValidValue ? [startTime, endTime] : undefined}
+                    picker="time"
+                    allowClear={false}
+                    allowEmpty={[false, false]}
+                    locale={{
+                      ...vi,
+                      lang: {
+                        ...vi.lang,
+                        ok: 'Chọn',
+                      },
+                    }}
+                    dropdownClassName="WorkingTimes-times-item-picker-dropdown"
+                    onChange={(values, formatString): void => handleChangeTimes(values, formatString, item)}
+                    suffixIcon={<Icon name={EIconName.Clock} color={EIconColor.DOVE_GRAY} />}
+                  />
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </FormField>
   );
 };

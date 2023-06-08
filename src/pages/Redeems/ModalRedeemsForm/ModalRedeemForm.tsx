@@ -6,7 +6,7 @@ import Modal from '@/components/Modal';
 import Input from '@/components/Input';
 import Select from '@/components/Select';
 import { TRootState } from '@/redux/reducers';
-import { EUpdateRedeemAction, getPlayersAction, updateRedeemAction } from '@/redux/actions';
+import { EGetPlayersAction, EUpdateRedeemAction, getPlayersAction, updateRedeemAction } from '@/redux/actions';
 import { showNotification, validationRules } from '@/utils/functions';
 import { EAuditingStatus, ETypeNotification } from '@/common/enums';
 import { useOptionsPaginate } from '@/utils/hooks';
@@ -25,10 +25,17 @@ const ModalRedeemForm: React.FC<TModalRedeemFormProps> = ({ visible, data, onClo
     handleLoadMore: handleLoadMorePlayers,
     handleSearch: handleSearchPlayers,
     handleReset: handleResetPlayers,
-  } = useOptionsPaginate(getPlayersAction, 'playerReducer', 'getPlayersResponse', undefined, {
-    userIds: data?.customer_info?.user_id,
-    auditingStatuses: EAuditingStatus.ACTIVE,
-  });
+  } = useOptionsPaginate(
+    getPlayersAction,
+    'playerReducer',
+    'getPlayersResponse',
+    EGetPlayersAction.GET_PLAYERS,
+    undefined,
+    {
+      userIds: data?.customer_info?.user_id,
+      auditingStatuses: EAuditingStatus.ACTIVE,
+    },
+  );
 
   const updateRedeemLoading = useSelector(
     (state: TRootState) => state.loadingReducer[EUpdateRedeemAction.UPDATE_REDEEM],
@@ -64,6 +71,8 @@ const ModalRedeemForm: React.FC<TModalRedeemFormProps> = ({ visible, data, onClo
 
   useEffect(() => {
     if (visible) {
+      handleResetPlayers();
+
       if (data) {
         const dataChanged = {
           name: data?.product_name,
@@ -79,7 +88,6 @@ const ModalRedeemForm: React.FC<TModalRedeemFormProps> = ({ visible, data, onClo
           address: data?.player_profile?.address,
           phoneNumber: data?.player_profile?.mobile,
         };
-        handleResetPlayers();
         form.setFieldsValue(dataChanged);
       }
     } else {

@@ -9,6 +9,10 @@ export type TGetExpensesParams = {
   size: number;
   fromDate?: number;
   toDate?: number;
+  search?: string;
+  sort?: string;
+  categoryIds?: string;
+  paymentTypes?: string;
 };
 
 export type TGetExpensesMaterials = {

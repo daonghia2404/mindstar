@@ -82,6 +82,7 @@ export enum EFormat {
   'DD/MM/YYYY - HH:mm' = 'DD/MM/YYYY - HH:mm',
   'HH:mm:ss' = 'HH:mm:ss',
   'dddd, DD' = 'dddd, DD',
+  'dddd' = 'dddd',
   'HH:mm' = 'HH:mm',
   'MM/YYYY' = 'MM/YYYY',
   'wo, YYYY' = 'wo, YYYY',
@@ -153,7 +154,7 @@ export enum ETypeCheckIn {
 
 export enum ETypeCategory {
   EXPENSE = 1,
-  PRODUCT = 1,
+  PRODUCT = 2,
 }
 
 export enum ETypeProductUploadImages {
@@ -173,4 +174,13 @@ export enum ELevel {
   SILVER = 2,
   FRIENDLY = 1,
   COMMON = 0,
+}
+
+export enum ETransactionType {
+  TOURNAMENT = 6,
+  OTHER_SALES_AND_SERVICES = 5,
+  GIFT_AND_CONTRIBUTIONS = 4,
+  SPONSORSHIP = 3,
+  MEMBERSHIP_FEE = 2,
+  PRODUCT = 1,
 }

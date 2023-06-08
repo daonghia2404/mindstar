@@ -52,7 +52,8 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.Players} component={Pages.Players} />
           <ProtectedRoute path={Paths.PlayerDetail()} component={Pages.PlayerDetail} />
           <ProtectedRoute path={Paths.Connects} component={Pages.Connects} />
-          <ProtectedRoute path={Paths.Attendances} component={Pages.Attendances} />
+          <ProtectedRoute path={Paths.AttendancesManagers} component={Pages.Attendances} managers />
+          <ProtectedRoute path={Paths.AttendancesPlayers} component={Pages.Attendances} />
           <ProtectedRoute path={Paths.Practices} component={Pages.Practices} />
           <ProtectedRoute path={Paths.Schedules} component={Pages.Schedules} />
           <ProtectedRoute path={Paths.Categories} component={Pages.Categories} />
@@ -63,6 +64,10 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.Users} component={Pages.Users} />
           <ProtectedRoute path={Paths.Customers} component={Pages.Customers} />
           <ProtectedRoute path={Paths.Suppliers} component={Pages.Suppliers} />
+          <ProtectedRoute path={Paths.Revenues} component={Pages.Revenues} />
+          <ProtectedRoute path={Paths.Expenses} component={Pages.Expenses} />
+          <ProtectedRoute path={Paths.BusStops} component={Pages.BusStops} />
+          <ProtectedRoute path={Paths.PickupAttendances} component={Pages.PickupAttendances} />
           <ProtectedRoute path={Paths.Order} component={Pages.Order} />
 
           <Redirect noThrow from={Paths.Rest} to={`${LayoutPaths.Admin}${Paths.Dashboard}`} />

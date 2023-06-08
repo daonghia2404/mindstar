@@ -22,6 +22,7 @@ const DatePicker: React.FC<TDatePickerProps> = ({
   style,
   allowClear = false,
   format,
+  showNow,
   showTime,
   picker,
   disabledDate,
@@ -73,6 +74,7 @@ const DatePicker: React.FC<TDatePickerProps> = ({
         format={format || EFormat['DD/MM/YYYY']}
         value={value}
         picker={picker}
+        showNow={showNow}
         locale={{
           ...vi,
           lang: {

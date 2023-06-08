@@ -165,7 +165,7 @@ const Users: React.FC = () => {
     {
       key: 'role',
       dataIndex: 'role',
-      title: 'Phân quyền',
+      title: 'Vai trò',
       sorter: true,
       keySort: 'user_type',
       render: (_: string, record: TUser): React.ReactElement => {

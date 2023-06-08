@@ -14,10 +14,10 @@ import DatePicker from '@/components/DatePicker';
 import Select, { TSelectOption } from '@/components/Select';
 import CheckboxGroup from '@/components/CheckboxGroup';
 import { dataDayOfWeeksOptions } from '@/common/constants';
+import { TSchedule } from '@/common/models';
 
 import { TModalPracticeFormProps } from './ModalPracticeForm.type';
 import './ModalPracticeForm.scss';
-import { TSchedule } from '@/common/models';
 
 const ModalPracticeForm: React.FC<TModalPracticeFormProps> = ({ visible, data, onClose, onSuccess }) => {
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ const ModalPracticeForm: React.FC<TModalPracticeFormProps> = ({ visible, data, o
 
         return {
           label: `${dayLabel} | ${startTime} - ${endTime}`,
-          value: `${item.dayOfWeek}-${item.at_time + item.duration_in_second}`,
+          value: `${item.dayOfWeek}-${startTime + endTime}`,
           data: item,
         };
       });
@@ -125,7 +125,7 @@ const ModalPracticeForm: React.FC<TModalPracticeFormProps> = ({ visible, data, o
 
             return {
               label: `${dayLabel} | ${startTime} - ${endTime}`,
-              value: `${item.day_of_week}-${item.at_time + item.duration_in_second}`,
+              value: `${item.day_of_week}-${startTime + endTime}`,
               data: item,
             };
           }),

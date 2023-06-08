@@ -10,6 +10,8 @@ import Select, { TSelectOption } from '@/components/Select';
 import { TRootState } from '@/redux/reducers';
 import {
   ECreateClassAction,
+  EGetBranchesAction,
+  EGetManagersAction,
   EUpdateClassAction,
   createClassAction,
   getBranchesAction,
@@ -38,15 +40,28 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
     options: optionsManagers,
     handleLoadMore: handleLoadMoreManagers,
     handleSearch: handleSearchManagers,
-  } = useOptionsPaginate(getManagersAction, 'managerReducer', 'getManagersResponse', undefined, {
-    userType: EUserType.TEACHER,
-  });
+  } = useOptionsPaginate(
+    getManagersAction,
+    'managerReducer',
+    'getManagersResponse',
+    EGetManagersAction.GET_MANAGERS,
+    undefined,
+    {
+      userType: EUserType.TEACHER,
+    },
+  );
 
   const {
     options: optionsBranches,
     handleLoadMore: handleLoadMoreBranches,
     handleSearch: handleSearchBranches,
-  } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', 'branchName');
+  } = useOptionsPaginate(
+    getBranchesAction,
+    'branchReducer',
+    'getBranchesResponse',
+    EGetBranchesAction.GET_BRANCHES,
+    'branchName',
+  );
 
   const createClassLoading = useSelector((state: TRootState) => state.loadingReducer[ECreateClassAction.CREATE_CLASS]);
   const updateClassLoading = useSelector((state: TRootState) => state.loadingReducer[EUpdateClassAction.UPDATE_CLASS]);

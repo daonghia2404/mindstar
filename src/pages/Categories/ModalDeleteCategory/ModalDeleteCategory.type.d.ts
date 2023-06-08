@@ -1,6 +1,8 @@
+import { TCategory } from '@/common/models';
+
 export type TModalDeleteCategoryProps = {
   visible: boolean;
-  data?: any;
+  data?: TCategory;
   onClose?: () => void;
   onSuccess?: () => void;
 };

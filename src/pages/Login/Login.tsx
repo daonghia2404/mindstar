@@ -47,6 +47,8 @@ const Login: React.FC = () => {
   };
 
   const handleLoginSuccess = (data?: any): void => {
+    showNotification(ETypeNotification.SUCCESS, 'Đăng Nhập Thành Công !');
+
     if (data?.rememberMe) {
       dispatch(
         getMyProfileAction.request({}, (response): void => {
@@ -57,14 +59,13 @@ const Login: React.FC = () => {
           };
 
           Helpers.setDataRememberAccount(storageData);
+          navigate(Paths.Dashboard);
         }),
       );
     } else {
       Helpers.setDataRememberAccount({});
+      navigate(Paths.Dashboard);
     }
-
-    navigate(Paths.Dashboard);
-    showNotification(ETypeNotification.SUCCESS, 'Đăng Nhập Thành Công !');
   };
 
   useEffect(() => {

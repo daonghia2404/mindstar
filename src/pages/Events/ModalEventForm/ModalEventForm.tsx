@@ -10,6 +10,8 @@ import Switch from '@/components/Switch';
 import { TRootState } from '@/redux/reducers';
 import {
   ECreateEventAction,
+  EGetBranchesAction,
+  EGetClassesAction,
   EUpdateEventAction,
   createEventAction,
   getBranchesAction,
@@ -36,7 +38,13 @@ const ModalEventForm: React.FC<TModalEventFormProps> = ({ visible, data, onClose
     options: optionsBranches,
     handleLoadMore: handleLoadMoreBranches,
     handleSearch: handleSearchBranches,
-  } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', 'branchName');
+  } = useOptionsPaginate(
+    getBranchesAction,
+    'branchReducer',
+    'getBranchesResponse',
+    EGetBranchesAction.GET_BRANCHES,
+    'branchName',
+  );
 
   const {
     options: optionsClasses,
@@ -47,6 +55,7 @@ const ModalEventForm: React.FC<TModalEventFormProps> = ({ visible, data, onClose
     getClassesAction,
     'classReducer',
     'getClassesResponse',
+    EGetClassesAction.GET_CLASSES,
     undefined,
     {},
     { branchIds: formValues?.branch?.value || '' },

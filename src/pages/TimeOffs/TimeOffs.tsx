@@ -17,7 +17,7 @@ import { capitalizeFirstLetter, formatISODateToDateTime, getFullUrlStatics } fro
 import DropdownMenu from '@/components/DropdownMenu';
 import { TDropdownMenuItem } from '@/components/DropdownMenu/DropdownMenu.types';
 import Avatar from '@/components/Avatar';
-import { EGetTimeOffsAction, getClassesAction, getTimeOffsAction } from '@/redux/actions';
+import { EGetClassesAction, EGetTimeOffsAction, getClassesAction, getTimeOffsAction } from '@/redux/actions';
 import { TGetTimeOffsParams } from '@/services/api';
 import Tags from '@/components/Tags';
 import { Paths } from '@/pages/routers';
@@ -55,6 +55,7 @@ const TimeOffs: React.FC = () => {
     getClassesAction,
     'classReducer',
     'getClassesResponse',
+    EGetClassesAction.GET_CLASSES,
     undefined,
     {},
     { branchIds: currentBranchId },
@@ -127,8 +128,8 @@ const TimeOffs: React.FC = () => {
       ),
     },
     {
-      key: 'branch',
-      dataIndex: 'branch',
+      key: 'class',
+      dataIndex: 'class',
       title: 'Lớp Học',
       render: (_: string, record: TTimeOff): React.ReactElement =>
         record?.player?.class ? (
@@ -192,6 +193,7 @@ const TimeOffs: React.FC = () => {
       key: 'reason',
       dataIndex: 'reason',
       title: 'Lý do',
+      className: 'limit-width',
       render: (value: string): string => value || EEmpty.DASH,
     },
     {
@@ -301,7 +303,7 @@ const TimeOffs: React.FC = () => {
                   <Col>
                     <div className="Table-total-item">
                       <Icon name={EIconName.ClockCancel} color={EIconColor.TUNDORA} />
-                      Tổng Thời Gian Nghỉ: <strong>{timeOffsState?.total_elements || EEmpty.ZERO}</strong>
+                      Tổng Yêu cầu nghỉ: <strong>{timeOffsState?.total_elements || EEmpty.ZERO}</strong>
                     </div>
                   </Col>
                 </Row>

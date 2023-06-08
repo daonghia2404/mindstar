@@ -158,6 +158,7 @@ export type TDashboard = {
 
 export type TExpense = {
   amount: number;
+  branch: TBranch;
   at_date: number;
   auditing_status: number;
   category: TCategory;
@@ -210,6 +211,7 @@ export type TSchedule = {
   create_date: number;
   duration_in_second: number;
   event: TEvent;
+  pickup_time: number;
   id: number;
   repeat_type: number;
   update_date: number;
@@ -219,6 +221,7 @@ export type TClass = {
   id: number;
   name: string;
   auditing_status: number;
+  class_name: string;
   branch: TBranch;
   branch_id: number;
   create_date: number;
@@ -345,6 +348,7 @@ export type TAttendance = {
   at_date: number;
   at_date_time: number;
   at_time: number;
+  branch: TBranch;
   auditing_status: number;
   checked_in: number;
   class: TClass;
@@ -358,6 +362,8 @@ export type TAttendance = {
   lesson_paid_status: number;
   player: TUser;
   player_id: number;
+  manager_profile: TUser;
+  manager_id: number;
   time_off_list: unknown;
   unit_value: number;
   update_date: number;
@@ -429,4 +435,36 @@ export type TSupplier = {
   tax_id: unknown;
   total_provided: number;
   update_date: number;
+};
+
+export type TBusStop = {
+  bus_schedules: TSchedule[];
+  auditing_status: number;
+  branch_name: string;
+  branch_id: number;
+  create_date: number;
+  id: number;
+  update_date: number;
+  name: string;
+};
+
+export type TBusStopPlayer = {
+  player: TUser;
+  day_of_week: string;
+  auditing_status: number;
+  bus_stop_id: number;
+  create_date: number;
+  id: number;
+  player_id: number;
+  update_date: number;
+};
+
+export type TPickupAttendance = {
+  bus_stop_id: number;
+  bus_stop_name: string;
+  id: number;
+  pickup_status: number;
+  pickup_time: number;
+  player: TUser;
+  player_id: number;
 };
