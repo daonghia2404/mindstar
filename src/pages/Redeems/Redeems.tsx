@@ -23,6 +23,7 @@ import ModalRedeemsForm from './ModalRedeemsForm';
 import ModalDeleteRedeem from './ModalRedeemsDelete';
 
 import './Redeems.scss';
+import Tags from '@/components/Tags';
 
 const Redeems: React.FC = () => {
   const dispatch = useDispatch();
@@ -149,7 +150,21 @@ const Redeems: React.FC = () => {
       key: 'points',
       dataIndex: 'points',
       title: 'Điểm',
-      render: (_: string, record: TRedeem): string => String(record?.point_used) || EEmpty.DASH,
+      render: (_: string, record: TRedeem): React.ReactElement => (
+        <Tags
+          noStyle
+          options={[
+            {
+              label: String(record?.point_used || EEmpty.ZERO),
+              value: 'point',
+              data: {
+                iconName: EIconName.JewishStarFill,
+                iconColor: EIconColor.AMBER,
+              },
+            },
+          ]}
+        />
+      ),
     },
     {
       key: 'status',
@@ -164,6 +179,7 @@ const Redeems: React.FC = () => {
       key: 'issueDate',
       dataIndex: 'issueDate',
       title: 'Ngày đổi thưởng',
+      className: 'nowrap',
       render: (_: string, record: TRedeem): string =>
         record.issue_date ? formatISODateToDateTime(record.issue_date, EFormat['DD/MM/YYYY - HH:mm']) : EEmpty.DASH,
     },

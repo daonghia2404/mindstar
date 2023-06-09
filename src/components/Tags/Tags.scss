@@ -4,6 +4,14 @@
   column-gap: 0.4rem;
   row-gap: 0.4rem;
 
+  &.no-style {
+    .Tags-item {
+      padding: 0 !important;
+      min-height: auto !important;
+      background: none !important;
+    }
+  }
+
   .Avatar {
     margin-left: -.4rem;
   }
@@ -17,7 +25,11 @@
     min-height: 3.2rem;
     line-height: 1;
     color: $mine-shaft;
-    white-space: nowrap;
+
+    span {
+      text-align: left;
+      @include ellipsis(1);
+    }
 
     &.WARNING {
       background: rgba($selective-yellow, 0.15);

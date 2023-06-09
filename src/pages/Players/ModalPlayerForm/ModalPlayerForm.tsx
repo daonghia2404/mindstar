@@ -12,11 +12,13 @@ import {
   ECreatePlayerAction,
   EGetBranchesAction,
   EGetClassesAction,
+  EReactivePlayerAction,
   EUpdatePlayerAction,
   createPlayerAction,
   getBranchesAction,
   getClassesAction,
   getPlayerAction,
+  reactivePlayerAction,
   searchUserAction,
   updatePlayerAction,
   uploadAvatarUserAction,
@@ -31,7 +33,7 @@ import {
   showNotification,
   validationRules,
 } from '@/utils/functions';
-import { EFormat, ETypeNotification, EUserType } from '@/common/enums';
+import { EFormat, EResetType, ETypeNotification, EUserType } from '@/common/enums';
 import DatePicker from '@/components/DatePicker';
 import { dataDayOfWeeksOptions, dataPaymentTypeOptions } from '@/common/constants';
 import TextArea from '@/components/TextArea';
@@ -41,12 +43,19 @@ import Tooltip from '@/components/Tooltip';
 import CheckboxGroup from '@/components/CheckboxGroup';
 import { TClass, TUser } from '@/common/models';
 import ModalAddPlayerInExistedUser from '@/pages/Players/ModalAddPlayerInExistedUser';
+import UploadImage from '@/components/UploadImage';
 
 import { TModalPlayerFormProps } from './ModalPlayerForm.type';
 import './ModalPlayerForm.scss';
-import UploadImage from '@/components/UploadImage';
 
-const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataPractice, onClose, onSuccess }) => {
+const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({
+  visible,
+  data,
+  dataPractice,
+  isRecover,
+  onClose,
+  onSuccess,
+}) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [formValues, setFormValues] = useState<any>({});
@@ -104,7 +113,10 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
   const updatePlayerLoading = useSelector(
     (state: TRootState) => state.loadingReducer[EUpdatePlayerAction.UPDATE_PLAYER],
   );
-  const loading = createPlayerLoading || updatePlayerLoading;
+  const recoverPlayerLoading = useSelector(
+    (state: TRootState) => state.loadingReducer[EReactivePlayerAction.REACTIVE_PLAYER],
+  );
+  const loading = createPlayerLoading || updatePlayerLoading || recoverPlayerLoading;
 
   const handleOpenAddPlayerInExistedUserModal = (dataModal?: TUser): void => {
     setModalAddPlayerInExistedUserState({ ...modalAddPlayerInExistedUserState, visible: true, data: dataModal });
@@ -190,11 +202,23 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
       };
 
       if (data) {
-        dispatch(
-          updatePlayerAction.request({ body, paths: { id: data?.id } }, (response): void =>
-            handleUploadAvatar(response.data, values),
-          ),
-        );
+        if (isRecover) {
+          dispatch(
+            reactivePlayerAction.request(
+              {
+                body: { ...body, data_reset: [EResetType.ATTENDANCE, EResetType.TRANSACTION_NUMBER_OF_UNITS] },
+                paths: { id: data?.id },
+              },
+              (response): void => handleUploadAvatar(response.data, values),
+            ),
+          );
+        } else {
+          dispatch(
+            updatePlayerAction.request({ body, paths: { id: data?.id } }, (response): void =>
+              handleUploadAvatar(response.data, values),
+            ),
+          );
+        }
       } else {
         dispatch(createPlayerAction.request({ body }, (response): void => handleUploadAvatar(response.data, values)));
       }
@@ -217,7 +241,10 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
   };
 
   const handleSubmitSuccess = (): void => {
-    showNotification(ETypeNotification.SUCCESS, `${data ? 'Cập Nhật' : 'Tạo Mới'} Học Viên Thành Công !`);
+    showNotification(
+      ETypeNotification.SUCCESS,
+      `${data ? `${isRecover ? 'Khôi phục' : 'Cập Nhật'}` : 'Tạo Mới'} Học Viên Thành Công !`,
+    );
     onClose?.();
     onSuccess?.();
   };
@@ -282,6 +309,9 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
             })
             ?.flat(),
           note: playerState?.note,
+          kits: kitFeeOptions,
+          numberOfUnits: playerState?.number_of_units,
+          membershipFee: playerState?.class?.course_fee || settingsState?.transaction_settings?.fee_transaction_value,
         };
         form.setFieldsValue(dataChanged);
         setFormValues({ ...formValues, ...dataChanged });
@@ -335,7 +365,7 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
     <>
       <Modal
         className="ModalPlayerForm"
-        title={data ? 'Sửa Học Viên' : 'Tạo mới Học Viên'}
+        title={data ? `${isRecover ? 'Khôi phục' : 'Sửa'} Học Viên` : 'Tạo mới Học Viên'}
         visible={visible}
         onClose={onClose}
         width={480}
@@ -522,7 +552,7 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
                   />
                 </Form.Item>
               </Col>
-              {!data && (
+              {(!data || isRecover) && (
                 <>
                   <Col span={24}>
                     <Form.Item name="membershipFee" rules={[validationRules.required()]}>
@@ -575,7 +605,7 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({ visible, data, dataP
                   <TextArea label="Ghi chú" placeholder="Nhập dữ liệu" active />
                 </Form.Item>
               </Col>
-              {!data && (
+              {(!data || isRecover) && (
                 <Col span={24}>
                   <Form.Item name="referralCode">
                     <Input label="Mã giới thiệu" placeholder="Nhập dữ liệu" active />

@@ -68,7 +68,7 @@ const Schedules: React.FC = () => {
           key: String(dayOfWeek),
           dataIndex: String(dayOfWeek),
           title: capitalizeFirstLetter(formatISODateToDateTime(valueOf, EFormat['dddd, DD'])),
-          className: classNames('text-center', { 'hightlight': isSameDayOfWeek }),
+          className: classNames('text-center limit-width', { 'hightlight': isSameDayOfWeek }),
           render: (value: any): React.ReactElement => {
             const dataSchedules: TSchedule[] = value;
             const isEmpty = dataSchedules.length === 0;
@@ -164,6 +164,7 @@ const Schedules: React.FC = () => {
         <Col span={24}>
           <Card className="Practices-table">
             <Table
+              useCardResponsive={false}
               rowClassName={(record): string | undefined => {
                 const [fromDate, toDate] = record.time.split('-');
                 const parseFromDate = moment(fromDate, EFormat['HH:mm']).valueOf();

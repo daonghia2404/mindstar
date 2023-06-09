@@ -32,6 +32,6 @@ export const getManagerAttendances = async ({
   params,
   headers,
 }: TGetManagerAttendancesMaterials): Promise<TGetManagerAttendancesResponse> => {
-  const response = await ApiService.get(`/v1/api/attendances/manager/${paths?.id}`, { params, headers });
+  const response = await ApiService.get(`/v1/api/attendances/teacher/${paths?.id}`, { params, headers });
   return response.data;
 };

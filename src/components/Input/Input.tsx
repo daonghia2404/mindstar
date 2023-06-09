@@ -42,7 +42,7 @@ const Input: React.FC<TInputProps> = ({
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { value: changedValue } = e.target;
-    setKeyword(changedValue);
+    if (onSearch) setKeyword(changedValue);
 
     if (numberic) {
       const reg = /^-?\d*(\d*)?$/;
@@ -88,7 +88,7 @@ const Input: React.FC<TInputProps> = ({
         ? formatNumberWithCommas(Number(value || 0))
         : value,
     disabled,
-    placeholder,
+    placeholder: (!value && focused) || (!value && active) ? placeholder : undefined,
     style: styleForm,
     readOnly: readOnlyText,
     maxLength: numberic && useNumber ? 12 : undefined,
@@ -114,7 +114,7 @@ const Input: React.FC<TInputProps> = ({
       size={size}
       className={classNames('Input', className)}
       focused={focused}
-      active={active || focused || Boolean(value) || Boolean(keyword)}
+      active={active || focused || !['undefined', 'null'].includes(typeof value) || Boolean(keyword)}
       suffixIcon={suffixIcon}
       suffixText={suffixText}
       disabled={disabled}

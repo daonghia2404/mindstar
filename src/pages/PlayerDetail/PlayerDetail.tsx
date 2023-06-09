@@ -11,7 +11,7 @@ import UploadImage from '@/components/UploadImage';
 import { Paths } from '@/pages/routers';
 import { getPlayerAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
-import { EEmpty, EFormat } from '@/common/enums';
+import { EAuditingStatus, EEmpty, EFormat } from '@/common/enums';
 import { formatCurrency, formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
 import { dataAuditingStatusOptions, dataDayOfWeeksOptions } from '@/common/constants';
 import Tags from '@/components/Tags';
@@ -33,7 +33,11 @@ const PlayerDetail: React.FC = () => {
   const settingsState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data;
   const cityOptions = settingsState?.cities?.map((item) => ({ label: item.name, value: item.id }));
 
-  const [modalPlayerFormState, setModalPlayerFormState] = useState<{ visible: boolean; data?: TUser }>({
+  const [modalPlayerFormState, setModalPlayerFormState] = useState<{
+    visible: boolean;
+    data?: TUser;
+    isRecover?: boolean;
+  }>({
     visible: false,
   });
   const [modalDeletePlayerState, setModalDeletePlayerState] = useState<{ visible: boolean; data?: TUser }>({
@@ -46,8 +50,8 @@ const PlayerDetail: React.FC = () => {
     visible: false,
   });
 
-  const handleOpenModalPlayerForm = (data?: TUser): void => {
-    setModalPlayerFormState({ visible: true, data });
+  const handleOpenModalPlayerForm = (data?: TUser, isRecover?: boolean): void => {
+    setModalPlayerFormState({ visible: true, data, isRecover });
   };
 
   const handleCloseModalPlayerForm = (): void => {
@@ -229,15 +233,27 @@ const PlayerDetail: React.FC = () => {
                     onClick={(): void => handleOpenModalPlayerForm(playerState)}
                   />
                 </Col>
-                <Col>
-                  <Button
-                    title="Xoá"
-                    styleType={EButtonStyleType.DANGER_TRANSPARENT}
-                    iconName={EIconName.Trash}
-                    iconColor={EIconColor.POMEGRANATE}
-                    onClick={(): void => handleOpenModalDeletePlayer(playerState)}
-                  />
-                </Col>
+                {playerState?.auditing_status === EAuditingStatus.ACTIVE ? (
+                  <Col>
+                    <Button
+                      title="Xoá"
+                      styleType={EButtonStyleType.DANGER_TRANSPARENT}
+                      iconName={EIconName.Trash}
+                      iconColor={EIconColor.POMEGRANATE}
+                      onClick={(): void => handleOpenModalDeletePlayer(playerState)}
+                    />
+                  </Col>
+                ) : (
+                  <Col>
+                    <Button
+                      title="Khôi phục"
+                      styleType={EButtonStyleType.PURPLE_TRANSPARENT}
+                      iconName={EIconName.RotateClockwise}
+                      iconColor={EIconColor.PURPLE_HEART}
+                      onClick={(): void => handleOpenModalPlayerForm(playerState, true)}
+                    />
+                  </Col>
+                )}
               </Row>
             </Col>
           </Row>

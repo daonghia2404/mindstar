@@ -269,7 +269,7 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
             </Col>
             <Col span={24}>
               <Form.Item name="description">
-                <TextArea label="Mô tả" placeholder="Nhập dữ liệu" active />
+                <TextArea label="Ghi chú" placeholder="Nhập dữ liệu" active />
               </Form.Item>
             </Col>
           </Row>

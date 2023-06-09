@@ -3,8 +3,8 @@ import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { navigate } from '@reach/router';
 
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
-import { EEmpty, EFormat } from '@/common/enums';
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataAuditingStatusOptions } from '@/common/constants';
+import { EAuditingStatus, EEmpty, EFormat } from '@/common/enums';
 import Button, { EButtonStyleType } from '@/components/Button';
 import Card from '@/components/Card';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
@@ -24,6 +24,7 @@ import { Paths } from '@/pages/routers';
 import Tags from '@/components/Tags';
 import Select, { TSelectOption } from '@/components/Select';
 import { useOptionsPaginate } from '@/utils/hooks';
+import Status from '@/components/Status';
 
 import './Players.scss';
 
@@ -33,7 +34,11 @@ const Players: React.FC = () => {
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
   const getPlayersLoading = useSelector((state: TRootState) => state.loadingReducer[EGetPlayersAction.GET_PLAYERS]);
   const playersState = useSelector((state: TRootState) => state.playerReducer.getPlayersResponse)?.data;
-  const [modalPlayerFormState, setModalPlayerFormState] = useState<{ visible: boolean; data?: TUser }>({
+  const [modalPlayerFormState, setModalPlayerFormState] = useState<{
+    visible: boolean;
+    data?: TUser;
+    isRecover?: boolean;
+  }>({
     visible: false,
   });
   const [modalDeletePlayerState, setModalDeletePlayerState] = useState<{ visible: boolean; data?: TUser }>({
@@ -59,8 +64,8 @@ const Players: React.FC = () => {
     { branchIds: currentBranchId },
   );
 
-  const handleOpenModalPlayerForm = (data?: TUser): void => {
-    setModalPlayerFormState({ visible: true, data });
+  const handleOpenModalPlayerForm = (data?: TUser, isRecover?: boolean): void => {
+    setModalPlayerFormState({ visible: true, data, isRecover });
   };
 
   const handleCloseModalPlayerForm = (): void => {
@@ -110,10 +115,20 @@ const Players: React.FC = () => {
       },
     },
     {
+      value: 'recover',
+      label: 'Khôi phục',
+      icon: EIconName.RotateClockwise,
+      hide: data?.auditing_status !== EAuditingStatus.INACTIVE,
+      onClick: (): void => {
+        handleOpenModalPlayerForm(data, true);
+      },
+    },
+    {
       value: 'delete',
       label: 'Xoá',
       icon: EIconName.Trash,
       danger: true,
+      hide: data?.auditing_status !== EAuditingStatus.ACTIVE,
       onClick: (): void => {
         handleOpenModalDeletePlayer(data);
       },
@@ -213,6 +228,17 @@ const Players: React.FC = () => {
         ),
     },
     {
+      key: 'status',
+      dataIndex: 'status',
+      title: 'Trạng thái',
+      sorter: true,
+      keySort: 'auditing_status',
+      render: (_: string, record: TUser): React.ReactElement => {
+        const status = dataAuditingStatusOptions.find((item) => item.value === record.auditing_status);
+        return status ? <Status label={status?.label} styleType={status?.data?.statusType} /> : <>{EEmpty.DASH}</>;
+      },
+    },
+    {
       key: 'actions',
       dataIndex: 'actions',
       title: '',
@@ -238,6 +264,7 @@ const Players: React.FC = () => {
         params: {
           ...getPlayersParamsRequest,
           classIds: (getPlayersParamsRequest?.classIds as unknown as TSelectOption)?.value,
+          auditingStatuses: (getPlayersParamsRequest?.auditingStatuses as unknown as TSelectOption)?.value,
         },
         headers: { branchIds: currentBranchId },
       }),
@@ -279,6 +306,21 @@ const Players: React.FC = () => {
                   onLoadMore={handleLoadMoreClasses}
                   onSearch={handleSearchClasses}
                   placement="topLeft"
+                />
+              </Col>
+              <Col>
+                <Select
+                  label="Trạng thái"
+                  value={getPlayersParamsRequest?.auditingStatuses as any}
+                  onChange={(options): void => {
+                    setGetPlayersParamsRequest({
+                      ...getPlayersParamsRequest,
+                      page: DEFAULT_PAGE,
+                      auditingStatuses: options as any,
+                    });
+                  }}
+                  allowClear
+                  options={dataAuditingStatusOptions}
                 />
               </Col>
             </Row>

@@ -184,3 +184,10 @@ export enum ETransactionType {
   MEMBERSHIP_FEE = 2,
   PRODUCT = 1,
 }
+
+export enum EResetType {
+  ATTENDANCE = 1,
+  TRANSACTION_NUMBER_OF_UNITS = 2,
+  TRANSACTION = 3,
+  NOTIFICATION = 4,
+}

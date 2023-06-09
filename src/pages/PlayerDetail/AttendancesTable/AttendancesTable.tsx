@@ -105,6 +105,7 @@ const AttendancesTable: React.FC<TAttendancesTableProps> = () => {
   return (
     <div className="AttendancesTable">
       <Table
+        useCardResponsive={false}
         columns={columns}
         dataSources={attendancesState?.content || []}
         page={getPlayerAttendancesParamsRequest?.page}
@@ -112,7 +113,6 @@ const AttendancesTable: React.FC<TAttendancesTableProps> = () => {
         total={attendancesState?.total_elements}
         loading={getPlayerAttendancesLoading}
         onPaginationChange={handlePaginationChange}
-        showPagination={false}
       />
     </div>
   );

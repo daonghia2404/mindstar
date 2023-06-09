@@ -340,9 +340,10 @@ const BusStops: React.FC = () => {
         </Col>
         <Col span={24}>
           <Row gutter={[24, 24]}>
-            <Col span={12}>
+            <Col span={24} lg={{ span: 12 }}>
               <Card className="Categories-table">
                 <Table
+                  useCardResponsive={false}
                   header={
                     <Row gutter={[16, 16]} justify="space-between" align="middle">
                       <Col>
@@ -380,9 +381,10 @@ const BusStops: React.FC = () => {
                 />
               </Card>
             </Col>
-            <Col span={12}>
+            <Col span={24} lg={{ span: 12 }}>
               <Card className="Categories-table">
                 <Table
+                  useCardResponsive={false}
                   header={
                     <Row gutter={[16, 16]} justify="space-between" align="middle">
                       <Col>

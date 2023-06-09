@@ -67,6 +67,8 @@ import DeviceFloppy from './DeviceFloppy';
 import Devices from './Devices';
 import Lock from './Lock';
 import ArrowExchange from './ArrowExchange';
+import JewishStarFill from './JewishStarFill';
+import RotateClockwise from './RotateClockwise';
 
 const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
   const renderIcon = (): React.ReactElement => {
@@ -195,6 +197,10 @@ const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
         return <Lock color={color} />;
       case EIconName.ArrowExchange:
         return <ArrowExchange color={color} />;
+      case EIconName.JewishStarFill:
+        return <JewishStarFill color={color} />;
+      case EIconName.RotateClockwise:
+        return <RotateClockwise color={color} />;
 
       default:
         return <></>;

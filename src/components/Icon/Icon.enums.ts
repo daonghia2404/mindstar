@@ -62,6 +62,8 @@ export enum EIconName {
   Devices = 'Devices',
   Lock = 'Lock',
   ArrowExchange = 'ArrowExchange',
+  JewishStarFill = 'JewishStarFill',
+  RotateClockwise = 'RotateClockwise',
 }
 
 export enum EIconColor {
@@ -76,5 +78,6 @@ export enum EIconColor {
   APPLE = '#43A047',
   POMEGRANATE = '#F44336',
   DOVE_GRAY = '#6E6E6E',
+  AMBER = '#FFC107',
   SELECTIVE_YELLOW = '#FFB300',
 }

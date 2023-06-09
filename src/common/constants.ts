@@ -38,10 +38,10 @@ export const DEFAULT_PAGE = 0;
 export const DEFAULT_PAGE_SIZE = 10;
 
 export const dataTransactionStatusOptions = [
-  { value: ETransactionStatus.PAID, label: 'Đã Thanh Toán' },
-  { value: ETransactionStatus.PENDING, label: 'Đang Xử Lý' },
-  { value: ETransactionStatus.FAILURE, label: 'Thất Bại' },
-  { value: ETransactionStatus.NEW, label: 'Mới' },
+  { value: ETransactionStatus.PAID, label: 'Đã Thanh Toán', data: { statusType: EStatusStyleType.SUCCESS } },
+  { value: ETransactionStatus.PENDING, label: 'Đang Xử Lý', data: { statusType: EStatusStyleType.WARNING } },
+  { value: ETransactionStatus.FAILURE, label: 'Thất Bại', data: { statusType: EStatusStyleType.DANGER } },
+  { value: ETransactionStatus.NEW, label: 'Mới', data: { statusType: EStatusStyleType.NORMAL } },
 ];
 
 export const dataPaymentTypeOptions = [

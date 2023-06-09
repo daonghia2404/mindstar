@@ -8,6 +8,7 @@ export type TTableProps = {
   loading?: boolean;
   header?: React.ReactNode;
   page?: number;
+  useCardResponsive?: boolean;
   pageSize?: number;
   total?: number;
   showPagination?: boolean;

@@ -7,6 +7,7 @@ export type TUser = {
   player_id?: number;
   branch: TBranch;
   branch_id: null;
+  player_name?: string;
   branch_name: string;
   class: TClass;
   device_list?: string[];
@@ -273,10 +274,12 @@ export type TOrder = {
   auditing_status: number;
   create_date: number;
   customer_info: TUser;
+  branch?: TBranch;
   discount_value: number;
   id: number;
   note: string;
   order_status: number;
+  items: TProduct[];
   order_time: number;
   payment_type: number;
   product_image_path: string;
@@ -308,6 +311,8 @@ export type TProduct = {
   auditing_status: number;
   category: TCategory;
   category_id: number;
+  quantity: number;
+  product_image_path: string;
   code: string;
   create_date: number;
   description: string;

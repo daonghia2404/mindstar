@@ -51,7 +51,7 @@ const RecentRevenueTable: React.FC<TRecentRevenueTableProps> = () => {
       suffixLink={{ icon: EIconName.ArrowLongRight, link: '#' }}
     >
       <div className="RecentRevenueTable-wrapper">
-        <Table columns={columns} dataSources={transactionsState?.content || []} />
+        <Table useCardResponsive={false} columns={columns} dataSources={transactionsState?.content || []} />
       </div>
     </Card>
   );
