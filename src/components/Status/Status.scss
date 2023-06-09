@@ -6,6 +6,21 @@
   border-radius: 3.5rem;
   width: fit-content;
 
+  &.NORMAL {
+    background: rgba($cerulean, 0.1);
+
+    .Status {
+      &-circle {
+        background: $cerulean;
+        box-shadow: 0 0 5px rgba($cerulean, 0.8);
+      }
+
+      &-label {
+        color: $cerulean;
+      }
+    }
+  }
+
   &.SUCCESS {
     background: rgba($fruit-sald, 0.1);
 

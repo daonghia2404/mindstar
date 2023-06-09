@@ -15,7 +15,7 @@ import {
   updateBusStopAction,
 } from '@/redux/actions';
 import { showNotification, validationRules } from '@/utils/functions';
-import { EFormat, ETypeNotification } from '@/common/enums';
+import { EEmpty, EFormat, ETypeNotification } from '@/common/enums';
 import { useOptionsPaginate } from '@/utils/hooks';
 import Select from '@/components/Select';
 import DatePicker from '@/components/DatePicker';
@@ -80,7 +80,9 @@ const ModalBusStopForm: React.FC<TModalBusStopFormProps> = ({ visible, data, onC
       if (data) {
         form.setFieldsValue({
           name: data?.name,
-          branch: data?.branch_id ? { label: data?.branch_name, value: String(data?.branch_id) } : undefined,
+          branch: data?.branch_id
+            ? { label: data?.branch_name || EEmpty.DASH, value: String(data?.branch_id) }
+            : undefined,
           pickupTime: data?.bus_schedules?.[0]?.pickup_time ? moment(data?.bus_schedules?.[0]?.pickup_time) : undefined,
         });
       } else {

@@ -9,6 +9,10 @@ export type TGetOrdersParams = {
   size: number;
   fromDate?: number;
   toDate?: number;
+  orderStatus?: string;
+  transactionStatuses?: string;
+  search?: string;
+  sort?: string;
 };
 
 export type TGetOrdersMaterials = {

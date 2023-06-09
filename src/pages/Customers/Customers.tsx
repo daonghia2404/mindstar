@@ -120,7 +120,21 @@ const Customers: React.FC = () => {
         const level = dataLevelOptions.find((item) => item.value === record.level_id);
         return (
           <div className="Table-info">
-            <div className="Table-info-title">{record?.points || EEmpty.ZERO}</div>
+            <div className="Table-info-title">
+              <Tags
+                noStyle
+                options={[
+                  {
+                    label: String(record?.points || EEmpty.ZERO),
+                    value: 'point',
+                    data: {
+                      iconName: EIconName.JewishStarFill,
+                      iconColor: EIconColor.AMBER,
+                    },
+                  },
+                ]}
+              />
+            </div>
             <div className="Table-info-description" style={{ color: level?.data.color }}>
               {record?.level_name}
             </div>

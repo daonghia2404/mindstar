@@ -51,7 +51,7 @@ const RecentExpenseTable: React.FC<TRecentExpenseTableProps> = () => {
       suffixLink={{ icon: EIconName.ArrowLongRight, link: '#' }}
     >
       <div className="RecentExpenseTable-wrapper">
-        <Table columns={columns} dataSources={expensesState?.content || []} />
+        <Table useCardResponsive={false} columns={columns} dataSources={expensesState?.content || []} />
       </div>
     </Card>
   );

@@ -55,7 +55,7 @@ const RecentOrdersTable: React.FC<TRecentOrdersTableProps> = () => {
         return (
           <div className="Table-info text-right">
             <div className="Table-info-title nowrap">
-              {formatCurrency({ amount: record.amount - record.discount_value, showSuffix: true })}
+              {formatCurrency({ amount: record.transaction_amount, showSuffix: true })}
             </div>
             <div className="Table-info-description nowrap">
               {dataPaymentTypeOptions.find((item) => item.value === record.payment_type)?.label || EEmpty.DASH}
@@ -76,7 +76,7 @@ const RecentOrdersTable: React.FC<TRecentOrdersTableProps> = () => {
       suffixLink={{ icon: EIconName.ArrowLongRight, link: '#' }}
     >
       <div className="RecentOrdersTable-wrapper">
-        <Table columns={columns} dataSources={ordersState?.content || []} />
+        <Table useCardResponsive={false} columns={columns} dataSources={ordersState?.content || []} />
       </div>
     </Card>
   );

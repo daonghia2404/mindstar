@@ -151,11 +151,13 @@ a {
   }
 
   .ant-form-item-has-error {
-    .FormField {
-      border-color: $pomegranate !important;
+    &>.ant-form-item-control>.ant-form-item-control-input>.ant-form-item-control-input-content {
+      &>.FormField {
+        border-color: $pomegranate !important;
 
-      &-label {
-        color: $pomegranate !important;
+        & > .FormField-label {
+          color: $pomegranate !important;
+        }
       }
     }
   }

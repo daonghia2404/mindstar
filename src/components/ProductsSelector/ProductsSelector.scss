@@ -1,0 +1,27 @@
+@import '@/assets/styles/_global.scss';
+
+.ProductsSelector {
+  height: unset !important;
+
+  &.FormField {
+    &>.FormField {
+      &-label {
+        transform: none;
+        font-size: 1.2rem;
+        top: 0.4rem;
+      }
+    }
+  }
+
+  .FormField {
+    &-field {
+      padding-top: 2.4rem;
+    }
+  }
+
+  .Table {
+    &-footer {
+      margin-bottom: 0.8rem;
+    }
+  }
+}

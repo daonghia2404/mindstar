@@ -219,37 +219,39 @@ const Attendances: React.FC<TAttendanceProps> = ({ managers }) => {
         <Col span={24}>
           <Card className="Attendances-filter">
             <Row gutter={[16, 16]} justify="space-between">
-              <Row gutter={[16, 16]}>
-                <Col>
-                  <Input
-                    style={{ minWidth: '24rem' }}
-                    label="Tìm kiếm"
-                    suffixIcon={<Icon name={EIconName.Search} color={EIconColor.TUNDORA} />}
-                    onSearch={handleSearch}
-                  />
-                </Col>
-                {!managers && (
+              <Col>
+                <Row gutter={[16, 16]}>
                   <Col>
-                    <Select
-                      label="Lớp học"
-                      placeholder="Chọn dữ liệu"
-                      value={getAttendancesParamsRequest?.classId as any}
-                      active
-                      showSearch
-                      options={optionsClasses}
-                      onLoadMore={handleLoadMoreClasses}
-                      onSearch={handleSearchClasses}
-                      onChange={(option): void => {
-                        setGetAttendancesParamsRequest({
-                          ...getAttendancesParamsRequest,
-                          page: DEFAULT_PAGE,
-                          classId: option as any,
-                        });
-                      }}
+                    <Input
+                      style={{ minWidth: '24rem' }}
+                      label="Tìm kiếm"
+                      suffixIcon={<Icon name={EIconName.Search} color={EIconColor.TUNDORA} />}
+                      onSearch={handleSearch}
                     />
                   </Col>
-                )}
-              </Row>
+                  {!managers && (
+                    <Col>
+                      <Select
+                        label="Lớp học"
+                        placeholder="Chọn dữ liệu"
+                        value={getAttendancesParamsRequest?.classId as any}
+                        active
+                        showSearch
+                        options={optionsClasses}
+                        onLoadMore={handleLoadMoreClasses}
+                        onSearch={handleSearchClasses}
+                        onChange={(option): void => {
+                          setGetAttendancesParamsRequest({
+                            ...getAttendancesParamsRequest,
+                            page: DEFAULT_PAGE,
+                            classId: option as any,
+                          });
+                        }}
+                      />
+                    </Col>
+                  )}
+                </Row>
+              </Col>
 
               <Col>
                 <DatePicker

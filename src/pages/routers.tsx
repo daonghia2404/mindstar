@@ -50,7 +50,7 @@ const Revenues = lazy(() => retryLoadComponent(() => import('@/pages/Revenues'))
 const Expenses = lazy(() => retryLoadComponent(() => import('@/pages/Expenses')));
 const BusStops = lazy(() => retryLoadComponent(() => import('@/pages/BusStops')));
 const PickupAttendances = lazy(() => retryLoadComponent(() => import('@/pages/PickupAttendances')));
-const Order = lazy(() => retryLoadComponent(() => import('@/pages/Order')));
+const Orders = lazy(() => retryLoadComponent(() => import('@/pages/Orders')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -82,7 +82,7 @@ export const Paths = {
   AttendancesManagers: '/attendances/managers',
   Practices: '/practices',
   Schedules: '/schedules',
-  Order: '/order',
+  Orders: '/orders',
   Categories: '/categories',
   Rewards: '/rewards',
   Products: '/products',
@@ -110,7 +110,7 @@ export const Pages = {
   Branches,
   Managers,
   Redeems,
-  Order,
+  Orders,
   ManagerDetail,
   Classes,
   ClassDetail,

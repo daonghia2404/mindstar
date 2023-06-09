@@ -7,6 +7,7 @@ import {
   TGetChildPlayersResponse,
   TGetPlayerResponse,
   TGetPlayersResponse,
+  TReactivePlayerResponse,
   TUpdatePlayerResponse,
 } from '@/services/api/player';
 import {
@@ -16,6 +17,7 @@ import {
   getChildPlayersAction,
   getPlayerAction,
   getPlayersAction,
+  reactivePlayerAction,
   updatePlayerAction,
 } from '@/redux/actions';
 import { changePlayersBranchUpdateState } from './change-players-branch';
@@ -24,6 +26,7 @@ import { deletePlayerUpdateState } from './delete-player';
 import { getChildPlayersUpdateState } from './get-child-players';
 import { getPlayerUpdateState } from './get-player';
 import { getPlayersUpdateState } from './get-players';
+import { reactivePlayerUpdateState } from './reactive-player';
 import { updatePlayerUpdateState } from './update-player';
 
 export type TPlayerState = {
@@ -33,6 +36,7 @@ export type TPlayerState = {
   getChildPlayersResponse?: TGetChildPlayersResponse;
   getPlayerResponse?: TGetPlayerResponse;
   getPlayersResponse?: TGetPlayersResponse;
+  reactivePlayerResponse?: TReactivePlayerResponse;
   updatePlayerResponse?: TUpdatePlayerResponse;
 };
 
@@ -43,6 +47,7 @@ const initialState: TPlayerState = {
   getChildPlayersResponse: undefined,
   getPlayerResponse: undefined,
   getPlayersResponse: undefined,
+  reactivePlayerResponse: undefined,
   updatePlayerResponse: undefined,
 };
 
@@ -53,6 +58,7 @@ const PlayerReducer = createReducer(initialState, (handleAction) => [
   handleAction(getChildPlayersAction.success, getChildPlayersUpdateState),
   handleAction(getPlayerAction.success, getPlayerUpdateState),
   handleAction(getPlayersAction.success, getPlayersUpdateState),
+  handleAction(reactivePlayerAction.success, reactivePlayerUpdateState),
   handleAction(updatePlayerAction.success, updatePlayerUpdateState),
 ]);
 

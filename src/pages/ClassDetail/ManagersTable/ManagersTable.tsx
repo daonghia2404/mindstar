@@ -1,5 +1,6 @@
 import React from 'react';
 import { navigate } from '@reach/router';
+import { useSelector } from 'react-redux';
 
 import { TManagersTableProps } from './ManagersTable.types';
 import Table from '@/components/Table';
@@ -9,8 +10,12 @@ import { TUser } from '@/common/models';
 import { Paths } from '@/pages/routers';
 import { getFullUrlStatics, formatISODateToDateTime } from '@/utils/functions';
 import Avatar from '@/components/Avatar';
+import { EGetClassAction } from '@/redux/actions';
+import { TRootState } from '@/redux/reducers';
 
 const ManagersTable: React.FC<TManagersTableProps> = ({ dataSources = [] }) => {
+  const getClassLoading = useSelector((state: TRootState) => state.loadingReducer[EGetClassAction.GET_CLASS]);
+
   const columns = [
     {
       key: 'avatar',
@@ -73,6 +78,7 @@ const ManagersTable: React.FC<TManagersTableProps> = ({ dataSources = [] }) => {
   return (
     <div className="ManagersTable">
       <Table
+        loading={getClassLoading}
         columns={columns}
         dataSources={dataSources}
         scroll={{ y: 73 * 4 }}

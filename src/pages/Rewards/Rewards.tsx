@@ -24,6 +24,7 @@ import Status from '@/components/Status';
 import Select from '@/components/Select';
 
 import './Rewards.scss';
+import Tags from '@/components/Tags';
 
 const Rewards: React.FC = () => {
   const dispatch = useDispatch();
@@ -134,7 +135,21 @@ const Rewards: React.FC = () => {
       title: 'Điểm',
       sorter: true,
       keySort: 'point_value',
-      render: (value: string): string => `${value || EEmpty.ZERO}`,
+      render: (_: string, record: TReward): React.ReactElement => (
+        <Tags
+          noStyle
+          options={[
+            {
+              label: String(record?.point_value || EEmpty.ZERO),
+              value: 'point',
+              data: {
+                iconName: EIconName.JewishStarFill,
+                iconColor: EIconColor.AMBER,
+              },
+            },
+          ]}
+        />
+      ),
     },
     {
       key: 'quantity_sold',

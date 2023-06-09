@@ -189,13 +189,13 @@ const Practices: React.FC = () => {
       dataIndex: 'schedules',
       title: 'Lịch học đăng ký',
       render: (_: string, record: TUser): React.ReactElement => {
-        const schedules = record?.schedules?.filter((item) => item.day_of_week);
+        const schedules = (record?.player_schedules || record?.schedules)?.filter((item) => item.day_of_week);
 
         return schedules?.length === 0 ? (
           <>{EEmpty.DASH}</>
         ) : (
           <Tags
-            options={record?.schedules
+            options={schedules
               ?.filter((item) => item.day_of_week)
               ?.map((item) => {
                 return item?.day_of_week

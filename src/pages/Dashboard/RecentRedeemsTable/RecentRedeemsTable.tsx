@@ -71,7 +71,7 @@ const RecentRedeemsTable: React.FC<TRecentRedeemsTableProps> = () => {
       suffixLink={{ icon: EIconName.ArrowLongRight, link: '#' }}
     >
       <div className="RecentRedeemsTable-wrapper">
-        <Table columns={columns} dataSources={redeemsState?.content || []} />
+        <Table useCardResponsive={false} columns={columns} dataSources={redeemsState?.content || []} />
       </div>
     </Card>
   );
