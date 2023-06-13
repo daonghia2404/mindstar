@@ -51,7 +51,6 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.Events} component={Pages.Events} />
           <ProtectedRoute path={Paths.Players} component={Pages.Players} />
           <ProtectedRoute path={Paths.PlayerDetail()} component={Pages.PlayerDetail} />
-          <ProtectedRoute path={Paths.Connects} component={Pages.Connects} />
           <ProtectedRoute path={Paths.AttendancesManagers} component={Pages.Attendances} managers />
           <ProtectedRoute path={Paths.AttendancesPlayers} component={Pages.Attendances} />
           <ProtectedRoute path={Paths.Practices} component={Pages.Practices} />
@@ -69,6 +68,8 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.BusStops} component={Pages.BusStops} />
           <ProtectedRoute path={Paths.PickupAttendances} component={Pages.PickupAttendances} />
           <ProtectedRoute path={Paths.Orders} component={Pages.Orders} />
+          <ProtectedRoute path={Paths.Connects} component={Pages.Connects} />
+          <ProtectedRoute path={Paths.ConnectDetail()} component={Pages.ConnectDetail} />
 
           <Redirect noThrow from={Paths.Rest} to={`${LayoutPaths.Admin}${Paths.Dashboard}`} />
         </Admin>

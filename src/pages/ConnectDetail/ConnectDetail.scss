@@ -1,0 +1,24 @@
+@import '@/assets/styles/_global.scss';
+
+.ConnectDetail {
+  .Card {
+    height: 100%;
+  }
+
+  &-detail {
+    &-carousel {
+      margin-bottom: 1.6rem;
+
+      &-item {
+        height: 20rem;
+        @include centerOriginImage;
+      }
+    }
+
+    &-content {
+      font-size: 1.4rem;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+  }
+}

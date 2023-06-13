@@ -66,13 +66,13 @@ export type TMerchant = {
   city: TCity;
   city_id: string;
   cover_image: string;
-  create_date: number;
+  create_date: string;
   id: number;
-  is_agree_promotion: boolean;
+  is_agree_promotion: number;
   mobile: string;
   name: string;
   registration_status: number;
-  update_date: number;
+  update_date: string;
   user_id: number;
 };
 
@@ -292,8 +292,6 @@ export type TOrder = {
   update_date: number;
 };
 
-export type TUploadFile = any;
-
 export type TTimeOff = {
   at_date_time: number;
   auditing_status: number;
@@ -472,4 +470,23 @@ export type TPickupAttendance = {
   pickup_time: number;
   player: TUser;
   player_id: number;
+};
+
+export type TMerchantFeed = {
+  auditing_status: number;
+  content: string;
+  create_date: number;
+  files: {
+    auditing_status: number;
+    create_date: number;
+    id: number;
+    merchant_feed_id: number;
+    path: 'other_files/merchants/18/feeds/17/IMG_1679566596529_4644092193number49419number9.png';
+    static_file_id: number;
+    update_date: number;
+  }[];
+  id: number;
+  merchant: TMerchant;
+  merchant_id: number;
+  update_date: number;
 };

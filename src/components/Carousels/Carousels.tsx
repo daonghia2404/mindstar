@@ -2,6 +2,9 @@ import React from 'react';
 import Slider from 'react-slick';
 import classNames from 'classnames';
 
+import Button, { EButtonStyleType } from '@/components/Button';
+import { EIconColor, EIconName } from '@/components/Icon';
+
 import { TCarouselsProps } from './Carousels.types';
 import './Carousels.scss';
 
@@ -18,13 +21,29 @@ const Carousels: React.FC<TCarouselsProps> = ({
   onDragging,
   children,
 }) => {
-  // const renderPrevArrow = (): React.ReactElement => {
-  //   return <Button size="small" className="Carousels-arrow prev" />;
-  // };
+  const renderPrevArrow = (): React.ReactElement => {
+    return (
+      <Button
+        size="small"
+        iconName={EIconName.AngleLeft}
+        iconColor={EIconColor.DOVE_GRAY}
+        className="Carousels-arrow prev"
+        styleType={EButtonStyleType.GENERAL_FORM}
+      />
+    );
+  };
 
-  // const renderNextArrow = (): React.ReactElement => {
-  //   return <Button size="small" className="Carousels-arrow next" />;
-  // };
+  const renderNextArrow = (): React.ReactElement => {
+    return (
+      <Button
+        size="small"
+        iconName={EIconName.AngleRight}
+        iconColor={EIconColor.DOVE_GRAY}
+        className="Carousels-arrow next"
+        styleType={EButtonStyleType.GENERAL_FORM}
+      />
+    );
+  };
 
   const settings = {
     speed: 500,
@@ -39,8 +58,8 @@ const Carousels: React.FC<TCarouselsProps> = ({
     slidesToScroll,
     responsive,
     swipeToSlide: true,
-    // nextArrow: renderNextArrow(),
-    // prevArrow: renderPrevArrow(),
+    nextArrow: renderNextArrow(),
+    prevArrow: renderPrevArrow(),
     beforeChange: (): void => onDragging?.(true),
     afterChange: (): void => onDragging?.(false),
   };

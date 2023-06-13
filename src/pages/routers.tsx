@@ -32,7 +32,6 @@ const ManagerDetail = lazy(() => retryLoadComponent(() => import('@/pages/Manage
 const Classes = lazy(() => retryLoadComponent(() => import('@/pages/Classes')));
 const ClassDetail = lazy(() => retryLoadComponent(() => import('@/pages/ClassDetail')));
 const Events = lazy(() => retryLoadComponent(() => import('@/pages/Events')));
-const Connects = lazy(() => retryLoadComponent(() => import('@/pages/Connects')));
 const PlayerDetail = lazy(() => retryLoadComponent(() => import('@/pages/PlayerDetail')));
 const Players = lazy(() => retryLoadComponent(() => import('@/pages/Players')));
 const Attendances = lazy(() => retryLoadComponent(() => import('@/pages/Attendances')));
@@ -51,6 +50,8 @@ const Expenses = lazy(() => retryLoadComponent(() => import('@/pages/Expenses'))
 const BusStops = lazy(() => retryLoadComponent(() => import('@/pages/BusStops')));
 const PickupAttendances = lazy(() => retryLoadComponent(() => import('@/pages/PickupAttendances')));
 const Orders = lazy(() => retryLoadComponent(() => import('@/pages/Orders')));
+const Connects = lazy(() => retryLoadComponent(() => import('@/pages/Connects')));
+const ConnectDetail = lazy(() => retryLoadComponent(() => import('@/pages/ConnectDetail')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -77,7 +78,6 @@ export const Paths = {
   Events: '/events',
   Players: '/players',
   PlayerDetail: (id?: string): string => `/players/${id || ':id'}`,
-  Connects: '/connects',
   AttendancesPlayers: '/attendances/players',
   AttendancesManagers: '/attendances/managers',
   Practices: '/practices',
@@ -95,6 +95,8 @@ export const Paths = {
   Expenses: '/expenses',
   BusStops: '/transports',
   PickupAttendances: '/transports/attendances',
+  Connects: '/connects',
+  ConnectDetail: (id?: string): string => `/connects/${id || ':id'}`,
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -117,7 +119,6 @@ export const Pages = {
   Events,
   Players,
   PlayerDetail,
-  Connects,
   Attendances,
   Practices,
   Schedules,
@@ -132,6 +133,8 @@ export const Pages = {
   Expenses,
   BusStops,
   PickupAttendances,
+  Connects,
+  ConnectDetail,
 
   Login,
   LoginDomain,

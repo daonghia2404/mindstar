@@ -1,3 +1,27 @@
 @import '@/assets/styles/_global.scss';
 
-.Carousels {}
+.Carousels {
+  .slick-prev {
+    left: 0;
+  }
+
+  .slick-next {
+    right: 0;
+  }
+
+  .slick-prev,
+  .slick-next {
+    width: fit-content;
+    height: fit-content;
+    z-index: 4;
+    transition: $common-transition;
+
+    &.slick-disabled {
+      opacity: 0;
+    }
+
+    &::before {
+      display: none;
+    }
+  }
+}

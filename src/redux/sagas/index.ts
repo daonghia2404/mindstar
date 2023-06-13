@@ -12,6 +12,7 @@ import eConnectSaga from './e-connect';
 import eventSaga from './event';
 import expenseSaga from './expense';
 import managerSaga from './manager';
+import merchantSaga from './merchant';
 import orderSaga from './order';
 import playerSaga from './player';
 import practiceSaga from './practice';
@@ -40,6 +41,7 @@ const rootSaga = function* root(): Generator {
     fork(eventSaga),
     fork(expenseSaga),
     fork(managerSaga),
+    fork(merchantSaga),
     fork(orderSaga),
     fork(playerSaga),
     fork(practiceSaga),

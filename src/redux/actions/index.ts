@@ -10,6 +10,7 @@ export * from './e-connect';
 export * from './event';
 export * from './expense';
 export * from './manager';
+export * from './merchant';
 export * from './order';
 export * from './player';
 export * from './practice';

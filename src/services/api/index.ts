@@ -29,3 +29,4 @@ export * from './product';
 export * from './academy';
 export * from './supplier';
 export * from './bus-stop';
+export * from './merchant';

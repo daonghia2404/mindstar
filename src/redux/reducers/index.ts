@@ -13,6 +13,7 @@ import eConnectReducer from './e-connect';
 import eventReducer from './event';
 import expenseReducer from './expense';
 import managerReducer from './manager';
+import merchantReducer from './merchant';
 import orderReducer from './order';
 import playerReducer from './player';
 import practiceReducer from './practice';
@@ -44,6 +45,7 @@ const rootReducer = combineReducers({
   eventReducer,
   expenseReducer,
   managerReducer,
+  merchantReducer,
   orderReducer,
   playerReducer,
   practiceReducer,
