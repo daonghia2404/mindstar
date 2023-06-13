@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import moment, { Moment } from 'moment';
+import { Link } from '@reach/router';
 
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataTypeCheckInOptions } from '@/common/constants';
 import { EEmpty, EFormat } from '@/common/enums';
@@ -26,9 +27,10 @@ import Select, { TSelectOption } from '@/components/Select';
 import { useOptionsPaginate } from '@/utils/hooks';
 import ModalCheckIns from '@/pages/PickupAttendances/ModalCheckIns';
 import Status from '@/components/Status';
+import Tags from '@/components/Tags';
+import { Paths } from '@/pages/routers';
 
 import './PickupAttendances.scss';
-import Tags from '@/components/Tags';
 
 const PickupAttendances: React.FC = () => {
   const dispatch = useDispatch();
@@ -111,7 +113,9 @@ const PickupAttendances: React.FC = () => {
       render: (_: string, record: TPickupAttendance): React.ReactElement => {
         return (
           <div className="Table-info">
-            <div className="Table-info-title">{record?.player?.name || EEmpty.DASH}</div>
+            <Link to={Paths.PlayerDetail(String(record?.player?.id))} className="Table-info-title">
+              {record?.player?.name || EEmpty.DASH}
+            </Link>
             <div className="Table-info-description">
               {record?.player?.date_of_birth
                 ? formatISODateToDateTime(record.player?.date_of_birth, EFormat['DD/MM/YYYY'])

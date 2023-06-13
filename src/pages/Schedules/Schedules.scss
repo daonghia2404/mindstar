@@ -1,3 +1,15 @@
 @import '@/assets/styles/_global.scss';
 
-.Schedules {}
+.Schedules {
+  .Table {
+    .ant-table {
+
+      .ant-table-thead>tr>th,
+      .ant-table-tbody>tr>td {
+        &:not(:last-child) {
+          border-right: 1px solid $alto;
+        }
+      }
+    }
+  }
+}

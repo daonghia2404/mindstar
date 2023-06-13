@@ -31,6 +31,19 @@ const Schedules: React.FC = () => {
   const schedulesState = useSelector((state: TRootState) => state.scheduleReducer.getSchedulesResponse)?.data;
 
   const schedulesData = schedulesState?.content
+    ?.map((item) => {
+      if (item.event?.id) {
+        const arrRange = getRangeMomentBetweenTwoDate(item.event.start_date_time, item.event.end_date_time);
+        const daysOfWeek = arrRange.map((date) => (moment(date).day() === 0 ? 7 : moment(date).day()))?.join(',');
+
+        return {
+          ...item,
+          at_eras: daysOfWeek,
+        };
+      }
+
+      return item;
+    })
     ?.filter((item) => item.at_time && item.at_eras)
     ?.map((item) => ({ ...item, orderValue: moment(item.at_time).format('HH') }));
 
@@ -78,15 +91,19 @@ const Schedules: React.FC = () => {
               <Tags
                 className="justify-center"
                 options={dataSchedules?.map((schedule) => {
+                  const isEvent = schedule?.event?.id;
+
                   return {
-                    value: String(schedule?.class?.id),
-                    label: schedule?.class?.name,
+                    value: isEvent ? String(schedule?.event?.id) : String(schedule?.class?.id),
+                    label: isEvent ? schedule?.event?.title : schedule?.class?.name,
                     data: {
-                      iconName: EIconName.ChalkBoard,
+                      iconName: isEvent ? EIconName.SpeakerPhone : EIconName.ChalkBoard,
                     },
-                    onClick: (): void => {
-                      navigate(Paths.ClassDetail(String(schedule?.class?.id)));
-                    },
+                    onClick: !isEvent
+                      ? (): void => {
+                          navigate(Paths.ClassDetail(String(schedule?.class?.id)));
+                        }
+                      : undefined,
                   };
                 })}
               />

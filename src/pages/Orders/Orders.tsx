@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from '@reach/router';
 
 import {
   DEFAULT_PAGE,
@@ -27,6 +28,7 @@ import Status from '@/components/Status';
 import { EEmpty, EFormat } from '@/common/enums';
 import { formatCurrency, formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
 import Avatar from '@/components/Avatar';
+import { Paths } from '@/pages/routers';
 
 import './Orders.scss';
 
@@ -124,7 +126,18 @@ const Orders: React.FC = () => {
       render: (_: string, record: TOrder): React.ReactElement => {
         return (
           <div className="Table-info">
-            <div className="Table-info-title">{record?.customer_info?.name}</div>
+            {record?.customer_info?.player_id ? (
+              <Link to={Paths.PlayerDetail(String(record?.customer_info?.player_id))} className="Table-info-title">
+                {record?.customer_info?.player_name}
+              </Link>
+            ) : (
+              <>
+                {record?.customer_info?.name && <div className="Table-info-title">{record?.customer_info?.name}</div>}
+              </>
+            )}
+
+            <div className="Table-info-description">{record?.customer_info?.address}</div>
+
             {record?.customer_info?.mobile ? (
               <a
                 href={`tel: ${record?.customer_info?.mobile}`}
@@ -136,7 +149,6 @@ const Orders: React.FC = () => {
             ) : (
               <div className="Table-info-description">{EEmpty.DASH}</div>
             )}
-            <div className="Table-info-description">{record?.customer_info?.address}</div>
           </div>
         );
       },
@@ -151,7 +163,7 @@ const Orders: React.FC = () => {
         if (isEmpty) return <>{EEmpty.DASH}</>;
 
         return (
-          <Row className="Orders-products" gutter={[16, 16]}>
+          <Row className="Orders-products">
             {record.items?.map((item) => (
               <Col span={24}>
                 <div className="Orders-products-item flex items-center">

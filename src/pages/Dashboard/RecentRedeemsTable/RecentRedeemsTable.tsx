@@ -10,6 +10,7 @@ import { EEmpty, EFormat } from '@/common/enums';
 import { TRedeem } from '@/common/models';
 import { formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
 import { dataOrderStatusOptions } from '@/common/constants';
+import { Paths } from '@/pages/routers';
 
 import { TRecentRedeemsTableProps } from './RecentRedeemsTable.types';
 import './RecentRedeemsTable.scss';
@@ -68,7 +69,7 @@ const RecentRedeemsTable: React.FC<TRecentRedeemsTableProps> = () => {
     <Card
       className="RecentRedeemsTable"
       title="Đổi thưởng gần đây"
-      suffixLink={{ icon: EIconName.ArrowLongRight, link: '#' }}
+      suffixLink={{ icon: EIconName.ArrowLongRight, link: Paths.Redeems }}
     >
       <div className="RecentRedeemsTable-wrapper">
         <Table useCardResponsive={false} columns={columns} dataSources={redeemsState?.content || []} />

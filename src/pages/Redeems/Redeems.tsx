@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from '@reach/router';
 
 import Card from '@/components/Card';
 import Select, { TSelectOption } from '@/components/Select';
@@ -21,9 +22,10 @@ import Avatar from '@/components/Avatar';
 import Status from '@/components/Status';
 import ModalRedeemsForm from './ModalRedeemsForm';
 import ModalDeleteRedeem from './ModalRedeemsDelete';
+import Tags from '@/components/Tags';
+import { Paths } from '@/pages/routers';
 
 import './Redeems.scss';
-import Tags from '@/components/Tags';
 
 const Redeems: React.FC = () => {
   const dispatch = useDispatch();
@@ -112,7 +114,11 @@ const Redeems: React.FC = () => {
       render: (_: string, record: TRedeem): React.ReactElement => {
         return (
           <div className="Table-info">
-            <div className="Table-info-title">{record?.player_profile?.name || EEmpty.DASH}</div>
+            <Link to={Paths.PlayerDetail(String(record?.player_profile?.id))} className="Table-info-title">
+              {record?.player_profile?.name || EEmpty.DASH}
+            </Link>
+            <div className="Table-info-description">{record?.player_profile?.address || EEmpty.DASH}</div>
+
             {record?.player_profile?.mobile ? (
               <a
                 href={`tel: ${record?.player_profile?.mobile}`}
@@ -124,7 +130,6 @@ const Redeems: React.FC = () => {
             ) : (
               <div className="Table-info-description">{EEmpty.DASH}</div>
             )}
-            <div className="Table-info-description">{record?.player_profile?.address || EEmpty.DASH}</div>
           </div>
         );
       },

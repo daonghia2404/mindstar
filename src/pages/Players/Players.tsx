@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { navigate } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataAuditingStatusOptions } from '@/common/constants';
 import { EAuditingStatus, EEmpty, EFormat } from '@/common/enums';
@@ -156,7 +156,9 @@ const Players: React.FC = () => {
       render: (_: string, record: TUser): React.ReactElement => {
         return (
           <div className="Table-info">
-            <div className="Table-info-title">{record?.name || EEmpty.DASH}</div>
+            <Link to={Paths.PlayerDetail(String(record?.id))} className="Table-info-title">
+              {record?.name || EEmpty.DASH}
+            </Link>
             <div className="Table-info-description">
               {record?.date_of_birth
                 ? formatISODateToDateTime(record.date_of_birth, EFormat['DD/MM/YYYY'])

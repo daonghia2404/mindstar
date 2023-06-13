@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import moment, { Moment } from 'moment';
+import { Link } from '@reach/router';
 
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataTypeCheckInOptions } from '@/common/constants';
 import { EEmpty, EFormat, ETypeCheckIn } from '@/common/enums';
@@ -21,6 +22,7 @@ import Select, { TSelectOption } from '@/components/Select';
 import { useOptionsPaginate } from '@/utils/hooks';
 import ModalCheckIns from '@/pages/Attendances/ModalCheckIns';
 import Status from '@/components/Status';
+import { Paths } from '@/pages/routers';
 
 import { TAttendanceProps } from './Attendances.types';
 import './Attendances.scss';
@@ -103,9 +105,12 @@ const Attendances: React.FC<TAttendanceProps> = ({ managers }) => {
       render: (_: string, record: TAttendance): React.ReactElement => {
         return (
           <div className="Table-info">
-            <div className="Table-info-title">
+            <Link
+              to={managers ? Paths.ManagerDetail(String(record.manager_profile?.id)) : String(record?.player?.id)}
+              className="Table-info-title"
+            >
               {record?.manager_profile?.name || record?.player?.name || EEmpty.DASH}
-            </div>
+            </Link>
             <div className="Table-info-description">
               {record?.manager_profile?.date_of_birth || record?.player?.date_of_birth
                 ? formatISODateToDateTime(

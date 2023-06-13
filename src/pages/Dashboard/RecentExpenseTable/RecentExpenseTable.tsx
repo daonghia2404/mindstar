@@ -8,6 +8,7 @@ import { EEmpty, EFormat } from '@/common/enums';
 import { formatCurrency, formatISODateToDateTime } from '@/utils/functions';
 import { TRootState } from '@/redux/reducers';
 import { TExpense } from '@/common/models';
+import { Paths } from '@/pages/routers';
 
 import { TRecentExpenseTableProps } from './RecentExpenseTable.types';
 import './RecentExpenseTable.scss';
@@ -48,7 +49,7 @@ const RecentExpenseTable: React.FC<TRecentExpenseTableProps> = () => {
     <Card
       className="RecentExpenseTable"
       title="Chi phí gần đây"
-      suffixLink={{ icon: EIconName.ArrowLongRight, link: '#' }}
+      suffixLink={{ icon: EIconName.ArrowLongRight, link: Paths.Expenses }}
     >
       <div className="RecentExpenseTable-wrapper">
         <Table useCardResponsive={false} columns={columns} dataSources={expensesState?.content || []} />

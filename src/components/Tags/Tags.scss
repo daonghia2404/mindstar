@@ -28,6 +28,7 @@
 
     span {
       text-align: left;
+      line-height: 1.6;
       @include ellipsis(1);
     }
 

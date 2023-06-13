@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
+import { navigate } from '@reach/router';
 
 import DashboardStaticCard from '@/pages/Dashboard/DashboardStaticCard';
 import WeeklySchedule from '@/pages/Dashboard/WeeklySchedule';
@@ -23,6 +24,7 @@ import {
 import { EEmpty } from '@/common/enums';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
 import { beautifyCurrency } from '@/utils/functions';
+import { Paths } from '@/pages/routers';
 
 import './Dashboard.scss';
 
@@ -170,6 +172,9 @@ const Dashboard: React.FC = () => {
                   title="Doanh thu (đ)"
                   value={beautifyCurrency(transactionsState?.sub_total || EEmpty.ZERO)}
                   icon={EIconName.PigMoney}
+                  onClick={(): void => {
+                    navigate(Paths.Revenues);
+                  }}
                 />
               </Col>
               <Col span={12} md={{ span: 8 }} lg={{ span: 8 }} xl={{ span: 4 }}>
@@ -177,6 +182,9 @@ const Dashboard: React.FC = () => {
                   title="Chi phí (đ)"
                   value={beautifyCurrency(expensesState?.sub_total || EEmpty.ZERO)}
                   icon={EIconName.Coins}
+                  onClick={(): void => {
+                    navigate(Paths.Expenses);
+                  }}
                 />
               </Col>
               <Col span={12} md={{ span: 8 }} lg={{ span: 8 }} xl={{ span: 4 }}>
@@ -184,6 +192,9 @@ const Dashboard: React.FC = () => {
                   title="Lớp học"
                   value={dashboardState?.class_count || EEmpty.ZERO}
                   icon={EIconName.ChalkBoard}
+                  onClick={(): void => {
+                    navigate(Paths.Classes);
+                  }}
                 />
               </Col>
               <Col span={12} md={{ span: 8 }} lg={{ span: 8 }} xl={{ span: 4 }}>
@@ -191,6 +202,9 @@ const Dashboard: React.FC = () => {
                   title="Đơn hàng"
                   value={dashboardState?.order_count || EEmpty.ZERO}
                   icon={EIconName.Receipt}
+                  onClick={(): void => {
+                    navigate(Paths.Orders);
+                  }}
                 />
               </Col>
               <Col span={12} md={{ span: 8 }} lg={{ span: 8 }} xl={{ span: 4 }}>
@@ -198,6 +212,9 @@ const Dashboard: React.FC = () => {
                   title="Học viên"
                   value={dashboardState?.player_count || EEmpty.ZERO}
                   icon={EIconName.UsersGroup}
+                  onClick={(): void => {
+                    navigate(Paths.Players);
+                  }}
                 />
               </Col>
               <Col span={12} md={{ span: 8 }} lg={{ span: 8 }} xl={{ span: 4 }}>
@@ -205,6 +222,9 @@ const Dashboard: React.FC = () => {
                   title="Học thử miễn phí"
                   value={dashboardState?.free_trial_count || EEmpty.ZERO}
                   icon={EIconName.Rocket}
+                  onClick={(): void => {
+                    navigate(Paths.Practices);
+                  }}
                 />
               </Col>
             </Row>

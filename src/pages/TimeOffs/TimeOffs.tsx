@@ -2,7 +2,7 @@ import { Col, Row } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import moment, { Moment } from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import { navigate } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 
 import Card from '@/components/Card';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
@@ -22,12 +22,12 @@ import { TGetTimeOffsParams } from '@/services/api';
 import Tags from '@/components/Tags';
 import { Paths } from '@/pages/routers';
 import ModalDeleteTimeOff from '@/pages/TimeOffs/ModalDeleteTimeOff';
-
-import './TimeOffs.scss';
 import { useOptionsPaginate } from '@/utils/hooks';
 import MultipleSelect from '@/components/MultipleSelect';
 import { TSelectOption } from '@/components/Select';
 import DatePicker from '@/components/DatePicker';
+
+import './TimeOffs.scss';
 
 const TimeOffs: React.FC = () => {
   const dispatch = useDispatch();
@@ -116,7 +116,9 @@ const TimeOffs: React.FC = () => {
       className: 'limit-width',
       render: (_: string, record: TTimeOff): React.ReactElement => (
         <div className="Table-info">
-          <div className="Table-info-title">{record?.player?.name}</div>
+          <Link to={Paths.PlayerDetail(String(record?.player?.id))} className="Table-info-title">
+            {record?.player?.name}
+          </Link>
           {record?.player?.mobile ? (
             <a href={`tel: ${record?.player?.mobile}`} className="Table-link">
               {record?.player?.mobile}

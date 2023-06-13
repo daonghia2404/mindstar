@@ -168,6 +168,7 @@ const Users: React.FC = () => {
       title: 'Vai trò',
       sorter: true,
       keySort: 'user_type',
+      className: 'limit-width',
       render: (_: string, record: TUser): React.ReactElement => {
         const status = dataUserTypeOptions.find((item) => item.value === record.user_type);
         return status ? (

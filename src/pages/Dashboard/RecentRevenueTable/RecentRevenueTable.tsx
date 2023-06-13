@@ -8,6 +8,7 @@ import { TRootState } from '@/redux/reducers';
 import { TTransaction } from '@/common/models';
 import { EEmpty, EFormat } from '@/common/enums';
 import { formatCurrency, formatISODateToDateTime } from '@/utils/functions';
+import { Paths } from '@/pages/routers';
 
 import { TRecentRevenueTableProps } from './RecentRevenueTable.types';
 import './RecentRevenueTable.scss';
@@ -48,7 +49,7 @@ const RecentRevenueTable: React.FC<TRecentRevenueTableProps> = () => {
     <Card
       className="RecentRevenueTable"
       title="Doanh thu gần đây"
-      suffixLink={{ icon: EIconName.ArrowLongRight, link: '#' }}
+      suffixLink={{ icon: EIconName.ArrowLongRight, link: Paths.Revenues }}
     >
       <div className="RecentRevenueTable-wrapper">
         <Table useCardResponsive={false} columns={columns} dataSources={transactionsState?.content || []} />

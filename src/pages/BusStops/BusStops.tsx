@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
+import { Link } from '@reach/router';
 
 import { Col, Row } from 'antd';
 import Input from '@/components/Input';
@@ -27,6 +28,7 @@ import ModalBusStopForm from '@/pages/BusStops/ModalBusStopForm';
 import ModalBusStopPlayerForm from '@/pages/BusStops/ModalBusStopPlayerForm';
 import ModalDeleteBusStopPlayer from '@/pages/BusStops/ModalDeleteBusStopPlayer';
 import Tags from '@/components/Tags';
+import { Paths } from '@/pages/routers';
 
 import './BusStops.scss';
 
@@ -196,7 +198,9 @@ const BusStops: React.FC = () => {
       className: 'limit-width',
       render: (_: string, record: TBusStopPlayer): React.ReactElement => (
         <div className="Table-info">
-          <div className="Table-info-title">{record?.player?.name || EEmpty.DASH}</div>
+          <Link to={Paths.PlayerDetail(String(record?.player?.id))} className="Table-info-title">
+            {record?.player?.name || EEmpty.DASH}
+          </Link>
           <div className="Table-info-description">{record?.player?.address || EEmpty.DASH}</div>
           {record?.player?.mobile ? (
             <a

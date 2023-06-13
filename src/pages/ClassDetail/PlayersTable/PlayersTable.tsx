@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { navigate, useParams } from '@reach/router';
+import { Link, useParams } from '@reach/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { TPlayersTableProps } from './PlayersTable.types';
 import Table from '@/components/Table';
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataDegreeTypeOptions } from '@/common/constants';
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
 import { EEmpty, EFormat } from '@/common/enums';
 import { TUser } from '@/common/models';
 import { Paths } from '@/pages/routers';
@@ -13,6 +12,8 @@ import Avatar from '@/components/Avatar';
 import { EGetPlayersAction, getPlayersAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
 import { TGetPlayersParams } from '@/services/api';
+
+import { TPlayersTableProps } from './PlayersTable.types';
 
 const PlayersTable: React.FC<TPlayersTableProps> = () => {
   const { id } = useParams();
@@ -55,23 +56,19 @@ const PlayersTable: React.FC<TPlayersTableProps> = () => {
       className: 'limit-width',
       width: 180,
       render: (_: string, record: TUser): React.ReactElement => {
-        const dergeeType = dataDegreeTypeOptions.find((item) => item.value === record.degree_type);
         return (
           <div className="Table-info">
-            <div className="Table-info-title">{record?.name || EEmpty.DASH}</div>
-            <div className="Table-info-description" style={{ color: dergeeType?.data?.color }}>
-              {dergeeType?.label}
+            <Link to={Paths.PlayerDetail(String(record?.id))} className="Table-info-title">
+              {record?.name || EEmpty.DASH}
+            </Link>
+            <div className="Table-info-description">
+              {record?.date_of_birth
+                ? formatISODateToDateTime(record.date_of_birth, EFormat['DD/MM/YYYY'])
+                : EEmpty.DASH}
             </div>
           </div>
         );
       },
-    },
-    {
-      key: 'date_of_birth',
-      dataIndex: 'date_of_birth',
-      title: 'Ngày Sinh',
-      render: (_: string, record: TUser): string =>
-        record?.date_of_birth ? formatISODateToDateTime(record.date_of_birth, EFormat['DD/MM/YYYY']) : EEmpty.DASH,
     },
     {
       key: 'address',
@@ -113,11 +110,6 @@ const PlayersTable: React.FC<TPlayersTableProps> = () => {
         total={playersState?.total_elements}
         loading={getPlayersLoading}
         onPaginationChange={handlePaginationChange}
-        onRow={(record: TUser): any => ({
-          onClick: (): void => {
-            navigate(Paths.PlayerDetail(String(record.id)));
-          },
-        })}
       />
     </div>
   );

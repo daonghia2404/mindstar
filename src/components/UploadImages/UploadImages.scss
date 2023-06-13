@@ -17,7 +17,6 @@
   &-placeholder {
     width: 9rem;
     height: 9rem;
-    border-radius: .8rem;
     overflow: hidden;
     border: 1px solid $silver-chalice;
     transition: $common-transition;
@@ -69,6 +68,7 @@
 
   &-placeholder {
     display: flex;
+    border-style: dashed;
 
     &:hover {
       .Icon svg {

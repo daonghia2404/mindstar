@@ -22,9 +22,9 @@ import ModalRevenueForm from '@/pages/Expenses/ModalExpenseForm';
 import Select from '@/components/Select';
 import DatePicker from '@/components/DatePicker';
 import Tags from '@/components/Tags';
+import { useOptionsPaginate } from '@/utils/hooks';
 
 import './Expenses.scss';
-import { useOptionsPaginate } from '@/utils/hooks';
 
 const Expenses: React.FC = () => {
   const dispatch = useDispatch();

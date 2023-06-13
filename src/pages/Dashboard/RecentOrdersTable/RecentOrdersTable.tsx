@@ -13,6 +13,7 @@ import { dataOrderStatusOptions, dataPaymentTypeOptions } from '@/common/constan
 
 import { TRecentOrdersTableProps } from './RecentOrdersTable.types';
 import './RecentOrdersTable.scss';
+import { Paths } from '@/pages/routers';
 
 const RecentOrdersTable: React.FC<TRecentOrdersTableProps> = () => {
   const ordersState = useSelector((state: TRootState) => state.orderReducer.getOrdersResponse)?.data;
@@ -35,9 +36,13 @@ const RecentOrdersTable: React.FC<TRecentOrdersTableProps> = () => {
       title: '',
       render: (_: string, record: TOrder): React.ReactElement => (
         <div className="Table-info">
-          <div className="Table-info-title">{record?.product_name || EEmpty.DASH}</div>
+          <div className="Table-info-title">
+            {record?.items?.map((item) => `${item.product_name || EEmpty.DASH} x ${item.quantity}`)?.join(', ') ||
+              EEmpty.DASH}
+          </div>
           <div className="Table-info-description">
-            {record?.customer_info?.name || EEmpty.DASH} - {record?.customer_info?.mobile || EEmpty.DASH}
+            {record?.customer_info?.player_name || record?.customer_info?.name || EEmpty.DASH} -{' '}
+            {record?.customer_info?.mobile || EEmpty.DASH}
           </div>
           <div className="Table-info-description">
             {formatISODateToDateTime(record.create_date, EFormat['DD/MM/YYYY - HH:mm'])}
@@ -73,7 +78,7 @@ const RecentOrdersTable: React.FC<TRecentOrdersTableProps> = () => {
     <Card
       className="RecentOrdersTable"
       title="Đơn hàng gần đây"
-      suffixLink={{ icon: EIconName.ArrowLongRight, link: '#' }}
+      suffixLink={{ icon: EIconName.ArrowLongRight, link: Paths.Orders }}
     >
       <div className="RecentOrdersTable-wrapper">
         <Table useCardResponsive={false} columns={columns} dataSources={ordersState?.content || []} />

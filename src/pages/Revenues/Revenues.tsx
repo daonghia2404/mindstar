@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import moment, { Moment } from 'moment';
+import { Link } from '@reach/router';
 
 import {
   DEFAULT_PAGE,
@@ -27,6 +28,7 @@ import ModalRevenueForm from '@/pages/Revenues/ModalRevenueForm';
 import Select from '@/components/Select';
 import DatePicker from '@/components/DatePicker';
 import Tags from '@/components/Tags';
+import { Paths } from '@/pages/routers';
 
 import './Revenues.scss';
 
@@ -116,7 +118,14 @@ const Revenues: React.FC = () => {
       render: (_: string, record: TTransaction): React.ReactElement => {
         return (
           <div className="Table-info">
-            <div className="Table-info-title">{record?.title || record?.buyer?.name || EEmpty.DASH}</div>
+            {record?.buyer?.id ? (
+              <Link to={Paths.PlayerDetail(String(record?.buyer?.id))} className="Table-info-title">
+                {record?.buyer?.name || EEmpty.DASH}
+              </Link>
+            ) : (
+              <div className="Table-info-title">{record?.buyer?.name || EEmpty.DASH}</div>
+            )}
+            {record?.title && <div className="Table-info-title">{record?.title || EEmpty.DASH}</div>}
             {!record.title && <div className="Table-info-description">{record?.buyer_class?.name || EEmpty.DASH}</div>}
           </div>
         );

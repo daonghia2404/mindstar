@@ -1,5 +1,5 @@
 import React from 'react';
-import { navigate } from '@reach/router';
+import { Link } from '@reach/router';
 import { useSelector } from 'react-redux';
 
 import { TManagersTableProps } from './ManagersTable.types';
@@ -38,7 +38,9 @@ const ManagersTable: React.FC<TManagersTableProps> = ({ dataSources = [] }) => {
         const dergeeType = dataDegreeTypeOptions.find((item) => item.value === record.degree_type);
         return (
           <div className="Table-info">
-            <div className="Table-info-title">{record?.name || EEmpty.DASH}</div>
+            <Link to={Paths.ManagerDetail(String(record?.id))} className="Table-info-title">
+              {record?.name || EEmpty.DASH}
+            </Link>
             <div className="Table-info-description" style={{ color: dergeeType?.data?.color }}>
               {dergeeType?.label}
             </div>
@@ -77,17 +79,7 @@ const ManagersTable: React.FC<TManagersTableProps> = ({ dataSources = [] }) => {
 
   return (
     <div className="ManagersTable">
-      <Table
-        loading={getClassLoading}
-        columns={columns}
-        dataSources={dataSources}
-        scroll={{ y: 73 * 4 }}
-        onRow={(record: TUser): any => ({
-          onClick: (): void => {
-            navigate(Paths.ManagerDetail(String(record.id)));
-          },
-        })}
-      />
+      <Table loading={getClassLoading} columns={columns} dataSources={dataSources} scroll={{ y: 73 * 4 }} />
     </div>
   );
 };

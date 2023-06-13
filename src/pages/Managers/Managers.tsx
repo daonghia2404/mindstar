@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { navigate } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataDegreeTypeOptions } from '@/common/constants';
 import { EEmpty, EFormat, EUserType } from '@/common/enums';
@@ -127,7 +127,9 @@ const Managers: React.FC = () => {
         const dergeeType = dataDegreeTypeOptions.find((item) => item.value === record.degree_type);
         return (
           <div className="Table-info">
-            <div className="Table-info-title">{record?.name || EEmpty.DASH}</div>
+            <Link to={Paths.ManagerDetail(String(record?.id))} className="Table-info-title">
+              {record?.name || EEmpty.DASH}
+            </Link>
             <div className="Table-info-description" style={{ color: dergeeType?.data?.color }}>
               {dergeeType?.label}
             </div>

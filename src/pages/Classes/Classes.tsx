@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { navigate } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -116,7 +116,9 @@ const Classes: React.FC = () => {
       render: (_: string, record: TClass): React.ReactElement => {
         return (
           <div className="Table-info">
-            <div className="Table-info-title">{record?.name || EEmpty.DASH}</div>
+            <Link to={Paths.ClassDetail(String(record?.id))} className="Table-info-title">
+              {record?.name || EEmpty.DASH}
+            </Link>
             <div className="Table-info-description">{record?.number_of_players || EEmpty.ZERO} học viên</div>
           </div>
         );

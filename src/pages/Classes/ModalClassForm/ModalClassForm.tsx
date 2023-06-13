@@ -19,7 +19,7 @@ import {
   updateClassAction,
 } from '@/redux/actions';
 import { formatISODateToDateTime, showNotification, validationRules } from '@/utils/functions';
-import { EFormat, ETypeNotification, EUserType } from '@/common/enums';
+import { EAuditingStatus, EFormat, ETypeNotification, EUserType } from '@/common/enums';
 import TextArea from '@/components/TextArea';
 import MultipleSelect from '@/components/MultipleSelect';
 import { useOptionsPaginate } from '@/utils/hooks';
@@ -28,6 +28,7 @@ import { dataWorkingTimesDefault } from '@/components/WorkingTimes/WorkingTimes.
 
 import { TModalClassFormProps } from './ModalClassForm.type';
 import './ModalClassForm.scss';
+import Switch from '@/components/Switch';
 
 const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose, onSuccess }) => {
   const dispatch = useDispatch();
@@ -114,6 +115,7 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
         description: values?.description || '',
         course_fee: values?.membershipFee,
         schedules: parseScheduleManagerId,
+        auditing_status: !data || values?.status ? EAuditingStatus.ACTIVE : EAuditingStatus.INACTIVE,
       };
 
       if (data) {
@@ -155,6 +157,7 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
             }),
           membershipFee: data?.course_fee,
           managers: data?.managers?.map((item) => ({ label: item.name, value: String(item.id) })),
+          status: Boolean(data?.auditing_status),
         });
       } else {
         form.setFieldsValue({
@@ -231,6 +234,13 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
                 <TextArea label="Mô tả" placeholder="Nhập dữ liệu" active />
               </Form.Item>
             </Col>
+            {data && (
+              <Col span={24}>
+                <Form.Item name="status">
+                  <Switch label="Trạng thái" />
+                </Form.Item>
+              </Col>
+            )}
           </Row>
         </Form>
       </div>
