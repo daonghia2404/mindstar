@@ -5,12 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import Modal from '@/components/Modal';
 import { EButtonStyleType } from '@/components/Button';
 import { EEmpty, ETypeNotification } from '@/common/enums';
-
-import { TModalResetPasswordProps } from './ModalResetPassword.type';
-import './ModalResetPassword.scss';
 import { EResetPasswordAction, resetPasswordAction } from '@/redux/actions';
 import { showNotification } from '@/utils/functions';
 import { TRootState } from '@/redux/reducers';
+
+import { TModalResetPasswordProps } from './ModalResetPassword.type';
+import './ModalResetPassword.scss';
 
 const ModalResetPassword: React.FC<TModalResetPasswordProps> = ({ visible, data, onClose }) => {
   const dispatch = useDispatch();

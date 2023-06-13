@@ -22,9 +22,9 @@ import { TBranch } from '@/common/models';
 import { getFullUrlStatics } from '@/utils/functions';
 import Tags from '@/components/Tags';
 import { Paths } from '@/pages/routers';
+import Select, { TSelectOption } from '@/components/Select';
 
 import './Branches.scss';
-import Select, { TSelectOption } from '@/components/Select';
 
 const Branches: React.FC = () => {
   const dispatch = useDispatch();

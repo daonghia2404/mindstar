@@ -13,9 +13,9 @@ import { copyText, getFullUrlStatics } from '@/utils/functions';
 import { dataAcademySizeOptions } from '@/common/constants';
 import { TAcademy } from '@/common/models';
 import Tooltip from '@/components/Tooltip';
+import ModalAcademyForm from '@/pages/SettingsGeneral/ModalAcademyForm';
 
 import './SettingsGeneral.scss';
-import ModalAcademyForm from '@/pages/SettingsGeneral/ModalAcademyForm';
 
 const SettingsGeneral: React.FC = () => {
   const dispatch = useDispatch();

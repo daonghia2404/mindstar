@@ -13,9 +13,9 @@ import Avatar from '@/components/Avatar';
 import { ELoginAction, getMyProfileAction, loginAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
 import Helpers from '@/services/helpers';
+import { ETypeNotification } from '@/common/enums';
 
 import './Login.scss';
-import { ETypeNotification } from '@/common/enums';
 
 const Login: React.FC = () => {
   const [form] = Form.useForm();

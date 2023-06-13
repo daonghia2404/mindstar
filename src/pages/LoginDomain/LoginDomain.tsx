@@ -7,10 +7,10 @@ import { LayoutPaths, Paths } from '@/pages/routers';
 import Button, { EButtonStyleType } from '@/components/Button';
 import { validationRules } from '@/utils/functions';
 import Input from '@/components/Input';
-
-import './LoginDomain.scss';
 import Tooltip from '@/components/Tooltip';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
+
+import './LoginDomain.scss';
 
 const LoginDomain: React.FC = () => {
   const [form] = Form.useForm();

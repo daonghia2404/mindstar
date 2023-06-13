@@ -8,10 +8,10 @@ import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataTablePerPageOptions } from '@/comm
 import Pagination from '@/components/Pagination';
 import Empty from '@/components/Empty';
 import Card from '@/components/Card';
+import Loading from '@/components/Loading';
 
 import { TTableProps } from './Table.types';
 import './Table.scss';
-import Loading from '@/components/Loading';
 
 const Table: React.FC<TTableProps> = ({
   className,

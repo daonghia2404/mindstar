@@ -11,11 +11,11 @@ import DropdownCustom from '@/components/DropdownCustom';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import Empty from '@/components/Empty';
 import { TSelectOption } from '@/components/Select';
+import Avatar from '@/components/Avatar';
+import Checkbox from '@/components/Checkbox';
 
 import { TMultipleSelectProps } from './MultipleSelect.types';
 import './MultipleSelect.scss';
-import Avatar from '@/components/Avatar';
-import Checkbox from '@/components/Checkbox';
 
 const MultipleSelect: React.FC<TMultipleSelectProps> = ({
   disabled,

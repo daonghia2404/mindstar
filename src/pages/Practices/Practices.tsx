@@ -21,9 +21,9 @@ import Tags from '@/components/Tags';
 import ModalDeletePractices from '@/pages/Practices/ModalDeletePractices';
 import ModalPlayerForm from '@/pages/Players/ModalPlayerForm';
 import { Paths } from '@/pages/routers';
+import ModalPracticeForm from '@/pages/Practices/ModalPracticeForm';
 
 import './Practices.scss';
-import ModalPracticeForm from '@/pages/Practices/ModalPracticeForm';
 
 const Practices: React.FC = () => {
   const dispatch = useDispatch();

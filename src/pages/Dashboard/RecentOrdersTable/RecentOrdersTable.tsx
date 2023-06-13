@@ -10,10 +10,10 @@ import { TOrder } from '@/common/models';
 import { formatCurrency, formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
 import { EEmpty, EFormat } from '@/common/enums';
 import { dataOrderStatusOptions, dataPaymentTypeOptions } from '@/common/constants';
+import { Paths } from '@/pages/routers';
 
 import { TRecentOrdersTableProps } from './RecentOrdersTable.types';
 import './RecentOrdersTable.scss';
-import { Paths } from '@/pages/routers';
 
 const RecentOrdersTable: React.FC<TRecentOrdersTableProps> = () => {
   const ordersState = useSelector((state: TRootState) => state.orderReducer.getOrdersResponse)?.data;

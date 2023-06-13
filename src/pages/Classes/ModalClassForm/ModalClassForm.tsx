@@ -25,10 +25,10 @@ import MultipleSelect from '@/components/MultipleSelect';
 import { useOptionsPaginate } from '@/utils/hooks';
 import WorkingTimes, { TWorkTime } from '@/components/WorkingTimes';
 import { dataWorkingTimesDefault } from '@/components/WorkingTimes/WorkingTimes.data';
+import Switch from '@/components/Switch';
 
 import { TModalClassFormProps } from './ModalClassForm.type';
 import './ModalClassForm.scss';
-import Switch from '@/components/Switch';
 
 const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose, onSuccess }) => {
   const dispatch = useDispatch();

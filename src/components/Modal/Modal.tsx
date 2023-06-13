@@ -4,9 +4,9 @@ import classNames from 'classnames';
 
 import { TModalProps } from '@/components/Modal/Modal.types';
 import Button, { EButtonStyleType } from '@/components/Button';
+import Icon, { EIconColor, EIconName } from '@/components/Icon';
 
 import './Modal.scss';
-import Icon, { EIconColor, EIconName } from '@/components/Icon';
 
 const Modal: React.FC<TModalProps> = ({
   visible,

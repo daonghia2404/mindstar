@@ -22,9 +22,9 @@ import ModalRewardForm from '@/pages/Rewards/ModalRewardForm';
 import Avatar from '@/components/Avatar';
 import Status from '@/components/Status';
 import Select from '@/components/Select';
+import Tags from '@/components/Tags';
 
 import './Rewards.scss';
-import Tags from '@/components/Tags';
 
 const Rewards: React.FC = () => {
   const dispatch = useDispatch();

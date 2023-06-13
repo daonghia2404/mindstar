@@ -11,10 +11,10 @@ import { TRootState } from '@/redux/reducers';
 import { getFullUrlStatics } from '@/utils/functions';
 import MainBranchSelect from '@/containers/Header/MainBranchSelect';
 import ImageMenuBar from '@/assets/images/image-menu-bar.png';
+import { TSideBarData } from '@/containers/SideBar';
 
 import { THeaderProps } from './Header.types.d';
 import './Header.scss';
-import { TSideBarData } from '@/containers/SideBar';
 
 const Header: React.FC<THeaderProps> = ({ onOpenMenu }) => {
   const { pathname } = useLocation();
