@@ -191,3 +191,8 @@ export enum EResetType {
   TRANSACTION = 3,
   NOTIFICATION = 4,
 }
+
+export enum EPricingModelType {
+  BASE_COURES = 1,
+  MONTHLY = 2,
+}

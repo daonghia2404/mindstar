@@ -329,7 +329,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     id: '8',
     title: 'Cài đặt',
     icon: EIconName.Settings,
-    activePaths: [Paths.SettingsGeneral, Paths.Users],
+    activePaths: [Paths.SettingsGeneral, Paths.Users, Paths.PricingModel],
     children: [
       {
         id: '8-1',
@@ -340,10 +340,60 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
       },
       {
         id: '8-2',
-        title: 'Dữ liệu cấu hình',
+        title: 'Dữ liệu',
         icon: EIconName.Database,
-        link: Paths.Dashboard,
-        activePaths: [],
+        activePaths: [Paths.PricingModel],
+        children: [
+          {
+            id: '8-2-1',
+            title: 'Mẫu định giá',
+            icon: EIconName.Coins,
+            link: Paths.PricingModel,
+            activePaths: [Paths.PricingModel],
+          },
+          {
+            id: '8-2-2',
+            title: 'Bộ hỗ trợ',
+            icon: EIconName.Briefcase,
+            link: Paths.Dashboard,
+            activePaths: [],
+          },
+          {
+            id: '8-2-3',
+            title: 'Điểm danh',
+            icon: EIconName.Checkbox,
+            link: Paths.Dashboard,
+            activePaths: [],
+          },
+          {
+            id: '8-2-4',
+            title: 'Lịch học',
+            icon: EIconName.Calendar,
+            link: Paths.Dashboard,
+            activePaths: [],
+          },
+          {
+            id: '8-2-5',
+            title: 'Điểm đón',
+            icon: EIconName.Map,
+            link: Paths.Dashboard,
+            activePaths: [],
+          },
+          {
+            id: '8-2-6',
+            title: 'Thanh toán',
+            icon: EIconName.CreditCard,
+            link: Paths.Dashboard,
+            activePaths: [],
+          },
+          {
+            id: '8-2-7',
+            title: 'Nhận điểm',
+            icon: EIconName.JewishStar,
+            link: Paths.Dashboard,
+            activePaths: [],
+          },
+        ],
       },
       {
         id: '8-3',

@@ -5,6 +5,7 @@ import {
   ELevel,
   EOrderStatus,
   EPaymentType,
+  EPricingModelType,
   ESalaryType,
   ETransactionStatus,
   ETransactionType,
@@ -198,4 +199,9 @@ export const dataTransactionTypeOptions = [
   { value: ETransactionType.GIFT_AND_CONTRIBUTIONS, label: 'Đóng góp & Quà tặng' },
   { value: ETransactionType.OTHER_SALES_AND_SERVICES, label: 'Dịch vụ & Bán hàng khác' },
   { value: ETransactionType.TOURNAMENT, label: 'Giải đấu' },
+];
+
+export const dataPricingModelOptions = [
+  { value: EPricingModelType.BASE_COURES, label: 'Theo Khoá Học' },
+  { value: EPricingModelType.MONTHLY, label: 'Theo Hàng Tháng' },
 ];

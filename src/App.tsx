@@ -70,6 +70,7 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.Orders} component={Pages.Orders} />
           <ProtectedRoute path={Paths.Connects} component={Pages.Connects} />
           <ProtectedRoute path={Paths.ConnectDetail()} component={Pages.ConnectDetail} />
+          <ProtectedRoute path={Paths.PricingModel} component={Pages.PricingModel} />
 
           <Redirect noThrow from={Paths.Rest} to={`${LayoutPaths.Admin}${Paths.Dashboard}`} />
         </Admin>

@@ -63,7 +63,9 @@ export enum EIconName {
   Lock = 'Lock',
   ArrowExchange = 'ArrowExchange',
   JewishStarFill = 'JewishStarFill',
+  JewishStar = 'JewishStar',
   RotateClockwise = 'RotateClockwise',
+  Briefcase = 'Briefcase',
 }
 
 export enum EIconColor {

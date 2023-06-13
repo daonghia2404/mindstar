@@ -69,6 +69,8 @@ import Lock from './Lock';
 import ArrowExchange from './ArrowExchange';
 import JewishStarFill from './JewishStarFill';
 import RotateClockwise from './RotateClockwise';
+import Briefcase from './Briefcase';
+import JewishStar from './JewishStar';
 
 const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
   const renderIcon = (): React.ReactElement => {
@@ -201,6 +203,10 @@ const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
         return <JewishStarFill color={color} />;
       case EIconName.RotateClockwise:
         return <RotateClockwise color={color} />;
+      case EIconName.Briefcase:
+        return <Briefcase color={color} />;
+      case EIconName.JewishStar:
+        return <JewishStar color={color} />;
 
       default:
         return <></>;

@@ -18,12 +18,12 @@ import Switch from '@/components/Switch';
 import { TGetMerchantFeedsParams } from '@/services/api';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
 import { TRootState } from '@/redux/reducers';
-
-import './ConnectDetail.scss';
 import { EAuditingStatus, EEmpty, EFormat } from '@/common/enums';
 import ModalChangeStatusMerchantFeed from '@/pages/ConnectDetail/ModalChangeStatusMerchantFeed';
 import Empty from '@/components/Empty';
 import Carousels from '@/components/Carousels';
+
+import './ConnectDetail.scss';
 
 const ConnectDetail: React.FC = () => {
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ const ConnectDetail: React.FC = () => {
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
     merchantId: id,
-    auditingStatus: `${EAuditingStatus.ACTIVE},${EAuditingStatus.INACTIVE}`,
+    auditingStatuses: `${EAuditingStatus.ACTIVE},${EAuditingStatus.INACTIVE}`,
   });
 
   const [modalChangeStatusMerchantFeedState, setModalChangeStatusMerchantFeedState] = useState<{
@@ -180,6 +180,7 @@ const ConnectDetail: React.FC = () => {
         <Col span={24} md={{ span: 12 }}>
           <Card title="Danh sách bài viết">
             <Table
+              useCardResponsive={false}
               loading={getMerchantFeedsLoading}
               columns={columns}
               dataSources={merchantFeedsState?.content || []}

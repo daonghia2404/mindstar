@@ -9,7 +9,7 @@ export type TGetMerchantsParams = {
   size: number;
   sort?: string;
   name?: string;
-  auditingStatus?: string;
+  auditingStatuses?: string;
 };
 
 export type TGetMerchantsMaterials = {
