@@ -1,6 +1,7 @@
 @import '@/assets/styles/_global.scss';
 
 .Card {
+  position: relative;
   background: $white;
   border-radius: 0.8rem;
 

@@ -71,6 +71,8 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.Connects} component={Pages.Connects} />
           <ProtectedRoute path={Paths.ConnectDetail()} component={Pages.ConnectDetail} />
           <ProtectedRoute path={Paths.PricingModel} component={Pages.PricingModel} />
+          <ProtectedRoute path={Paths.KitFeeDefination} component={Pages.KitFeeDefination} />
+          <ProtectedRoute path={Paths.AttendancePolicy} component={Pages.AttendancePolicy} />
 
           <Redirect noThrow from={Paths.Rest} to={`${LayoutPaths.Admin}${Paths.Dashboard}`} />
         </Admin>

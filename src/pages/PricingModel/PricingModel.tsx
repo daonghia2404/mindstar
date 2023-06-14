@@ -1,19 +1,21 @@
 import React, { useEffect } from 'react';
 import { Col, Form, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { navigate } from '@reach/router';
 
 import Button, { EButtonStyleType } from '@/components/Button';
-import { EIconColor, EIconName } from '@/components/Icon';
+import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import Card from '@/components/Card';
 import Select from '@/components/Select';
 import { dataPricingModelOptions } from '@/common/constants';
 import Input from '@/components/Input';
 import { showNotification, validationRules } from '@/utils/functions';
-
-import './PricingModel.scss';
 import { TRootState } from '@/redux/reducers';
 import { EUpdateSettingsAction, updateSettingsAction } from '@/redux/actions';
 import { ETypeNotification } from '@/common/enums';
+import { Paths } from '@/pages/routers';
+
+import './PricingModel.scss';
 
 const PricingModel: React.FC = () => {
   const dispatch = useDispatch();
@@ -24,6 +26,10 @@ const PricingModel: React.FC = () => {
     (state: TRootState) => state.loadingReducer[EUpdateSettingsAction.UPDATE_SETTINGS],
   );
   const [form] = Form.useForm();
+
+  const handleBack = (): void => {
+    navigate(Paths.SettingsGeneral);
+  };
 
   const handleSubmit = (values: any): void => {
     const body = {
@@ -58,21 +64,32 @@ const PricingModel: React.FC = () => {
   return (
     <Form form={form} className="PricingModel" onFinish={handleSubmit}>
       <Row gutter={[24, 24]}>
+        <Col span={24}>
+          <Row gutter={[16, 16]} justify="space-between" align="middle">
+            <Col>
+              <div className="Admin-back" onClick={handleBack}>
+                <Icon name={EIconName.ArrowLongLeft} color={EIconColor.DOVE_GRAY} />
+                Quay lại
+              </div>
+            </Col>
+            <Col>
+              <Row gutter={[16, 16]}>
+                <Col>
+                  <Button
+                    title="Lưu"
+                    htmlType="submit"
+                    styleType={EButtonStyleType.PURPLE}
+                    iconName={EIconName.DeviceFloppy}
+                    iconColor={EIconColor.WHITE}
+                    disabled={updateSettingsLoading}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Col>
         <Col span={24} md={{ span: 12 }}>
-          <Card
-            title="Cấu hình"
-            suffixTitle={
-              <Button
-                title="Lưu"
-                htmlType="submit"
-                size="small"
-                styleType={EButtonStyleType.PURPLE}
-                iconName={EIconName.DeviceFloppy}
-                iconColor={EIconColor.WHITE}
-                disabled={updateSettingsLoading}
-              />
-            }
-          >
+          <Card title="Cấu hình">
             <Row gutter={[16, 16]}>
               <Col span={24}>
                 <Form.Item name="pricingModel" rules={[validationRules.required()]}>

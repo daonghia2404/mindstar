@@ -570,7 +570,7 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({
                   </Col>
                   <Col span={24}>
                     <Form.Item name="kits">
-                      <CheckboxGroup label="Bộ hỗ trợ" options={kitFeeOptions} />
+                      <CheckboxGroup label="Combo KIT" options={kitFeeOptions} />
                     </Form.Item>
                   </Col>
                   <Col span={24}>

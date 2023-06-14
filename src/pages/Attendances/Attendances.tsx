@@ -106,7 +106,11 @@ const Attendances: React.FC<TAttendanceProps> = ({ managers }) => {
         return (
           <div className="Table-info">
             <Link
-              to={managers ? Paths.ManagerDetail(String(record.manager_profile?.id)) : String(record?.player?.id)}
+              to={
+                managers
+                  ? Paths.ManagerDetail(String(record.manager_profile?.id))
+                  : Paths.PlayerDetail(String(record?.player?.id))
+              }
               className="Table-info-title"
             >
               {record?.manager_profile?.name || record?.player?.name || EEmpty.DASH}

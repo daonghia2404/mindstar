@@ -53,6 +53,8 @@ const Orders = lazy(() => retryLoadComponent(() => import('@/pages/Orders')));
 const Connects = lazy(() => retryLoadComponent(() => import('@/pages/Connects')));
 const ConnectDetail = lazy(() => retryLoadComponent(() => import('@/pages/ConnectDetail')));
 const PricingModel = lazy(() => retryLoadComponent(() => import('@/pages/PricingModel')));
+const KitFeeDefination = lazy(() => retryLoadComponent(() => import('@/pages/KitFeeDefination')));
+const AttendancePolicy = lazy(() => retryLoadComponent(() => import('@/pages/AttendancePolicy')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -99,6 +101,8 @@ export const Paths = {
   Connects: '/connects',
   ConnectDetail: (id?: string): string => `/connects/${id || ':id'}`,
   PricingModel: '/settings/pricing-model',
+  KitFeeDefination: '/settings/kit-fee-defination',
+  AttendancePolicy: '/settings/attendance-policy',
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -138,6 +142,8 @@ export const Pages = {
   Connects,
   ConnectDetail,
   PricingModel,
+  KitFeeDefination,
+  AttendancePolicy,
 
   Login,
   LoginDomain,

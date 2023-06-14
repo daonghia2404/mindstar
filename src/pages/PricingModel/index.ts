@@ -1,3 +1,3 @@
-import ConnectDetail from './PricingModel';
+import PricingModel from './PricingModel';
 
-export default ConnectDetail;
+export default PricingModel;

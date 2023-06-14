@@ -1,3 +1,5 @@
+import { TSetting } from '@/common/models';
+import { TCommonResponse } from '@/common/types';
 import ApiService from '@/services/api';
 
 // TYPES
@@ -8,7 +10,9 @@ export type TUpdateSettingsMaterials = {
   body?: TUpdateSettingsBody;
 };
 
-export type TUpdateSettingsResponse = unknown;
+export type TUpdateSettingsResponse = TCommonResponse & {
+  data: TSetting;
+};
 
 // FUNCTION
 

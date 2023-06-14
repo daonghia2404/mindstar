@@ -12,6 +12,7 @@ import Loading from '@/components/Loading';
 
 import { TTableProps } from './Table.types';
 import './Table.scss';
+import { getTotalPage } from '@/utils/functions';
 
 const Table: React.FC<TTableProps> = ({
   className,
@@ -34,6 +35,7 @@ const Table: React.FC<TTableProps> = ({
   const [sorting, setSorting] = useState<string>();
   const isMobile = useMediaQuery({ query: '(max-width: 991px)' });
   const isEmpty = dataSources.length === 0;
+  const totalPage = getTotalPage(total || 0, pageSize || 0);
 
   const handleTableChange = (_: any, __: any, sorter: any): void => {
     if (sorter) {
@@ -113,7 +115,7 @@ const Table: React.FC<TTableProps> = ({
         </div>
       )}
 
-      {!!showPagination && !!pageSize && !!total && (
+      {totalPage > 1 && !!showPagination && !!pageSize && !!total && (
         <div className="Table-footer flex items-center justify-between">
           <div className="Table-footer-perpage flex items-center">
             <Select

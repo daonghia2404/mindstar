@@ -329,7 +329,13 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     id: '8',
     title: 'Cài đặt',
     icon: EIconName.Settings,
-    activePaths: [Paths.SettingsGeneral, Paths.Users, Paths.PricingModel],
+    activePaths: [
+      Paths.SettingsGeneral,
+      Paths.Users,
+      Paths.PricingModel,
+      Paths.KitFeeDefination,
+      Paths.AttendancePolicy,
+    ],
     children: [
       {
         id: '8-1',
@@ -340,30 +346,30 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
       },
       {
         id: '8-2',
-        title: 'Dữ liệu',
+        title: 'Cấu hình',
         icon: EIconName.Database,
-        activePaths: [Paths.PricingModel],
+        activePaths: [Paths.PricingModel, Paths.KitFeeDefination, Paths.AttendancePolicy],
         children: [
           {
             id: '8-2-1',
-            title: 'Mẫu định giá',
+            title: 'Chính sách giá',
             icon: EIconName.Coins,
             link: Paths.PricingModel,
             activePaths: [Paths.PricingModel],
           },
           {
             id: '8-2-2',
-            title: 'Bộ hỗ trợ',
+            title: 'Combo KIT',
             icon: EIconName.Briefcase,
-            link: Paths.Dashboard,
-            activePaths: [],
+            link: Paths.KitFeeDefination,
+            activePaths: [Paths.KitFeeDefination],
           },
           {
             id: '8-2-3',
             title: 'Điểm danh',
             icon: EIconName.Checkbox,
-            link: Paths.Dashboard,
-            activePaths: [],
+            link: Paths.AttendancePolicy,
+            activePaths: [Paths.AttendancePolicy],
           },
           {
             id: '8-2-4',
@@ -388,7 +394,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
           },
           {
             id: '8-2-7',
-            title: 'Nhận điểm',
+            title: 'Tích điểm',
             icon: EIconName.JewishStar,
             link: Paths.Dashboard,
             activePaths: [],

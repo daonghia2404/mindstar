@@ -8,7 +8,7 @@ import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import Table from '@/components/Table';
 import { TGetMerchantsParams } from '@/services/api';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataAuditingStatusOptions } from '@/common/constants';
-import { EEmpty } from '@/common/enums';
+import { EAuditingStatus, EEmpty } from '@/common/enums';
 import { TMerchant } from '@/common/models';
 import { TRootState } from '@/redux/reducers';
 import { EGetMerchantsAction, getMerchantsAction } from '@/redux/actions';
@@ -35,6 +35,7 @@ const Connects: React.FC = () => {
   const [getMerchantsParamsRequest, setGetMerchantsParamsRequest] = useState<TGetMerchantsParams>({
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
+    registrationStatuses: `${EAuditingStatus.ACTIVE}`,
   });
   const merchantsState = useSelector((state: TRootState) => state.merchantReducer.getMerchantsResponse)?.data;
 
