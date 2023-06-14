@@ -73,6 +73,8 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.PricingModel} component={Pages.PricingModel} />
           <ProtectedRoute path={Paths.KitFeeDefination} component={Pages.KitFeeDefination} />
           <ProtectedRoute path={Paths.AttendancePolicy} component={Pages.AttendancePolicy} />
+          <ProtectedRoute path={Paths.ScheduleMode} component={Pages.ScheduleMode} />
+          <ProtectedRoute path={Paths.TransportMode} component={Pages.TransportMode} />
 
           <Redirect noThrow from={Paths.Rest} to={`${LayoutPaths.Admin}${Paths.Dashboard}`} />
         </Admin>

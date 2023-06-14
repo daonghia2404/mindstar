@@ -110,7 +110,10 @@ export type TSetting = {
   point_settings: unknown;
   reactive_settings: unknown;
   reward_tiers: unknown;
-  schedule_settings: unknown;
+  schedule_settings: {
+    is_enable: boolean;
+    message?: string;
+  };
   transaction_settings: {
     fee_transaction_duration_in_days: number;
     fee_transaction_duration_in_units: number;
@@ -121,7 +124,10 @@ export type TSetting = {
     short_description_first_transaction_fee: string;
     short_description_first_uniform_fee: string;
   };
-  transport_settings: unknown;
+  transport_settings: {
+    branch_id: number;
+    is_enable: boolean;
+  }[];
 };
 
 export type TBranch = {

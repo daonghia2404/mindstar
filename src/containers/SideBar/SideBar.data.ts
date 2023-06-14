@@ -335,6 +335,8 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
       Paths.PricingModel,
       Paths.KitFeeDefination,
       Paths.AttendancePolicy,
+      Paths.ScheduleMode,
+      Paths.TransportMode,
     ],
     children: [
       {
@@ -348,7 +350,13 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         id: '8-2',
         title: 'Cấu hình',
         icon: EIconName.Database,
-        activePaths: [Paths.PricingModel, Paths.KitFeeDefination, Paths.AttendancePolicy],
+        activePaths: [
+          Paths.PricingModel,
+          Paths.KitFeeDefination,
+          Paths.AttendancePolicy,
+          Paths.ScheduleMode,
+          Paths.TransportMode,
+        ],
         children: [
           {
             id: '8-2-1',
@@ -375,15 +383,15 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
             id: '8-2-4',
             title: 'Lịch học',
             icon: EIconName.Calendar,
-            link: Paths.Dashboard,
-            activePaths: [],
+            link: Paths.ScheduleMode,
+            activePaths: [Paths.ScheduleMode],
           },
           {
             id: '8-2-5',
             title: 'Điểm đón',
             icon: EIconName.Map,
-            link: Paths.Dashboard,
-            activePaths: [],
+            link: Paths.TransportMode,
+            activePaths: [Paths.TransportMode],
           },
           {
             id: '8-2-6',
