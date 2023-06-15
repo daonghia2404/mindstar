@@ -10,7 +10,7 @@ import Select from '@/components/Select';
 import Input from '@/components/Input';
 import { getArrayFrom0To, showNotification, validationRules } from '@/utils/functions';
 import { TRootState } from '@/redux/reducers';
-import { EUpdateSettingsAction, updateSettingsAction } from '@/redux/actions';
+import { EUpdateSettingsAction, getSettingsAction, updateSettingsAction } from '@/redux/actions';
 import { ETypeNotification } from '@/common/enums';
 import { Paths } from '@/pages/routers';
 import Switch from '@/components/Switch';
@@ -33,6 +33,11 @@ const AttendancePolicy: React.FC = () => {
     value: String(item + 1),
   }));
 
+  const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
+  const getSettings = (): void => {
+    dispatch(getSettingsAction.request({ headers: { branchIds: currentBranchId } }));
+  };
+
   const handleBack = (): void => {
     navigate(Paths.SettingsGeneral);
   };
@@ -53,6 +58,7 @@ const AttendancePolicy: React.FC = () => {
   };
 
   const handleSubmitSuccess = (): void => {
+    getSettings();
     showNotification(ETypeNotification.SUCCESS, 'Cập nhật cấu hình thành công !');
   };
 
@@ -105,17 +111,17 @@ const AttendancePolicy: React.FC = () => {
           </Row>
         </Col>
         <Col span={24} md={{ span: 12 }}>
-          <Card title="Cấu hình">
+          <Card title="Thông số" description="Thiết lập cho phép các chế độ và lựa chọn số buổi trong một lần dạy học.">
             <Row gutter={[16, 16]}>
               <Col span={10}>
                 <Form.Item name="allowOwe">
-                  <Switch label="Cho phép điểm danh" />
+                  <Switch label="Cho phép học nợ" />
                 </Form.Item>
               </Col>
               <Col span={14}>
                 <Form.Item name="maxOwe" rules={formValues?.allowOwe ? [validationRules.required()] : undefined}>
                   <Input
-                    label="Số lần điểm danh tối đa"
+                    label="Số buổi học nợ tối đa"
                     active
                     numberic
                     useNumber

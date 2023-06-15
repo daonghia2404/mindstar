@@ -5,6 +5,7 @@ import {
   ELevel,
   EOrderStatus,
   EPaymentType,
+  EPointActionType,
   EPricingModelType,
   ESalaryType,
   ETransactionStatus,
@@ -20,7 +21,7 @@ import { ETagType } from '@/components/Tags';
 export const REGEX = {
   email:
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i,
-  url: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i,
+  url: /(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|((https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?)|(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?/g,
   domain: /^[a-zA-Z0-9](?:[a-zA-Z0-9-.]*[a-zA-Z0-9])?$/i,
   alphabetic: /^[a-z\s]+$/i,
   alphanumerial: /^[a-z0-9\s]+$/i,
@@ -204,4 +205,11 @@ export const dataTransactionTypeOptions = [
 export const dataPricingModelOptions = [
   { value: EPricingModelType.BASE_COURES, label: 'Theo Khoá Học' },
   { value: EPricingModelType.MONTHLY, label: 'Theo Hàng Tháng' },
+];
+
+export const dataPointActionOptions = [
+  { value: EPointActionType.ATTENDANCES, label: 'Điểm Danh' },
+  { value: EPointActionType.BIRTHDAY, label: 'Sinh Nhật' },
+  { value: EPointActionType.BUY_PRODUCT, label: 'Mua Sản Phẩm' },
+  { value: EPointActionType.REFERRALS, label: 'Mã Giới Thiệu' },
 ];

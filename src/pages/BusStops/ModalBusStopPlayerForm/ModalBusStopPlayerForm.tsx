@@ -54,6 +54,7 @@ const ModalBusStopPlayerForm: React.FC<TModalBusStopPlayerFormProps> = ({
       auditingStatuses: EAuditingStatus.ACTIVE,
     },
     { branchIds: dataBusStop?.branch_id || '' },
+    visible,
   );
 
   const handleSubmit = (): void => {

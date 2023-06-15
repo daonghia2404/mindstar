@@ -44,6 +44,9 @@ const ModalEventForm: React.FC<TModalEventFormProps> = ({ visible, data, onClose
     'getBranchesResponse',
     EGetBranchesAction.GET_BRANCHES,
     'branchName',
+    undefined,
+    undefined,
+    visible,
   );
 
   const {
@@ -59,6 +62,7 @@ const ModalEventForm: React.FC<TModalEventFormProps> = ({ visible, data, onClose
     undefined,
     {},
     { branchIds: formValues?.branch?.value || '' },
+    visible,
   );
 
   const createEventLoading = useSelector((state: TRootState) => state.loadingReducer[ECreateEventAction.CREATE_EVENT]);

@@ -8,7 +8,7 @@ import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import Card from '@/components/Card';
 import { showNotification } from '@/utils/functions';
 import { TRootState } from '@/redux/reducers';
-import { EUpdateSettingsAction, getBranchesAction, updateSettingsAction } from '@/redux/actions';
+import { EUpdateSettingsAction, getBranchesAction, getSettingsAction, updateSettingsAction } from '@/redux/actions';
 import { EAuditingStatus, ETypeNotification } from '@/common/enums';
 import { Paths } from '@/pages/routers';
 import Switch from '@/components/Switch';
@@ -24,7 +24,7 @@ const TransportMode: React.FC = () => {
   const updateSettingsLoading = useSelector(
     (state: TRootState) => state.loadingReducer[EUpdateSettingsAction.UPDATE_SETTINGS],
   );
-  const branchesState = useSelector((state: TRootState) => state.branchReducer.getBranchesResponse)?.data?.content;
+  const branchesState = useSelector((state: TRootState) => state.branchReducer.getBranchesResponse)?.data;
 
   const [form] = Form.useForm();
   const [formValues, setFormValues] = useState<any>({});
@@ -33,9 +33,14 @@ const TransportMode: React.FC = () => {
     navigate(Paths.SettingsGeneral);
   };
 
+  const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
+  const getSettings = (): void => {
+    dispatch(getSettingsAction.request({ headers: { branchIds: currentBranchId } }));
+  };
+
   const handleSubmit = (values: any): void => {
     const body = {
-      transport_settings: branchesState?.map((item) => ({
+      transport_settings: branchesState?.content?.map((item) => ({
         branch_id: item.id,
         is_enable: values[`branch_${item.id}`] || false,
       })),
@@ -45,22 +50,26 @@ const TransportMode: React.FC = () => {
   };
 
   const handleSubmitSuccess = (): void => {
+    getSettings();
     showNotification(ETypeNotification.SUCCESS, 'Cập nhật cấu hình thành công !');
   };
 
   const getBranches = useCallback(() => {
     dispatch(
-      getBranchesAction.request({ params: { page: DEFAULT_PAGE, size: 1 } }, (response): void => {
-        dispatch(
-          getBranchesAction.request({
-            params: {
-              page: DEFAULT_PAGE,
-              size: response?.data?.total_elements,
-              auditingStatuses: `${EAuditingStatus.ACTIVE}`,
-            },
-          }),
-        );
-      }),
+      getBranchesAction.request(
+        { params: { page: DEFAULT_PAGE, size: 1, auditingStatuses: `${EAuditingStatus.ACTIVE}` } },
+        (response): void => {
+          dispatch(
+            getBranchesAction.request({
+              params: {
+                page: DEFAULT_PAGE,
+                size: response?.data?.total_elements,
+                auditingStatuses: `${EAuditingStatus.ACTIVE}`,
+              },
+            }),
+          );
+        },
+      ),
     );
   }, [dispatch]);
 
@@ -115,15 +124,19 @@ const TransportMode: React.FC = () => {
           </Row>
         </Col>
         <Col span={24} md={{ span: 12 }}>
-          <Card title="Cấu hình">
+          <Card
+            title="Thông số"
+            description="Thiết lập chế độ dịch vụ điểm đón tại các chi nhánh (mặc định sẽ là OFF)."
+          >
             <Row gutter={[16, 16]}>
-              {branchesState?.map((item) => (
-                <Col span={24}>
-                  <Form.Item name={`branch_${item.id}`}>
-                    <Switch label={item.name} />
-                  </Form.Item>
-                </Col>
-              ))}
+              {branchesState?.total_elements === branchesState?.content?.length &&
+                branchesState?.content?.map((item) => (
+                  <Col key={item.id} span={24}>
+                    <Form.Item name={`branch_${item.id}`}>
+                      <Switch label={item.name} />
+                    </Form.Item>
+                  </Col>
+                ))}
             </Row>
           </Card>
         </Col>

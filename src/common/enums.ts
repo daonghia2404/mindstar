@@ -196,3 +196,10 @@ export enum EPricingModelType {
   BASE_COURES = 1,
   MONTHLY = 2,
 }
+
+export enum EPointActionType {
+  ATTENDANCES = 1,
+  BIRTHDAY = 2,
+  BUY_PRODUCT = 3,
+  REFERRALS = 4,
+}

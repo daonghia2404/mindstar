@@ -50,6 +50,8 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
     {
       userType: EUserType.TEACHER,
     },
+    undefined,
+    visible,
   );
 
   const {
@@ -62,6 +64,9 @@ const ModalClassForm: React.FC<TModalClassFormProps> = ({ visible, data, onClose
     'getBranchesResponse',
     EGetBranchesAction.GET_BRANCHES,
     'branchName',
+    undefined,
+    undefined,
+    visible,
   );
 
   const createClassLoading = useSelector((state: TRootState) => state.loadingReducer[ECreateClassAction.CREATE_CLASS]);

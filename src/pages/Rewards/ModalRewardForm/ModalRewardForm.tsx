@@ -188,7 +188,7 @@ const ModalRewardForm: React.FC<TModalRewardFormProps> = ({ visible, data, onClo
           <Row gutter={[16, 16]}>
             <Col span={24}>
               <Form.Item name="images" rules={[validationRules.required()]}>
-                <UploadImages label="Ảnh" required />
+                <UploadImages label="Ảnh (Tối đa 5 tấm ảnh)" required />
               </Form.Item>
             </Col>
             <Col span={24}>

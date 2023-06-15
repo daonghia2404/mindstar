@@ -9,11 +9,16 @@ import Card from '@/components/Card';
 import Select, { TSelectOption } from '@/components/Select';
 import { formatCurrency, showNotification } from '@/utils/functions';
 import { TRootState } from '@/redux/reducers';
-import { EGetProductsAction, EUpdateSettingsAction, getProductsAction, updateSettingsAction } from '@/redux/actions';
+import {
+  EGetProductsAction,
+  EUpdateSettingsAction,
+  getProductsAction,
+  getSettingsAction,
+  updateSettingsAction,
+} from '@/redux/actions';
 import { ETypeNotification } from '@/common/enums';
 import { Paths } from '@/pages/routers';
 import { useOptionsPaginate } from '@/utils/hooks';
-import { TUpdateSettingsResponse } from '@/services/api';
 
 import './KitFeeDefination.scss';
 
@@ -67,6 +72,11 @@ const KitFeeDefination: React.FC = () => {
     return total || 0;
   };
 
+  const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
+  const getSettings = (): void => {
+    dispatch(getSettingsAction.request({ headers: { branchIds: currentBranchId } }));
+  };
+
   const handleSubmit = (): void => {
     const body = {
       kit_fee_definitions: {
@@ -83,15 +93,8 @@ const KitFeeDefination: React.FC = () => {
     dispatch(updateSettingsAction.request({ body }, handleSubmitSuccess));
   };
 
-  const handleSubmitSuccess = (response: TUpdateSettingsResponse): void => {
-    setKitProducts(
-      response?.data?.kit_fee_definitions?.kit_fee_products?.map((item) => ({
-        value: item.product_id,
-        label: item.product_name,
-        data: item,
-      })),
-    );
-
+  const handleSubmitSuccess = (): void => {
+    getSettings();
     showNotification(ETypeNotification.SUCCESS, 'Cập nhật cấu hình thành công !');
   };
 
@@ -137,7 +140,8 @@ const KitFeeDefination: React.FC = () => {
         </Col>
         <Col span={24} md={{ span: 12 }}>
           <Card
-            title="Cấu hình"
+            title="Thông số"
+            description="Thiết lập các sản phẩm mặc định của một combo KIT."
             suffixTitle={
               <div className="KitFeeDefination-total">
                 Tổng:{` `}

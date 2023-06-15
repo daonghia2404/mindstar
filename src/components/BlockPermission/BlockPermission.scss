@@ -1,0 +1,19 @@
+@import '@/assets/styles/_global.scss';
+
+.BlockPermission {
+  position: absolute;
+  top: 6rem;
+  left: 24rem;
+  width: calc(100% - 24rem);
+  height: calc(100% - 6rem);
+  z-index: 3;
+  background: rgba($white, 0.4);
+  row-gap: 1.6rem;
+  backdrop-filter: blur(2px);
+
+  &-text {
+    font-size: 1.4rem;
+    line-height: 1.6;
+    color: $dove-gray;
+  }
+}

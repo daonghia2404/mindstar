@@ -21,7 +21,7 @@ import {
   updateExpenseAction,
 } from '@/redux/actions';
 import { showNotification, validationRules } from '@/utils/functions';
-import { EAuditingStatus, ETypeCategory, ETypeNotification } from '@/common/enums';
+import { EAuditingStatus, EPaymentType, ETypeCategory, ETypeNotification } from '@/common/enums';
 import TextArea from '@/components/TextArea';
 import DatePicker from '@/components/DatePicker';
 import { useOptionsPaginate } from '@/utils/hooks';
@@ -47,6 +47,9 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({ visible, data, onC
     'getBranchesResponse',
     EGetBranchesAction.GET_BRANCHES,
     'branchName',
+    undefined,
+    undefined,
+    visible,
   );
 
   const {
@@ -63,6 +66,8 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({ visible, data, onC
     {
       type: ETypeCategory.EXPENSE,
     },
+    undefined,
+    visible,
   );
 
   const {
@@ -80,6 +85,7 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({ visible, data, onC
       auditingStatuses: EAuditingStatus.ACTIVE,
     },
     { branchIds: formValues?.branch?.value || '' },
+    visible,
   );
 
   const {
@@ -97,6 +103,7 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({ visible, data, onC
       auditingStatuses: EAuditingStatus.ACTIVE,
     },
     { branchIds: formValues?.branch?.value || '' },
+    visible,
   );
 
   const createExpenseLoading = useSelector(
@@ -290,7 +297,7 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({ visible, data, onC
                   placeholder="Chọn dữ liệu"
                   required
                   active
-                  options={dataPaymentTypeOptions}
+                  options={dataPaymentTypeOptions.filter((item) => item.value !== EPaymentType.NINE_PAY)}
                 />
               </Form.Item>
             </Col>

@@ -80,6 +80,7 @@ export const useOptionsPaginate = (
   keySearch = 'name',
   params?: { [key: string]: any },
   headers?: { [key: string]: any },
+  isAvailableToCall?: boolean,
 ): {
   options: TSelectOption[];
   handleReset: () => void;
@@ -124,20 +125,26 @@ export const useOptionsPaginate = (
   };
 
   const getData = useCallback(() => {
-    dispatch(
-      actions?.request({ params: paramsRequest, headers }, (fetchingResponse: any): void => {
-        const isFirstFetching = paramsRequest.page === DEFAULT_PAGE;
-        const dataFetching = fetchingResponse?.data?.content?.map((item: any) => ({
-          value: String(item.id),
-          label: item.name,
-          data: item,
-        }));
+    if (
+      ['undefined'].includes(typeof isAvailableToCall) ||
+      (['boolean'].includes(typeof isAvailableToCall) && isAvailableToCall)
+    ) {
+      dispatch(
+        actions?.request({ params: paramsRequest, headers }, (fetchingResponse: any): void => {
+          const isFirstFetching = paramsRequest.page === DEFAULT_PAGE;
+          const dataFetching = fetchingResponse?.data?.content?.map((item: any) => ({
+            value: String(item.id),
+            label: item.name,
+            data: item,
+          }));
 
-        setOptions(isFirstFetching ? dataFetching : [...options, ...dataFetching]);
-      }),
-    );
+          setOptions(isFirstFetching ? dataFetching : [...options, ...dataFetching]);
+        }),
+      );
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, paramsRequest]);
+  }, [dispatch, paramsRequest, isAvailableToCall]);
 
   useEffect(() => {
     getData();

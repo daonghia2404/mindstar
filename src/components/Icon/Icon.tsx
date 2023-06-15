@@ -71,6 +71,7 @@ import JewishStarFill from './JewishStarFill';
 import RotateClockwise from './RotateClockwise';
 import Briefcase from './Briefcase';
 import JewishStar from './JewishStar';
+import ShieldCancel from './ShieldCancel';
 
 const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
   const renderIcon = (): React.ReactElement => {
@@ -207,6 +208,8 @@ const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
         return <Briefcase color={color} />;
       case EIconName.JewishStar:
         return <JewishStar color={color} />;
+      case EIconName.ShieldCancel:
+        return <ShieldCancel color={color} />;
 
       default:
         return <></>;

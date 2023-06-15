@@ -139,7 +139,7 @@ export const validationRules = {
   url: (message?: string): Rule => ({
     validator: (rule: any, value: string): Promise<void> => {
       if (!value || REGEX.url.test(value)) return Promise.resolve();
-      return Promise.reject(message || 'Invalid URL !');
+      return Promise.reject(message || 'Vui lòng nhập URL hợp lệ !' || 'Invalid URL !');
     },
   }),
   confirmPassword: (confirmPasswordValue: string, message?: string): Rule => ({

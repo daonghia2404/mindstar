@@ -43,6 +43,9 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
     'getBranchesResponse',
     EGetBranchesAction.GET_BRANCHES,
     'branchName',
+    undefined,
+    undefined,
+    visible,
   );
 
   const {
@@ -60,6 +63,7 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
       auditingStatuses: EAuditingStatus.ACTIVE,
     },
     { branchIds: formValues?.branch?.value || '' },
+    visible,
   );
 
   const createTransactionLoading = useSelector(

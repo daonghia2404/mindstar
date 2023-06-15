@@ -36,9 +36,11 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
   const keyModule = managers ? 'manager_profile' : 'player';
 
   const settingsState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data
-    ?.attendance_settings?.max_unit_per_lesson;
+    ?.attendance_settings;
 
-  const unitLessonOptions = getArrayFrom0To(settingsState || 0)?.map((item) => ({
+  const maxUnit = settingsState?.is_multi_attendee_enable ? settingsState?.max_unit_per_lesson : 1;
+
+  const unitLessonOptions = getArrayFrom0To(maxUnit)?.map((item) => ({
     label: String(item + 1),
     value: String(item + 1),
   }));

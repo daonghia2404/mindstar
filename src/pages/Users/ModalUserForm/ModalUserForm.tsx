@@ -53,6 +53,9 @@ const ModalUserForm: React.FC<TModalUserFormProps> = ({ visible, data, onClose, 
     'getBranchesResponse',
     EGetBranchesAction.GET_BRANCHES,
     'branchName',
+    undefined,
+    undefined,
+    visible,
   );
 
   const settingsState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data;
@@ -152,7 +155,7 @@ const ModalUserForm: React.FC<TModalUserFormProps> = ({ visible, data, onClose, 
           <Row gutter={[16, 16]}>
             <Col span={24}>
               <Form.Item name="avatar">
-                <UploadImage label="Ảnh đại diện" active sizeImage={100} center />
+                <UploadImage label="Ảnh đại diện" active sizeImage={100} center shape="circle" />
               </Form.Item>
             </Col>
             <Col span={24}>

@@ -29,6 +29,7 @@ import './ModalCheckIns.scss';
 const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
   visible,
   getPickupAttendancesParamsRequest,
+  isValidTransportMode,
   onClose,
   onSuccess,
 }) => {
@@ -47,6 +48,9 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
     'getBranchesResponse',
     EGetBranchesAction.GET_BRANCHES,
     'branchName',
+    undefined,
+    undefined,
+    visible,
   );
 
   const {
@@ -60,8 +64,9 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
     'getBusStopsResponse',
     EGetBusStopsAction.GET_BUS_STOPS,
     undefined,
-    { size: 100 },
+    { sort: 'pickup_time:asc', size: 100 },
     { branchIds: formValues?.branch?.value || '' },
+    visible && isValidTransportMode,
   );
 
   const updatePickupAttendancesLoading = useSelector(

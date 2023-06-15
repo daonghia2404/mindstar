@@ -337,6 +337,8 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
       Paths.AttendancePolicy,
       Paths.ScheduleMode,
       Paths.TransportMode,
+      Paths.PaymentIntegration,
+      Paths.EarnPoints,
     ],
     children: [
       {
@@ -356,6 +358,8 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
           Paths.AttendancePolicy,
           Paths.ScheduleMode,
           Paths.TransportMode,
+          Paths.PaymentIntegration,
+          Paths.EarnPoints,
         ],
         children: [
           {
@@ -397,15 +401,15 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
             id: '8-2-6',
             title: 'Thanh toán',
             icon: EIconName.CreditCard,
-            link: Paths.Dashboard,
-            activePaths: [],
+            link: Paths.PaymentIntegration,
+            activePaths: [Paths.PaymentIntegration],
           },
           {
             id: '8-2-7',
             title: 'Tích điểm',
             icon: EIconName.JewishStar,
-            link: Paths.Dashboard,
-            activePaths: [],
+            link: Paths.EarnPoints,
+            activePaths: [Paths.EarnPoints],
           },
         ],
       },

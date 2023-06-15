@@ -69,7 +69,7 @@ const UploadImage: React.FC<TUploadImageProps> = ({
         <div className="UploadImage-wrapper">
           <Avatar size={sizeImage} shape={shape} image={previewImage} defaultImage={defaultImage} />
           {!readOnlyText && (
-            <div className="UploadImage-placeholder flex items-center justify-center">
+            <div className={classNames('UploadImage-placeholder flex items-center justify-center', shape)}>
               <Icon name={EIconName.Pencil} color={EIconColor.WHITE} />
             </div>
           )}

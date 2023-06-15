@@ -106,8 +106,21 @@ export type TSetting = {
   };
   ninepay_payment_settings: unknown;
   notification_settings: unknown;
-  payment_settings: unknown;
-  point_settings: unknown;
+  payment_settings: {
+    ninepay_payment_settings: {
+      merchant_key: string;
+      merchant_secret_key: string;
+      checksum_key: string;
+      nine_pay_end_point: string;
+      callback_url: string;
+      is_active_function: boolean;
+    };
+    payment_list: { name: string; is_show: boolean }[];
+  };
+  point_settings: {
+    level: TPointLevel[];
+    actions: TPointAction[];
+  };
   reactive_settings: unknown;
   reward_tiers: unknown;
   schedule_settings: {
@@ -128,6 +141,21 @@ export type TSetting = {
     branch_id: number;
     is_enable: boolean;
   }[];
+};
+
+export type TPointAction = {
+  description: string;
+  unit: string;
+  id: number;
+  value: number;
+};
+
+export type TPointLevel = {
+  benchmarks: number;
+  description: string;
+  id: number;
+  name: string;
+  name_vi: string;
 };
 
 export type TBranch = {

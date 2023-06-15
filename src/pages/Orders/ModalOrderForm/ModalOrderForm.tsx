@@ -48,6 +48,9 @@ const ModalOrderForm: React.FC<TModalOrderFormProps> = ({ visible, data, onClose
     'getBranchesResponse',
     EGetBranchesAction.GET_BRANCHES,
     'branchName',
+    undefined,
+    undefined,
+    visible,
   );
 
   const {
@@ -65,6 +68,7 @@ const ModalOrderForm: React.FC<TModalOrderFormProps> = ({ visible, data, onClose
       auditingStatuses: EAuditingStatus.ACTIVE,
     },
     { branchIds: formValues?.branch?.value || '' },
+    visible,
   );
 
   const createOrderLoading = useSelector((state: TRootState) => state.loadingReducer[ECreateOrderAction.CREATE_ORDER]);

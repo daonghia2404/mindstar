@@ -29,12 +29,14 @@ import ModalCheckIns from '@/pages/PickupAttendances/ModalCheckIns';
 import Status from '@/components/Status';
 import Tags from '@/components/Tags';
 import { Paths } from '@/pages/routers';
+import BlockPermission from '@/components/BlockPermission';
 
 import './PickupAttendances.scss';
 
 const PickupAttendances: React.FC = () => {
   const dispatch = useDispatch();
 
+  const settingsState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data;
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
   const getPickupAttendancesLoading = useSelector(
     (state: TRootState) => state.loadingReducer[EGetPickupAttendancesAction.GET_PICKUP_ATTENDANCES],
@@ -43,6 +45,11 @@ const PickupAttendances: React.FC = () => {
     (state: TRootState) => state.busStopReducer.getPickupAttendancesResponse,
   )?.data;
   const [modalCheckInsState, setModalCheckInsState] = useState<{ visible: boolean }>({ visible: false });
+
+  const isValidTransportMode = settingsState?.transport_settings
+    ?.filter((item) => item.is_enable)
+    ?.map((item) => item.branch_id)
+    ?.includes(currentBranchId as number);
 
   const {
     options: optionsBusStops,
@@ -54,8 +61,9 @@ const PickupAttendances: React.FC = () => {
     'getBusStopsResponse',
     EGetBusStopsAction.GET_BUS_STOPS,
     undefined,
-    {},
+    { sort: 'pickup_time:asc' },
     { branchIds: currentBranchId },
+    isValidTransportMode,
   );
 
   const [getPickupAttendancesParamsRequest, setGetPickupAttendancesParamsRequest] =
@@ -185,15 +193,18 @@ const PickupAttendances: React.FC = () => {
   ];
 
   const getPickupAttendances = useCallback(() => {
-    dispatch(
-      getPickupAttendancesAction.request({
-        params: {
-          ...getPickupAttendancesParamsRequest,
-          busStopId: (getPickupAttendancesParamsRequest?.busStopId as unknown as TSelectOption)?.value,
-        },
-        headers: { branchIds: currentBranchId },
-      }),
-    );
+    if (isValidTransportMode) {
+      dispatch(
+        getPickupAttendancesAction.request({
+          params: {
+            ...getPickupAttendancesParamsRequest,
+            busStopId: (getPickupAttendancesParamsRequest?.busStopId as unknown as TSelectOption)?.value,
+          },
+          headers: { branchIds: currentBranchId },
+        }),
+      );
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, getPickupAttendancesParamsRequest, currentBranchId]);
 
@@ -203,6 +214,16 @@ const PickupAttendances: React.FC = () => {
 
   return (
     <div className="PickupAttendances">
+      {!isValidTransportMode && (
+        <BlockPermission
+          title={
+            <>
+              Chi nhánh chưa được kích hoạt chế độ điểm đón. <br /> Vui lòng kích hoạt trong phần Cài Đặt.
+            </>
+          }
+          buttonProps={{ title: 'Cài đặt', iconName: EIconName.Settings, link: Paths.TransportMode }}
+        />
+      )}
       <Row gutter={[24, 24]}>
         <Col span={24}>
           <Card className="PickupAttendances-filter">
@@ -309,6 +330,7 @@ const PickupAttendances: React.FC = () => {
 
       <ModalCheckIns
         {...modalCheckInsState}
+        isValidTransportMode={isValidTransportMode}
         getPickupAttendancesParamsRequest={getPickupAttendancesParamsRequest}
         onClose={handleCloseModalCheckIns}
         onSuccess={getPickupAttendances}

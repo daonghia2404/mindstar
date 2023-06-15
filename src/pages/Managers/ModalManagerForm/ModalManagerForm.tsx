@@ -38,13 +38,22 @@ const ModalManagerForm: React.FC<TModalManagerFormProps> = ({ visible, data, onC
     options: optionsClasses,
     handleLoadMore: handleLoadMoreClasses,
     handleSearch: handleSearchClasses,
-  } = useOptionsPaginate(getClassesAction, 'classReducer', 'getClassesResponse', EGetClassesAction.GET_CLASSES);
+  } = useOptionsPaginate(
+    getClassesAction,
+    'classReducer',
+    'getClassesResponse',
+    EGetClassesAction.GET_CLASSES,
+    undefined,
+    undefined,
+    undefined,
+    visible,
+  );
 
   // const {
   //   options: optionsBranches,
   //   handleLoadMore: handleLoadMoreBranches,
   //   handleSearch: handleSearchBranches,
-  // } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', EGetBranchesAction.GET_BRANCHES, 'branchName');
+  // } = useOptionsPaginate(getBranchesAction, 'branchReducer', 'getBranchesResponse', EGetBranchesAction.GET_BRANCHES, 'branchName', undefined, undefined, visible);
 
   const settingsState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data;
   const cityOptions = settingsState?.cities?.map((item) => ({ label: item.name, value: item.id }));
@@ -152,7 +161,7 @@ const ModalManagerForm: React.FC<TModalManagerFormProps> = ({ visible, data, onC
           <Row gutter={[16, 16]}>
             <Col span={24}>
               <Form.Item name="avatar">
-                <UploadImage label="Ảnh đại diện" active sizeImage={100} center />
+                <UploadImage label="Ảnh đại diện" active sizeImage={100} center shape="circle" />
               </Form.Item>
             </Col>
             <Col span={24}>

@@ -83,6 +83,7 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({
     undefined,
     {},
     { branchIds: formValues?.branch?.value || '' },
+    visible,
   );
 
   const {
@@ -95,6 +96,9 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({
     'getBranchesResponse',
     EGetBranchesAction.GET_BRANCHES,
     'branchName',
+    undefined,
+    undefined,
+    visible,
   );
 
   const playerState = useSelector((state: TRootState) => state.playerReducer.getPlayerResponse)?.data;
@@ -377,7 +381,7 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({
             <Row gutter={[16, 16]}>
               <Col span={24}>
                 <Form.Item name="avatar">
-                  <UploadImage label="Ảnh đại diện" active sizeImage={100} center />
+                  <UploadImage label="Ảnh đại diện" active sizeImage={100} center shape="circle" />
                 </Form.Item>
               </Col>
               <Col span={24}>

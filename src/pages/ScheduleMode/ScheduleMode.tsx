@@ -8,7 +8,7 @@ import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import Card from '@/components/Card';
 import { showNotification, validationRules } from '@/utils/functions';
 import { TRootState } from '@/redux/reducers';
-import { EUpdateSettingsAction, updateSettingsAction } from '@/redux/actions';
+import { EUpdateSettingsAction, getSettingsAction, updateSettingsAction } from '@/redux/actions';
 import { ETypeNotification } from '@/common/enums';
 import { Paths } from '@/pages/routers';
 import Switch from '@/components/Switch';
@@ -31,6 +31,11 @@ const ScheduleMode: React.FC = () => {
     navigate(Paths.SettingsGeneral);
   };
 
+  const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
+  const getSettings = (): void => {
+    dispatch(getSettingsAction.request({ headers: { branchIds: currentBranchId } }));
+  };
+
   const handleSubmit = (values: any): void => {
     const body = {
       schedule_settings: {
@@ -43,6 +48,7 @@ const ScheduleMode: React.FC = () => {
   };
 
   const handleSubmitSuccess = (): void => {
+    getSettings();
     showNotification(ETypeNotification.SUCCESS, 'Cập nhật cấu hình thành công !');
   };
 
@@ -91,23 +97,23 @@ const ScheduleMode: React.FC = () => {
           </Row>
         </Col>
         <Col span={24} md={{ span: 12 }}>
-          <Card title="Cấu hình">
+          <Card title="Thông số" description="Thiết lập chế độ nghỉ của trung tâm và tin nhắn thông báo cho học viên.">
             <Row gutter={[16, 16]}>
               <Col span={24}>
                 <Form.Item name="enableSchedule">
-                  <Switch label="Cho phép lịch học" />
+                  <Switch label="Bật chế độ học" />
                 </Form.Item>
               </Col>
               <Col span={24}>
                 <Form.Item
                   name="messageShow"
-                  rules={formValues?.enableSchedule ? [validationRules.required()] : undefined}
+                  rules={!formValues?.enableSchedule ? [validationRules.required()] : undefined}
                 >
                   <TextArea
                     label="Tin nhắn hiển thị"
                     active
-                    required={formValues?.enableSchedule}
-                    disabled={!formValues?.enableSchedule}
+                    required={!formValues?.enableSchedule}
+                    disabled={formValues?.enableSchedule}
                     placeholder="Nhập dữ liệu"
                   />
                 </Form.Item>

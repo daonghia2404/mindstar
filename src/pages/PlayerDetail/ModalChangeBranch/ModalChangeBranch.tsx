@@ -61,6 +61,7 @@ const ModalChangeBranch: React.FC<TModalChangeBranchProps> = ({ visible, data, o
     undefined,
     {},
     { branchIds: formValues?.targetBranch?.value || '' },
+    visible,
   );
 
   const handleSubmit = (): void => {

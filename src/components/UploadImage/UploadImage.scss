@@ -79,6 +79,10 @@
     pointer-events: none;
     transition: $common-transition;
 
+    &.circle {
+      border-radius: 50%;
+    }
+
     .Icon {
       width: 2.4rem;
       height: 2.4rem;

@@ -57,6 +57,8 @@ const KitFeeDefination = lazy(() => retryLoadComponent(() => import('@/pages/Kit
 const AttendancePolicy = lazy(() => retryLoadComponent(() => import('@/pages/AttendancePolicy')));
 const ScheduleMode = lazy(() => retryLoadComponent(() => import('@/pages/ScheduleMode')));
 const TransportMode = lazy(() => retryLoadComponent(() => import('@/pages/TransportMode')));
+const PaymentIntegration = lazy(() => retryLoadComponent(() => import('@/pages/PaymentIntegration')));
+const EarnPoints = lazy(() => retryLoadComponent(() => import('@/pages/EarnPoints')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -107,6 +109,8 @@ export const Paths = {
   AttendancePolicy: '/settings/attendance-policy',
   ScheduleMode: '/settings/schedule-mode',
   TransportMode: '/settings/transport-mode',
+  PaymentIntegration: '/settings/payment-integration',
+  EarnPoints: '/settings/earn-points',
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -150,6 +154,8 @@ export const Pages = {
   AttendancePolicy,
   ScheduleMode,
   TransportMode,
+  PaymentIntegration,
+  EarnPoints,
 
   Login,
   LoginDomain,

@@ -29,6 +29,7 @@ import ModalBusStopPlayerForm from '@/pages/BusStops/ModalBusStopPlayerForm';
 import ModalDeleteBusStopPlayer from '@/pages/BusStops/ModalDeleteBusStopPlayer';
 import Tags from '@/components/Tags';
 import { Paths } from '@/pages/routers';
+import BlockPermission from '@/components/BlockPermission';
 
 import './BusStops.scss';
 
@@ -36,6 +37,8 @@ const BusStops: React.FC = () => {
   const dispatch = useDispatch();
 
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
+  const settingsState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data;
+
   const busStopsState = useSelector((state: TRootState) => state.busStopReducer.getBusStopsResponse)?.data;
   const busStopPlayersState = useSelector((state: TRootState) => state.busStopReducer.getBusStopPlayersResponse)?.data;
   const getBusStopsLoading = useSelector((state: TRootState) => state.loadingReducer[EGetBusStopsAction.GET_BUS_STOPS]);
@@ -43,11 +46,17 @@ const BusStops: React.FC = () => {
     (state: TRootState) => state.loadingReducer[EGetBusStopPlayersAction.GET_BUS_STOP_PLAYERS],
   );
 
+  const isValidTransportMode = settingsState?.transport_settings
+    ?.filter((item) => item.is_enable)
+    ?.map((item) => item.branch_id)
+    ?.includes(currentBranchId as number);
+
   const isEmptyBusStopPlayers = !busStopPlayersState?.content;
 
   const [getBusStopsParamsRequest, setGetBusStopsParamsRequest] = useState<TGetBusStopsParams>({
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
+    sort: 'pickup_time:asc',
   });
 
   const [getBusStopPlayersParamsRequest, setGetBusStopPlayersParamsRequest] = useState<TGetBusStopPlayersParams>({
@@ -283,20 +292,23 @@ const BusStops: React.FC = () => {
   };
 
   const getBusStops = useCallback(() => {
-    dispatch(
-      getBusStopsAction.request(
-        { params: getBusStopsParamsRequest, headers: { branchIds: currentBranchId } },
-        (response): void => {
-          const isIncludeExistedBusStopId = response?.data?.content
-            ?.map((item) => item.id)
-            .includes(currentSelectedBusStopId as number);
+    if (isValidTransportMode) {
+      dispatch(
+        getBusStopsAction.request(
+          { params: getBusStopsParamsRequest, headers: { branchIds: currentBranchId } },
+          (response): void => {
+            const isIncludeExistedBusStopId = response?.data?.content
+              ?.map((item) => item.id)
+              .includes(currentSelectedBusStopId as number);
 
-          setCurrentSelectedBusStopId(
-            isIncludeExistedBusStopId ? currentSelectedBusStopId : response?.data?.content?.[0]?.id,
-          );
-        },
-      ),
-    );
+            setCurrentSelectedBusStopId(
+              isIncludeExistedBusStopId ? currentSelectedBusStopId : response?.data?.content?.[0]?.id,
+            );
+          },
+        ),
+      );
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, getBusStopsParamsRequest, currentBranchId]);
 
@@ -323,6 +335,16 @@ const BusStops: React.FC = () => {
 
   return (
     <div className="BusStops">
+      {!isValidTransportMode && (
+        <BlockPermission
+          title={
+            <>
+              Chi nhánh chưa được kích hoạt chế độ điểm đón. <br /> Vui lòng kích hoạt trong phần Cài Đặt.
+            </>
+          }
+          buttonProps={{ title: 'Cài đặt', iconName: EIconName.Settings, link: Paths.TransportMode }}
+        />
+      )}
       <Row gutter={[24, 24]}>
         <Col span={24}>
           <Card className="Categories-filter">

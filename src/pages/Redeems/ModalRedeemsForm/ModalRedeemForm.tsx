@@ -35,6 +35,8 @@ const ModalRedeemForm: React.FC<TModalRedeemFormProps> = ({ visible, data, onClo
       userIds: data?.customer_info?.user_id,
       auditingStatuses: EAuditingStatus.ACTIVE,
     },
+    undefined,
+    visible,
   );
 
   const updateRedeemLoading = useSelector(

@@ -68,6 +68,7 @@ const ModalShopProducts: React.FC<TModalProductFormProps> = ({ visible, data, on
     undefined,
     { auditingStatuses: EAuditingStatus.ACTIVE },
     { branchIds: currentBranchId },
+    visible,
   );
 
   const handleSubmit = (): void => {
@@ -213,7 +214,7 @@ const ModalShopProducts: React.FC<TModalProductFormProps> = ({ visible, data, on
           <Row gutter={[16, 16]}>
             <Col span={24}>
               <Form.Item name="images" rules={[validationRules.required()]}>
-                <UploadImages label="Ảnh" required />
+                <UploadImages label="Ảnh (Tối đa 5 tấm ảnh)" required />
               </Form.Item>
             </Col>
             <Col span={24}>

@@ -46,6 +46,9 @@ const ModalBusStopForm: React.FC<TModalBusStopFormProps> = ({ visible, data, onC
     'getBranchesResponse',
     EGetBranchesAction.GET_BRANCHES,
     'branchName',
+    undefined,
+    undefined,
+    visible,
   );
 
   const handleSubmit = (): void => {
