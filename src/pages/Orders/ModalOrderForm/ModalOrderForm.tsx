@@ -68,7 +68,7 @@ const ModalOrderForm: React.FC<TModalOrderFormProps> = ({ visible, data, onClose
       auditingStatuses: EAuditingStatus.ACTIVE,
     },
     { branchIds: formValues?.branch?.value || '' },
-    visible,
+    visible && Boolean(formValues?.branch?.value),
   );
 
   const createOrderLoading = useSelector((state: TRootState) => state.loadingReducer[ECreateOrderAction.CREATE_ORDER]);

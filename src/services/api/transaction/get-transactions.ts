@@ -13,9 +13,11 @@ export type TGetTransactionsParams = {
   sort?: string;
   transactionDetailType?: string;
   paymentTypes?: string;
+  playerIds?: string;
 };
 
 export type TGetTransactionsMaterials = {
+  useAdmin?: boolean;
   params?: TGetTransactionsParams;
   headers?: THeaderBranchIds;
 };
@@ -30,9 +32,10 @@ export type TGetTransactionsResponse = TCommonResponse & {
 // FUNCTION
 
 export const getTransactions = async ({
+  useAdmin = true,
   params,
   headers,
 }: TGetTransactionsMaterials): Promise<TGetTransactionsResponse> => {
-  const response = await ApiService.get(`/v1/api/admin/transactions`, { params, headers });
+  const response = await ApiService.get(`/v1/api${useAdmin ? '/admin' : ''}/transactions`, { params, headers });
   return response.data;
 };

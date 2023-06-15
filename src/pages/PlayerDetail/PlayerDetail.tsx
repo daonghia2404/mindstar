@@ -22,6 +22,7 @@ import Status from '@/components/Status';
 import ModalResetPassword from '@/pages/PlayerDetail/ModalResetPassword';
 import ModalChangeBranch from '@/pages/PlayerDetail/ModalChangeBranch';
 import AttendancesTable from '@/pages/PlayerDetail/AttendancesTable';
+import PaymentsTable from '@/pages/PlayerDetail/PaymentsTable';
 
 import './PlayerDetail.scss';
 
@@ -330,6 +331,11 @@ const PlayerDetail: React.FC = () => {
         <Col span={24} md={{ span: 12 }} xl={{ span: 12 }} xxl={{ span: 6 }}>
           <Card title="Thông tin điểm danh">
             <AttendancesTable />
+          </Card>
+        </Col>
+        <Col span={24} md={{ span: 12 }} xl={{ span: 12 }} xxl={{ span: 24 }}>
+          <Card title="Thông tin thanh toán">
+            <PaymentsTable />
           </Card>
         </Col>
       </Row>

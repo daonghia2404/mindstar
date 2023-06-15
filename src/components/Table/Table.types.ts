@@ -5,6 +5,7 @@ export type TTableProps = {
   columns: TTableColumn[];
   dataSources: Array<any>;
   rowKey?: string;
+  showTable?: boolean;
   loading?: boolean;
   header?: React.ReactNode;
   page?: number;

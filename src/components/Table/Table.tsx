@@ -25,6 +25,7 @@ const Table: React.FC<TTableProps> = ({
   page,
   pageSize,
   total,
+  showTable = true,
   showPagination = true,
   scroll,
   useCardResponsive = true,
@@ -55,64 +56,68 @@ const Table: React.FC<TTableProps> = ({
   return (
     <div className={classNames('Table', className)}>
       {header && <div className="Table-header">{header}</div>}
-      {isMobile && useCardResponsive ? (
-        <div className="Table-card-wrapper">
-          {loading && (
-            <div className="Table-card-loading flex">
-              <Loading />
+      {showTable && (
+        <>
+          {isMobile && useCardResponsive ? (
+            <div className="Table-card-wrapper">
+              {loading && (
+                <div className="Table-card-loading flex">
+                  <Loading />
+                </div>
+              )}
+              {isEmpty ? (
+                <Empty />
+              ) : (
+                <Row gutter={[16, 16]}>
+                  {dataSources.map((data, dataIndex) => (
+                    <Col span={24} sm={{ span: 12 }}>
+                      <Card className="Table-card">
+                        <Row gutter={[16, 16]}>
+                          {columns.map((column) => {
+                            return (
+                              <Col span={24}>
+                                <div className={classNames('Table-card-column', column.key)} key={column.key}>
+                                  <div className="Table-card-title">{column.title}</div>
+
+                                  {typeof column.render === 'function'
+                                    ? column.render(data[column.key], data, dataIndex)
+                                    : data[column.key]}
+                                </div>
+                              </Col>
+                            );
+                          })}
+                        </Row>
+                      </Card>
+                    </Col>
+                  ))}
+                </Row>
+              )}
+            </div>
+          ) : (
+            <div className="Table-body">
+              <AntdTable
+                locale={{
+                  cancelSort: 'Hủy sắp xếp',
+                  triggerDesc: 'Sắp xếp giảm dần',
+                  triggerAsc: 'Sắp xếp tăng dần',
+                  emptyText: <Empty />,
+                }}
+                rowClassName={(record, index): string =>
+                  classNames({ 'cursor-pointer': onRow }, rowClassName?.(record, index))
+                }
+                pagination={false}
+                columns={columns}
+                dataSource={dataSources}
+                loading={loading}
+                rowKey={rowKey}
+                onRow={onRow}
+                title={title}
+                onChange={handleTableChange}
+                scroll={{ ...scroll, x: 'auto' }}
+              />
             </div>
           )}
-          {isEmpty ? (
-            <Empty />
-          ) : (
-            <Row gutter={[16, 16]}>
-              {dataSources.map((data, dataIndex) => (
-                <Col span={24} sm={{ span: 12 }}>
-                  <Card className="Table-card">
-                    <Row gutter={[16, 16]}>
-                      {columns.map((column) => {
-                        return (
-                          <Col span={24}>
-                            <div className={classNames('Table-card-column', column.key)} key={column.key}>
-                              <div className="Table-card-title">{column.title}</div>
-
-                              {typeof column.render === 'function'
-                                ? column.render(data[column.key], data, dataIndex)
-                                : data[column.key]}
-                            </div>
-                          </Col>
-                        );
-                      })}
-                    </Row>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          )}
-        </div>
-      ) : (
-        <div className="Table-body">
-          <AntdTable
-            locale={{
-              cancelSort: 'Hủy sắp xếp',
-              triggerDesc: 'Sắp xếp giảm dần',
-              triggerAsc: 'Sắp xếp tăng dần',
-              emptyText: <Empty />,
-            }}
-            rowClassName={(record, index): string =>
-              classNames({ 'cursor-pointer': onRow }, rowClassName?.(record, index))
-            }
-            pagination={false}
-            columns={columns}
-            dataSource={dataSources}
-            loading={loading}
-            rowKey={rowKey}
-            onRow={onRow}
-            title={title}
-            onChange={handleTableChange}
-            scroll={{ ...scroll, x: 'auto' }}
-          />
-        </div>
+        </>
       )}
 
       {totalPage > 1 && !!showPagination && !!pageSize && !!total && (

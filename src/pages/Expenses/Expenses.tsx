@@ -137,6 +137,7 @@ const Expenses: React.FC = () => {
       key: 'amount',
       dataIndex: 'amount',
       title: 'Tổng giá trị',
+      className: 'nowrap',
       sorter: true,
       keySort: 'amount',
       render: (_: string, record: TExpense): React.ReactElement => {

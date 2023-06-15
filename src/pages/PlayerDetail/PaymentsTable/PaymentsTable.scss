@@ -1,0 +1,26 @@
+@import '@/assets/styles/_global.scss';
+
+.PaymentsTable {
+  .Table {
+    &-footer {
+      position: absolute;
+      top: 0;
+      right: 2.4rem;
+
+      &-perpage {
+        display: none;
+      }
+
+      &-pagination {
+        .Pagination {
+
+          .ant-pagination-jump-next,
+          .ant-pagination-jump-prev,
+          .ant-pagination-item {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}

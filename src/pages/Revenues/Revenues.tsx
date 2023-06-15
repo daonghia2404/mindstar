@@ -135,6 +135,7 @@ const Revenues: React.FC = () => {
       key: 'amount',
       dataIndex: 'amount',
       title: 'Tổng giá trị',
+      className: 'nowrap',
       sorter: true,
       keySort: 'amount',
       render: (_: string, record: TTransaction): React.ReactElement => {
@@ -194,6 +195,7 @@ const Revenues: React.FC = () => {
       key: 'short_description',
       dataIndex: 'short_description',
       title: 'Ghi chú',
+      className: 'limit-width',
       render: (value: string): string => value || EEmpty.DASH,
     },
     {

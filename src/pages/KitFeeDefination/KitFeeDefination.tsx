@@ -42,7 +42,7 @@ const KitFeeDefination: React.FC = () => {
     'productReducer',
     'getProductsResponse',
     EGetProductsAction.GET_PRODUCTS,
-    undefined,
+    'search',
     {},
   );
 

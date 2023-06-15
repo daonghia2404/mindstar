@@ -289,7 +289,7 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({
           parentName: data?.parent_name,
           phoneNumber: data?.mobile,
           address: data?.address,
-          city: cityOptions?.find((item) => item.value === data?.city_id),
+          city: cityOptions?.find((item) => item.value === data?.city_id || data?.city?.id),
           schedules: data?.player_schedules
             ?.filter((item) => item.day_of_week)
             ?.map((item) => {
