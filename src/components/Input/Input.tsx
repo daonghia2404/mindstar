@@ -28,6 +28,8 @@ const Input: React.FC<TInputProps> = ({
   placeholder,
   readOnlyText,
   styleForm,
+  min,
+  max,
   renderShowValue,
   onBlur,
   onSearch,
@@ -40,21 +42,33 @@ const Input: React.FC<TInputProps> = ({
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const searchValueDebounce = useDebounce(keyword, ETimeoutDebounce.SEARCH);
 
+  const compareMinMax = (dataChanged: number): number => {
+    if (typeof min === 'number' && dataChanged < min) {
+      return min;
+    }
+
+    if (typeof max === 'number' && dataChanged > max) {
+      return max;
+    }
+
+    return dataChanged;
+  };
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { value: changedValue } = e.target;
     if (onSearch) setKeyword(changedValue);
 
     if (numberic) {
-      const reg = /^-?\d*(\d*)?$/;
+      const reg = /^\d*(\d*)?$/;
       const isNumbericPass = reg.test(changedValue) || changedValue === '';
 
       if (useNumber) {
         if (changedValue === '') {
           onChange?.('');
         } else if (useComma) {
-          onChange?.(Number(changedValue?.replaceAll(/[.,\s]/g, '')));
+          onChange?.(compareMinMax(Number(changedValue?.replaceAll(/[.,\s]/g, ''))));
         } else {
-          onChange?.(isNumbericPass ? Number(changedValue) : Number(value) || '');
+          onChange?.(isNumbericPass ? compareMinMax(Number(changedValue)) : compareMinMax(Number(value)) || '');
         }
       } else {
         onChange?.(isNumbericPass ? String(changedValue || '') : String(value || '') || '');

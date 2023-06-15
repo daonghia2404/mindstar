@@ -7,6 +7,8 @@ export type TInputProps = TFormFieldProps & {
   value?: string;
   numberic?: boolean;
   useNumber?: boolean;
+  min?: number;
+  max?: number;
   useComma?: boolean;
   placeholder?: string;
   styleForm?: CSSProperties;

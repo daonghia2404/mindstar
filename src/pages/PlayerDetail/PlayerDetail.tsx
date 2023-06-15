@@ -334,7 +334,7 @@ const PlayerDetail: React.FC = () => {
           </Card>
         </Col>
         <Col span={24} md={{ span: 12 }} xl={{ span: 12 }} xxl={{ span: 24 }}>
-          <Card title="Thông tin thanh toán">
+          <Card title="Lịch sử thanh toán">
             <PaymentsTable />
           </Card>
         </Col>

@@ -97,7 +97,8 @@ const EarnPoints: React.FC = () => {
             <Row gutter={[16, 16]}>
               {settingsState?.actions?.map((item) => {
                 const currentPointAction = dataPointActionOptions.find((option) => option.value === item.id);
-                const suffixText = item.id === EPointActionType.BUY_PRODUCT ? '%' : 'điểm';
+                const isPercentField = item.id === EPointActionType.BUY_PRODUCT;
+
                 return (
                   <Col span={24}>
                     <Form.Item name={item.id} rules={[validationRules.required()]}>
@@ -107,7 +108,9 @@ const EarnPoints: React.FC = () => {
                         active
                         numberic
                         useNumber
-                        suffixText={suffixText}
+                        min={isPercentField ? 0 : undefined}
+                        max={isPercentField ? 100 : undefined}
+                        suffixText={isPercentField ? '%' : 'điểm'}
                       />
                     </Form.Item>
                   </Col>

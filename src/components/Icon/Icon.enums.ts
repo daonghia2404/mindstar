@@ -67,6 +67,7 @@ export enum EIconName {
   RotateClockwise = 'RotateClockwise',
   Briefcase = 'Briefcase',
   ShieldCancel = 'ShieldCancel',
+  ArrowBigUpLines = 'ArrowBigUpLines',
 }
 
 export enum EIconColor {

@@ -72,6 +72,7 @@ import RotateClockwise from './RotateClockwise';
 import Briefcase from './Briefcase';
 import JewishStar from './JewishStar';
 import ShieldCancel from './ShieldCancel';
+import ArrowBigUpLines from './ArrowBigUpLines';
 
 const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
   const renderIcon = (): React.ReactElement => {
@@ -210,6 +211,8 @@ const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
         return <JewishStar color={color} />;
       case EIconName.ShieldCancel:
         return <ShieldCancel color={color} />;
+      case EIconName.ArrowBigUpLines:
+        return <ArrowBigUpLines color={color} />;
 
       default:
         return <></>;
