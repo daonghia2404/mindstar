@@ -340,6 +340,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
       Paths.PaymentIntegration,
       Paths.EarnPoints,
       Paths.MyPlan,
+      Paths.PlanPackages,
     ],
     children: [
       {
@@ -426,7 +427,15 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         title: 'Gói dịch vụ',
         icon: EIconName.BusinessPlan,
         link: Paths.MyPlan,
-        activePaths: [Paths.MyPlan],
+        activePaths: [Paths.MyPlan, Paths.PlanPackages],
+      },
+      {
+        id: '8-4-1',
+        title: 'Nâng cấp gói',
+        icon: EIconName.BusinessPlan,
+        link: Paths.PlanPackages,
+        hide: true,
+        activePaths: [Paths.PlanPackages],
       },
     ],
   },

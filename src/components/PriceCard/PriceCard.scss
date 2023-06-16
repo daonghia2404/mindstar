@@ -1,0 +1,166 @@
+@import '@/assets/styles/_global.scss';
+
+.PriceCard {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  padding: 3.2rem 2.4rem 2.4rem;
+  border: 1px solid $silver;
+  background: $white;
+  transition: $common-transition;
+  border-radius: 1.6rem;
+  max-width: 27.5rem;
+  margin: 0 auto;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    content: '';
+    transition: $common-transition;
+    transform: scaleX(0);
+  }
+
+  @mixin primaryColorPriceCard($color, $colorWave) {
+    &.hightlight {
+      border-color: $color;
+      box-shadow: 0px 0px 24px rgba($black, 0.12);
+    }
+
+    &::before {
+      background: $color;
+    }
+
+    &:hover {
+      border-color: $color;
+      box-shadow: 0px 8px 0px rgba($color, 0.25);
+
+      &::before {
+        transform: scaleX(1);
+      }
+    }
+
+    .PriceCard {
+      &-title {
+        color: $color;
+      }
+
+      &-line-wave path {
+        stroke: $colorWave;
+      }
+    }
+  }
+
+  &.starter {
+    @include primaryColorPriceCard(#388E3C, #CCCCCC);
+  }
+
+  &.developer {
+    @include primaryColorPriceCard(#5E35B1, #D1C4E9);
+  }
+
+  &.professional {
+    @include primaryColorPriceCard(#0288D1, #B3E5FC);
+  }
+
+  &.academy {
+    @include primaryColorPriceCard(#E53935, #FFCDD2);
+  }
+
+  &-title {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 1.8rem;
+    line-height: 1.5;
+    text-align: center;
+    margin-bottom: 1.2rem;
+  }
+
+  &-subtitle {
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: $mine-shaft;
+    text-align: center;
+  }
+
+  &-line-wave {
+    width: 4.5rem;
+    margin: 0 auto 1.2rem;
+
+    svg {
+      width: 100%;
+    }
+  }
+
+  &-line {
+    background: $silver;
+    width: 8rem;
+    height: 1px;
+    margin: 0 auto 2.4rem;
+  }
+
+  &-price {
+    text-align: center;
+    margin-bottom: 2.4rem;
+
+    &-title {
+      font-size: 2.8rem;
+      font-weight: 600;
+      color: $mine-shaft;
+      line-height: 1.3;
+    }
+
+    &-description {
+      font-size: 1.4rem;
+      color: $dove-gray;
+      line-height: 1.5;
+    }
+  }
+
+  &-price-setup {
+    text-align: center;
+    margin-bottom: 1.6rem;
+
+    &-title {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: $mine-shaft;
+      line-height: 1.5;
+    }
+
+    &-description {
+      font-size: 1.2rem;
+      color: rgba($black, 0.5);
+      line-height: 1.7;
+    }
+  }
+
+  &-list {
+    margin-bottom: 4.8rem;
+
+    &-item {
+      column-gap: .8rem;
+      line-height: 1.7;
+      font-size: 1.4rem;
+
+      .Icon{
+        flex: 0 0 2.4rem;
+        max-width: 2.4rem;
+        width: 2.4rem;
+        height: 2.4rem;
+      }
+
+      &:not(:last-child) {
+        margin-bottom: 0.4rem;
+      }
+    }
+  }
+
+  &-btn {
+    margin-top: 6.4rem;
+  }
+}
+  

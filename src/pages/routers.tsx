@@ -60,6 +60,7 @@ const TransportMode = lazy(() => retryLoadComponent(() => import('@/pages/Transp
 const PaymentIntegration = lazy(() => retryLoadComponent(() => import('@/pages/PaymentIntegration')));
 const EarnPoints = lazy(() => retryLoadComponent(() => import('@/pages/EarnPoints')));
 const MyPlan = lazy(() => retryLoadComponent(() => import('@/pages/MyPlan')));
+const PlanPackages = lazy(() => retryLoadComponent(() => import('@/pages/PlanPackages')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -113,6 +114,7 @@ export const Paths = {
   PaymentIntegration: '/settings/payment-integration',
   EarnPoints: '/settings/earn-points',
   MyPlan: '/my-plan',
+  PlanPackages: '/my-plan/packages',
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -159,6 +161,7 @@ export const Pages = {
   PaymentIntegration,
   EarnPoints,
   MyPlan,
+  PlanPackages,
 
   Login,
   LoginDomain,

@@ -159,6 +159,7 @@ const MyPlan: React.FC = () => {
                     iconName={EIconName.ArrowBigUpLines}
                     iconColor={EIconColor.WHITE}
                     styleType={EButtonStyleType.PURPLE}
+                    link={Paths.PlanPackages}
                   />
                 </Col>
               </Row>
