@@ -339,6 +339,7 @@ export type TProduct = {
   product_id: number;
   product_name: string;
   selling_price: number;
+  amount: number;
   attributes: unknown;
   auditing_status: number;
   category: TCategory;

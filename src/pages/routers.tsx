@@ -61,6 +61,7 @@ const PaymentIntegration = lazy(() => retryLoadComponent(() => import('@/pages/P
 const EarnPoints = lazy(() => retryLoadComponent(() => import('@/pages/EarnPoints')));
 const MyPlan = lazy(() => retryLoadComponent(() => import('@/pages/MyPlan')));
 const PlanPackages = lazy(() => retryLoadComponent(() => import('@/pages/PlanPackages')));
+const MyProfile = lazy(() => retryLoadComponent(() => import('@/pages/MyProfile')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -115,6 +116,7 @@ export const Paths = {
   EarnPoints: '/settings/earn-points',
   MyPlan: '/my-plan',
   PlanPackages: '/my-plan/packages',
+  MyProfile: '/my-profile',
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -162,6 +164,7 @@ export const Pages = {
   EarnPoints,
   MyPlan,
   PlanPackages,
+  MyProfile,
 
   Login,
   LoginDomain,

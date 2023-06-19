@@ -14,6 +14,7 @@ import {
   EGetClassesAction,
   EReactivePlayerAction,
   EUpdatePlayerAction,
+  EUploadAvatarUserAction,
   createPlayerAction,
   getBranchesAction,
   getClassesAction,
@@ -120,7 +121,10 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({
   const recoverPlayerLoading = useSelector(
     (state: TRootState) => state.loadingReducer[EReactivePlayerAction.REACTIVE_PLAYER],
   );
-  const loading = createPlayerLoading || updatePlayerLoading || recoverPlayerLoading;
+  const uploadAvatarUserLoading = useSelector(
+    (state: TRootState) => state.loadingReducer[EUploadAvatarUserAction.UPLOAD_AVATAR_USER],
+  );
+  const loading = createPlayerLoading || updatePlayerLoading || recoverPlayerLoading || uploadAvatarUserLoading;
 
   const handleOpenAddPlayerInExistedUserModal = (dataModal?: TUser): void => {
     setModalAddPlayerInExistedUserState({ ...modalAddPlayerInExistedUserState, visible: true, data: dataModal });
@@ -230,7 +234,7 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({
   };
 
   const handleUploadAvatar = (response: TUser, values: any): void => {
-    const isUploadAvatar = values?.avatar !== getFullUrlStatics(data?.avatar);
+    const isUploadAvatar = values?.avatar && values?.avatar !== getFullUrlStatics(data?.avatar);
     if (!isUploadAvatar) handleSubmitSuccess();
     else {
       const formData = new FormData();
@@ -531,18 +535,6 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({
                   )}
                 </>
               )}
-
-              <Col span={24}>
-                <Form.Item name="address" rules={[validationRules.required()]}>
-                  <Input
-                    label="Địa chỉ"
-                    required
-                    placeholder="Nhập dữ liệu"
-                    active
-                    disabled={isConfirmAddInExistedUser}
-                  />
-                </Form.Item>
-              </Col>
               <Col span={24}>
                 <Form.Item name="city" rules={[validationRules.required()]}>
                   <Select
@@ -552,6 +544,17 @@ const ModalPlayerForm: React.FC<TModalPlayerFormProps> = ({
                     placeholder="Chọn dữ liệu"
                     active
                     showSearch
+                    disabled={isConfirmAddInExistedUser}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={24}>
+                <Form.Item name="address" rules={[validationRules.required()]}>
+                  <Input
+                    label="Địa chỉ"
+                    required
+                    placeholder="Nhập dữ liệu"
+                    active
                     disabled={isConfirmAddInExistedUser}
                   />
                 </Form.Item>

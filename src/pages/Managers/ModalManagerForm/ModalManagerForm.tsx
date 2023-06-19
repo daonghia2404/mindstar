@@ -11,6 +11,7 @@ import {
   ECreateManagerAction,
   EGetClassesAction,
   EUpdateManagerAction,
+  EUploadAvatarUserAction,
   createManagerAction,
   getClassesAction,
   updateManagerAction,
@@ -64,7 +65,10 @@ const ModalManagerForm: React.FC<TModalManagerFormProps> = ({ visible, data, onC
   const updateManagerLoading = useSelector(
     (state: TRootState) => state.loadingReducer[EUpdateManagerAction.UPDATE_MANAGER],
   );
-  const loading = createManagerLoading || updateManagerLoading;
+  const uploadAvatarUserLoading = useSelector(
+    (state: TRootState) => state.loadingReducer[EUploadAvatarUserAction.UPLOAD_AVATAR_USER],
+  );
+  const loading = createManagerLoading || updateManagerLoading || uploadAvatarUserLoading;
 
   const handleSubmit = (): void => {
     form.validateFields().then((values) => {

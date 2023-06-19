@@ -439,4 +439,13 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
       },
     ],
   },
+  {
+    id: '9',
+    title: 'Thông tin cá nhân',
+    hide: true,
+    icon: EIconName.Settings,
+    link: Paths.MyProfile,
+    activePaths: [],
+    children: [],
+  },
 ];

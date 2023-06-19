@@ -88,13 +88,13 @@ const ModalBranchForm: React.FC<TModalBranchFormProps> = ({ visible, data, onClo
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item name="address" rules={[validationRules.required()]}>
-                <Input label="Địa chỉ" required placeholder="Nhập dữ liệu" active />
+              <Form.Item name="city" rules={[validationRules.required()]}>
+                <Select label="Thành phố" required options={cityOptions} placeholder="Chọn dữ liệu" active showSearch />
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item name="city" rules={[validationRules.required()]}>
-                <Select label="Thành phố" required options={cityOptions} placeholder="Chọn dữ liệu" active showSearch />
+              <Form.Item name="address" rules={[validationRules.required()]}>
+                <Input label="Địa chỉ" required placeholder="Nhập dữ liệu" active />
               </Form.Item>
             </Col>
             {/* <Col span={24}>

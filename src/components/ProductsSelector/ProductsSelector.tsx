@@ -78,7 +78,12 @@ const ProductsSelector: React.FC<TProductsSelectorProps> = ({ label, required, v
       width: 72,
       render: (_: string, record: TProduct): React.ReactElement => (
         <div className="Table-image">
-          <Avatar size={72} image={getFullUrlStatics(record.image)} defaultImage shape="square" />
+          <Avatar
+            size={72}
+            image={getFullUrlStatics(record.image || record?.product_image_path)}
+            defaultImage
+            shape="square"
+          />
         </div>
       ),
     },
@@ -90,11 +95,13 @@ const ProductsSelector: React.FC<TProductsSelectorProps> = ({ label, required, v
       render: (_: string, record: TProduct): React.ReactElement => {
         return (
           <div className="Table-info">
-            <div className="Table-info-title ellipsis-2">{record?.name || EEmpty.DASH}</div>
+            <div className="Table-info-title ellipsis-2">{record?.name || record?.product_name || EEmpty.DASH}</div>
             <div className="Table-info-description" style={{ color: EIconColor.PURPLE_HEART }}>
               {record?.code || EEmpty.DASH}
             </div>
-            <div className="Table-info-description word-break-all ellipsis-2">{record?.description || EEmpty.DASH}</div>
+            <div className="Table-info-description word-break-all ellipsis-2" style={{ marginTop: 0 }}>
+              {record?.description || EEmpty.DASH}
+            </div>
           </div>
         );
       },
@@ -106,7 +113,9 @@ const ProductsSelector: React.FC<TProductsSelectorProps> = ({ label, required, v
       className: 'nowrap',
       render: (_: string, record: TProduct): React.ReactElement => (
         <div className="Table-info">
-          <div className="Table-info-title">{formatCurrency({ amount: record?.selling_price, showSuffix: true })}</div>
+          <div className="Table-info-title">
+            {formatCurrency({ amount: record?.selling_price || record?.amount, showSuffix: true })}
+          </div>
           {record?.retail_price && (
             <del className="Table-info-description">
               {formatCurrency({ amount: record?.retail_price, showSuffix: true })}
@@ -122,7 +131,7 @@ const ProductsSelector: React.FC<TProductsSelectorProps> = ({ label, required, v
       width: 120,
       className: 'limit-width',
       render: (_: string, record: TProduct): React.ReactElement => {
-        const target = value?.find((item) => item.value === record.id);
+        const target = value?.find((item) => item.value === (record.product_id || record.id));
 
         return (
           <Input

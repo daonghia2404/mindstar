@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation } from '@reach/router';
+import { navigate, useLocation } from '@reach/router';
 
 import Avatar from '@/components/Avatar';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
@@ -12,6 +12,7 @@ import { getFullUrlStatics } from '@/utils/functions';
 import MainBranchSelect from '@/containers/Header/MainBranchSelect';
 import ImageMenuBar from '@/assets/images/image-menu-bar.png';
 import { TSideBarData } from '@/containers/SideBar';
+import { Paths } from '@/pages/routers';
 
 import { THeaderProps } from './Header.types.d';
 import './Header.scss';
@@ -55,7 +56,9 @@ const Header: React.FC<THeaderProps> = ({ onOpenMenu }) => {
       value: 'profile',
       label: 'Thông tin cá nhân',
       icon: EIconName.AddressBook,
-      onClick: (): void => {},
+      onClick: (): void => {
+        navigate(Paths.MyProfile);
+      },
     },
     {
       value: 'logout',

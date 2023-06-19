@@ -51,7 +51,7 @@ const PaymentIntegration: React.FC = () => {
 
   const handleSubmitSuccess = (): void => {
     getSettings();
-    showNotification(ETypeNotification.SUCCESS, 'Cập nhật cấu hình thành công !');
+    showNotification(ETypeNotification.SUCCESS, 'Cập Nhật Cấu Hình Thành Công !');
   };
 
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;

@@ -11,6 +11,7 @@ import {
   ECreateUserAction,
   EGetBranchesAction,
   EUpdateUserAction,
+  EUploadAvatarUserAction,
   createUserAction,
   getBranchesAction,
   updateUserAction,
@@ -63,7 +64,10 @@ const ModalUserForm: React.FC<TModalUserFormProps> = ({ visible, data, onClose, 
 
   const createUserLoading = useSelector((state: TRootState) => state.loadingReducer[ECreateUserAction.CREATE_USER]);
   const updateUserLoading = useSelector((state: TRootState) => state.loadingReducer[EUpdateUserAction.UPDATE_USER]);
-  const loading = createUserLoading || updateUserLoading;
+  const uploadAvatarUserLoading = useSelector(
+    (state: TRootState) => state.loadingReducer[EUploadAvatarUserAction.UPLOAD_AVATAR_USER],
+  );
+  const loading = createUserLoading || updateUserLoading || uploadAvatarUserLoading;
 
   const handleSubmit = (): void => {
     form.validateFields().then((values) => {

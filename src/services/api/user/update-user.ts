@@ -10,6 +10,7 @@ export type TUpdateUserPaths = {
 export type TUpdateUserBody = unknown;
 
 export type TUpdateUserMaterials = {
+  useAdmin?: boolean;
   paths?: TUpdateUserPaths;
   body?: TUpdateUserBody;
 };
@@ -20,7 +21,11 @@ export type TUpdateUserResponse = TCommonResponse & {
 
 // FUNCTION
 
-export const updateUser = async ({ paths, body }: TUpdateUserMaterials): Promise<TUpdateUserResponse> => {
-  const response = await ApiService.put(`/v1/api/admin/users/${paths?.id}`, body);
+export const updateUser = async ({
+  paths,
+  body,
+  useAdmin = true,
+}: TUpdateUserMaterials): Promise<TUpdateUserResponse> => {
+  const response = await ApiService.put(`/v1/api${useAdmin ? '/admin' : ''}/users/${paths?.id}`, body);
   return response.data;
 };
