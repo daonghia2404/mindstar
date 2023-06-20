@@ -26,7 +26,12 @@ const RecentOrdersTable: React.FC<TRecentOrdersTableProps> = () => {
       width: 72,
       render: (_: string, record: TOrder): React.ReactElement => (
         <div className="Table-image">
-          <Avatar size={72} shape="square" defaultImage image={getFullUrlStatics(record.product_image_path)} />
+          <Avatar
+            size={72}
+            shape="square"
+            defaultImage
+            image={getFullUrlStatics(record?.items?.[0]?.product_image_path)}
+          />
         </div>
       ),
     },

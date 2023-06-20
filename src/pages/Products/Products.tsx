@@ -140,6 +140,7 @@ const Products: React.FC = () => {
       key: 'category',
       dataIndex: 'category',
       title: 'Danh mục',
+      className: 'limit-width',
       render: (_: string, record: TProduct): React.ReactElement =>
         record?.category ? (
           <Tags

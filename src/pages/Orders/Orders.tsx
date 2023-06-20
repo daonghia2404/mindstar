@@ -136,7 +136,7 @@ const Orders: React.FC = () => {
               </>
             )}
 
-            <div className="Table-info-description">{record?.customer_info?.address}</div>
+            <div className="Table-info-description ellipsis-2">{record?.customer_info?.address || EEmpty.DASH}</div>
 
             {record?.customer_info?.mobile ? (
               <a

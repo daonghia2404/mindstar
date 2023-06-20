@@ -119,6 +119,7 @@ const TimeOffs: React.FC = () => {
           <Link to={Paths.PlayerDetail(String(record?.player?.id))} className="Table-info-title">
             {record?.player?.name}
           </Link>
+          <br />
           {record?.player?.mobile ? (
             <a href={`tel: ${record?.player?.mobile}`} className="Table-link">
               {record?.player?.mobile}
