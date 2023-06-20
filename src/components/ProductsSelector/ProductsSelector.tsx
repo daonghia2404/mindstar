@@ -58,7 +58,7 @@ const ProductsSelector: React.FC<TProductsSelectorProps> = ({ label, required, v
 
   const handleChangeQuantity = (quantity: number, data: TProduct): void => {
     const newData = value?.map((item) => {
-      if (item.value === data.id) {
+      if (item.value === data?.product_id || data.id) {
         return {
           ...item,
           quantity,
