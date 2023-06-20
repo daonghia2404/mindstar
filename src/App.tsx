@@ -80,6 +80,7 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.MyPlan} component={Pages.MyPlan} />
           <ProtectedRoute path={Paths.PlanPackages} component={Pages.PlanPackages} />
           <ProtectedRoute path={Paths.MyProfile} component={Pages.MyProfile} />
+          <ProtectedRoute path={Paths.Payrolls} component={Pages.Payrolls} />
 
           <Redirect noThrow from={Paths.Rest} to={`${LayoutPaths.Admin}${Paths.Dashboard}`} />
         </Admin>
