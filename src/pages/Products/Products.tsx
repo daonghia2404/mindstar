@@ -205,11 +205,14 @@ const Products: React.FC = () => {
   ];
 
   const getProducts = useCallback(() => {
+    const categoryId = (getProductsParamsRequest?.categoryId as unknown as TSelectOption)?.value;
+    const auditingStatuses = (getProductsParamsRequest?.auditingStatuses as unknown as TSelectOption)?.value;
     dispatch(
       getProductsAction.request({
         params: {
           ...getProductsParamsRequest,
-          categoryId: (getProductsParamsRequest?.categoryId as unknown as TSelectOption)?.value,
+          categoryId,
+          auditingStatuses: typeof auditingStatuses === 'number' ? auditingStatuses : EAuditingStatus.ACTIVE,
         },
         headers: { branchIds: currentBranchId },
       }),
@@ -253,6 +256,21 @@ const Products: React.FC = () => {
                           categoryId: option as any,
                         });
                       }}
+                    />
+                  </Col>
+                  <Col>
+                    <Select
+                      label="Trạng thái"
+                      value={getProductsParamsRequest?.auditingStatuses as any}
+                      onChange={(options): void => {
+                        setGetProductsParamsRequest({
+                          ...getProductsParamsRequest,
+                          page: DEFAULT_PAGE,
+                          auditingStatuses: options as any,
+                        });
+                      }}
+                      allowClear
+                      options={dataProductStatusOptions}
                     />
                   </Col>
                 </Row>

@@ -8,7 +8,7 @@ export type TGetProductsParams = {
   page: number;
   size: number;
   sort?: string;
-  auditingStatuses?: string;
+  auditingStatuses?: string | number;
   categoryId?: string;
   search?: string;
 };
