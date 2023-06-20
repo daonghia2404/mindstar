@@ -73,6 +73,7 @@ import Briefcase from './Briefcase';
 import JewishStar from './JewishStar';
 import ShieldCancel from './ShieldCancel';
 import ArrowBigUpLines from './ArrowBigUpLines';
+import Pdf from './Pdf';
 
 const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
   const renderIcon = (): React.ReactElement => {
@@ -213,6 +214,8 @@ const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
         return <ShieldCancel color={color} />;
       case EIconName.ArrowBigUpLines:
         return <ArrowBigUpLines color={color} />;
+      case EIconName.Pdf:
+        return <Pdf color={color} />;
 
       default:
         return <></>;

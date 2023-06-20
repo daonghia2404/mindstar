@@ -78,6 +78,10 @@
           &.limit-width {
             min-width: 18rem;
 
+            &-middle {
+              min-width: 24rem;
+            }
+
             &-large {
               min-width: 28rem;
             }

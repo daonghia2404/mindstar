@@ -124,7 +124,7 @@
           right: 1.2rem;
         }
 
-        .ant-picker:not(.ant-picker-range) .ant-picker-input>input,
+        .ant-picker .ant-picker-input>input,
         .Select-show-value,
         .ant-input {
           height: 1.8rem;
@@ -186,7 +186,7 @@
           right: 1.2rem;
         }
 
-        .ant-picker:not(.ant-picker-range) .ant-picker-input>input,
+        .ant-picker .ant-picker-input>input,
         .Select-show-value,
         .ant-input {
           height: 2.4rem;
@@ -248,7 +248,7 @@
           right: 1.2rem;
         }
 
-        .ant-picker:not(.ant-picker-range) .ant-picker-input>input,
+        .ant-picker .ant-picker-input>input,
         .Select-show-value,
         .ant-input {
           height: 2.8rem;
@@ -294,7 +294,7 @@
       position: static;
     }
 
-    .ant-picker:not(.ant-picker-range),
+    .ant-picker,
     .ant-input-affix-wrapper,
     .ant-input {
       padding: 0;

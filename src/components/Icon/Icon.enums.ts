@@ -68,6 +68,7 @@ export enum EIconName {
   Briefcase = 'Briefcase',
   ShieldCancel = 'ShieldCancel',
   ArrowBigUpLines = 'ArrowBigUpLines',
+  Pdf = 'Pdf',
 }
 
 export enum EIconColor {

@@ -3,6 +3,21 @@
 .DatePicker {
   .ant-picker {
     width: 100%;
+
+    &.ant-picker-range {
+      .ant-picker-active-bar {
+        background: $purple-heart;
+        margin-left: 0;
+      }
+    }
+  }
+
+  &.FormField {
+    .FormField {
+      &-field {
+        padding-right: 2.4rem;
+      }
+    }
   }
 
   &-dropdown {
@@ -92,6 +107,12 @@
     .ant-picker-panel-container {
       border-radius: .8rem;
       box-shadow: 0 0 4px rgba(0, 0, 0, .2);
+    }
+
+    .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single)::before,
+    .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single)::before,
+    .ant-picker-cell-in-view.ant-picker-cell-in-range::before {
+      background: $white-lilac;
     }
   }
 }
