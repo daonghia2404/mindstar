@@ -87,7 +87,7 @@ const ModalShopSuppliers: React.FC<TModalSupplierFormProps> = ({ visible, data, 
       title={data ? 'Sửa Nhà Phân Phối' : 'Tạo mới Nhà Phân Phối'}
       visible={visible}
       onClose={onClose}
-      width={540}
+      width={480}
       cancelButton={{ title: 'Huỷ Bỏ', disabled: loading, onClick: onClose }}
       confirmButton={{ title: 'Đồng Ý', disabled: loading, onClick: handleSubmit }}
     >

@@ -62,6 +62,7 @@ const EarnPoints = lazy(() => retryLoadComponent(() => import('@/pages/EarnPoint
 const MyPlan = lazy(() => retryLoadComponent(() => import('@/pages/MyPlan')));
 const PlanPackages = lazy(() => retryLoadComponent(() => import('@/pages/PlanPackages')));
 const MyProfile = lazy(() => retryLoadComponent(() => import('@/pages/MyProfile')));
+const Payrolls = lazy(() => retryLoadComponent(() => import('@/pages/Payrolls')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -86,6 +87,7 @@ export const Paths = {
   Classes: '/classes',
   ClassDetail: (id?: string): string => `/classes/${id || ':id'}`,
   Events: '/events',
+  Payrolls: '/payrolls',
   Players: '/players',
   PlayerDetail: (id?: string): string => `/players/${id || ':id'}`,
   AttendancesPlayers: '/attendances/players',
@@ -137,6 +139,7 @@ export const Pages = {
   Classes,
   ClassDetail,
   Events,
+  Payrolls,
   Players,
   PlayerDetail,
   Attendances,

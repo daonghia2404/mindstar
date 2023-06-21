@@ -188,7 +188,7 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({ visible, data, onC
       title={data ? 'Sửa Chi Phí' : 'Tạo mới Chi Phí'}
       visible={visible}
       onClose={onClose}
-      width={540}
+      width={480}
       cancelButton={{ title: 'Huỷ Bỏ', disabled: loading, onClick: onClose }}
       confirmButton={{ title: 'Đồng Ý', disabled: loading, onClick: handleSubmit }}
     >

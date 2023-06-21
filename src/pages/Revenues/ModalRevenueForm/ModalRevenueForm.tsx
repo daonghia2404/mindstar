@@ -145,7 +145,7 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
       title={data ? 'Sửa Doanh Thu' : 'Tạo mới Doanh Thu'}
       visible={visible}
       onClose={onClose}
-      width={540}
+      width={480}
       cancelButton={{ title: 'Huỷ Bỏ', disabled: loading, onClick: onClose }}
       confirmButton={{ title: 'Đồng Ý', disabled: loading, onClick: handleSubmit }}
     >
