@@ -1,39 +1,31 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
-import { Link } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
-import { EEmpty, EFormat } from '@/common/enums';
+import { EEmpty } from '@/common/enums';
 import Card from '@/components/Card';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import Input from '@/components/Input';
 import Table from '@/components/Table';
 import { TRootState } from '@/redux/reducers';
-import DatePicker from '@/components/DatePicker';
-import Avatar from '@/components/Avatar';
 import { Paths } from '@/pages/routers';
-
-import './Payrolls.scss';
 import DropdownMenu, { TDropdownMenuItem } from '@/components/DropdownMenu';
 import Button, { EButtonStyleType } from '@/components/Button';
-import ModalChangeSalaryForm from '@/pages/Payrolls/ModalChangeSalaryForm';
+import Status, { EStatusStyleType } from '@/components/Status';
+
+import './Payrolls.scss';
 
 const Payrolls: React.FC = () => {
   const dispatch = useDispatch();
 
-  const [changeSalaryFormModalState, setChangeSalaryFormModalState] = useState<{ visible: boolean; data?: any }>({
-    visible: false,
-  });
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
   const getPayrollsLoading = false;
 
   const [getPayrollsParamsRequest, setGetPayrollsParamsRequest] = useState<any>({
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
-    fromDate: moment().startOf('month')?.valueOf(),
-    toDate: moment().endOf('month')?.valueOf(),
   });
 
   const handlePaginationChange = (page: number, size: number, sort?: string): void => {
@@ -53,88 +45,73 @@ const Payrolls: React.FC = () => {
     });
   };
 
-  const handleOpenChangeSalaryFormModal = (): void => {
-    setChangeSalaryFormModalState({ visible: true });
-  };
-  const handleCloseChangeSalaryFormModal = (): void => {
-    setChangeSalaryFormModalState({ visible: false });
-  };
-
   const dataTableDropdownActions = (): TDropdownMenuItem[] => [
     {
-      value: 'edit',
-      label: 'Sửa Khoản Lương',
-      icon: EIconName.Pencil,
+      value: 'view',
+      label: 'Chi Tiết',
+      icon: EIconName.Eye,
       onClick: (): void => {
-        handleOpenChangeSalaryFormModal();
+        navigate(Paths.PayrollDetail(String('1')));
       },
+    },
+    {
+      value: 'edit',
+      label: 'Sửa',
+      icon: EIconName.Pencil,
+      onClick: (): void => {},
+    },
+    {
+      value: 'delete',
+      label: 'Xoá',
+      icon: EIconName.Trash,
+      danger: true,
+      onClick: (): void => {},
     },
   ];
 
   const columns = [
     {
-      key: 'avatar',
-      dataIndex: 'avatar',
-      title: '',
-      render: (_: string, record: any): React.ReactElement => {
-        return (
-          <div className="Table-image">
-            <Avatar shape="circle" size={48} image={record?.image} />
-          </div>
-        );
-      },
-    },
-    {
       key: 'name',
       dataIndex: 'name',
-      title: 'Tên',
+      title: 'Phiếu lương',
       className: 'limit-width',
-      render: (_: string, record: any): React.ReactElement => {
+      render: (): React.ReactElement => {
         return (
-          <div className="Table-info">
-            <Link to={Paths.ManagerDetail('1')} className="Table-info-title">
-              {record?.name}
-            </Link>
-            <div className="Table-info-description">{record?.desc}</div>
-          </div>
+          <Link to={Paths.PayrollDetail('1')} className="Table-link">
+            Lương tháng 05/2023
+          </Link>
         );
       },
-    },
-    {
-      key: 'timeKeeping',
-      dataIndex: 'timeKeeping',
-      title: 'Chấm Công',
-      render: (_: string, record: any): React.ReactElement => {
-        return (
-          <div className="Table-info">
-            <div className="Table-info-title">{record?.timekeeping}</div>
-          </div>
-        );
-      },
-    },
-    {
-      key: 'basicSalary',
-      dataIndex: 'basicSalary',
-      title: 'Lương Cơ Bản',
-      render: (_: string, record: any): string => record?.salary || EEmpty.DASH,
-    },
-    {
-      key: 'salaryIncrease',
-      dataIndex: 'salaryIncrease',
-      title: 'Khoản Tăng Lương',
-      render: (_: string, record: any): string => record?.salary_increase || EEmpty.DASH,
-    },
-    {
-      key: 'salaryReduction',
-      dataIndex: 'salaryReduction',
-      title: 'Khoản Giảm Lương',
-      render: (_: string, record: any): string => record?.salary_reduction || EEmpty.DASH,
     },
     {
       key: 'totalSalary',
       dataIndex: 'totalSalary',
-      title: 'Tổng Lương',
-      render: (_: string, record: any): string => record?.salary_total || EEmpty.DASH,
+      title: 'Tổng Thanh Toán Lương',
+      sorter: true,
+      render: (): string => `80.000.000đ`,
+    },
+    {
+      key: 'status',
+      dataIndex: 'status',
+      title: 'Trạng thái',
+      sorter: true,
+      render: (): React.ReactElement => {
+        return <Status label="Đã thanh toán" styleType={EStatusStyleType.SUCCESS} />;
+      },
+    },
+    {
+      key: 'createDate',
+      dataIndex: 'createDate',
+      title: 'Ngày Tạo',
+      className: 'nowrap',
+      sorter: true,
+      render: (): string => `30/12/2023`,
+    },
+    {
+      key: 'description',
+      dataIndex: 'description',
+      title: 'Ghi chú',
+      render: (value: string): string => value || EEmpty.DASH,
     },
     {
       key: 'actions',
@@ -153,53 +130,6 @@ const Payrolls: React.FC = () => {
           </DropdownMenu>
         </div>
       ),
-    },
-  ];
-
-  const dataSources = [
-    {
-      key: '1',
-      name: 'Trinh Van Huan',
-      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
-      desc: 'Tập Sự',
-      timekeeping: '19.0',
-      salary: '1.000.000 đ',
-      salary_increase: '1.000.000 đ',
-      salary_reduction: '1.000.000 đ',
-      salary_total: '1.000.000 đ',
-    },
-    {
-      key: '1',
-      name: 'Trinh Van Huan',
-      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
-      desc: 'Tập Sự',
-      timekeeping: '19.0',
-      salary: '1.000.000 đ',
-      salary_increase: '1.000.000 đ',
-      salary_reduction: '1.000.000 đ',
-      salary_total: '1.000.000 đ',
-    },
-    {
-      key: '1',
-      name: 'Trinh Van Huan',
-      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
-      desc: 'Tập Sự',
-      timekeeping: '19.0',
-      salary: '1.000.000 đ',
-      salary_increase: '1.000.000 đ',
-      salary_reduction: '1.000.000 đ',
-      salary_total: '1.000.000 đ',
-    },
-    {
-      key: '1',
-      name: 'Trinh Van Huan',
-      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
-      desc: 'Tập Sự',
-      timekeeping: '19.0',
-      salary: '1.000.000 đ',
-      salary_increase: '1.000.000 đ',
-      salary_reduction: '1.000.000 đ',
-      salary_total: '1.000.000 đ',
     },
   ];
 
@@ -230,27 +160,6 @@ const Payrolls: React.FC = () => {
                   </Col>
                 </Row>
               </Col>
-              <Col>
-                <Row gutter={[16, 16]}>
-                  <Col>
-                    <DatePicker
-                      value={moment(getPayrollsParamsRequest.fromDate)}
-                      label="Tháng"
-                      picker="month"
-                      format={EFormat['MM/YYYY']}
-                      placeholder=" "
-                      onChange={(data: any): void => {
-                        setGetPayrollsParamsRequest({
-                          ...getPayrollsParamsRequest,
-                          page: DEFAULT_PAGE,
-                          fromDate: data?.clone()?.startOf('month')?.valueOf(),
-                          toDate: data?.clone()?.endOf('month')?.valueOf(),
-                        });
-                      }}
-                    />
-                  </Col>
-                </Row>
-              </Col>
             </Row>
           </Card>
         </Col>
@@ -258,24 +167,26 @@ const Payrolls: React.FC = () => {
           <Card className="Payrolls-table">
             <Table
               header={
-                <Row gutter={[16, 16]} align="middle">
-                  <Col>
-                    <div className="Table-total-item">
-                      <Icon name={EIconName.Users} color={EIconColor.TUNDORA} />
-                      Tổng Giáo Viên: <strong>{4 || EEmpty.ZERO}</strong>
-                    </div>
-                  </Col>
+                <Row gutter={[16, 16]} align="middle" justify="space-between">
                   <Col>
                     <div className="Table-total-item">
                       <Icon name={EIconName.PigMoney} color={EIconColor.TUNDORA} />
-                      Tổng Lương: <strong>{'4.000.000 đ' || EEmpty.ZERO}</strong>
+                      Tổng Phiếu Lương: <strong>{'4' || EEmpty.ZERO}</strong>
                     </div>
+                  </Col>
+                  <Col>
+                    <Button
+                      title="Tạo mới Phiếu lương"
+                      styleType={EButtonStyleType.PURPLE}
+                      iconName={EIconName.Plus}
+                      iconColor={EIconColor.WHITE}
+                    />
                   </Col>
                 </Row>
               }
               loading={getPayrollsLoading}
               columns={columns}
-              dataSources={dataSources}
+              dataSources={[1, 2, 3, 4, 5]}
               page={getPayrollsParamsRequest?.page}
               pageSize={getPayrollsParamsRequest?.size}
               total={4}
@@ -284,12 +195,6 @@ const Payrolls: React.FC = () => {
           </Card>
         </Col>
       </Row>
-
-      <ModalChangeSalaryForm
-        {...changeSalaryFormModalState}
-        onClose={handleCloseChangeSalaryFormModal}
-        onSuccess={getPayrolls}
-      />
     </div>
   );
 };

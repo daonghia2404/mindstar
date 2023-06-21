@@ -123,7 +123,7 @@ const Revenues: React.FC = () => {
                 {record?.buyer?.name || EEmpty.DASH}
               </Link>
             ) : (
-              <div className="Table-info-title">{record?.buyer?.name || EEmpty.DASH}</div>
+              <>{record?.buyer?.name && <div className="Table-info-title">{record?.buyer?.name || EEmpty.DASH}</div>}</>
             )}
             {record?.title && <div className="Table-info-title">{record?.title || EEmpty.DASH}</div>}
             {!record.title && <div className="Table-info-description">{record?.buyer_class?.name || EEmpty.DASH}</div>}

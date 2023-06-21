@@ -62,7 +62,9 @@ const EarnPoints = lazy(() => retryLoadComponent(() => import('@/pages/EarnPoint
 const MyPlan = lazy(() => retryLoadComponent(() => import('@/pages/MyPlan')));
 const PlanPackages = lazy(() => retryLoadComponent(() => import('@/pages/PlanPackages')));
 const MyProfile = lazy(() => retryLoadComponent(() => import('@/pages/MyProfile')));
+const PdfOrders = lazy(() => retryLoadComponent(() => import('@/pages/PdfOrders')));
 const Payrolls = lazy(() => retryLoadComponent(() => import('@/pages/Payrolls')));
+const PayrollDetail = lazy(() => retryLoadComponent(() => import('@/pages/PayrollDetail')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -71,6 +73,7 @@ const Register = lazy(() => retryLoadComponent(() => import('@/pages/Register'))
 export const LayoutPaths = {
   Guest: '/guest',
   Auth: '/auth',
+  View: '/view',
   Admin: '/',
 };
 
@@ -87,7 +90,6 @@ export const Paths = {
   Classes: '/classes',
   ClassDetail: (id?: string): string => `/classes/${id || ':id'}`,
   Events: '/events',
-  Payrolls: '/payrolls',
   Players: '/players',
   PlayerDetail: (id?: string): string => `/players/${id || ':id'}`,
   AttendancesPlayers: '/attendances/players',
@@ -119,6 +121,9 @@ export const Paths = {
   MyPlan: '/my-plan',
   PlanPackages: '/my-plan/packages',
   MyProfile: '/my-profile',
+  PdfOrders: '/pdf-orders',
+  Payrolls: '/payrolls',
+  PayrollDetail: (id?: string): string => `/payrolls/${id || ':id'}`,
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -139,7 +144,6 @@ export const Pages = {
   Classes,
   ClassDetail,
   Events,
-  Payrolls,
   Players,
   PlayerDetail,
   Attendances,
@@ -168,6 +172,9 @@ export const Pages = {
   MyPlan,
   PlanPackages,
   MyProfile,
+  PdfOrders,
+  Payrolls,
+  PayrollDetail,
 
   Login,
   LoginDomain,

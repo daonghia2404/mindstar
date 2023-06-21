@@ -1,0 +1,12 @@
+@import '@/assets/styles/_global.scss';
+
+.PayrollDetail {
+  .FormField.suffix-visible .FormField-field {
+    width: calc(100% - 1rem);
+  }
+
+  .FormField-suffix-text {
+    width: 1rem;
+    background: transparent;
+  }
+}

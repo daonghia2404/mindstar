@@ -31,6 +31,8 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
       Paths.AttendancesPlayers,
       Paths.Practices,
       Paths.Schedules,
+      Paths.Payrolls,
+      Paths.PayrollDetail(data?.id),
     ],
     children: [
       {
@@ -139,10 +141,18 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
       },
       {
         id: '2-10',
-        title: 'Tính lương',
+        title: 'Phiếu lương',
         icon: EIconName.PigMoney,
         link: Paths.Payrolls,
-        activePaths: [Paths.Payrolls],
+        activePaths: [Paths.Payrolls, Paths.PayrollDetail(data?.id)],
+      },
+      {
+        id: '2-10-1',
+        title: 'Tính Lương',
+        hide: true,
+        icon: EIconName.PigMoney,
+        link: Paths.PayrollDetail(data?.id),
+        activePaths: [Paths.PayrollDetail(data?.id)],
       },
     ],
   },

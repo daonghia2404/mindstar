@@ -39,7 +39,7 @@ const FormField: React.FC<TFormFieldProps> = ({
         if (!disabled && focused && !readOnlyText && !readonly) {
           setTimeout(() => {
             onBlur?.();
-          }, 100);
+          }, 300);
         }
       }}
       style={style}

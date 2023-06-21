@@ -177,7 +177,7 @@ const Orders: React.FC = () => {
                 <div className="Orders-products-item flex items-center">
                   <Avatar shape="square" image={getFullUrlStatics(item.product_image_path)} size={48} defaultImage />
                   <div className="Table-info">
-                    <div className="Table-info-title">{item.product_name || EEmpty.DASH}</div>
+                    <div className="Table-info-title ellipsis-2">{item.product_name || EEmpty.DASH}</div>
                     <div className="Table-info-description">Số lượng: {item.quantity || EEmpty.ZERO}</div>
                   </div>
                 </div>
