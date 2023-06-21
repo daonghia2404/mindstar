@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import { Link } from '@reach/router';
 
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
 import { EEmpty, EFormat } from '@/common/enums';
@@ -9,21 +10,24 @@ import Card from '@/components/Card';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import Input from '@/components/Input';
 import Table from '@/components/Table';
-import { EGetEventsAction, getEventsAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
-
-import './Payrolls.scss';
-import Select from '@/components/Select';
 import DatePicker from '@/components/DatePicker';
 import Avatar from '@/components/Avatar';
+import { Paths } from '@/pages/routers';
+
+import './Payrolls.scss';
+import DropdownMenu, { TDropdownMenuItem } from '@/components/DropdownMenu';
+import Button, { EButtonStyleType } from '@/components/Button';
+import ModalChangeSalaryForm from '@/pages/Payrolls/ModalChangeSalaryForm';
 
 const Payrolls: React.FC = () => {
   const dispatch = useDispatch();
 
+  const [changeSalaryFormModalState, setChangeSalaryFormModalState] = useState<{ visible: boolean; data?: any }>({
+    visible: false,
+  });
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
-
-  const eventesState = useSelector((state: TRootState) => state.eventReducer.getEventsResponse)?.data;
-  const getPayrollsLoading = useSelector((state: TRootState) => state.loadingReducer[EGetEventsAction.GET_EVENTS]);
+  const getPayrollsLoading = false;
 
   const [getPayrollsParamsRequest, setGetPayrollsParamsRequest] = useState<any>({
     page: DEFAULT_PAGE,
@@ -45,9 +49,27 @@ const Payrolls: React.FC = () => {
     setGetPayrollsParamsRequest({
       ...getPayrollsParamsRequest,
       page: DEFAULT_PAGE,
-      title: keyword,
+      search: keyword,
     });
   };
+
+  const handleOpenChangeSalaryFormModal = (): void => {
+    setChangeSalaryFormModalState({ visible: true });
+  };
+  const handleCloseChangeSalaryFormModal = (): void => {
+    setChangeSalaryFormModalState({ visible: false });
+  };
+
+  const dataTableDropdownActions = (): TDropdownMenuItem[] => [
+    {
+      value: 'edit',
+      label: 'Sửa Khoản Lương',
+      icon: EIconName.Pencil,
+      onClick: (): void => {
+        handleOpenChangeSalaryFormModal();
+      },
+    },
+  ];
 
   const columns = [
     {
@@ -56,8 +78,8 @@ const Payrolls: React.FC = () => {
       title: '',
       render: (_: string, record: any): React.ReactElement => {
         return (
-          <div className="Table-info">
-            <Avatar shape="circle" size={72} image={record?.image} />
+          <div className="Table-image">
+            <Avatar shape="circle" size={48} image={record?.image} />
           </div>
         );
       },
@@ -70,19 +92,18 @@ const Payrolls: React.FC = () => {
       render: (_: string, record: any): React.ReactElement => {
         return (
           <div className="Table-info">
-            <div className="Table-info-title" style={{ color: EIconColor.PURPLE_HEART }}>
+            <Link to={Paths.ManagerDetail('1')} className="Table-info-title">
               {record?.name}
-            </div>
+            </Link>
             <div className="Table-info-description">{record?.desc}</div>
           </div>
         );
       },
     },
     {
-      key: 'timekeeping',
-      dataIndex: 'timekeeping',
+      key: 'timeKeeping',
+      dataIndex: 'timeKeeping',
       title: 'Chấm Công',
-      className: 'limit-width',
       render: (_: string, record: any): React.ReactElement => {
         return (
           <div className="Table-info">
@@ -92,56 +113,46 @@ const Payrolls: React.FC = () => {
       },
     },
     {
-      key: 'basic salary',
-      dataIndex: 'basic salary',
+      key: 'basicSalary',
+      dataIndex: 'basicSalary',
       title: 'Lương Cơ Bản',
-      className: 'limit-width',
-      render: (_: string, record: any): React.ReactElement => {
-        return (
-          <div className="Table-info">
-            <div className="Table-info-title">{record?.salary}</div>
-          </div>
-        );
-      },
+      render: (_: string, record: any): string => record?.salary || EEmpty.DASH,
     },
     {
-      key: 'salary increase',
-      dataIndex: 'salary increase',
+      key: 'salaryIncrease',
+      dataIndex: 'salaryIncrease',
       title: 'Khoản Tăng Lương',
-      className: 'limit-width',
-      render: (_: string, record: any): React.ReactElement => {
-        return (
-          <div className="Table-info">
-            <div className="Table-info-title">{record?.salary_increase}</div>
-          </div>
-        );
-      },
+      render: (_: string, record: any): string => record?.salary_increase || EEmpty.DASH,
     },
     {
-      key: 'salary reduction',
-      dataIndex: 'salary reduction',
+      key: 'salaryReduction',
+      dataIndex: 'salaryReduction',
       title: 'Khoản Giảm Lương',
-      className: 'limit-width',
-      render: (_: string, record: any): React.ReactElement => {
-        return (
-          <div className="Table-info">
-            <div className="Table-info-title">{record?.salary_reduction}</div>
-          </div>
-        );
-      },
+      render: (_: string, record: any): string => record?.salary_reduction || EEmpty.DASH,
     },
     {
-      key: 'total salary',
-      dataIndex: 'total salary',
+      key: 'totalSalary',
+      dataIndex: 'totalSalary',
       title: 'Tổng Lương',
-      className: 'limit-width',
-      render: (_: string, record: any): React.ReactElement => {
-        return (
-          <div className="Table-info">
-            <div className="Table-info-title">{record?.salary_total}</div>
-          </div>
-        );
-      },
+      render: (_: string, record: any): string => record?.salary_total || EEmpty.DASH,
+    },
+    {
+      key: 'actions',
+      dataIndex: 'actions',
+      title: '',
+      width: 40,
+      render: (): React.ReactElement => (
+        <div onClick={(e): void => e.stopPropagation()}>
+          <DropdownMenu placement="bottomRight" options={dataTableDropdownActions()}>
+            <Button
+              iconName={EIconName.DotsVertical}
+              iconColor={EIconColor.BLACK}
+              size="small"
+              styleType={EButtonStyleType.GENERAL_FORM}
+            />
+          </DropdownMenu>
+        </div>
+      ),
     },
   ];
 
@@ -193,7 +204,7 @@ const Payrolls: React.FC = () => {
   ];
 
   const getPayrolls = useCallback(() => {
-    dispatch(getEventsAction.request({ params: getPayrollsParamsRequest, headers: { branchIds: currentBranchId } }));
+    // dispatch(getEventsAction.request({ params: getPayrollsParamsRequest, headers: { branchIds: currentBranchId } }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, getPayrollsParamsRequest, currentBranchId]);
 
@@ -216,12 +227,6 @@ const Payrolls: React.FC = () => {
                       suffixIcon={<Icon name={EIconName.Search} color={EIconColor.TUNDORA} />}
                       onSearch={handleSearch}
                     />
-                  </Col>
-                  <Col>
-                    <Select label="Loại doanh thu" placeholder="Chọn dữ liệu" allowClear />
-                  </Col>
-                  <Col>
-                    <Select label="Loại thanh toán" placeholder="Chọn dữ liệu" allowClear />
                   </Col>
                 </Row>
               </Col>
@@ -253,11 +258,17 @@ const Payrolls: React.FC = () => {
           <Card className="Payrolls-table">
             <Table
               header={
-                <Row gutter={[16, 16]} justify="space-between" align="middle">
+                <Row gutter={[16, 16]} align="middle">
+                  <Col>
+                    <div className="Table-total-item">
+                      <Icon name={EIconName.Users} color={EIconColor.TUNDORA} />
+                      Tổng Giáo Viên: <strong>{4 || EEmpty.ZERO}</strong>
+                    </div>
+                  </Col>
                   <Col>
                     <div className="Table-total-item">
                       <Icon name={EIconName.PigMoney} color={EIconColor.TUNDORA} />
-                      Tổng Tính Lương: <strong>{eventesState?.total_elements || EEmpty.ZERO}</strong>
+                      Tổng Lương: <strong>{'4.000.000 đ' || EEmpty.ZERO}</strong>
                     </div>
                   </Col>
                 </Row>
@@ -267,12 +278,18 @@ const Payrolls: React.FC = () => {
               dataSources={dataSources}
               page={getPayrollsParamsRequest?.page}
               pageSize={getPayrollsParamsRequest?.size}
-              total={eventesState?.total_elements}
+              total={4}
               onPaginationChange={handlePaginationChange}
             />
           </Card>
         </Col>
       </Row>
+
+      <ModalChangeSalaryForm
+        {...changeSalaryFormModalState}
+        onClose={handleCloseChangeSalaryFormModal}
+        onSuccess={getPayrolls}
+      />
     </div>
   );
 };
