@@ -11,6 +11,7 @@ import { TDatePickerProps } from './DatePicker.types';
 import './DatePicker.scss';
 
 const DatePicker: React.FC<TDatePickerProps> = ({
+  allowEmpty,
   className,
   value,
   placeholder,
@@ -25,6 +26,7 @@ const DatePicker: React.FC<TDatePickerProps> = ({
   showNow,
   showTime,
   picker,
+  range,
   disabledDate,
   onChange,
 }) => {
@@ -37,6 +39,34 @@ const DatePicker: React.FC<TDatePickerProps> = ({
 
   const handleBlur = (): void => {
     setFocused(false);
+  };
+
+  const props = {
+    ref,
+    dropdownClassName: 'DatePicker-dropdown',
+    open: focused,
+    onOpenChange: setFocused,
+    format: format || EFormat['DD/MM/YYYY'],
+    value,
+    picker,
+    showNow,
+    locale: {
+      ...vi,
+      lang: {
+        ...vi.lang,
+        ok: 'Chọn',
+      },
+    },
+    allowClear: false,
+    inputReadOnly: true,
+    clearIcon: <Icon name={EIconName.X} color={EIconColor.DOVE_GRAY} />,
+    placeholder,
+    onChange,
+    disabledDate,
+    suffixIcon: <></>,
+    onFocus: handleFocus,
+    showTime,
+    getPopupContainer: (trigger: HTMLElement): HTMLElement => trigger,
   };
 
   return (
@@ -66,33 +96,7 @@ const DatePicker: React.FC<TDatePickerProps> = ({
       style={style}
       onClick={handleFocus}
     >
-      <AntdDatePicker
-        ref={ref}
-        dropdownClassName="DatePicker-dropdown"
-        open={focused}
-        onOpenChange={setFocused}
-        format={format || EFormat['DD/MM/YYYY']}
-        value={value}
-        picker={picker}
-        showNow={showNow}
-        locale={{
-          ...vi,
-          lang: {
-            ...vi.lang,
-            ok: 'Chọn',
-          },
-        }}
-        allowClear={false}
-        inputReadOnly
-        clearIcon={<Icon name={EIconName.X} color={EIconColor.DOVE_GRAY} />}
-        placeholder={placeholder}
-        onChange={onChange}
-        disabledDate={disabledDate}
-        suffixIcon={<></>}
-        onFocus={handleFocus}
-        showTime={showTime}
-        getPopupContainer={(trigger): HTMLElement => trigger}
-      />
+      {range ? <AntdDatePicker.RangePicker {...props} allowEmpty={allowEmpty} /> : <AntdDatePicker {...props} />}
     </FormField>
   );
 };

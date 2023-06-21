@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from '@reach/router';
+import moment, { Moment } from 'moment';
 
 import {
   DEFAULT_PAGE,
@@ -29,6 +30,7 @@ import { EEmpty, EFormat } from '@/common/enums';
 import { formatCurrency, formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
 import Avatar from '@/components/Avatar';
 import { Paths } from '@/pages/routers';
+import DatePicker from '@/components/DatePicker';
 
 import './Orders.scss';
 
@@ -105,6 +107,12 @@ const Orders: React.FC = () => {
   ];
 
   const columns = [
+    {
+      key: 'id',
+      dataIndex: 'id',
+      title: 'Mã đơn hàng',
+      render: (_: string, record: TOrder): string => `ORD${record.id}`,
+    },
     {
       key: 'avatar',
       dataIndex: 'avatar',
@@ -265,6 +273,8 @@ const Orders: React.FC = () => {
           ...getOrdersParamsRequest,
           orderStatus: (getOrdersParamsRequest?.orderStatus as unknown as TSelectOption)?.value,
           transactionStatuses: (getOrdersParamsRequest?.transactionStatuses as unknown as TSelectOption)?.value,
+          fromDate: getOrdersParamsRequest?.fromDate,
+          toDate: getOrdersParamsRequest?.toDate,
         },
         headers: { branchIds: currentBranchId },
       }),
@@ -280,45 +290,73 @@ const Orders: React.FC = () => {
       <Row gutter={[24, 24]}>
         <Col span={24}>
           <Card className="Orders-filter">
-            <Row gutter={[16, 16]}>
+            <Row gutter={[16, 16]} justify="space-between">
               <Col>
-                <Input
-                  style={{ minWidth: '24rem' }}
-                  label="Tìm kiếm"
-                  suffixIcon={<Icon name={EIconName.Search} color={EIconColor.TUNDORA} />}
-                  onSearch={handleSearch}
-                />
+                <Row gutter={[16, 16]}>
+                  <Col>
+                    <Input
+                      style={{ minWidth: '24rem' }}
+                      label="Tìm kiếm"
+                      suffixIcon={<Icon name={EIconName.Search} color={EIconColor.TUNDORA} />}
+                      onSearch={handleSearch}
+                    />
+                  </Col>
+                  <Col>
+                    <Select
+                      label="Trạng thái đơn hàng"
+                      placeholder="Chọn dữ liệu"
+                      value={getOrdersParamsRequest?.orderStatus as any}
+                      allowClear
+                      showSearch
+                      options={dataOrderStatusOptions}
+                      onChange={(option): void => {
+                        setGetOrdersParamsRequest({
+                          ...getOrdersParamsRequest,
+                          page: DEFAULT_PAGE,
+                          orderStatus: option as any,
+                        });
+                      }}
+                    />
+                  </Col>
+                  <Col>
+                    <Select
+                      label="Trạng thái thanh toán"
+                      placeholder="Chọn dữ liệu"
+                      value={getOrdersParamsRequest?.transactionStatuses as any}
+                      allowClear
+                      showSearch
+                      options={dataTransactionStatusOptions}
+                      onChange={(option): void => {
+                        setGetOrdersParamsRequest({
+                          ...getOrdersParamsRequest,
+                          page: DEFAULT_PAGE,
+                          transactionStatuses: option as any,
+                        });
+                      }}
+                    />
+                  </Col>
+                </Row>
               </Col>
               <Col>
-                <Select
-                  label="Trạng thái đơn hàng"
-                  placeholder="Chọn dữ liệu"
-                  value={getOrdersParamsRequest?.orderStatus as any}
+                <DatePicker
+                  allowEmpty={[true, true]}
+                  active
+                  range
+                  style={{ minWidth: '18rem' }}
+                  placeholder={['Ngày bắt đầu', 'Ngày kết thúc']}
                   allowClear
-                  showSearch
-                  options={dataOrderStatusOptions}
-                  onChange={(option): void => {
+                  value={
+                    getOrdersParamsRequest?.fromDate && getOrdersParamsRequest?.toDate
+                      ? [moment(getOrdersParamsRequest?.fromDate), moment(getOrdersParamsRequest?.toDate)]
+                      : undefined
+                  }
+                  label="Ngày"
+                  onChange={(data: Moment[]): void => {
                     setGetOrdersParamsRequest({
                       ...getOrdersParamsRequest,
                       page: DEFAULT_PAGE,
-                      orderStatus: option as any,
-                    });
-                  }}
-                />
-              </Col>
-              <Col>
-                <Select
-                  label="Trạng thái thanh toán"
-                  placeholder="Chọn dữ liệu"
-                  value={getOrdersParamsRequest?.transactionStatuses as any}
-                  allowClear
-                  showSearch
-                  options={dataTransactionStatusOptions}
-                  onChange={(option): void => {
-                    setGetOrdersParamsRequest({
-                      ...getOrdersParamsRequest,
-                      page: DEFAULT_PAGE,
-                      transactionStatuses: option as any,
+                      fromDate: data?.[0]?.clone()?.startOf('day')?.valueOf(),
+                      toDate: data?.[1]?.clone()?.endOf('day')?.valueOf(),
                     });
                   }}
                 />
@@ -339,13 +377,25 @@ const Orders: React.FC = () => {
                     </div>
                   </Col>
                   <Col>
-                    <Button
-                      title="Tạo mới Đơn hàng"
-                      styleType={EButtonStyleType.PURPLE}
-                      iconName={EIconName.Plus}
-                      iconColor={EIconColor.WHITE}
-                      onClick={handleOpenModalOrderForm}
-                    />
+                    <Row gutter={[16, 16]}>
+                      <Col>
+                        <Button
+                          title="Tải File PDF"
+                          styleType={EButtonStyleType.OUTLINE_PURPLE}
+                          iconName={EIconName.Pdf}
+                          iconColor={EIconColor.WHITE}
+                        />
+                      </Col>
+                      <Col>
+                        <Button
+                          title="Tạo mới Đơn hàng"
+                          styleType={EButtonStyleType.PURPLE}
+                          iconName={EIconName.Plus}
+                          iconColor={EIconColor.WHITE}
+                          onClick={handleOpenModalOrderForm}
+                        />
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               }

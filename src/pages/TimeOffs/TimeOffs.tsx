@@ -104,7 +104,7 @@ const TimeOffs: React.FC = () => {
       title: '',
       width: 48,
       render: (_: string, record: TTimeOff): React.ReactElement => (
-        <div className="Table-info">
+        <div className="Table-image">
           <Avatar size={48} image={getFullUrlStatics(record?.player?.avatar)} />
         </div>
       ),
@@ -175,6 +175,7 @@ const TimeOffs: React.FC = () => {
       key: 'at_date_time',
       dataIndex: 'at_date_time',
       title: 'Thời gian nghỉ',
+      className: 'limit-width-middle',
       render: (_: string, record: TTimeOff): React.ReactElement =>
         record.at_date_time ? (
           <Tags

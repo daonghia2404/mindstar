@@ -27,7 +27,7 @@ const MyPlan: React.FC = () => {
     navigate(Paths.SettingsGeneral);
   };
 
-  const dataTableDropdownActions = (data?: any): TDropdownMenuItem[] => [
+  const dataTableDropdownActions = (): TDropdownMenuItem[] => [
     {
       value: 'edit',
       label: 'Sửa',
@@ -125,9 +125,9 @@ const MyPlan: React.FC = () => {
       dataIndex: 'actions',
       title: '',
       width: 40,
-      render: (_: string, record: any): React.ReactElement => (
+      render: (): React.ReactElement => (
         <div onClick={(e): void => e.stopPropagation()}>
-          <DropdownMenu placement="bottomRight" options={dataTableDropdownActions(record)}>
+          <DropdownMenu placement="bottomRight" options={dataTableDropdownActions()}>
             <Button
               iconName={EIconName.DotsVertical}
               iconColor={EIconColor.BLACK}

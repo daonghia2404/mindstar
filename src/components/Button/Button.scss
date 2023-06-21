@@ -126,4 +126,17 @@
       }
     }
   }
+
+  &.OUTLINE_PURPLE {
+    .ant-btn {
+      border-color: $purple-heart;
+      background: $white;
+      color: $purple-heart;
+
+      &:hover {
+        border-color: $purple-heart;
+        background: $white-lilac;
+      }
+    }
+  }
 }

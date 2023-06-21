@@ -196,7 +196,7 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
                   ETransactionType.SPONSORSHIP,
                   ETransactionType.GIFT_AND_CONTRIBUTIONS,
                   ETransactionType.OTHER_SALES_AND_SERVICES,
-                  ETransactionType.TOURNAMENT,
+                  // ETransactionType.TOURNAMENT,
                 ].includes(formValues?.transactionType?.value) ? (
                   <Col span={24}>
                     <Form.Item name="title" rules={[validationRules.required()]}>
