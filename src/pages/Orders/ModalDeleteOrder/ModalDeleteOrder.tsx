@@ -48,7 +48,8 @@ const ModalDeleteOrder: React.FC<TModalDeleteOrderProps> = ({ visible, data, onC
     >
       <div className="ModalDeleteOrder-wrapper">
         <div className="Modal-text text-center">
-          Bạn có chắc chắn muốn xoá Đơn Hàng của <strong>"{data?.customer_info?.name || EEmpty.DASH}"</strong> không?
+          Bạn có chắc chắn muốn xoá Đơn Hàng của{' '}
+          <strong>"{data?.customer_info?.player_name || data?.customer_info?.name || EEmpty.DASH}"</strong> không?
           <br />
           Dữ liệu đã xoá không thể khôi phục.
         </div>

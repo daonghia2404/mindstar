@@ -52,13 +52,13 @@ const ProductsSelector: React.FC<TProductsSelectorProps> = ({ label, required, v
   };
 
   const handleRemoveProduct = (data: TProduct): void => {
-    const newData = value.filter((item) => item.value !== data.id);
+    const newData = value.filter((item) => item.value !== (data?.product_id || data.id));
     onChange?.(newData);
   };
 
   const handleChangeQuantity = (quantity: number, data: TProduct): void => {
     const newData = value?.map((item) => {
-      if (item.value === data?.product_id || data.id) {
+      if (item.value === (data?.product_id || data.id)) {
         return {
           ...item,
           quantity,
