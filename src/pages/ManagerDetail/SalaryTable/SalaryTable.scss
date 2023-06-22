@@ -1,0 +1,9 @@
+@import '@/assets/styles/_global.scss';
+
+.SalaryTable {
+  .Table {
+    .ant-table-thead {
+      display: none;
+    }
+  }
+}

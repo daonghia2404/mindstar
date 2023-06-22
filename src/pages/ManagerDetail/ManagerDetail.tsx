@@ -20,6 +20,7 @@ import ModalDeleteManager from '@/pages/Managers/ModalDeleteManager';
 import ModalManagerForm from '@/pages/Managers/ModalManagerForm';
 import Status from '@/components/Status';
 import AttendancesTable from '@/pages/ManagerDetail/AttendancesTable';
+import SalaryTable from '@/pages/ManagerDetail/SalaryTable/SalaryTable';
 
 import './ManagerDetail.scss';
 
@@ -199,6 +200,11 @@ const ManagerDetail: React.FC = () => {
         <Col span={24} md={{ span: 12 }} xl={{ span: 12 }} xxl={{ span: 6 }}>
           <Card title="Thông tin điểm danh">
             <AttendancesTable />
+          </Card>
+        </Col>
+        <Col span={24} md={{ span: 12 }} xl={{ span: 12 }} xxl={{ span: 9 }}>
+          <Card title="Thu nhập cá nhân">
+            <SalaryTable />
           </Card>
         </Col>
       </Row>

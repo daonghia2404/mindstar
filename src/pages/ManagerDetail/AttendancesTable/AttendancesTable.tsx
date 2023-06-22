@@ -3,7 +3,6 @@ import { useParams } from '@reach/router';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
-import { TAttendancesTableProps } from './AttendancesTable.types';
 import Table from '@/components/Table';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataTypeCheckInOptions } from '@/common/constants';
 import { EEmpty, EFormat, ETypeCheckIn } from '@/common/enums';
@@ -14,6 +13,7 @@ import { TRootState } from '@/redux/reducers';
 import { TGetManagerAttendancesParams } from '@/services/api';
 import Icon from '@/components/Icon';
 
+import { TAttendancesTableProps } from './AttendancesTable.types';
 import './AttendancesTable.scss';
 
 const AttendancesTable: React.FC<TAttendancesTableProps> = () => {
