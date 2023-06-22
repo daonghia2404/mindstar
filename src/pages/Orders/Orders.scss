@@ -5,7 +5,7 @@
     .ant-col {
       &:not(:last-child) {
         .Orders-products-item {
-          border-bottom: 1px solid $silver-chalice;
+          border-bottom: 1px dashed $silver-chalice;
         }
       }
     }

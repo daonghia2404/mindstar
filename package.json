@@ -56,7 +56,8 @@
     "slick-carousel": "^1.8.1",
     "tsconfig-paths-webpack-plugin": "^3.5.1",
     "typescript": "^4.1.2",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "@react-pdf/renderer": "2.1.2"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^6.2.9",
@@ -120,7 +121,10 @@
   },
   "resolutions": {
     "//": "See https://github.com/facebook/create-react-app/issues/11773",
-    "react-error-overlay": "6.0.9"
+    "react-error-overlay": "6.0.9",
+    "@react-pdf/font": "2.2.0",
+    "@react-pdf/pdfkit": "2.4.0",
+    "react-pdf/pdfjs-dist": "2.0.550"
   },
   "browserslist": [
     ">0.2%",

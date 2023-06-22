@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 import moment, { Moment } from 'moment';
 
 import {
@@ -29,7 +29,7 @@ import Status from '@/components/Status';
 import { EEmpty, EFormat } from '@/common/enums';
 import { formatCurrency, formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
 import Avatar from '@/components/Avatar';
-import { Paths } from '@/pages/routers';
+import { LayoutPaths, Paths } from '@/pages/routers';
 import DatePicker from '@/components/DatePicker';
 
 import './Orders.scss';
@@ -105,6 +105,16 @@ const Orders: React.FC = () => {
       },
     },
   ];
+
+  const handleExportPdfFile = (): void => {
+    navigate(`${LayoutPaths.View}${Paths.PdfOrders}`, {
+      state: {
+        orders: ordersState?.content || [],
+        fromDate: getOrdersParamsRequest?.fromDate,
+        toDate: getOrdersParamsRequest?.toDate,
+      },
+    });
+  };
 
   const columns = [
     {
@@ -384,6 +394,7 @@ const Orders: React.FC = () => {
                           styleType={EButtonStyleType.OUTLINE_PURPLE}
                           iconName={EIconName.Pdf}
                           iconColor={EIconColor.WHITE}
+                          onClick={handleExportPdfFile}
                         />
                       </Col>
                       <Col>
