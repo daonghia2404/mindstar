@@ -14,8 +14,8 @@ import TextArea from '@/components/TextArea';
 
 import { TModalPurchaseOrderFormProps } from './ModalPurchaseOrderForm.type';
 import './ModalPurchaseOrderForm.scss';
-import UploadImages from '@/components/UploadImages';
 import DatePicker from '@/components/DatePicker';
+import UploadImages from '@/components/UploadImages';
 
 const ModalPurchaseOrderForm: React.FC<TModalPurchaseOrderFormProps> = ({ visible, data, onClose, onSuccess }) => {
   const dispatch = useDispatch();
@@ -94,18 +94,33 @@ const ModalPurchaseOrderForm: React.FC<TModalPurchaseOrderFormProps> = ({ visibl
         <Form form={form}>
           <Row gutter={[16, 16]}>
             <Col span={24}>
+              <Form.Item name="no" rules={[validationRules.required()]}>
+                <Input label="Mã đơn hàng" required placeholder="Nhập dữ liệu" active />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
               <Form.Item name="images" rules={[validationRules.required()]}>
                 <UploadImages label="Ảnh (Tối đa 5 tấm ảnh)" required />
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item name="code" rules={[validationRules.required()]}>
-                <Input label="Mã đơn hàng" required placeholder="Nhập dữ liệu" active />
+              <Form.Item name="item" rules={[validationRules.required()]}>
+                <Select label="Mô tả" placeholder="Chọn dữ liệu" required active showSearch />
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item name="description">
-                <TextArea label="Mô tả" placeholder="Nhập dữ liệu" active />
+              <Form.Item name="supplier" rules={[validationRules.required()]}>
+                <Select label="Nhà cung cấp" placeholder="Chọn dữ liệu" required active showSearch />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item name="quantily" rules={[validationRules.required()]}>
+                <Input label="Số lương" required placeholder="Nhập dữ liệu" active />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item name="price" rules={[validationRules.required()]}>
+                <Input label="Đơn giá" required placeholder="Nhập dữ liệu" active />
               </Form.Item>
             </Col>
             <Col span={24}>
@@ -114,13 +129,8 @@ const ModalPurchaseOrderForm: React.FC<TModalPurchaseOrderFormProps> = ({ visibl
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item name="qtyHand" rules={[validationRules.required()]}>
-                <Input label="Số lượng nhập" required placeholder="Nhập dữ liệu" active useNumber numberic />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item name="qtySold" rules={[validationRules.required()]}>
-                <Input label="Số lượng bán" required placeholder="Nhập dữ liệu" active useNumber numberic />
+              <Form.Item name="shipping" rules={[validationRules.required()]}>
+                <Input label="Phí vận chuyển" required placeholder="Nhập dữ liệu" active useNumber numberic />
               </Form.Item>
             </Col>
             <Col span={24}>
@@ -138,6 +148,11 @@ const ModalPurchaseOrderForm: React.FC<TModalPurchaseOrderFormProps> = ({ visibl
                   showSearch
                   options={dataOrderStatusOptions}
                 />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item name="note">
+                <TextArea label="Ghi chú" placeholder="Nhập dữ liệu" active />
               </Form.Item>
             </Col>
           </Row>
