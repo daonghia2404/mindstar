@@ -116,8 +116,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 8,
-    paddingTop: 4,
-    paddingBottom: 4,
+    paddingTop: 8,
+    paddingBottom: 8,
   },
   productsItemImage: {
     flexGrow: 0,
@@ -156,7 +156,7 @@ const PdfOrders: React.FC = () => {
                   uri: '/logo.png',
                   method: 'GET',
                   headers: {},
-                  body: '',
+                  body: undefined,
                 }}
                 style={styles.headerLogo}
               />
@@ -253,7 +253,7 @@ const PdfOrders: React.FC = () => {
                                             uri: getFullUrlStatics(product?.product_image_path),
                                             method: 'GET',
                                             headers: {},
-                                            body: '',
+                                            body: undefined,
                                           }}
                                           style={styles.productsItemImage}
                                         />
@@ -277,7 +277,7 @@ const PdfOrders: React.FC = () => {
                                       uri: item.customer_info?.avatar,
                                       method: 'GET',
                                       headers: {},
-                                      body: '',
+                                      body: undefined,
                                     }}
                                     style={[styles.productsItemImage, { borderRadius: '50%' }]}
                                   />
