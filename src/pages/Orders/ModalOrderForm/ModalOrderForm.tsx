@@ -79,7 +79,7 @@ const ModalOrderForm: React.FC<TModalOrderFormProps> = ({ visible, data, onClose
     form.validateFields().then((values) => {
       const body = {
         player_id: values?.player ? Number(values?.player?.value) : undefined,
-        user_id: values?.player?.data?.user ? Number(values?.player?.data?.user) : undefined,
+        user_id: values?.player?.data?.user_id ? Number(values?.player?.data?.user_id) : undefined,
         branch_id: values?.branch ? Number(values?.branch?.value) : undefined,
         order_time: data?.order_time || moment().valueOf(),
         order_status: values?.orderStatus?.value,
@@ -133,7 +133,11 @@ const ModalOrderForm: React.FC<TModalOrderFormProps> = ({ visible, data, onClose
           })),
           isPlayer: Boolean(data?.customer_info?.player_id),
           player: data?.customer_info?.player_id
-            ? { label: data?.customer_info?.player_name, value: data?.customer_info?.player_id }
+            ? {
+                label: data?.customer_info?.player_name,
+                value: data?.customer_info?.player_id,
+                data: { ...data?.customer_info?.user, user_id: data?.customer_info?.user_id },
+              }
             : undefined,
           customerName: data?.customer_info?.name,
           address: data?.customer_info?.address,
