@@ -41,9 +41,10 @@ const RecentOrdersTable: React.FC<TRecentOrdersTableProps> = () => {
       title: '',
       render: (_: string, record: TOrder): React.ReactElement => (
         <div className="Table-info">
-          <div className="Table-info-title">
-            {record?.items?.map((item) => `${item.product_name || EEmpty.DASH} x ${item.quantity}`)?.join(', ') ||
-              EEmpty.DASH}
+          <div className="Table-info-title pre-wrap">
+            {record?.items
+              ?.map((item) => `${item.product_name || EEmpty.DASH} x ${item.quantity || EEmpty.ZERO}`)
+              ?.join('\n') || EEmpty.DASH}
           </div>
           <div className="Table-info-description">
             {record?.customer_info?.player_name || record?.customer_info?.name || EEmpty.DASH} -{' '}

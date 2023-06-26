@@ -9,6 +9,7 @@ import { TOrder } from '@/common/models';
 import { Paths } from '@/pages/routers';
 
 import './PdfOrders.scss';
+import { dataPaymentTypeOptions } from '@/common/constants';
 
 // Create styles
 Font.register({
@@ -292,8 +293,12 @@ const PdfOrders: React.FC = () => {
                               </View>
                             </View>
                             <View style={[styles.tableCell, styles.tableCell4]}>
-                              <Text style={[styles.description, { color: EIconColor.TUNDORA }]}>
+                              <Text style={[styles.description, { color: EIconColor.TUNDORA, marginBottom: 4 }]}>
                                 {formatCurrency({ amount: item.transaction_amount, showSuffix: true })}
+                              </Text>
+                              <Text style={[styles.description]}>
+                                {dataPaymentTypeOptions.find((option) => option.value === item.payment_type)?.label ||
+                                  EEmpty.DASH}
                               </Text>
                             </View>
                             <View style={[styles.tableCell, styles.tableCell5]}>
