@@ -5,8 +5,8 @@ import ApiService from '@/services/api';
 // TYPES
 
 export type TGetOrdersParams = {
-  page: number;
-  size: number;
+  page?: number;
+  size?: number;
   fromDate?: number;
   toDate?: number;
   orderStatus?: string;
@@ -18,6 +18,7 @@ export type TGetOrdersParams = {
 export type TGetOrdersMaterials = {
   params?: TGetOrdersParams;
   headers?: THeaderBranchIds;
+  isShowAll?: boolean;
 };
 
 export type TGetOrdersResponse = TCommonResponse & {
@@ -28,7 +29,7 @@ export type TGetOrdersResponse = TCommonResponse & {
 
 // FUNCTION
 
-export const getOrders = async ({ params, headers }: TGetOrdersMaterials): Promise<TGetOrdersResponse> => {
-  const response = await ApiService.get(`/v1/api/admin/orders`, { params, headers });
+export const getOrders = async ({ isShowAll, params, headers }: TGetOrdersMaterials): Promise<TGetOrdersResponse> => {
+  const response = await ApiService.get(`/v1/api/admin/orders${isShowAll ? '/all' : ''}`, { params, headers });
   return response.data;
 };

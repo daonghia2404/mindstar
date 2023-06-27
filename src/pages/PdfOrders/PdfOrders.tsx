@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
 import { PDFViewer, Page, Text, Image, Font, View, Document, StyleSheet } from '@react-pdf/renderer';
-import { navigate, useLocation } from '@reach/router';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { EIconColor } from '@/components/Icon';
-import { formatCurrency, formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
+import { formatCurrency, formatISODateToDateTime, getFullUrlStatics, getQueryParam } from '@/utils/functions';
 import { EEmpty, EFormat } from '@/common/enums';
 import { TOrder } from '@/common/models';
-import { Paths } from '@/pages/routers';
+import { dataPaymentTypeOptions } from '@/common/constants';
+import { EGetOrdersAction, getOrdersAction } from '@/redux/actions';
+import { TRootState } from '@/redux/reducers';
 
 import './PdfOrders.scss';
-import { dataPaymentTypeOptions } from '@/common/constants';
+import Loading from '@/components/Loading';
 
 // Create styles
 Font.register({
@@ -136,17 +138,30 @@ const styles = StyleSheet.create({
 });
 
 const PdfOrders: React.FC = () => {
-  const location: any = useLocation()?.state || {};
-  const { orders, fromDate, toDate } = location;
+  const dispatch = useDispatch();
+  const fromDate = getQueryParam('fromDate');
+  const toDate = getQueryParam('toDate');
+  const branchIds = getQueryParam('branchId');
 
-  const isEmpty = !orders || (orders && orders.length === 0);
+  const getOrdersLoading = useSelector((state: TRootState) => state.loadingReducer[EGetOrdersAction.GET_ORDERS]);
+  const ordersState = useSelector((state: TRootState) => state.orderReducer.getOrdersResponse)
+    ?.data as unknown as TOrder[];
 
   useEffect(() => {
-    if (isEmpty) navigate(Paths.Orders);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    dispatch(
+      getOrdersAction.request({
+        isShowAll: true,
+        params: { fromDate: fromDate ? Number(fromDate) : undefined, toDate: toDate ? Number(toDate) : undefined },
+        headers: { branchIds: branchIds || '' },
+      }),
+    );
+  }, [dispatch, fromDate, toDate, branchIds]);
 
-  return (
+  return !ordersState || getOrdersLoading ? (
+    <div className="flex items-center justify-center" style={{ height: '100vh' }}>
+      <Loading />
+    </div>
+  ) : (
     <PDFViewer showToolbar style={{ width: '100%', height: '100vh' }}>
       <Document title="Bảng Thống Kê Đơn Hàng">
         <Page size="A4" orientation="landscape">
@@ -171,11 +186,11 @@ const PdfOrders: React.FC = () => {
                 <Text style={styles.description}>
                   Từ ngày{' '}
                   <Text style={styles.bold}>
-                    {fromDate ? formatISODateToDateTime(fromDate, EFormat['DD/MM/YYYY']) : `-∞`}
+                    {fromDate ? formatISODateToDateTime(Number(fromDate), EFormat['DD/MM/YYYY']) : `-∞`}
                   </Text>{' '}
                   đến ngày{' '}
                   <Text style={styles.bold}>
-                    {toDate ? formatISODateToDateTime(toDate, EFormat['DD/MM/YYYY']) : `+∞`}
+                    {toDate ? formatISODateToDateTime(Number(toDate), EFormat['DD/MM/YYYY']) : `+∞`}
                   </Text>
                 </Text>
               </View>
@@ -184,7 +199,7 @@ const PdfOrders: React.FC = () => {
                   <View style={styles.cardHeaderItem}>
                     <Text style={[styles.description, { color: EIconColor.TUNDORA }]}>
                       Tổng Đơn Hàng:{` `}
-                      <Text style={styles.bold}>{orders?.length || EEmpty.ZERO}</Text>
+                      <Text style={styles.bold}>{ordersState?.length || EEmpty.ZERO}</Text>
                     </Text>
                   </View>
                 </View>
@@ -221,7 +236,7 @@ const PdfOrders: React.FC = () => {
                     </View>
 
                     <View style={styles.tableBody}>
-                      {orders?.map((item: TOrder) => {
+                      {ordersState?.map((item: TOrder) => {
                         const isEmptyProducts = item?.items?.length === 0;
 
                         return (

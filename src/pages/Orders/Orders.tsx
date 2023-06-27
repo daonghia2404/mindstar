@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, navigate } from '@reach/router';
+import { Link } from '@reach/router';
 import moment, { Moment } from 'moment';
 
 import {
@@ -107,13 +107,12 @@ const Orders: React.FC = () => {
   ];
 
   const handleExportPdfFile = (): void => {
-    navigate(`${LayoutPaths.View}${Paths.PdfOrders}`, {
-      state: {
-        orders: ordersState?.content || [],
-        fromDate: getOrdersParamsRequest?.fromDate,
-        toDate: getOrdersParamsRequest?.toDate,
-      },
-    });
+    window.open(
+      `${LayoutPaths.View}${Paths.PdfOrders}?fromDate=${getOrdersParamsRequest?.fromDate || ''}&toDate=${
+        getOrdersParamsRequest?.toDate || ''
+      }&branchId=${currentBranchId}`,
+      '_blank',
+    );
   };
 
   const columns = [
