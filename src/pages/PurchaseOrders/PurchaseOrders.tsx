@@ -3,51 +3,76 @@ import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Card from '@/components/Card';
-import { TSelectOption } from '@/components/Select';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
 import Input from '@/components/Input';
 import { TRootState } from '@/redux/reducers';
 import Table from '@/components/Table';
 import Button, { EButtonStyleType } from '@/components/Button';
-import { EEmpty } from '@/common/enums';
-import { EGetRedeemsAction, getRedeemsAction } from '@/redux/actions';
+import { EEmpty, EFormat } from '@/common/enums';
+import { EGetInventoryHistoriesAction, getInventoryHistoriesAction } from '@/redux/actions';
 import DropdownMenu from '@/components/DropdownMenu';
 import { TDropdownMenuItem } from '@/components/DropdownMenu/DropdownMenu.types';
 import Avatar from '@/components/Avatar';
-import Status, { EStatusStyleType } from '@/components/Status';
 import ModalPurchaseOrdersForm from './ModalPurchaseOrdersForm';
 import ModalDeletePurchaseOrder from './ModalPurchaseOrdersDelete';
+import { TGetInventoryHistoriesParams } from '@/services/api';
+import { TInventoryHistory } from '@/common/models';
+import { formatCurrency, formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
+import Status, { EStatusStyleType } from '@/components/Status';
 
 import './PurchaseOrders.scss';
+import ModalExpenseForm from '@/pages/Expenses/ModalExpenseForm';
 
 const PurchaseOrders: React.FC = () => {
   const dispatch = useDispatch();
 
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
   const getPurchaseOrdersLoading = useSelector(
-    (state: TRootState) => state.loadingReducer[EGetRedeemsAction.GET_REDEEMS],
+    (state: TRootState) => state.loadingReducer[EGetInventoryHistoriesAction.GET_INVENTORY_HISTORIES],
   );
-  const PurchaseOrdersState = useSelector((state: TRootState) => state.redeemReducer.getRedeemsResponse)?.data;
+  const purchaseOrdersState = useSelector(
+    (state: TRootState) => state.inventoryReducer.getInventoryHistoriesResponse,
+  )?.data;
 
-  const [getPurchaseOrdersParamsRequest, setGetPurchaseOrdersParamsRequest] = useState<any>({
+  const [getPurchaseOrdersParamsRequest, setGetPurchaseOrdersParamsRequest] = useState<TGetInventoryHistoriesParams>({
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
   });
-  const [modalPurchaseOrderFormState, setModalPurchaseOrderFormState] = useState<{ visible: boolean; data?: any }>({
+  const [modalPurchaseOrderFormState, setModalPurchaseOrderFormState] = useState<{
+    visible: boolean;
+    data?: TInventoryHistory;
+  }>({
     visible: false,
   });
-  const [modalDeletePurchaseOrderstate, setModalDeletePurchaseOrderstate] = useState<{ visible: boolean; data?: any }>({
+  const [modalDeletePurchaseOrderstate, setModalDeletePurchaseOrderstate] = useState<{
+    visible: boolean;
+    data?: TInventoryHistory;
+  }>({
+    visible: false,
+  });
+  const [modalExpenseFormState, setModalExpenseFormState] = useState<{
+    visible: boolean;
+    dataInventoryHistory?: TInventoryHistory;
+  }>({
     visible: false,
   });
 
-  const handleOpenModalPurchaseOrderForm = (data?: any): void => {
+  const handleOpenModalExpenseForm = (data?: TInventoryHistory): void => {
+    setModalExpenseFormState({ visible: true, dataInventoryHistory: data });
+  };
+
+  const handleCloseModalExpenseForm = (): void => {
+    setModalExpenseFormState({ visible: false });
+  };
+
+  const handleOpenModalPurchaseOrderForm = (data?: TInventoryHistory): void => {
     setModalPurchaseOrderFormState({ visible: true, data });
   };
   const handleCloseModalPurchaseOrderForm = (): void => {
     setModalPurchaseOrderFormState({ visible: false });
   };
-  const handleOpenModalDeletePurchaseOrder = (data?: any): void => {
+  const handleOpenModalDeletePurchaseOrder = (data?: TInventoryHistory): void => {
     setModalDeletePurchaseOrderstate({ visible: true, data });
   };
   const handleCloseModalDeletePurchaseOrder = (): void => {
@@ -62,6 +87,7 @@ const PurchaseOrders: React.FC = () => {
       sort,
     });
   };
+
   const handleSearch = (keyword?: string): void => {
     setGetPurchaseOrdersParamsRequest({
       ...getPurchaseOrdersParamsRequest,
@@ -69,7 +95,17 @@ const PurchaseOrders: React.FC = () => {
       search: keyword,
     });
   };
-  const dataTableDropdownActions = (data?: any): TDropdownMenuItem[] => [
+
+  const dataTableDropdownActions = (data?: TInventoryHistory): TDropdownMenuItem[] => [
+    {
+      value: 'create-expense',
+      label: 'Tạo mới Chi Phí',
+      icon: EIconName.Coins,
+      hide: Boolean(data?.expense?.id),
+      onClick: (): void => {
+        handleOpenModalExpenseForm(data);
+      },
+    },
     {
       value: 'edit',
       label: 'Sửa',
@@ -88,124 +124,98 @@ const PurchaseOrders: React.FC = () => {
       },
     },
   ];
+
   const columns = [
     {
-      key: 'no',
-      dataIndex: 'no',
-      title: 'Mã Đơn Hàng',
-      width: 30,
-      render: (_: string, record: any): React.ReactElement => {
-        return (
-          <div className="Table-info">
-            <div className="Table-info-title">{record?.id}</div>
-          </div>
-        );
-      },
-    },
-    {
-      key: 'avatar',
-      dataIndex: 'avatar',
-      title: 'Sản Phẩm',
-      width: 48,
-      render: (_: string, record: any): React.ReactElement => (
+      key: 'image',
+      dataIndex: 'image',
+      title: 'Ảnh',
+      width: 72,
+      render: (_: string, record: TInventoryHistory): React.ReactElement => (
         <div className="Table-image">
-          {/* <Avatar size={48} image={getFullUrlStatics(record?.player_profile?.avatar)} /> */}
-          <Avatar shape="square" size={48} image={record?.image} />
+          <Avatar size={72} image={getFullUrlStatics(record?.product?.image)} defaultImage shape="square" />
         </div>
       ),
     },
     {
-      key: 'item',
-      dataIndex: 'item',
-      title: 'Mô Tả Sản Phẩm',
-      sorter: true,
-      width: 400,
-      render: (_: string, record: any): React.ReactElement => {
+      key: 'name',
+      dataIndex: 'name',
+      title: 'Tên',
+      className: 'limit-width',
+      render: (_: string, record: TInventoryHistory): React.ReactElement => {
         return (
           <div className="Table-info">
-            <div className="Table-info-title">{record?.item}</div>
+            <div className="Table-info-title ellipsis-2">{record?.product?.name || EEmpty.DASH}</div>
+            <div className="Table-info-description">Nhà phân phối: {record?.supplier?.name || EEmpty.DASH}</div>
           </div>
         );
       },
     },
     {
-      key: 'cog',
-      dataIndex: 'cog',
-      title: 'Tổng Giá Trị',
-      className: 'limit-width',
-      render: (_: string, record: any): React.ReactElement => {
-        return (
-          <div className="Table-info">
-            <div className="Table-info-title" style={{ color: EIconColor.PURPLE_HEART }}>
-              {record?.cog}
-            </div>
-          </div>
-        );
-      },
+      key: 'quantity',
+      dataIndex: 'quantity',
+      title: 'Số lượng nhập',
+      render: (_: string, record: TInventoryHistory): string => String(record?.quantities_in_hand || EEmpty.ZERO),
     },
     {
-      key: 'qtyHand',
-      dataIndex: 'qtyHand',
-      title: 'Số Lượng Nhập',
-      className: 'limit-width',
-      render: (_: string, record: any): React.ReactElement => {
-        return (
-          <div className="Table-info">
-            <div className="Table-info-title">{record?.hand}</div>
-          </div>
-        );
-      },
+      key: 'unit',
+      dataIndex: 'unit',
+      title: 'Đơn giá',
+      className: 'nowrap',
+      render: (_: string, record: TInventoryHistory): string =>
+        formatCurrency({ amount: record.unit_price || EEmpty.ZERO, showSuffix: true }),
     },
     {
-      key: 'qtySold',
-      dataIndex: 'qtySold',
-      title: 'Số Lượng Bán',
-      className: 'limit-width',
-      render: (_: string, record: any): React.ReactElement => {
-        return (
-          <div className="Table-info">
-            <div className="Table-info-title">{record?.sold}</div>
-          </div>
-        );
-      },
+      key: 'shippingFee',
+      dataIndex: 'shippingFee',
+      title: 'Phí vận chuyển',
+      className: 'nowrap',
+      render: (_: string, record: TInventoryHistory): string =>
+        formatCurrency({ amount: record.shipping_fee || EEmpty.ZERO, showSuffix: true }),
+    },
+    {
+      key: 'total',
+      dataIndex: 'total',
+      title: 'Tổng giá trị',
+      className: 'nowrap',
+      render: (_: string, record: TInventoryHistory): string =>
+        formatCurrency({ amount: record.total || EEmpty.ZERO, showSuffix: true }),
+    },
+    {
+      key: 'atDate',
+      dataIndex: 'atDate',
+      title: 'Ngày nhập',
+      className: 'nowrap',
+      render: (_: string, record: TInventoryHistory): string =>
+        record?.at_date ? formatISODateToDateTime(record.at_date, EFormat['DD/MM/YYYY - HH:mm']) : EEmpty.DASH,
     },
     {
       key: 'status',
       dataIndex: 'status',
       title: 'Trạng thái',
-      // render: (_: string, record: TRedeem): React.ReactElement => {
-      //   const status = dataOrderStatusOptions.find((item) => item.value === record.redeem_status);
-      //   return status ? <Status label={status?.label} styleType={status?.data?.statusType} /> : <>{EEmpty.DASH}</>;
-      // },
-      render: (): React.ReactElement => {
+      render: (_: string, record: TInventoryHistory): React.ReactElement => {
+        const isPaid = record?.expense?.id;
         return (
-          <div className="Table-info">
-            <Status label="Đang Xử Lý" styleType={EStatusStyleType.SUCCESS} />
-          </div>
+          <Status
+            label={isPaid ? 'Đã Thanh Toán' : 'Chưa Thanh Toán'}
+            styleType={isPaid ? EStatusStyleType.SUCCESS : EStatusStyleType.DANGER}
+          />
         );
       },
     },
     {
-      key: 'poDate',
-      dataIndex: 'poDate',
-      title: 'Ngày Tạo',
-      className: 'nowrap',
-      // render: (_: string, record: TRedeem): string =>
-      //   record.issue_date ? formatISODateToDateTime(record.issue_date, EFormat['DD/MM/YYYY - HH:mm']) : EEmpty.DASH,
-      render: (_: string, record: any): React.ReactElement => {
-        return (
-          <div className="Table-info">
-            <div className="Table-info-title">{record?.day}</div>
-          </div>
-        );
-      },
+      key: 'note',
+      dataIndex: 'note',
+      title: 'Ghi chú',
+      className: 'limit-width',
+      render: (value: string): string => value || EEmpty.DASH,
     },
     {
       key: 'actions',
       dataIndex: 'actions',
       title: '',
       width: 40,
-      render: (_: string, record: any): React.ReactElement => (
+      render: (_: string, record: TInventoryHistory): React.ReactElement => (
         <div onClick={(e): void => e.stopPropagation()}>
           <DropdownMenu placement="bottomRight" options={dataTableDropdownActions(record)}>
             <Button
@@ -219,64 +229,11 @@ const PurchaseOrders: React.FC = () => {
       ),
     },
   ];
-  const dataSources = [
-    {
-      key: '1',
-      id: '1',
-      item: 'Giày Đá Bóng Người Lớn, Giày Đá Banh Sân Cỏ Nhân Tạo Mira Pro Chất Liệu Da PU Cao Cấp Mẫu Mới Nhất 2021',
-      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
-      desc: 'Tập Sự',
-      timekeeping: '19.0',
-      cog: '21.000.000 đ',
-      hand: '1121',
-      sold: '14',
-      day: '01/01/1970 - 09:16',
-    },
-    {
-      key: '1',
-      id: '1',
-      item: 'Giày Đá Bóng Người Lớn, Giày Đá Banh Sân Cỏ Nhân Tạo Mira Pro Chất Liệu Da PU Cao Cấp Mẫu Mới Nhất 2021',
-      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
-      desc: 'Tập Sự',
-      timekeeping: '19.0',
-      cog: '21.000.000 đ',
-      hand: '1121',
-      sold: '14',
-      day: '01/01/1970 - 09:16',
-    },
-    {
-      key: '1',
-      id: '1',
-      item: 'Giày Đá Bóng Người Lớn, Giày Đá Banh Sân Cỏ Nhân Tạo Mira Pro Chất Liệu Da PU Cao Cấp Mẫu Mới Nhất 2021',
-      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
-      desc: 'Tập Sự',
-      timekeeping: '19.0',
-      cog: '21.000.000 đ',
-      hand: '1121',
-      sold: '14',
-      day: '01/01/1970 - 09:16',
-    },
-    {
-      key: '1',
-      id: '1',
-      item: 'Giày Đá Bóng Người Lớn, Giày Đá Banh Sân Cỏ Nhân Tạo Mira Pro Chất Liệu Da PU Cao Cấp Mẫu Mới Nhất 2021',
-      image: 'https://youngkids-dev.acaziasoft.com/statics/avatar/546/uzui-tengen-meme-face_54179850704676418495.jpeg',
-      desc: 'Tập Sự',
-      timekeeping: '19.0',
-      cog: '21.000.000 đ',
-      hand: '1121',
-      sold: '14',
-      day: '01/01/1970 - 09:16',
-    },
-  ];
 
   const getPurchaseOrders = useCallback(() => {
     dispatch(
-      getRedeemsAction.request({
-        params: {
-          ...getPurchaseOrdersParamsRequest,
-          orderStatuses: (getPurchaseOrdersParamsRequest?.orderStatuses as unknown as TSelectOption)?.value,
-        },
+      getInventoryHistoriesAction.request({
+        params: getPurchaseOrdersParamsRequest,
         headers: { branchIds: currentBranchId },
       }),
     );
@@ -315,17 +272,26 @@ const PurchaseOrders: React.FC = () => {
                   <Col>
                     <div className="Table-total-item">
                       <Icon name={EIconName.PackageImport} color={EIconColor.TUNDORA} />
-                      Tổng Nhập Hàng: <strong>{PurchaseOrdersState?.total_elements || EEmpty.ZERO}</strong>
+                      Tổng Nhập Hàng: <strong>{purchaseOrdersState?.total_elements || EEmpty.ZERO}</strong>
                     </div>
+                  </Col>
+                  <Col>
+                    <Button
+                      title="Tạo mới Nhập Hàng"
+                      styleType={EButtonStyleType.PURPLE}
+                      iconName={EIconName.Plus}
+                      iconColor={EIconColor.WHITE}
+                      onClick={handleOpenModalPurchaseOrderForm}
+                    />
                   </Col>
                 </Row>
               }
               loading={getPurchaseOrdersLoading}
               columns={columns}
-              dataSources={dataSources}
+              dataSources={purchaseOrdersState?.content || []}
               page={getPurchaseOrdersParamsRequest?.page}
               pageSize={getPurchaseOrdersParamsRequest?.size}
-              total={PurchaseOrdersState?.total_elements}
+              total={purchaseOrdersState?.total_elements}
               onPaginationChange={handlePaginationChange}
             />
           </Card>
@@ -339,6 +305,11 @@ const PurchaseOrders: React.FC = () => {
       <ModalDeletePurchaseOrder
         {...modalDeletePurchaseOrderstate}
         onClose={handleCloseModalDeletePurchaseOrder}
+        onSuccess={getPurchaseOrders}
+      />
+      <ModalExpenseForm
+        {...modalExpenseFormState}
+        onClose={handleCloseModalExpenseForm}
         onSuccess={getPurchaseOrders}
       />
     </div>

@@ -1,6 +1,8 @@
+import { TInventoryHistory } from '@/common/models';
+
 export type TModalPurchaseOrderFormProps = {
   visible: boolean;
-  data?: any;
+  data?: TInventoryHistory;
   onClose?: () => void;
   onSuccess?: () => void;
 };

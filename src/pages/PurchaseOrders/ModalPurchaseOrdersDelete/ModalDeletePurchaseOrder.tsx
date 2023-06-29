@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Modal from '@/components/Modal';
 import { EButtonStyleType } from '@/components/Button';
 import { EEmpty, ETypeNotification } from '@/common/enums';
-import { deleteRedeemAction, EDeleteRedeemAction } from '@/redux/actions';
+import { deleteInventoryHistoryAction, EDeleteInventoryHistoryAction } from '@/redux/actions';
 import { showNotification } from '@/utils/functions';
 import { TRootState } from '@/redux/reducers';
 
@@ -15,15 +15,15 @@ import './ModalDeletePurchaseOrder.scss';
 const ModalDeletePurchaseOrder: React.FC<TModalDeletePurchaseOrderProps> = ({ visible, data, onClose, onSuccess }) => {
   const dispatch = useDispatch();
   const deletePurchaseOrderLoading = useSelector(
-    (state: TRootState) => state.loadingReducer[EDeleteRedeemAction.DELETE_REDEEM],
+    (state: TRootState) => state.loadingReducer[EDeleteInventoryHistoryAction.DELETE_INVENTORY_HISTORY],
   );
 
   const handleSubmit = (): void => {
-    dispatch(deleteRedeemAction.request({ paths: { id: data?.id || '' } }, handleSubmitSuccess));
+    dispatch(deleteInventoryHistoryAction.request({ paths: { id: data?.id || '' } }, handleSubmitSuccess));
   };
 
   const handleSubmitSuccess = (): void => {
-    showNotification(ETypeNotification.SUCCESS, 'Xoá Đơn Hàng Thành Công !');
+    showNotification(ETypeNotification.SUCCESS, 'Xoá Lịch Sử Nhập Hàng Thành Công !');
     onClose?.();
     onSuccess?.();
   };
@@ -31,7 +31,7 @@ const ModalDeletePurchaseOrder: React.FC<TModalDeletePurchaseOrderProps> = ({ vi
   return (
     <Modal
       className="ModalDeletePurchaseOrder"
-      title="Xoá Đơn Hàng"
+      title="Xoá Lịch Sử Nhập Hàng"
       visible={visible}
       onClose={onClose}
       width={400}
@@ -50,7 +50,8 @@ const ModalDeletePurchaseOrder: React.FC<TModalDeletePurchaseOrderProps> = ({ vi
     >
       <div className="ModalDeletePurchaseOrder-wrapper">
         <div className="Modal-text text-center">
-          Bạn có chắc chắn muốn xoá Đơn Hàng của <strong>"{data?.player_profile?.name || EEmpty.DASH}"</strong> không?
+          Bạn có chắc chắn muốn xoá lịch sử Nhập Hàng của sản phẩm{' '}
+          <strong>"{data?.product?.name || EEmpty.DASH}"</strong> không?
           <br />
           Dữ liệu đã xoá không thể khôi phục.
         </div>

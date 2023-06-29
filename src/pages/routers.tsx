@@ -100,7 +100,7 @@ export const Paths = {
   Orders: '/orders',
   Categories: '/categories',
   Rewards: '/rewards',
-  PurchaseOrders: '/purchaseorders',
+  PurchaseOrders: '/inventory-histories',
   Products: '/products',
   Redeems: '/redeems',
   SettingsGeneral: '/settings/general',

@@ -11,6 +11,7 @@ import dashboardSaga from './dashboard';
 import eConnectSaga from './e-connect';
 import eventSaga from './event';
 import expenseSaga from './expense';
+import inventorySaga from './inventory';
 import managerSaga from './manager';
 import merchantSaga from './merchant';
 import orderSaga from './order';
@@ -40,6 +41,7 @@ const rootSaga = function* root(): Generator {
     fork(eConnectSaga),
     fork(eventSaga),
     fork(expenseSaga),
+    fork(inventorySaga),
     fork(managerSaga),
     fork(merchantSaga),
     fork(orderSaga),

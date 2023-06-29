@@ -14,6 +14,7 @@ import {
   EGetPlayersAction,
   EUpdateExpenseAction,
   createExpenseAction,
+  createInventoryHistoryExpenseAction,
   getBranchesAction,
   getCategoriesAction,
   getManagersAction,
@@ -31,7 +32,13 @@ import { dataPaymentTypeOptions } from '@/common/constants';
 import { TModalExpenseFormProps } from './ModalExpenseForm.type';
 import './ModalExpenseForm.scss';
 
-const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({ visible, data, onClose, onSuccess }) => {
+const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({
+  visible,
+  data,
+  dataInventoryHistory,
+  onClose,
+  onSuccess,
+}) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [formValues, setFormValues] = useState<any>({});
@@ -56,7 +63,6 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({ visible, data, onC
     options: optionsCategories,
     handleLoadMore: handleLoadMoreCategories,
     handleSearch: handleSearchCategories,
-    handleReset: handleResetCategories,
   } = useOptionsPaginate(
     getCategoriesAction,
     'categoryReducer',
@@ -127,7 +133,24 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({ visible, data, onC
         payment_type: values?.paymentType?.value,
       };
 
-      if (data) {
+      if (dataInventoryHistory) {
+        dispatch(
+          createInventoryHistoryExpenseAction.request(
+            {
+              body: {
+                branch_id: values?.branch ? Number(values?.branch?.value) : undefined,
+                amount: values?.amount,
+                date: values?.atDate?.valueOf(),
+                note: values?.note,
+                payment_type: values?.paymentType?.value,
+                product_id: dataInventoryHistory?.product?.id,
+              },
+              paths: { id: dataInventoryHistory?.id },
+            },
+            handleSubmitSuccess,
+          ),
+        );
+      } else if (data) {
         dispatch(updateExpenseAction.request({ body, paths: { id: data?.id } }, handleSubmitSuccess));
       } else {
         dispatch(createExpenseAction.request({ body }, handleSubmitSuccess));
@@ -143,9 +166,14 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({ visible, data, onC
 
   useEffect(() => {
     if (visible) {
-      handleResetCategories();
-
-      if (data) {
+      if (dataInventoryHistory) {
+        const dataChanged = {
+          branch: currentBranch?.id ? { label: currentBranch?.name, value: String(currentBranch?.id) } : undefined,
+          amount: dataInventoryHistory?.total,
+        };
+        form.setFieldsValue(dataChanged);
+        setFormValues({ ...formValues, ...dataChanged });
+      } else if (data) {
         const dataChanged = {
           branch: data?.branch ? { label: data?.branch?.name, value: String(data?.branch?.id) } : undefined,
           amount: data?.amount,
@@ -195,21 +223,24 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({ visible, data, onC
       <div className="ModalExpenseForm-wrapper">
         <Form form={form} onValuesChange={(value, values): void => setFormValues({ ...formValues, ...values })}>
           <Row gutter={[16, 16]}>
-            <Col span={24}>
-              <Form.Item name="expenseType" rules={[validationRules.required()]}>
-                <Select
-                  label="Loại chi phí"
-                  placeholder="Chọn dữ liệu"
-                  required
-                  active
-                  disabled={Boolean(data)}
-                  showSearch
-                  options={optionsCategories}
-                  onSearch={handleSearchCategories}
-                  onLoadMore={handleLoadMoreCategories}
-                />
-              </Form.Item>
-            </Col>
+            {!dataInventoryHistory && (
+              <Col span={24}>
+                <Form.Item name="expenseType" rules={[validationRules.required()]}>
+                  <Select
+                    label="Loại chi phí"
+                    placeholder="Chọn dữ liệu"
+                    required
+                    active
+                    disabled={Boolean(data)}
+                    showSearch
+                    options={optionsCategories}
+                    onSearch={handleSearchCategories}
+                    onLoadMore={handleLoadMoreCategories}
+                  />
+                </Form.Item>
+              </Col>
+            )}
+
             <Col span={24}>
               <Form.Item name="branch" rules={[validationRules.required()]}>
                 <Select
@@ -287,6 +318,7 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({ visible, data, onC
                   useNumber
                   useComma
                   suffixText="đ"
+                  disabled={Boolean(dataInventoryHistory)}
                 />
               </Form.Item>
             </Col>
