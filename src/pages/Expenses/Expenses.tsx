@@ -17,8 +17,8 @@ import { EGetCategoriesAction, EGetExpensesAction, getCategoriesAction, getExpen
 import { TRootState } from '@/redux/reducers';
 import { TGetExpensesParams } from '@/services/api';
 import { formatCurrency, formatISODateToDateTime } from '@/utils/functions';
-import ModalDeleteRevenue from '@/pages/Expenses/ModalDeleteExpense';
-import ModalRevenueForm from '@/pages/Expenses/ModalExpenseForm';
+import ModalDeleteExpense from '@/pages/Expenses/ModalDeleteExpense';
+import ModalExpenseForm from '@/pages/Expenses/ModalExpenseForm';
 import Select from '@/components/Select';
 import DatePicker from '@/components/DatePicker';
 import Tags from '@/components/Tags';
@@ -32,10 +32,10 @@ const Expenses: React.FC = () => {
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
   const getExpensesLoading = useSelector((state: TRootState) => state.loadingReducer[EGetExpensesAction.GET_EXPENSES]);
   const expensesState = useSelector((state: TRootState) => state.expenseReducer.getExpensesResponse)?.data;
-  const [modalRewardFormState, setModalRevenueFormState] = useState<{ visible: boolean; data?: TExpense }>({
+  const [modalExpenseFormState, setModalExpenseFormState] = useState<{ visible: boolean; data?: TExpense }>({
     visible: false,
   });
-  const [modalDeleteRewardState, setModalDeleteRevenueState] = useState<{ visible: boolean; data?: TExpense }>({
+  const [modalDeleteExpenseState, setModalDeleteExpenseState] = useState<{ visible: boolean; data?: TExpense }>({
     visible: false,
   });
 
@@ -61,20 +61,20 @@ const Expenses: React.FC = () => {
     },
   );
 
-  const handleOpenModalRevenueForm = (data?: TExpense): void => {
-    setModalRevenueFormState({ visible: true, data });
+  const handleOpenModalExpenseForm = (data?: TExpense): void => {
+    setModalExpenseFormState({ visible: true, data });
   };
 
-  const handleCloseModalRevenueForm = (): void => {
-    setModalRevenueFormState({ visible: false });
+  const handleCloseModalExpenseForm = (): void => {
+    setModalExpenseFormState({ visible: false });
   };
 
-  const handleOpenModalDeleteRevenue = (data?: TExpense): void => {
-    setModalDeleteRevenueState({ visible: true, data });
+  const handleOpenModalDeleteExpense = (data?: TExpense): void => {
+    setModalDeleteExpenseState({ visible: true, data });
   };
 
-  const handleCloseModalDeleteRevenue = (): void => {
-    setModalDeleteRevenueState({ visible: false });
+  const handleCloseModalDeleteExpense = (): void => {
+    setModalDeleteExpenseState({ visible: false });
   };
 
   const handleSearch = (keyword?: string): void => {
@@ -100,7 +100,7 @@ const Expenses: React.FC = () => {
       label: 'Sửa',
       icon: EIconName.Pencil,
       onClick: (): void => {
-        handleOpenModalRevenueForm(data);
+        handleOpenModalExpenseForm(data);
       },
     },
     {
@@ -109,7 +109,7 @@ const Expenses: React.FC = () => {
       icon: EIconName.Trash,
       danger: true,
       onClick: (): void => {
-        handleOpenModalDeleteRevenue(data);
+        handleOpenModalDeleteExpense(data);
       },
     },
   ];
@@ -333,7 +333,7 @@ const Expenses: React.FC = () => {
                       styleType={EButtonStyleType.PURPLE}
                       iconName={EIconName.Plus}
                       iconColor={EIconColor.WHITE}
-                      onClick={handleOpenModalRevenueForm}
+                      onClick={handleOpenModalExpenseForm}
                     />
                   </Col>
                 </Row>
@@ -350,8 +350,12 @@ const Expenses: React.FC = () => {
         </Col>
       </Row>
 
-      <ModalRevenueForm {...modalRewardFormState} onClose={handleCloseModalRevenueForm} onSuccess={getExpenses} />
-      <ModalDeleteRevenue {...modalDeleteRewardState} onClose={handleCloseModalDeleteRevenue} onSuccess={getExpenses} />
+      <ModalExpenseForm {...modalExpenseFormState} onClose={handleCloseModalExpenseForm} onSuccess={getExpenses} />
+      <ModalDeleteExpense
+        {...modalDeleteExpenseState}
+        onClose={handleCloseModalDeleteExpense}
+        onSuccess={getExpenses}
+      />
     </div>
   );
 };

@@ -525,3 +525,23 @@ export type TMerchantFeed = {
   merchant_id: number;
   update_date: number;
 };
+
+export type TInventoryHistory = {
+  at_date: number;
+  auditing_status: number;
+  create_date: number;
+  entry_amount: number;
+  expense: TExpense;
+  id: number;
+  name: string;
+  note: string;
+  product: TProduct;
+  quantities_in_hand: number;
+  shipping_fee: number;
+  sub_total: number;
+  supplier: TSupplier;
+  total: number;
+  unit_price: number;
+  update_date: number;
+  uuid: string;
+};

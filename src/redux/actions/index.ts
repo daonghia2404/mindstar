@@ -9,6 +9,7 @@ export * from './dashboard';
 export * from './e-connect';
 export * from './event';
 export * from './expense';
+export * from './inventory';
 export * from './manager';
 export * from './merchant';
 export * from './order';
