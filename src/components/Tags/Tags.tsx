@@ -7,13 +7,15 @@ import Icon, { EIconColor } from '@/components/Icon';
 import { TTagsProps } from './Tags.types.d';
 import './Tags.scss';
 
-const Tags: React.FC<TTagsProps> = ({ options = [], className, noStyle }) => {
+const Tags: React.FC<TTagsProps> = ({ options = [], className, noStyle, ellipsis, nowrap = true }) => {
   return (
-    <div className={classNames('Tags flex flex-wrap', className, { 'no-style': noStyle })}>
+    <div className={classNames('Tags flex flex-wrap', className, { 'no-style': noStyle, ellipsis, nowrap })}>
       {options.map((item) => (
         <div
           key={item.value}
-          className={classNames('Tags-item flex items-center', { 'onclick': item.onClick }, item.data?.tagType)}
+          className={classNames('Tags-item flex items-center', { 'onclick': item.onClick }, item.data?.tagType, {
+            disabled: item.disabled,
+          })}
           onClick={(): void => item.onClick?.(item)}
           style={item.data?.style}
         >

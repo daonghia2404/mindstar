@@ -135,6 +135,7 @@ const Branches: React.FC = () => {
             options={record?.managers?.map((item) => ({
               label: item.name,
               value: String(item.id),
+              disabled: Boolean(item.auditing_status && item.auditing_status === EAuditingStatus.INACTIVE),
               data: {
                 avatar: getFullUrlStatics(item.avatar),
               },

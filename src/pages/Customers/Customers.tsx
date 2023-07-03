@@ -9,7 +9,7 @@ import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataLevelOptions } from '@/common/cons
 import Input from '@/components/Input';
 import { TRootState } from '@/redux/reducers';
 import Table from '@/components/Table';
-import { EEmpty, EFormat, EUserType } from '@/common/enums';
+import { EAuditingStatus, EEmpty, EFormat, EUserType } from '@/common/enums';
 import { EGetUsersAction, getUsersAction } from '@/redux/actions';
 import { formatCurrency, formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
 import { TGetUsersParams } from '@/services/api';
@@ -92,6 +92,7 @@ const Customers: React.FC = () => {
             options={record?.players?.map((item) => ({
               label: item.name,
               value: String(item.id),
+              disabled: Boolean(item.auditing_status && item.auditing_status === EAuditingStatus.INACTIVE),
               data: { avatar: getFullUrlStatics(item.avatar) },
               onClick: (): void => {
                 navigate(Paths.PlayerDetail(String(item.id)));

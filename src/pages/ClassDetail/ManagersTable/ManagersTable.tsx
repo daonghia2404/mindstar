@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { TManagersTableProps } from './ManagersTable.types';
 import Table from '@/components/Table';
-import { dataDegreeTypeOptions } from '@/common/constants';
+import { dataAuditingStatusOptions, dataDegreeTypeOptions } from '@/common/constants';
 import { EEmpty, EFormat } from '@/common/enums';
 import { TUser } from '@/common/models';
 import { Paths } from '@/pages/routers';
@@ -12,6 +12,7 @@ import { getFullUrlStatics, formatISODateToDateTime } from '@/utils/functions';
 import Avatar from '@/components/Avatar';
 import { EGetClassAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
+import Status from '@/components/Status';
 
 const ManagersTable: React.FC<TManagersTableProps> = ({ dataSources = [] }) => {
   const getClassLoading = useSelector((state: TRootState) => state.loadingReducer[EGetClassAction.GET_CLASS]);
@@ -74,6 +75,15 @@ const ManagersTable: React.FC<TManagersTableProps> = ({ dataSources = [] }) => {
         ) : (
           <>{EEmpty.DASH}</>
         ),
+    },
+    {
+      key: 'status',
+      dataIndex: 'status',
+      title: 'Trạng thái',
+      render: (_: string, record: TUser): React.ReactElement => {
+        const status = dataAuditingStatusOptions.find((item) => item.value === record.auditing_status);
+        return status ? <Status label={status?.label} styleType={status?.data?.statusType} /> : <>{EEmpty.DASH}</>;
+      },
     },
   ];
 

@@ -90,6 +90,8 @@ const Schedules: React.FC = () => {
             ) : (
               <Tags
                 className="justify-center"
+                ellipsis
+                nowrap={false}
                 options={dataSchedules?.map((schedule) => {
                   const isEvent = schedule?.event?.id;
 

@@ -3,7 +3,7 @@ import { Link, useParams } from '@reach/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Table from '@/components/Table';
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataAuditingStatusOptions } from '@/common/constants';
 import { EEmpty, EFormat } from '@/common/enums';
 import { TUser } from '@/common/models';
 import { Paths } from '@/pages/routers';
@@ -12,6 +12,7 @@ import Avatar from '@/components/Avatar';
 import { EGetPlayersAction, getPlayersAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
 import { TGetPlayersParams } from '@/services/api';
+import Status from '@/components/Status';
 
 import { TPlayersTableProps } from './PlayersTable.types';
 
@@ -89,6 +90,15 @@ const PlayersTable: React.FC<TPlayersTableProps> = () => {
         ) : (
           <>{EEmpty.DASH}</>
         ),
+    },
+    {
+      key: 'status',
+      dataIndex: 'status',
+      title: 'Trạng thái',
+      render: (_: string, record: TUser): React.ReactElement => {
+        const status = dataAuditingStatusOptions.find((item) => item.value === record.auditing_status);
+        return status ? <Status label={status?.label} styleType={status?.data?.statusType} /> : <>{EEmpty.DASH}</>;
+      },
     },
   ];
 
