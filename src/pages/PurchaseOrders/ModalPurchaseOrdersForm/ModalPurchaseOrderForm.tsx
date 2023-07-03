@@ -17,7 +17,7 @@ import {
   getSuppliersAction,
   updateInventoryHistoryAction,
 } from '@/redux/actions';
-import { showNotification, validationRules } from '@/utils/functions';
+import { formatCurrency, showNotification, validationRules } from '@/utils/functions';
 import { ETypeNotification } from '@/common/enums';
 import TextArea from '@/components/TextArea';
 import DatePicker from '@/components/DatePicker';
@@ -195,20 +195,6 @@ const ModalPurchaseOrderForm: React.FC<TModalPurchaseOrderFormProps> = ({ visibl
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Input
-                label="Tổng giá trị"
-                placeholder="Chọn dữ liệu"
-                required
-                active
-                value={caculateSubTotal() as unknown as string}
-                numberic
-                useNumber
-                useComma
-                suffixText="đ"
-                disabled
-              />
-            </Col>
-            <Col span={24}>
               <Form.Item name="shippingFee">
                 <Input
                   label="Phí vận chuyển"
@@ -230,6 +216,11 @@ const ModalPurchaseOrderForm: React.FC<TModalPurchaseOrderFormProps> = ({ visibl
               <Form.Item name="note">
                 <TextArea label="Ghi chú" placeholder="Nhập dữ liệu" active />
               </Form.Item>
+            </Col>
+            <Col span={24}>
+              <div className="ModalPurchaseOrderForm-total">
+                Tổng: <strong>{formatCurrency({ amount: caculateTotal(), showSuffix: true })}</strong>
+              </div>
             </Col>
           </Row>
         </Form>

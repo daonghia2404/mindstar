@@ -1,3 +1,13 @@
 @import '@/assets/styles/_global.scss';
 
-.ModalOrderForm {}
+.ModalOrderForm {
+  &-total {
+    text-align: right;
+    font-size: 1.6rem;
+    color: $mine-shaft;
+
+    strong {
+      font-weight: 700;
+    }
+  }
+}

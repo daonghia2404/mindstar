@@ -66,7 +66,10 @@ const RecentOrdersTable: React.FC<TRecentOrdersTableProps> = () => {
         return (
           <div className="Table-info text-right">
             <div className="Table-info-title nowrap">
-              {formatCurrency({ amount: record.transaction_amount, showSuffix: true })}
+              {formatCurrency({
+                amount: record.amount - (record.shipping_fee || 0) - (record.discount_value || 0),
+                showSuffix: true,
+              })}
             </div>
             <div className="Table-info-description nowrap">
               {dataPaymentTypeOptions.find((item) => item.value === record.payment_type)?.label || EEmpty.DASH}

@@ -18,7 +18,7 @@ import {
   getPlayersAction,
   updateOrderAction,
 } from '@/redux/actions';
-import { showNotification, validationRules } from '@/utils/functions';
+import { formatCurrency, showNotification, validationRules } from '@/utils/functions';
 import { EAuditingStatus, ETypeNotification } from '@/common/enums';
 import TextArea from '@/components/TextArea';
 import { useOptionsPaginate } from '@/utils/hooks';
@@ -74,6 +74,14 @@ const ModalOrderForm: React.FC<TModalOrderFormProps> = ({ visible, data, onClose
   const createOrderLoading = useSelector((state: TRootState) => state.loadingReducer[ECreateOrderAction.CREATE_ORDER]);
   const updateOrderLoading = useSelector((state: TRootState) => state.loadingReducer[EUpdateOrderAction.UPDATE_ORDER]);
   const loading = createOrderLoading || updateOrderLoading;
+
+  const caculateTotalPrice = (): number => {
+    const totalPriceProducts = formValues?.products
+      ?.filter((item: TProductSelector) => item.quantity && item.quantity > 0)
+      ?.map((item: TProductSelector) => item?.data?.selling_price || item?.data?.amount * (item.quantity || 0));
+
+    return totalPriceProducts - (formValues?.shippingFee || 0) - (formValues?.discount || 0) || 0;
+  };
 
   const handleSubmit = (): void => {
     form.validateFields().then((values) => {
@@ -339,6 +347,11 @@ const ModalOrderForm: React.FC<TModalOrderFormProps> = ({ visible, data, onClose
               <Form.Item name="note">
                 <TextArea label="Ghi chú" placeholder="Nhập dữ liệu" active />
               </Form.Item>
+            </Col>
+            <Col span={24}>
+              <div className="ModalOrderForm-total">
+                Tổng: <strong>{formatCurrency({ amount: caculateTotalPrice(), showSuffix: true })}</strong>
+              </div>
             </Col>
           </Row>
         </Form>

@@ -207,7 +207,10 @@ const Orders: React.FC = () => {
         return (
           <div className="Table-info">
             <div className="Table-info-title">
-              {formatCurrency({ amount: record.transaction_amount || EEmpty.ZERO, showSuffix: true })}
+              {formatCurrency({
+                amount: record.amount - (record.shipping_fee || 0) - (record.discount_value || 0) || EEmpty.ZERO,
+                showSuffix: true,
+              })}
             </div>
             <div className="Table-info-description">
               {dataPaymentTypeOptions.find((item) => item.value === record?.payment_type)?.label || EEmpty.DASH}
