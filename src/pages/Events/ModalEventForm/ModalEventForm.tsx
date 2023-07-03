@@ -214,8 +214,9 @@ const ModalEventForm: React.FC<TModalEventFormProps> = ({ visible, data, onClose
                   options={optionsBranches}
                   onLoadMore={handleLoadMoreBranches}
                   onSearch={handleSearchBranches}
-                  onChange={(): void => {
+                  onChange={(option): void => {
                     const dataChanged = {
+                      branch: option,
                       classes: undefined,
                     };
                     form.setFieldsValue(dataChanged);
