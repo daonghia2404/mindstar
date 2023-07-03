@@ -1,22 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Col, Row } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Card from '@/components/Card';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/common/constants';
 import Input from '@/components/Input';
-import { TRootState } from '@/redux/reducers';
 import Table from '@/components/Table';
 import Button, { EButtonStyleType } from '@/components/Button';
 import { EEmpty, EFormat } from '@/common/enums';
-import { EGetInventoryHistoriesAction, getInventoryHistoriesAction } from '@/redux/actions';
 import DropdownMenu from '@/components/DropdownMenu';
 import { TDropdownMenuItem } from '@/components/DropdownMenu/DropdownMenu.types';
 import Avatar from '@/components/Avatar';
 import ModalPurchaseOrdersForm from './ModalPurchaseOrdersForm';
 import ModalDeletePurchaseOrder from './ModalPurchaseOrdersDelete';
-import { TGetInventoryHistoriesParams } from '@/services/api';
 import { TInventoryHistory } from '@/common/models';
 import { formatCurrency, formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
 import Status, { EStatusStyleType } from '@/components/Status';
@@ -25,20 +20,6 @@ import './PurchaseOrders.scss';
 import ModalExpenseForm from '@/pages/Expenses/ModalExpenseForm';
 
 const PurchaseOrders: React.FC = () => {
-  const dispatch = useDispatch();
-
-  const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
-  const getPurchaseOrdersLoading = useSelector(
-    (state: TRootState) => state.loadingReducer[EGetInventoryHistoriesAction.GET_INVENTORY_HISTORIES],
-  );
-  const purchaseOrdersState = useSelector(
-    (state: TRootState) => state.inventoryReducer.getInventoryHistoriesResponse,
-  )?.data;
-
-  const [getPurchaseOrdersParamsRequest, setGetPurchaseOrdersParamsRequest] = useState<TGetInventoryHistoriesParams>({
-    page: DEFAULT_PAGE,
-    size: DEFAULT_PAGE_SIZE,
-  });
   const [modalPurchaseOrderFormState, setModalPurchaseOrderFormState] = useState<{
     visible: boolean;
     data?: TInventoryHistory;
@@ -77,23 +58,6 @@ const PurchaseOrders: React.FC = () => {
   };
   const handleCloseModalDeletePurchaseOrder = (): void => {
     setModalDeletePurchaseOrderstate({ visible: false });
-  };
-
-  const handlePaginationChange = (page: number, size: number, sort?: string): void => {
-    setGetPurchaseOrdersParamsRequest({
-      ...getPurchaseOrdersParamsRequest,
-      page,
-      size,
-      sort,
-    });
-  };
-
-  const handleSearch = (keyword?: string): void => {
-    setGetPurchaseOrdersParamsRequest({
-      ...getPurchaseOrdersParamsRequest,
-      page: DEFAULT_PAGE,
-      search: keyword,
-    });
   };
 
   const dataTableDropdownActions = (data?: TInventoryHistory): TDropdownMenuItem[] => [
@@ -230,19 +194,6 @@ const PurchaseOrders: React.FC = () => {
     },
   ];
 
-  const getPurchaseOrders = useCallback(() => {
-    dispatch(
-      getInventoryHistoriesAction.request({
-        params: getPurchaseOrdersParamsRequest,
-        headers: { branchIds: currentBranchId },
-      }),
-    );
-  }, [dispatch, getPurchaseOrdersParamsRequest, currentBranchId]);
-
-  useEffect(() => {
-    getPurchaseOrders();
-  }, [getPurchaseOrders]);
-
   return (
     <div className="PurchaseOrders">
       <Row gutter={[24, 24]}>
@@ -256,7 +207,6 @@ const PurchaseOrders: React.FC = () => {
                       style={{ minWidth: '24rem' }}
                       label="Tìm kiếm"
                       suffixIcon={<Icon name={EIconName.Search} color={EIconColor.TUNDORA} />}
-                      onSearch={handleSearch}
                     />
                   </Col>
                 </Row>
@@ -272,7 +222,7 @@ const PurchaseOrders: React.FC = () => {
                   <Col>
                     <div className="Table-total-item">
                       <Icon name={EIconName.PackageImport} color={EIconColor.TUNDORA} />
-                      Tổng Nhập Hàng: <strong>{purchaseOrdersState?.total_elements || EEmpty.ZERO}</strong>
+                      Tổng Nhập Hàng: <strong>{0 || EEmpty.ZERO}</strong>
                     </div>
                   </Col>
                   <Col>
@@ -286,32 +236,19 @@ const PurchaseOrders: React.FC = () => {
                   </Col>
                 </Row>
               }
-              loading={getPurchaseOrdersLoading}
+              loading={false}
               columns={columns}
-              dataSources={purchaseOrdersState?.content || []}
-              page={getPurchaseOrdersParamsRequest?.page}
-              pageSize={getPurchaseOrdersParamsRequest?.size}
-              total={purchaseOrdersState?.total_elements}
-              onPaginationChange={handlePaginationChange}
+              dataSources={[]}
+              page={1}
+              pageSize={10}
+              total={0}
             />
           </Card>
         </Col>
       </Row>
-      <ModalPurchaseOrdersForm
-        {...modalPurchaseOrderFormState}
-        onClose={handleCloseModalPurchaseOrderForm}
-        onSuccess={getPurchaseOrders}
-      />
-      <ModalDeletePurchaseOrder
-        {...modalDeletePurchaseOrderstate}
-        onClose={handleCloseModalDeletePurchaseOrder}
-        onSuccess={getPurchaseOrders}
-      />
-      <ModalExpenseForm
-        {...modalExpenseFormState}
-        onClose={handleCloseModalExpenseForm}
-        onSuccess={getPurchaseOrders}
-      />
+      <ModalPurchaseOrdersForm {...modalPurchaseOrderFormState} onClose={handleCloseModalPurchaseOrderForm} />
+      <ModalDeletePurchaseOrder {...modalDeletePurchaseOrderstate} onClose={handleCloseModalDeletePurchaseOrder} />
+      <ModalExpenseForm {...modalExpenseFormState} onClose={handleCloseModalExpenseForm} />
     </div>
   );
 };

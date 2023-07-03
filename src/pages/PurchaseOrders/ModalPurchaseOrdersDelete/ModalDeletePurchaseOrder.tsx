@@ -1,26 +1,17 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import Modal from '@/components/Modal';
 import { EButtonStyleType } from '@/components/Button';
 import { EEmpty, ETypeNotification } from '@/common/enums';
-import { deleteInventoryHistoryAction, EDeleteInventoryHistoryAction } from '@/redux/actions';
 import { showNotification } from '@/utils/functions';
-import { TRootState } from '@/redux/reducers';
 
 import { TModalDeletePurchaseOrderProps } from './ModalDeletePurchaseOrder.type';
 import './ModalDeletePurchaseOrder.scss';
 
 const ModalDeletePurchaseOrder: React.FC<TModalDeletePurchaseOrderProps> = ({ visible, data, onClose, onSuccess }) => {
-  const dispatch = useDispatch();
-  const deletePurchaseOrderLoading = useSelector(
-    (state: TRootState) => state.loadingReducer[EDeleteInventoryHistoryAction.DELETE_INVENTORY_HISTORY],
-  );
-
-  const handleSubmit = (): void => {
-    dispatch(deleteInventoryHistoryAction.request({ paths: { id: data?.id || '' } }, handleSubmitSuccess));
-  };
+  const handleSubmit = (): void => {};
 
   const handleSubmitSuccess = (): void => {
     showNotification(ETypeNotification.SUCCESS, 'Xoá Lịch Sử Nhập Hàng Thành Công !');
@@ -39,13 +30,13 @@ const ModalDeletePurchaseOrder: React.FC<TModalDeletePurchaseOrderProps> = ({ vi
         title: 'Huỷ Bỏ',
         onClick: onClose,
         styleType: EButtonStyleType.GENERAL_FORM,
-        disabled: deletePurchaseOrderLoading,
+        disabled: false,
       }}
       confirmButton={{
         title: 'Đồng Ý',
         onClick: handleSubmit,
         styleType: EButtonStyleType.DANGER,
-        disabled: deletePurchaseOrderLoading,
+        disabled: false,
       }}
     >
       <div className="ModalDeletePurchaseOrder-wrapper">

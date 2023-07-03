@@ -1,22 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Form, Row } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
 
 import Modal from '@/components/Modal';
 import Input from '@/components/Input';
 import Select from '@/components/Select';
-import { TRootState } from '@/redux/reducers';
-import {
-  ECreateInventoryHistoryAction,
-  EGetProductsAction,
-  EGetSuppliersAction,
-  EUpdateInventoryHistoryAction,
-  createInventoryHistoryAction,
-  getProductsAction,
-  getSuppliersAction,
-  updateInventoryHistoryAction,
-} from '@/redux/actions';
+import { EGetProductsAction, EGetSuppliersAction, getProductsAction, getSuppliersAction } from '@/redux/actions';
 import { formatCurrency, showNotification, validationRules } from '@/utils/functions';
 import { ETypeNotification } from '@/common/enums';
 import TextArea from '@/components/TextArea';
@@ -27,7 +15,6 @@ import { TModalPurchaseOrderFormProps } from './ModalPurchaseOrderForm.type';
 import './ModalPurchaseOrderForm.scss';
 
 const ModalPurchaseOrderForm: React.FC<TModalPurchaseOrderFormProps> = ({ visible, data, onClose, onSuccess }) => {
-  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [formValues, setFormValues] = useState<any>({});
 
@@ -61,14 +48,6 @@ const ModalPurchaseOrderForm: React.FC<TModalPurchaseOrderFormProps> = ({ visibl
     visible,
   );
 
-  const createPurchaseOrderLoading = useSelector(
-    (state: TRootState) => state.loadingReducer[ECreateInventoryHistoryAction.CREATE_INVENTORY_HISTORY],
-  );
-  const updatePurchaseOrderLoading = useSelector(
-    (state: TRootState) => state.loadingReducer[EUpdateInventoryHistoryAction.UPDATE_INVENTORY_HISTORY],
-  );
-  const loading = createPurchaseOrderLoading || updatePurchaseOrderLoading;
-
   const caculateSubTotal = (): number => {
     return (formValues?.quantity || 0) * (formValues?.unitPrice || 0);
   };
@@ -79,26 +58,7 @@ const ModalPurchaseOrderForm: React.FC<TModalPurchaseOrderFormProps> = ({ visibl
 
   const handleSubmit = (): void => {
     form.validateFields().then((values) => {
-      const body = {
-        at_date: values?.atDate?.valueOf(),
-        name: values?.product?.label,
-        note: values?.note,
-        product_id: values?.product ? Number(values?.product?.value) : undefined,
-        quantity: values?.quantity,
-        shipping_fee: values?.shippingFee,
-        supplier_id: values?.supplier ? Number(values?.supplier?.value) : undefined,
-        supplier_name: values?.supplier?.label,
-        unit_price: values?.unitPrice,
-
-        sub_total: caculateSubTotal(),
-        total: caculateTotal(),
-      };
-
-      if (data) {
-        dispatch(updateInventoryHistoryAction.request({ body, paths: { id: data?.id } }, handleSubmitSuccess));
-      } else {
-        dispatch(createInventoryHistoryAction.request({ body }, handleSubmitSuccess));
-      }
+      const body = {};
     });
   };
 
@@ -111,19 +71,7 @@ const ModalPurchaseOrderForm: React.FC<TModalPurchaseOrderFormProps> = ({ visibl
   useEffect(() => {
     if (visible) {
       if (data) {
-        const dataChanged = {
-          atDate: data?.at_date ? moment(data.at_date) : undefined,
-          product: data?.product
-            ? { label: data?.product?.name, value: Number(data?.product?.id), data: data?.product }
-            : undefined,
-          note: data?.note,
-          quantity: data?.quantities_in_hand,
-          shippingFee: data?.shipping_fee,
-          supplier: data?.supplier
-            ? { label: data?.supplier?.name, value: Number(data?.supplier?.id), data: data?.supplier }
-            : undefined,
-          unitPrice: data?.unit_price,
-        };
+        const dataChanged = {};
         form.setFieldsValue(dataChanged);
         setFormValues({ ...formValues, ...dataChanged });
       }
@@ -141,8 +89,8 @@ const ModalPurchaseOrderForm: React.FC<TModalPurchaseOrderFormProps> = ({ visibl
       visible={visible}
       onClose={onClose}
       width={480}
-      cancelButton={{ title: 'Huỷ Bỏ', disabled: loading, onClick: onClose }}
-      confirmButton={{ title: 'Đồng Ý', disabled: loading, onClick: handleSubmit }}
+      cancelButton={{ title: 'Huỷ Bỏ', disabled: false, onClick: onClose }}
+      confirmButton={{ title: 'Đồng Ý', disabled: false, onClick: handleSubmit }}
     >
       <div className="ModalRewardForm-wrapper">
         <Form form={form} onValuesChange={(_, values): void => setFormValues({ ...formValues, ...values })}>
