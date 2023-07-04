@@ -210,7 +210,7 @@ const PayrollDetail: React.FC = () => {
                       </Col>
                       <Col>
                         <div className="Table-total-item">
-                          <Icon name={EIconName.PigMoney} color={EIconColor.TUNDORA} />
+                          <Icon name={EIconName.Coins} color={EIconColor.TUNDORA} />
                           Tổng Lương: <strong>{'4.000.000 đ' || EEmpty.ZERO}</strong>
                         </div>
                       </Col>

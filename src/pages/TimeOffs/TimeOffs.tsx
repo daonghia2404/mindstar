@@ -28,6 +28,8 @@ import { TSelectOption } from '@/components/Select';
 import DatePicker from '@/components/DatePicker';
 
 import './TimeOffs.scss';
+import Status, { EStatusStyleType } from '@/components/Status';
+import ModalActionTimeOff from '@/pages/TimeOffs/ModalActionTimeOff';
 
 const TimeOffs: React.FC = () => {
   const dispatch = useDispatch();
@@ -44,6 +46,10 @@ const TimeOffs: React.FC = () => {
   });
 
   const [modalDeleteTimeOffState, setModalDeleteTimeOffState] = useState<{ visible: boolean; data?: TTimeOff }>({
+    visible: false,
+  });
+
+  const [modalActionTimeOffState, setModalActionTimeOffState] = useState<{ visible: boolean; data?: TTimeOff }>({
     visible: false,
   });
 
@@ -68,6 +74,13 @@ const TimeOffs: React.FC = () => {
     setModalDeleteTimeOffState({ visible: false });
   };
 
+  const handleOpenModalActionTimeOff = (data?: TTimeOff): void => {
+    setModalActionTimeOffState({ visible: true, data });
+  };
+  const handleCloseModalActionTimeOff = (): void => {
+    setModalActionTimeOffState({ visible: false });
+  };
+
   const handlePaginationChange = (page: number, size: number, sort?: string): void => {
     setGetTimeOffsParamsRequest({
       ...getTimeOffsParamsRequest,
@@ -86,6 +99,22 @@ const TimeOffs: React.FC = () => {
   };
 
   const dataTableDropdownActions = (data?: TTimeOff): TDropdownMenuItem[] => [
+    {
+      value: 'approve',
+      label: 'Duyệt',
+      icon: EIconName.Check,
+      onClick: (): void => {
+        handleOpenModalActionTimeOff();
+      },
+    },
+    {
+      value: 'reject',
+      label: 'Không Duyệt',
+      icon: EIconName.X,
+      onClick: (): void => {
+        handleOpenModalActionTimeOff();
+      },
+    },
     {
       value: 'delete',
       label: 'Xoá',
@@ -199,6 +228,15 @@ const TimeOffs: React.FC = () => {
       title: 'Lý do',
       className: 'limit-width',
       render: (value: string): string => value || EEmpty.DASH,
+    },
+    {
+      key: 'status',
+      dataIndex: 'status',
+      title: 'Trạng thái',
+      render: (): React.ReactElement => {
+        // const status = dataAuditingStatusOptions.find((item) => item.value === record.auditing_status);
+        return <Status label="Đã Duyệt" styleType={EStatusStyleType.SUCCESS} />;
+      },
     },
     {
       key: 'actions',
@@ -327,6 +365,11 @@ const TimeOffs: React.FC = () => {
       <ModalDeleteTimeOff
         {...modalDeleteTimeOffState}
         onClose={handleCloseModalDeleteTimeOff}
+        onSuccess={getTimeOffs}
+      />
+      <ModalActionTimeOff
+        {...modalActionTimeOffState}
+        onClose={handleCloseModalActionTimeOff}
         onSuccess={getTimeOffs}
       />
     </div>

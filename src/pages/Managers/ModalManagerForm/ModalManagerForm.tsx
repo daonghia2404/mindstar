@@ -216,7 +216,7 @@ const ModalManagerForm: React.FC<TModalManagerFormProps> = ({ visible, data, onC
             <Col span={24}>
               <Form.Item name="salary" rules={[validationRules.required()]}>
                 <Input
-                  label="Lương"
+                  label="Lương Cơ Bản"
                   required
                   placeholder="Nhập dữ liệu"
                   active

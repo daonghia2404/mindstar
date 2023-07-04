@@ -129,7 +129,7 @@ export const dataDegreeTypeOptions = [
 
 export const dataSalaryTypeOptions = [
   { value: ESalaryType.MONTHLY, label: 'Theo Tháng' },
-  { value: ESalaryType.SESSION, label: 'Theo Mùa' },
+  { value: ESalaryType.SESSION, label: 'Theo Buổi' },
 ];
 
 export const dataDayOfWeeksOptions = [

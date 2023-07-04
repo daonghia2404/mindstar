@@ -32,10 +32,14 @@ const EarnPoints: React.FC = () => {
   const handleSubmit = (values: any): void => {
     const body = {
       point_settings: {
-        actions: settingsState?.actions?.map((item) => ({
-          ...item,
-          value: values[item.id] || 0,
-        })),
+        actions: settingsState?.actions?.map((item) => {
+          const isPercentField = item.id === EPointActionType.BUY_PRODUCT;
+
+          return {
+            ...item,
+            value: (isPercentField ? values[item.id] / 100 : values[item.id]) || 0,
+          };
+        }),
         level: settingsState?.level,
       },
     };
@@ -56,9 +60,11 @@ const EarnPoints: React.FC = () => {
   useEffect(() => {
     if (settingsState) {
       const dataChanged = settingsState?.actions?.reduce((result, item) => {
+        const isPercentField = item.id === EPointActionType.BUY_PRODUCT;
+
         return {
           ...result,
-          [`${item.id}`]: item.value,
+          [`${item.id}`]: isPercentField ? item.value * 100 : item.value,
         };
       }, {});
       form.setFieldsValue(dataChanged);

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { navigate, useParams } from '@reach/router';
 import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
 
 import Button, { EButtonStyleType } from '@/components/Button';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
@@ -14,13 +15,13 @@ import { TRootState } from '@/redux/reducers';
 import { EEmpty, EFormat } from '@/common/enums';
 import { formatCurrency, formatISODateToDateTime, getFullUrlStatics } from '@/utils/functions';
 import { dataAuditingStatusOptions, dataDegreeTypeOptions, dataSalaryTypeOptions } from '@/common/constants';
-import Tags from '@/components/Tags';
 import { TUser } from '@/common/models';
 import ModalDeleteManager from '@/pages/Managers/ModalDeleteManager';
 import ModalManagerForm from '@/pages/Managers/ModalManagerForm';
 import Status from '@/components/Status';
 import AttendancesTable from '@/pages/ManagerDetail/AttendancesTable';
 import SalaryTable from '@/pages/ManagerDetail/SalaryTable/SalaryTable';
+import TreeTags from '@/components/TreeTags';
 
 import './ManagerDetail.scss';
 
@@ -37,6 +38,25 @@ const ManagerDetail: React.FC = () => {
   });
   const [modalDeleteManagerState, setModalDeleteManagerState] = useState<{ visible: boolean; data?: TUser }>({
     visible: false,
+  });
+
+  const managerGroupClasses = _.groupBy(managerState?.classes || [], 'branch_id');
+  const parseManagerGroupClasses = Object.keys(managerGroupClasses).map((key) => {
+    const branch = managerGroupClasses[key]?.[0]?.branch;
+
+    return {
+      label: branch?.name || EEmpty.DASH,
+      value: branch?.id,
+      data: { iconName: EIconName.MapMarker },
+      children: managerGroupClasses[key]?.map((item) => ({
+        label: item.name,
+        value: String(item.id),
+        data: { iconName: EIconName.ChalkBoard },
+        onClick: (): void => {
+          navigate(Paths.ClassDetail(String(item.id)));
+        },
+      })),
+    };
   });
 
   const handleOpenModalManagerForm = (data?: TUser): void => {
@@ -75,17 +95,8 @@ const ManagerDetail: React.FC = () => {
     dgreeType: dataDegreeTypeOptions.find((item) => item.value === managerState?.degree_type),
     branches: undefined || '-',
     classes:
-      managerState?.classes && managerState?.classes?.length > 0 ? (
-        <Tags
-          options={managerState?.classes?.map((item) => ({
-            label: item.name,
-            value: String(item.id),
-            data: { iconName: EIconName.ChalkBoard },
-            onClick: (): void => {
-              navigate(Paths.ClassDetail(String(item.id)));
-            },
-          }))}
-        />
+      parseManagerGroupClasses && parseManagerGroupClasses?.length > 0 ? (
+        <TreeTags options={parseManagerGroupClasses} />
       ) : (
         EEmpty.DASH
       ),
@@ -189,10 +200,7 @@ const ManagerDetail: React.FC = () => {
                 <Input label="Chế độ lương" readOnlyText active value={managerInfo?.salaryType} />
               </Col>
               <Col span={12}>
-                <Input label="Lương" readOnlyText active value={managerInfo?.salary} />
-              </Col>
-              <Col span={24}>
-                <Input label="Tổng thu nhập" readOnlyText active value={managerInfo?.totalIncome} />
+                <Input label="Lương Cơ Bản" readOnlyText active value={managerInfo?.salary} />
               </Col>
             </Row>
           </Card>

@@ -11,6 +11,8 @@ export type TGetPlayerAttendancesParams = {
   page: number;
   size: number;
   sort?: string;
+  fromDate?: number;
+  toDate?: number;
 };
 
 export type TGetPlayerAttendancesMaterials = {

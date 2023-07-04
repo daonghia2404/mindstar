@@ -96,11 +96,11 @@ export const validationRules = {
   }),
   minLength: (length = 2, message?: string): Rule => ({
     min: length,
-    message: message || `Enter characters at least ${length} !`,
+    message: message || `Vui lòng nhập ít nhất ${length} ký tự !` || `Enter characters at least ${length} !`,
   }),
   maxLength: (length = 10, message?: string): Rule => ({
     max: length,
-    message: message || `Enter characters at most ${length} !`,
+    message: message || `Vui lòng nhập không quá ${length} ký tự !` || `Enter characters at most ${length} !`,
   }),
   email: (message?: string): Rule => ({
     type: 'email',
@@ -145,7 +145,7 @@ export const validationRules = {
   confirmPassword: (confirmPasswordValue: string, message?: string): Rule => ({
     validator: (rule: any, value: string): Promise<void> => {
       if (!value || value === confirmPasswordValue) return Promise.resolve();
-      return Promise.reject(message || 'Confirm password not matched !');
+      return Promise.reject(message || 'Nhập lại mật khẩu không trùng khớp !' || 'Confirm password not matched !');
     },
   }),
 };

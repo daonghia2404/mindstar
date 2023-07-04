@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from '@reach/router';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
+import { Col, Row } from 'antd';
+import moment, { Moment } from 'moment';
 
 import Table from '@/components/Table';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataTypeCheckInOptions } from '@/common/constants';
@@ -11,7 +13,8 @@ import { formatISODateToDateTime } from '@/utils/functions';
 import { EGetManagerAttendancesAction, getManagerAttendancesAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
 import { TGetManagerAttendancesParams } from '@/services/api';
-import Icon from '@/components/Icon';
+import Icon, { EIconColor, EIconName } from '@/components/Icon';
+import DatePicker from '@/components/DatePicker';
 
 import { TAttendancesTableProps } from './AttendancesTable.types';
 import './AttendancesTable.scss';
@@ -30,7 +33,9 @@ const AttendancesTable: React.FC<TAttendancesTableProps> = () => {
   const [getManagerAttendancesParamsRequest, setGetManagerAttendancesParamsRequest] =
     useState<TGetManagerAttendancesParams>({
       page: DEFAULT_PAGE,
-      size: DEFAULT_PAGE_SIZE,
+      size: DEFAULT_PAGE_SIZE * 10,
+      fromDate: moment().startOf('month')?.valueOf(),
+      toDate: moment().endOf('month')?.valueOf(),
     });
 
   const handlePaginationChange = (page: number, size: number, sort?: string): void => {
@@ -105,6 +110,41 @@ const AttendancesTable: React.FC<TAttendancesTableProps> = () => {
   return (
     <div className="AttendancesTable">
       <Table
+        header={
+          <Row gutter={[16, 16]} justify="space-between" align="middle">
+            <Col>
+              <Row gutter={[24, 16]}>
+                <Col>
+                  <div className="Table-total-item">
+                    <Icon name={EIconName.Briefcase} color={EIconColor.TUNDORA} />
+                    Tổng Công: <strong>{0 || EEmpty.ZERO}</strong>
+                  </div>
+                </Col>
+              </Row>
+            </Col>
+            <Col>
+              <Row gutter={[16, 16]}>
+                <Col>
+                  <DatePicker
+                    value={moment(getManagerAttendancesParamsRequest.fromDate)}
+                    label="Tháng"
+                    picker="month"
+                    format={EFormat['MM/YYYY']}
+                    placeholder=" "
+                    onChange={(data: Moment): void => {
+                      setGetManagerAttendancesParamsRequest({
+                        ...getManagerAttendancesParamsRequest,
+                        page: DEFAULT_PAGE,
+                        fromDate: data?.clone()?.startOf('month')?.valueOf(),
+                        toDate: data?.clone()?.endOf('month')?.valueOf(),
+                      });
+                    }}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        }
         useCardResponsive={false}
         columns={columns}
         dataSources={attendancesState?.content || []}
@@ -113,6 +153,7 @@ const AttendancesTable: React.FC<TAttendancesTableProps> = () => {
         total={attendancesState?.total_elements}
         loading={getManagerAttendancesLoading}
         onPaginationChange={handlePaginationChange}
+        showPagination={false}
       />
     </div>
   );

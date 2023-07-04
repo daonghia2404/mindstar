@@ -142,6 +142,8 @@ const PurchaseOrders: React.FC = () => {
       dataIndex: 'name',
       title: 'Tên',
       className: 'limit-width',
+      sorter: true,
+      keySort: 'name',
       render: (_: string, record: TInventoryHistory): React.ReactElement => {
         return (
           <div className="Table-info">
@@ -155,6 +157,8 @@ const PurchaseOrders: React.FC = () => {
       key: 'quantity',
       dataIndex: 'quantity',
       title: 'Số lượng nhập',
+      sorter: true,
+      keySort: 'quantity',
       render: (_: string, record: TInventoryHistory): string => String(record?.quantities_in_hand || EEmpty.ZERO),
     },
     {
@@ -162,6 +166,8 @@ const PurchaseOrders: React.FC = () => {
       dataIndex: 'unit',
       title: 'Đơn giá',
       className: 'nowrap',
+      sorter: true,
+      keySort: 'unit_price',
       render: (_: string, record: TInventoryHistory): string =>
         formatCurrency({ amount: record.unit_price || EEmpty.ZERO, showSuffix: true }),
     },
@@ -178,6 +184,8 @@ const PurchaseOrders: React.FC = () => {
       dataIndex: 'total',
       title: 'Tổng giá trị',
       className: 'nowrap',
+      sorter: true,
+      keySort: 'total',
       render: (_: string, record: TInventoryHistory): string =>
         formatCurrency({ amount: record.total || EEmpty.ZERO, showSuffix: true }),
     },
@@ -186,6 +194,8 @@ const PurchaseOrders: React.FC = () => {
       dataIndex: 'atDate',
       title: 'Ngày nhập',
       className: 'nowrap',
+      sorter: true,
+      keySort: 'at_date',
       render: (_: string, record: TInventoryHistory): string =>
         record?.at_date ? formatISODateToDateTime(record.at_date, EFormat['DD/MM/YYYY - HH:mm']) : EEmpty.DASH,
     },
@@ -270,11 +280,23 @@ const PurchaseOrders: React.FC = () => {
               header={
                 <Row gutter={[16, 16]} justify="space-between" align="middle">
                   <Col>
-                    <div className="Table-total-item">
-                      <Icon name={EIconName.PackageImport} color={EIconColor.TUNDORA} />
-                      Tổng Nhập Hàng: <strong>{purchaseOrdersState?.total_elements || EEmpty.ZERO}</strong>
-                    </div>
+                    <Row gutter={[16, 16]}>
+                      <Col>
+                        <div className="Table-total-item">
+                          <Icon name={EIconName.PackageImport} color={EIconColor.TUNDORA} />
+                          Tổng Nhập Hàng: <strong>{purchaseOrdersState?.total_elements || EEmpty.ZERO}</strong>
+                        </div>
+                      </Col>
+                      <Col>
+                        <div className="Table-total-item">
+                          <Icon name={EIconName.Coins} color={EIconColor.TUNDORA} />
+                          Tổng Giá Trị Nhập:{' '}
+                          <strong>{formatCurrency({ amount: 0 || EEmpty.ZERO, showSuffix: true })}</strong>
+                        </div>
+                      </Col>
+                    </Row>
                   </Col>
+
                   <Col>
                     <Button
                       title="Tạo mới Nhập Hàng"

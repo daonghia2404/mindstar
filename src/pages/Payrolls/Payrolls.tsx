@@ -170,7 +170,7 @@ const Payrolls: React.FC = () => {
                 <Row gutter={[16, 16]} align="middle" justify="space-between">
                   <Col>
                     <div className="Table-total-item">
-                      <Icon name={EIconName.PigMoney} color={EIconColor.TUNDORA} />
+                      <Icon name={EIconName.Ticket} color={EIconColor.TUNDORA} />
                       Tổng Phiếu Lương: <strong>{'4' || EEmpty.ZERO}</strong>
                     </div>
                   </Col>

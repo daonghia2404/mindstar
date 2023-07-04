@@ -120,7 +120,7 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
         return {
           ...result,
           [`${item?.[keyId]}_unit_value`]: unitLessonOptions.find((option) => option.value === String(item.unit_value)),
-          [`${item?.[keyId]}_description`]: item.description,
+          [`${item?.[keyId]}_description`]: item.description || undefined,
           [`${item?.[keyId]}_checked_in`]: item.checked_in,
         };
       }, {});
@@ -191,7 +191,7 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
                         </Col>
                         <Col>
                           <Form.Item name={`${item?.[keyId]}_description`}>
-                            <Input label="Ghi chú" />
+                            <Input label="Ghi chú" placeholder="Nhập dữ liệu" />
                           </Form.Item>
                         </Col>
                         <Col>
