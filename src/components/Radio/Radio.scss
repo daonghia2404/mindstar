@@ -1,3 +1,29 @@
 @import '@/assets/styles/_global.scss';
 
-.Radio {}
+.Radio {
+  span.ant-radio+* {
+    padding-left: .8rem;
+    padding-right: .8rem;
+  }
+
+  .ant-radio-checked .ant-radio-inner,
+  .ant-radio-wrapper:hover .ant-radio,
+  .ant-radio:hover .ant-radio-inner,
+  .ant-radio-input:focus+.ant-radio-inner {
+    border-color: $apple;
+  }
+
+  .ant-radio {
+    top: 0.6rem;
+  }
+
+  .ant-radio-inner {
+    width: 2.4rem;
+    height: 2.4rem;
+    border-color: $silver-chalice;
+
+    &::after {
+      background: $apple;
+    }
+  }
+}

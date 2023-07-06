@@ -15,6 +15,8 @@ import Switch from '@/components/Switch';
 
 import './TransportMode.scss';
 import { DEFAULT_PAGE } from '@/common/constants';
+import Radio from '@/components/Radio';
+import Input from '@/components/Input';
 
 const TransportMode: React.FC = () => {
   const dispatch = useDispatch();
@@ -132,9 +134,43 @@ const TransportMode: React.FC = () => {
               {branchesState?.total_elements === branchesState?.content?.length &&
                 branchesState?.content?.map((item) => (
                   <Col key={item.id} span={24}>
-                    <Form.Item name={`branch_${item.id}`}>
-                      <Switch label={item.name} />
-                    </Form.Item>
+                    <div className="TransportMode-item">
+                      <Form.Item name={`branch_${item.id}`}>
+                        <Switch label={item.name} />
+                      </Form.Item>
+                      {formValues?.[`branch_${item.id}`] && (
+                        <div className="TransportMode-item-info">
+                          <Form.Item name={`isPaid_${item.id}`}>
+                            <Radio
+                              options={[
+                                { value: 'free', label: 'Miễn Phí' },
+                                {
+                                  value: 'paid',
+                                  label: (
+                                    <Row gutter={[16, 16]} align="middle">
+                                      <Col>Trả Phí</Col>
+                                      <Col>
+                                        <Form.Item name={`fee_${item.id}`}>
+                                          <Input
+                                            label="Phí đưa đón"
+                                            placeholder="Nhập dữ liệu"
+                                            active
+                                            numberic
+                                            useNumber
+                                            useComma
+                                            suffixText="đ"
+                                          />
+                                        </Form.Item>
+                                      </Col>
+                                    </Row>
+                                  ),
+                                },
+                              ]}
+                            />
+                          </Form.Item>
+                        </div>
+                      )}
+                    </div>
                   </Col>
                 ))}
             </Row>

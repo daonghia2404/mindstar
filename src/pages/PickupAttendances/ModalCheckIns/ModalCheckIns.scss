@@ -7,6 +7,11 @@
       font-weight: 500;
       color: $mine-shaft;
     }
+
+    &-description {
+      font-size: 1.2rem;
+      color: $dove-gray;
+    }
   }
 
   .ant-col:last-child>.ModalCheckIns-item {

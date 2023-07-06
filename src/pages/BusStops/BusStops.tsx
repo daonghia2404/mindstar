@@ -211,13 +211,9 @@ const BusStops: React.FC = () => {
             {record?.player?.name || EEmpty.DASH}
           </Link>
           <div className="Table-info-description">{record?.player?.address || EEmpty.DASH}</div>
-          {record?.player?.mobile ? (
-            <a
-              href={`tel: ${record?.player?.mobile}`}
-              className="Table-link"
-              onClick={(e): void => e.stopPropagation()}
-            >
-              {record?.player?.mobile}
+          {record?.parent_mobile ? (
+            <a href={`tel: ${record?.parent_mobile}`} className="Table-link" onClick={(e): void => e.stopPropagation()}>
+              {record?.parent_mobile}
             </a>
           ) : (
             <div className="Table-info-description">{EEmpty.DASH}</div>

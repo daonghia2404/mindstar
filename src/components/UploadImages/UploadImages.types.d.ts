@@ -7,7 +7,7 @@ export type TUploadImagesProps = TFormFieldProps & {
 
 export type TUploadImages = {
   value: string;
-  fileIndex: number;
+  fileIndex?: number;
   url?: string;
   file?: any;
   delete?: boolean;

@@ -20,6 +20,7 @@ import Select from '@/components/Select';
 
 import { TModalBusStopPlayerFormProps } from './ModalBusStopPlayerForm.type';
 import './ModalBusStopPlayerForm.scss';
+import Switch from '@/components/Switch';
 
 const ModalBusStopPlayerForm: React.FC<TModalBusStopPlayerFormProps> = ({
   visible,
@@ -129,6 +130,16 @@ const ModalBusStopPlayerForm: React.FC<TModalBusStopPlayerFormProps> = ({
             <Col span={24}>
               <Form.Item name="schedules" rules={[validationRules.required()]}>
                 <WorkingTimes label="Lịch đón" required showTime={false} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="checkin">
+                <Switch label="Đưa đi" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="checkout">
+                <Switch label="Đón về" />
               </Form.Item>
             </Col>
           </Row>

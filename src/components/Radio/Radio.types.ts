@@ -1,8 +1,13 @@
-import { TSelectOption } from '@/components/Select';
+export type TRadioOption = {
+  label: React.ReactNode;
+  value: any;
+  data?: any;
+  disabled?: boolean;
+};
 
 export type TRadioProps = {
   className?: string;
-  value?: TSelectOption;
-  options?: TSelectOption[];
-  onChange?: (data: TSelectOption) => void;
+  value?: TRadioOption;
+  options?: TRadioOption[];
+  onChange?: (data: TRadioOption) => void;
 };

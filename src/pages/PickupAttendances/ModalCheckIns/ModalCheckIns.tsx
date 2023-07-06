@@ -275,7 +275,16 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
                               </div>
                             </Col>
                             <Col>
+                              <div className="ModalCheckIns-info-description">Đi</div>
+
                               <Form.Item name={`${item?.player_id}_checked_in`}>
+                                <AttendanceCheckbox />
+                              </Form.Item>
+                            </Col>
+                            <Col>
+                              <div className="ModalCheckIns-info-description">Về</div>
+
+                              <Form.Item name={`${item?.player_id}_checked_out`}>
                                 <AttendanceCheckbox />
                               </Form.Item>
                             </Col>

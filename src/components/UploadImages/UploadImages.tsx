@@ -15,20 +15,30 @@ const UploadImages: React.FC<TUploadImagesProps> = ({ value = [], disabled, labe
   const LIMIT_IMAGES = 5;
   const showImages = value.filter((item) => !item.delete);
 
+  const finalParseFilesData = (data: TUploadImages[]): TUploadImages[] => {
+    const deletedFiles = data.filter((item) => item.delete);
+    const imageFiles = data
+      .filter((item) => !item.delete)
+      .map((item, index) => ({
+        ...item,
+        fileIndex: index,
+      }));
+    return [...deletedFiles, ...imageFiles];
+  };
+
   const handleAddImage = (files: FileList | null): void => {
     if (files) {
-      const filesArray = Array.from(files).slice(0, LIMIT_IMAGES - value.length);
-      const parseFiles = filesArray.map((item, index) => ({
+      const filesArray = Array.from(files).slice(0, LIMIT_IMAGES - showImages.length);
+      const parseFiles = filesArray.map((item) => ({
         value: uuidv4(),
         file: item,
-        fileIndex: showImages.length + index,
       }));
 
-      onChange?.([...value, ...parseFiles]);
+      onChange?.(finalParseFilesData([...value, ...parseFiles]));
     }
   };
 
-  const handleChangeImage = (data: TUploadImages, files: FileList | null, fileIndex: number): void => {
+  const handleChangeImage = (data: TUploadImages, files: FileList | null): void => {
     if (files) {
       const file = Array.from(files)?.[0];
       const parseFiles = value.map((item) => {
@@ -41,7 +51,7 @@ const UploadImages: React.FC<TUploadImagesProps> = ({ value = [], disabled, labe
 
         return item;
       });
-      onChange?.([...parseFiles, { value: uuidv4(), file, fileIndex }]);
+      onChange?.(finalParseFilesData([...parseFiles, { value: uuidv4(), file }]));
     }
   };
 
@@ -55,14 +65,12 @@ const UploadImages: React.FC<TUploadImagesProps> = ({ value = [], disabled, labe
           };
         }
 
-        return { ...item, fileIndex: item.fileIndex - 1 };
+        return item;
       });
-      onChange?.(parseFiles);
+      onChange?.(finalParseFilesData(parseFiles));
     } else {
-      const parseFiles = value
-        .filter((item) => item.value !== data.value)
-        ?.map((item, index) => ({ ...item, fileIndex: index }));
-      onChange?.(parseFiles);
+      const parseFiles = value.filter((item) => item.value !== data.value)?.map((item) => ({ ...item }));
+      onChange?.(finalParseFilesData(parseFiles));
     }
   };
 
@@ -72,9 +80,9 @@ const UploadImages: React.FC<TUploadImagesProps> = ({ value = [], disabled, labe
         <Row gutter={[4, 4]}>
           {value
             ?.filter((item) => !item.delete)
-            ?.map((item, index) => (
+            ?.map((item) => (
               <Col key={item.value}>
-                <Upload onChange={(dataUpload): void => handleChangeImage(item, dataUpload, index)} disabled={disabled}>
+                <Upload onChange={(dataUpload): void => handleChangeImage(item, dataUpload)} disabled={disabled}>
                   <div className="UploadImages-item">
                     <Avatar image={item.url ? getFullUrlStatics(item.url) : URL.createObjectURL(item.file)} />
                     <div

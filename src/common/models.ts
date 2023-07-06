@@ -494,6 +494,7 @@ export type TBusStopPlayer = {
   create_date: number;
   id: number;
   player_id: number;
+  parent_mobile?: string;
   update_date: number;
 };
 
