@@ -9,25 +9,23 @@ import { TRootState } from '@/redux/reducers';
 import {
   ECreateExpenseAction,
   EGetBranchesAction,
-  EGetCategoriesAction,
   EGetManagersAction,
   EGetPlayersAction,
   EUpdateExpenseAction,
   createExpenseAction,
   createInventoryHistoryExpenseAction,
   getBranchesAction,
-  getCategoriesAction,
   getManagersAction,
   getPlayersAction,
   updateExpenseAction,
 } from '@/redux/actions';
 import { showNotification, validationRules } from '@/utils/functions';
-import { EAuditingStatus, EPaymentType, ETypeCategory, ETypeNotification } from '@/common/enums';
+import { EAuditingStatus, EPaymentType, ETypeNotification } from '@/common/enums';
 import TextArea from '@/components/TextArea';
 import DatePicker from '@/components/DatePicker';
 import { useOptionsPaginate } from '@/utils/hooks';
 import Select from '@/components/Select';
-import { dataPaymentTypeOptions } from '@/common/constants';
+import { dataExpenseTypeOptions, dataPaymentTypeOptions } from '@/common/constants';
 
 import { TModalExpenseFormProps } from './ModalExpenseForm.type';
 import './ModalExpenseForm.scss';
@@ -55,23 +53,6 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({
     EGetBranchesAction.GET_BRANCHES,
     'branchName',
     undefined,
-    undefined,
-    visible,
-  );
-
-  const {
-    options: optionsCategories,
-    handleLoadMore: handleLoadMoreCategories,
-    handleSearch: handleSearchCategories,
-  } = useOptionsPaginate(
-    getCategoriesAction,
-    'categoryReducer',
-    'getCategoriesResponse',
-    EGetCategoriesAction.GET_CATEGORIES,
-    undefined,
-    {
-      type: ETypeCategory.EXPENSE,
-    },
     undefined,
     visible,
   );
@@ -233,9 +214,7 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({
                     active
                     disabled={Boolean(data)}
                     showSearch
-                    options={optionsCategories}
-                    onSearch={handleSearchCategories}
-                    onLoadMore={handleLoadMoreCategories}
+                    options={dataExpenseTypeOptions}
                   />
                 </Form.Item>
               </Col>
@@ -304,7 +283,7 @@ const ModalExpenseForm: React.FC<TModalExpenseFormProps> = ({
 
             <Col span={24}>
               <Form.Item name="atDate" rules={[validationRules.required()]}>
-                <DatePicker label="Ngày tạo" required placeholder="Chọn dữ liệu" active />
+                <DatePicker label="Ngày thanh toán" required placeholder="Chọn dữ liệu" active />
               </Form.Item>
             </Col>
             <Col span={24}>

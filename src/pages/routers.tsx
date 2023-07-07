@@ -66,6 +66,7 @@ const PdfOrders = lazy(() => retryLoadComponent(() => import('@/pages/PdfOrders'
 const Payrolls = lazy(() => retryLoadComponent(() => import('@/pages/Payrolls')));
 const PayrollDetail = lazy(() => retryLoadComponent(() => import('@/pages/PayrollDetail')));
 const PurchaseOrders = lazy(() => retryLoadComponent(() => import('@/pages/PurchaseOrders')));
+const ReportRevenuesExpenses = lazy(() => retryLoadComponent(() => import('@/pages/ReportRevenuesExpenses')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -126,6 +127,8 @@ export const Paths = {
   PdfOrders: '/pdf-orders',
   Payrolls: '/payrolls',
   PayrollDetail: (id?: string): string => `/payrolls/${id || ':id'}`,
+  ReportRevenues: '/reports/revenues',
+  ReportExpenses: '/reports/expenses',
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -178,6 +181,7 @@ export const Pages = {
   PdfOrders,
   Payrolls,
   PayrollDetail,
+  ReportRevenuesExpenses,
 
   Login,
   LoginDomain,
@@ -187,6 +191,8 @@ export const Pages = {
 interface IRouteProps extends RouteComponentProps {
   component: React.FC;
   managers?: boolean;
+  revenues?: boolean;
+  expenses?: boolean;
 }
 
 export const AuthRoute: React.FC<IRouteProps> = ({ component: Component, ...rest }) => {

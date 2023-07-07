@@ -2,6 +2,7 @@ import {
   EAuditingStatus,
   EDayOfWeek,
   EDegreeType,
+  EExpenseType,
   ELevel,
   EOrderStatus,
   EPaymentType,
@@ -200,6 +201,18 @@ export const dataTransactionTypeOptions = [
   { value: ETransactionType.GIFT_AND_CONTRIBUTIONS, label: 'Đóng góp & Quà tặng' },
   { value: ETransactionType.OTHER_SALES_AND_SERVICES, label: 'Dịch vụ & Bán hàng khác' },
   { value: ETransactionType.TOURNAMENT, label: 'Giải đấu' },
+  { value: ETransactionType.REGISTER_TO_JOIN_THE_CAR, label: 'Phí dịch vụ đưa đón' },
+];
+
+export const dataExpenseTypeOptions = [
+  { data: { name: 'Supplier' }, value: EExpenseType.SUPPLIER, label: 'Nhà phân phối' },
+  { data: { name: 'Advertisement' }, value: EExpenseType.ADVERTISEMENT, label: 'Quảng cáo' },
+  { data: { name: 'Other' }, value: EExpenseType.OTHER, label: 'Khác' },
+  { data: { name: 'Refund product' }, value: EExpenseType.REFUND_PRODUCT, label: 'Hoàn trả sản phẩm' },
+  { data: { name: 'Transport' }, value: EExpenseType.TRANSPORT, label: 'Điểm đón' },
+  { data: { name: 'Stadium' }, value: EExpenseType.STADIUM, label: 'Sân bóng' },
+  { data: { name: 'Salary' }, value: EExpenseType.SALARY, label: 'Lương' },
+  { data: { name: 'Refund membership fee' }, value: EExpenseType.REFUND_MEMBERSHIP_FEE, label: 'Hoàn trả học phí' },
 ];
 
 export const dataPricingModelOptions = [

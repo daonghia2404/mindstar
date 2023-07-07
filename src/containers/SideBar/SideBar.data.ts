@@ -296,8 +296,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     id: '7',
     title: 'Báo cáo',
     icon: EIconName.ReportAnalytics,
-    link: Paths.Dashboard,
-    activePaths: [],
+    activePaths: [Paths.ReportRevenues, Paths.ReportExpenses],
     children: [
       {
         id: '7-1',
@@ -310,15 +309,15 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         id: '7-2',
         title: 'Doanh thu',
         icon: EIconName.PigMoney,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.ReportRevenues,
+        activePaths: [Paths.ReportRevenues],
       },
       {
         id: '7-3',
         title: 'Chi phí',
         icon: EIconName.Coins,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.ReportExpenses,
+        activePaths: [Paths.ReportExpenses],
       },
       {
         id: '7-4',

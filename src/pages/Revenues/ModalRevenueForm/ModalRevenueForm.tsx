@@ -229,7 +229,7 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
 
             <Col span={24}>
               <Form.Item name="atDate" rules={[validationRules.required()]}>
-                <DatePicker label="Ngày tạo" required placeholder="Chọn dữ liệu" active />
+                <DatePicker label="Ngày thanh toán" required placeholder="Chọn dữ liệu" active />
               </Form.Item>
             </Col>
             <Col span={24}>

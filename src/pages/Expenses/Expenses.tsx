@@ -3,8 +3,8 @@ import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import moment, { Moment } from 'moment';
 
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataPaymentTypeOptions } from '@/common/constants';
-import { EEmpty, EFormat, EPaymentType, ETypeCategory } from '@/common/enums';
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataExpenseTypeOptions, dataPaymentTypeOptions } from '@/common/constants';
+import { EEmpty, EFormat, EPaymentType } from '@/common/enums';
 import { TExpense } from '@/common/models';
 import Button, { EButtonStyleType } from '@/components/Button';
 import Card from '@/components/Card';
@@ -13,7 +13,7 @@ import { TDropdownMenuItem } from '@/components/DropdownMenu/DropdownMenu.types'
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
 import Input from '@/components/Input';
 import Table from '@/components/Table';
-import { EGetCategoriesAction, EGetExpensesAction, getCategoriesAction, getExpensesAction } from '@/redux/actions';
+import { EGetExpensesAction, getExpensesAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
 import { TGetExpensesParams } from '@/services/api';
 import { formatCurrency, formatISODateToDateTime } from '@/utils/functions';
@@ -22,7 +22,6 @@ import ModalExpenseForm from '@/pages/Expenses/ModalExpenseForm';
 import Select from '@/components/Select';
 import DatePicker from '@/components/DatePicker';
 import Tags from '@/components/Tags';
-import { useOptionsPaginate } from '@/utils/hooks';
 
 import './Expenses.scss';
 
@@ -45,21 +44,6 @@ const Expenses: React.FC = () => {
     fromDate: moment().startOf('month')?.valueOf(),
     toDate: moment().endOf('month')?.valueOf(),
   });
-
-  const {
-    options: optionsCategories,
-    handleLoadMore: handleLoadMoreCategories,
-    handleSearch: handleSearchCategories,
-  } = useOptionsPaginate(
-    getCategoriesAction,
-    'categoryReducer',
-    'getCategoriesResponse',
-    EGetCategoriesAction.GET_CATEGORIES,
-    undefined,
-    {
-      type: ETypeCategory.EXPENSE,
-    },
-  );
 
   const handleOpenModalExpenseForm = (data?: TExpense): void => {
     setModalExpenseFormState({ visible: true, data });
@@ -243,11 +227,11 @@ const Expenses: React.FC = () => {
                     <Select
                       label="Loại chi phí"
                       placeholder="Chọn dữ liệu"
-                      value={optionsCategories.find((item) => item.value === getExpensesParamsRequest.categoryIds)}
+                      value={dataExpenseTypeOptions.find(
+                        (item) => item.value === Number(getExpensesParamsRequest.categoryIds),
+                      )}
                       showSearch
-                      options={optionsCategories}
-                      onSearch={handleSearchCategories}
-                      onLoadMore={handleLoadMoreCategories}
+                      options={dataExpenseTypeOptions}
                       allowClear
                       onChange={(option): void => {
                         setGetExpensesParamsRequest({

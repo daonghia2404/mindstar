@@ -87,6 +87,8 @@ export enum EFormat {
   'MM/YYYY' = 'MM/YYYY',
   'wo, YYYY' = 'wo, YYYY',
   'dddd | DD/MM/YYYY - HH:mm' = 'dddd | DD/MM/YYYY - HH:mm',
+  'YYYY' = 'YYYY',
+  'DD' = 'DD',
 }
 
 export enum EAuditingStatus {
@@ -177,12 +179,24 @@ export enum ELevel {
 }
 
 export enum ETransactionType {
+  REGISTER_TO_JOIN_THE_CAR = 7,
   TOURNAMENT = 6,
   OTHER_SALES_AND_SERVICES = 5,
   GIFT_AND_CONTRIBUTIONS = 4,
   SPONSORSHIP = 3,
   MEMBERSHIP_FEE = 2,
   PRODUCT = 1,
+}
+
+export enum EExpenseType {
+  REFUND_PRODUCT = 8,
+  SUPPLIER = 7,
+  ADVERTISEMENT = 6,
+  OTHER = 5,
+  TRANSPORT = 4,
+  STADIUM = 3,
+  SALARY = 2,
+  REFUND_MEMBERSHIP_FEE = 1,
 }
 
 export enum EResetType {

@@ -17,6 +17,7 @@ export * from './player';
 export * from './practice';
 export * from './product';
 export * from './redeem';
+export * from './report';
 export * from './reward';
 export * from './schedule';
 export * from './setting';
