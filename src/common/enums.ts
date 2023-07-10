@@ -217,3 +217,9 @@ export enum EPointActionType {
   BUY_PRODUCT = 3,
   REFERRALS = 4,
 }
+
+export enum EReportUnitFilter {
+  DATE = 'DATE',
+  MONTH = 'MONTH',
+  YEAR = 'YEAR',
+}

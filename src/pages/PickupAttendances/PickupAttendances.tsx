@@ -228,35 +228,37 @@ const PickupAttendances: React.FC = () => {
         <Col span={24}>
           <Card className="PickupAttendances-filter">
             <Row gutter={[16, 16]} justify="space-between">
-              <Row gutter={[16, 16]}>
-                <Col>
-                  <Input
-                    style={{ minWidth: '24rem' }}
-                    label="Tìm kiếm"
-                    suffixIcon={<Icon name={EIconName.Search} color={EIconColor.TUNDORA} />}
-                    onSearch={handleSearch}
-                  />
-                </Col>
-                <Col>
-                  <Select
-                    label="Điểm đón"
-                    placeholder="Chọn dữ liệu"
-                    value={getPickupAttendancesParamsRequest?.busStopId as any}
-                    showSearch
-                    options={optionsBusStops}
-                    allowClear
-                    onLoadMore={handleLoadMoreBusStops}
-                    onSearch={handleSearchBusStops}
-                    onChange={(option): void => {
-                      setGetPickupAttendancesParamsRequest({
-                        ...getPickupAttendancesParamsRequest,
-                        page: DEFAULT_PAGE,
-                        busStopId: option as any,
-                      });
-                    }}
-                  />
-                </Col>
-              </Row>
+              <Col>
+                <Row gutter={[16, 16]}>
+                  <Col>
+                    <Input
+                      style={{ minWidth: '24rem' }}
+                      label="Tìm kiếm"
+                      suffixIcon={<Icon name={EIconName.Search} color={EIconColor.TUNDORA} />}
+                      onSearch={handleSearch}
+                    />
+                  </Col>
+                  <Col>
+                    <Select
+                      label="Điểm đón"
+                      placeholder="Chọn dữ liệu"
+                      value={getPickupAttendancesParamsRequest?.busStopId as any}
+                      showSearch
+                      options={optionsBusStops}
+                      allowClear
+                      onLoadMore={handleLoadMoreBusStops}
+                      onSearch={handleSearchBusStops}
+                      onChange={(option): void => {
+                        setGetPickupAttendancesParamsRequest({
+                          ...getPickupAttendancesParamsRequest,
+                          page: DEFAULT_PAGE,
+                          busStopId: option as any,
+                        });
+                      }}
+                    />
+                  </Col>
+                </Row>
+              </Col>
 
               <Col>
                 <DatePicker

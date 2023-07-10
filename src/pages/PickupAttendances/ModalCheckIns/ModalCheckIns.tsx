@@ -255,25 +255,30 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
                       <Col span={24}>
                         <div className="ModalCheckIns-item">
                           <Row gutter={[16, 16]} wrap={false} align="middle">
-                            <Col>
-                              <Avatar size={48} image={getFullUrlStatics(item?.player?.avatar)} />
-                            </Col>
                             <Col flex={1}>
-                              <div className="ModalCheckIns-info">
-                                <div className="ModalCheckIns-info-title">{item?.player?.name}</div>
-                                {item?.player?.mobile ? (
-                                  <a
-                                    href={`tel: ${item?.player?.mobile}`}
-                                    className="ModalCheckIns-link"
-                                    onClick={(e): void => e.stopPropagation()}
-                                  >
-                                    {item?.player?.mobile}
-                                  </a>
-                                ) : (
-                                  <div className="ModalCheckIns-info-description">{EEmpty.DASH}</div>
-                                )}
-                              </div>
+                              <Row gutter={[8, 8]} wrap={false} align="middle">
+                                <Col>
+                                  <Avatar size={48} image={getFullUrlStatics(item?.player?.avatar)} />
+                                </Col>
+                                <Col flex={1}>
+                                  <div className="ModalCheckIns-info">
+                                    <div className="ModalCheckIns-info-title">{item?.player?.name}</div>
+                                    {item?.player?.mobile ? (
+                                      <a
+                                        href={`tel: ${item?.player?.mobile}`}
+                                        className="ModalCheckIns-link"
+                                        onClick={(e): void => e.stopPropagation()}
+                                      >
+                                        {item?.player?.mobile}
+                                      </a>
+                                    ) : (
+                                      <div className="ModalCheckIns-info-description">{EEmpty.DASH}</div>
+                                    )}
+                                  </div>
+                                </Col>
+                              </Row>
                             </Col>
+
                             <Col>
                               <div className="ModalCheckIns-info-description">Đi</div>
 

@@ -8,6 +8,7 @@ import {
   EPaymentType,
   EPointActionType,
   EPricingModelType,
+  EReportUnitFilter,
   ESalaryType,
   ETransactionStatus,
   ETransactionType,
@@ -225,4 +226,10 @@ export const dataPointActionOptions = [
   { value: EPointActionType.BIRTHDAY, label: 'Sinh Nhật' },
   { value: EPointActionType.BUY_PRODUCT, label: 'Mua Sản Phẩm' },
   { value: EPointActionType.REFERRALS, label: 'Mã Giới Thiệu' },
+];
+
+export const dataReportUnitTypeOptions = [
+  { value: EReportUnitFilter.DATE, label: 'Hàng ngày', data: { unit: 'report-by-day' } },
+  { value: EReportUnitFilter.MONTH, label: 'Hàng tháng', data: { unit: 'report-by-month' } },
+  { value: EReportUnitFilter.YEAR, label: 'Hàng năm', data: { unit: 'report-by-year' } },
 ];

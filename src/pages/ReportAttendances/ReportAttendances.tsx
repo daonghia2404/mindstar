@@ -8,29 +8,27 @@ import Select, { TSelectOption } from '@/components/Select';
 import DatePicker from '@/components/DatePicker';
 import { EEmpty, EFormat, EReportUnitFilter } from '@/common/enums';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
-import { formatCurrency } from '@/utils/functions';
-import { TGetReportRevenuesParams } from '@/services/api';
-import { getReportExpensesAction, getReportRevenuesAction } from '@/redux/actions';
+import { TGetReportAttendancesParams } from '@/services/api';
+import { getReportAttendancesAction } from '@/redux/actions';
 import { TRootState } from '@/redux/reducers';
-import ReportChart from '@/pages/ReportRevenuesExpenses/ReportChart';
-
-import { TReportRevenuesExpensesProps } from './ReportRevenuesExpenses.types';
-import './ReportRevenuesExpenses.scss';
+import ReportChart from '@/pages/ReportAttendances/ReportChart';
 import { dataReportUnitTypeOptions } from '@/common/constants';
 
-const ReportRevenuesExpenses: React.FC<TReportRevenuesExpensesProps> = ({ revenues }) => {
+import { TReportAttendancesProps } from './ReportAttendances.types';
+import './ReportAttendances.scss';
+
+const ReportAttendances: React.FC<TReportAttendancesProps> = () => {
   const dispatch = useDispatch();
 
-  const reportRevenuesState = useSelector((state: TRootState) => state.reportReducer.getReportRevenuesResponse)?.data;
-  const reportExpensesState = useSelector((state: TRootState) => state.reportReducer.getReportExpensesResponse)?.data;
+  const reportAttendancesState = useSelector(
+    (state: TRootState) => state.reportReducer.getReportAttendancesResponse,
+  )?.data;
 
-  const [getReportParamsRequest, setGetReportParamsRequest] = useState<TGetReportRevenuesParams>({
+  const [getReportParamsRequest, setGetReportParamsRequest] = useState<TGetReportAttendancesParams>({
     fromDate: moment().startOf('month')?.valueOf(),
     toDate: moment().endOf('month')?.valueOf(),
     filterUnit: dataReportUnitTypeOptions[0] as unknown as string,
   });
-
-  const state: any = revenues ? reportRevenuesState : reportExpensesState;
 
   const renderPickerType = (): 'date' | 'month' | 'year' | undefined => {
     switch ((getReportParamsRequest?.filterUnit as unknown as TSelectOption)?.value) {
@@ -82,7 +80,7 @@ const ReportRevenuesExpenses: React.FC<TReportRevenuesExpensesProps> = ({ revenu
 
   const getReport = useCallback(() => {
     dispatch(
-      (revenues ? getReportRevenuesAction : getReportExpensesAction).request({
+      getReportAttendancesAction.request({
         params: {
           ...getReportParamsRequest,
           filterUnit: (getReportParamsRequest?.filterUnit as unknown as TSelectOption)?.data?.unit,
@@ -97,10 +95,10 @@ const ReportRevenuesExpenses: React.FC<TReportRevenuesExpensesProps> = ({ revenu
   }, [getReport]);
 
   return (
-    <div className="ReportRevenuesExpenses">
+    <div className="ReportAttendances">
       <Row gutter={[24, 24]}>
         <Col span={24}>
-          <Card className="ReportRevenuesExpenses-filter">
+          <Card className="ReportAttendances-filter">
             <Row gutter={[16, 16]} justify="space-between">
               <Col />
               <Col>
@@ -144,21 +142,44 @@ const ReportRevenuesExpenses: React.FC<TReportRevenuesExpensesProps> = ({ revenu
           </Card>
         </Col>
         <Col span={24}>
-          <Card className="ReportRevenuesExpenses-chart">
-            <div className="ReportRevenuesExpenses-chart-header">
+          <Card className="ReportAttendances-chart">
+            <div className="ReportAttendances-chart-header">
               <Row gutter={[16, 16]} justify="space-between" align="middle">
                 <Col>
-                  <div className="ReportRevenuesExpenses-chart-header-item">
-                    <Icon name={revenues ? EIconName.PigMoney : EIconName.Coins} color={EIconColor.TUNDORA} />
-                    Tổng {revenues ? 'Doanh Thu' : 'Chi Phí'}:{' '}
-                    <strong>{formatCurrency({ amount: state?.total_amount || EEmpty.ZERO, showSuffix: true })}</strong>
-                  </div>
+                  <Row gutter={[16, 16]}>
+                    <Col>
+                      <div className="ReportAttendances-chart-header-item">
+                        <Icon name={EIconName.UserCheck} color={EIconColor.TUNDORA} />
+                        Có Mặt:{' '}
+                        <strong>
+                          {reportAttendancesState?.presents || EEmpty.ZERO} (
+                          {reportAttendancesState?.percent_presents || EEmpty.ZERO}%)
+                        </strong>
+                      </div>
+                    </Col>
+                    <Col>
+                      <div className="ReportAttendances-chart-header-item">
+                        <Icon name={EIconName.UserX} color={EIconColor.TUNDORA} />
+                        Vắng Mặt:{' '}
+                        <strong>
+                          {reportAttendancesState?.absents || EEmpty.ZERO} (
+                          {reportAttendancesState?.percent_absents || EEmpty.ZERO}%)
+                        </strong>
+                      </div>
+                    </Col>
+                    <Col>
+                      <div className="ReportAttendances-chart-header-item">
+                        <Icon name={EIconName.UsersGroup} color={EIconColor.TUNDORA} />
+                        Tổng Học Viên: <strong>{reportAttendancesState?.total_players || EEmpty.ZERO}</strong>
+                      </div>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </div>
 
-            <div className="ReportRevenuesExpenses-chart-body">
-              <ReportChart data={state?.revenue_per_time_list || state?.expense_per_time_list} />
+            <div className="ReportAttendances-chart-body">
+              <ReportChart data={reportAttendancesState?.attendance_report_detail_list || []} />
             </div>
           </Card>
         </Col>
@@ -167,4 +188,4 @@ const ReportRevenuesExpenses: React.FC<TReportRevenuesExpensesProps> = ({ revenu
   );
 };
 
-export default ReportRevenuesExpenses;
+export default ReportAttendances;

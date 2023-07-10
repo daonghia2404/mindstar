@@ -67,6 +67,7 @@ const Payrolls = lazy(() => retryLoadComponent(() => import('@/pages/Payrolls'))
 const PayrollDetail = lazy(() => retryLoadComponent(() => import('@/pages/PayrollDetail')));
 const PurchaseOrders = lazy(() => retryLoadComponent(() => import('@/pages/PurchaseOrders')));
 const ReportRevenuesExpenses = lazy(() => retryLoadComponent(() => import('@/pages/ReportRevenuesExpenses')));
+const ReportAttendances = lazy(() => retryLoadComponent(() => import('@/pages/ReportAttendances')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -129,6 +130,7 @@ export const Paths = {
   PayrollDetail: (id?: string): string => `/payrolls/${id || ':id'}`,
   ReportRevenues: '/reports/revenues',
   ReportExpenses: '/reports/expenses',
+  ReportAttendances: '/reports/attendances',
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -182,6 +184,7 @@ export const Pages = {
   Payrolls,
   PayrollDetail,
   ReportRevenuesExpenses,
+  ReportAttendances,
 
   Login,
   LoginDomain,

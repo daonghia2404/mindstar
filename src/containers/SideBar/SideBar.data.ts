@@ -296,14 +296,14 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     id: '7',
     title: 'Báo cáo',
     icon: EIconName.ReportAnalytics,
-    activePaths: [Paths.ReportRevenues, Paths.ReportExpenses],
+    activePaths: [Paths.ReportRevenues, Paths.ReportExpenses, Paths.ReportAttendances],
     children: [
       {
         id: '7-1',
         title: 'Điểm danh',
         icon: EIconName.Checkbox,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.ReportAttendances,
+        activePaths: [Paths.ReportAttendances],
       },
       {
         id: '7-2',

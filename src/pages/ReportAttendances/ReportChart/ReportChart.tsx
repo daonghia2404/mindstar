@@ -2,13 +2,11 @@ import React from 'react';
 import { Column } from '@ant-design/plots';
 import moment from 'moment';
 
-import { formatCurrency, formatISODateToDateTime } from '@/utils/functions';
-import { EEmpty, EFormat } from '@/common/enums';
-import { dataExpenseTypeOptions, dataTransactionTypeOptions } from '@/common/constants';
+import { formatISODateToDateTime } from '@/utils/functions';
+import { EFormat } from '@/common/enums';
 
 import { TReportChartProps } from './ReportChart.type';
 import './ReportChart.scss';
-import { TSelectOption } from '@/components/Select';
 
 const ReportChart: React.FC<TReportChartProps> = React.memo(({ data }) => {
   const isUnitYear = Boolean(data?.[0]?.at_year && !data?.[0]?.at_month);
@@ -17,7 +15,7 @@ const ReportChart: React.FC<TReportChartProps> = React.memo(({ data }) => {
   const chartData =
     data
       ?.map((item) => {
-        return (item.revenue_per_type_list || item.expense_per_category_list).map((subItem: any) => {
+        return item.class_attendance_list.map((subItem) => {
           const isYear = Boolean(item?.at_year && !item?.at_month);
           const isMonth = Boolean(item?.at_month && item?.at_month);
           let date;
@@ -36,9 +34,9 @@ const ReportChart: React.FC<TReportChartProps> = React.memo(({ data }) => {
 
           return {
             ...item,
-            name: `${subItem.type || subItem.category_name}`,
+            name: subItem.class_name,
             date,
-            value: subItem.amount,
+            value: subItem.present,
           };
         });
       })
@@ -72,9 +70,9 @@ const ReportChart: React.FC<TReportChartProps> = React.memo(({ data }) => {
     },
     yAxis: {
       label: {
-        formatter: (value: string): string => {
-          return formatCurrency({ amount: Number(value) || EEmpty.ZERO, showSuffix: true });
-        },
+        // formatter: (value: string): string => {
+        //   return formatCurrency({ amount: Number(value) || EEmpty.ZERO, showSuffix: true });
+        // },
       },
     },
     label: {
@@ -90,11 +88,6 @@ const ReportChart: React.FC<TReportChartProps> = React.memo(({ data }) => {
           type: 'adjust-color',
         },
       ],
-      formatter: (record: any): string => {
-        return Number(record?.value) > 0
-          ? formatCurrency({ amount: Number(record?.value) || EEmpty.ZERO, showSuffix: true })
-          : '';
-      },
     },
     tooltip: {
       title: (value: string) => {
@@ -107,38 +100,17 @@ const ReportChart: React.FC<TReportChartProps> = React.memo(({ data }) => {
             return formatISODateToDateTime(Number(value), EFormat['DD/MM/YYYY']);
         }
       },
-      formatter: (record: any) => {
-        const name =
-          [...dataTransactionTypeOptions, ...dataExpenseTypeOptions].find((item) => {
-            const targetCompare = String((item as TSelectOption)?.data?.name || item.value);
-            return targetCompare === record?.name;
-          })?.label || EEmpty.DASH;
-        const value = formatCurrency({ amount: Number(record?.value) || EEmpty.ZERO, showSuffix: true });
-
-        return { name, value };
-      },
     },
     legend: {
       position: 'top',
       background: {
-        padding: [0, 24, 16, 24],
+        padding: [0, 24, 56, 24],
         style: {
           opacity: 0,
         },
       },
       offsetY: -8,
       flipPage: false,
-      itemName: {
-        formatter: (value: string): string => {
-          const name =
-            [...dataTransactionTypeOptions, ...dataExpenseTypeOptions].find((item) => {
-              const targetCompare = String((item as TSelectOption)?.data?.name || item.value);
-              return targetCompare === value;
-            })?.label || EEmpty.DASH;
-
-          return name;
-        },
-      },
     },
   };
 
