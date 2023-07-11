@@ -1,3 +1,5 @@
+import { ETransportFeeType } from '@/common/enums';
+
 export type TUser = {
   academy_id: number;
   address: string;
@@ -140,6 +142,8 @@ export type TSetting = {
   transport_settings: {
     branch_id: number;
     is_enable: boolean;
+    fee_type: ETransportFeeType;
+    amount: number;
   }[];
 };
 

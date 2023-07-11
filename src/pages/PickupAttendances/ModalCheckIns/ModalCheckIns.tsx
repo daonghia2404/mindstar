@@ -30,6 +30,7 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
   visible,
   getPickupAttendancesParamsRequest,
   isValidTransportMode,
+  direction,
   onClose,
   onSuccess,
 }) => {
@@ -89,6 +90,7 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
           player_id: item.player_id,
           pickup_status: typeof pickupStatus === 'number' ? pickupStatus : ETypeCheckIn.NONE,
           pickup_time: item.pickup_time || moment()?.valueOf(),
+          bus_direction: direction,
         };
       });
 
@@ -135,6 +137,7 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
             size: 100,
             fromDate: getPickupAttendancesParamsRequest?.fromDate,
             toDate: getPickupAttendancesParamsRequest?.toDate,
+            direction,
           },
         }),
       );
@@ -280,16 +283,7 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
                             </Col>
 
                             <Col>
-                              <div className="ModalCheckIns-info-description">Đi</div>
-
                               <Form.Item name={`${item?.player_id}_checked_in`}>
-                                <AttendanceCheckbox />
-                              </Form.Item>
-                            </Col>
-                            <Col>
-                              <div className="ModalCheckIns-info-description">Về</div>
-
-                              <Form.Item name={`${item?.player_id}_checked_out`}>
                                 <AttendanceCheckbox />
                               </Form.Item>
                             </Col>

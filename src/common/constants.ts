@@ -12,6 +12,7 @@ import {
   ESalaryType,
   ETransactionStatus,
   ETransactionType,
+  ETransportFeeType,
   ETypeCheckIn,
   EUserType,
 } from '@/common/enums';
@@ -202,7 +203,8 @@ export const dataTransactionTypeOptions = [
   { value: ETransactionType.GIFT_AND_CONTRIBUTIONS, label: 'Đóng góp & Quà tặng' },
   { value: ETransactionType.OTHER_SALES_AND_SERVICES, label: 'Dịch vụ & Bán hàng khác' },
   { value: ETransactionType.TOURNAMENT, label: 'Giải đấu' },
-  { value: ETransactionType.REGISTER_TO_JOIN_THE_CAR, label: 'Phí dịch vụ đưa đón' },
+  { value: ETransactionType.REGISTER_TO_JOIN_THE_CAR, label: 'Đăng ký dịch vụ đưa đón' },
+  { value: ETransactionType.TRANSPORT_FEE, label: 'Phí dịch vụ đưa đón' },
 ];
 
 export const dataExpenseTypeOptions = [
@@ -232,4 +234,10 @@ export const dataReportUnitTypeOptions = [
   { value: EReportUnitFilter.DATE, label: 'Hàng ngày', data: { unit: 'report-by-day' } },
   { value: EReportUnitFilter.MONTH, label: 'Hàng tháng', data: { unit: 'report-by-month' } },
   { value: EReportUnitFilter.YEAR, label: 'Hàng năm', data: { unit: 'report-by-year' } },
+];
+
+export const dataTransportFeeTypeOptions = [
+  { value: ETransportFeeType.FREE, label: 'Miễn Phí' },
+  // { value: ETransportFeeType.TURN, label: 'Theo Lượt' },
+  { value: ETransportFeeType.MONTH, label: 'Theo Tháng' },
 ];

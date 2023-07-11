@@ -66,8 +66,10 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.Revenues} component={Pages.Revenues} />
           <ProtectedRoute path={Paths.Expenses} component={Pages.Expenses} />
           <ProtectedRoute path={Paths.BusStops} component={Pages.BusStops} />
-          <ProtectedRoute path={Paths.PickupAttendances} component={Pages.PickupAttendances} />
+          <ProtectedRoute path={Paths.PickupAttendancesForward} component={Pages.PickupAttendances} forward />
+          <ProtectedRoute path={Paths.PickupAttendancesBack} component={Pages.PickupAttendances} back />
           <ProtectedRoute path={Paths.Orders} component={Pages.Orders} />
+          <ProtectedRoute path={Paths.OrderDetail()} component={Pages.OrderDetail} />
           <ProtectedRoute path={Paths.Connects} component={Pages.Connects} />
           <ProtectedRoute path={Paths.ConnectDetail()} component={Pages.ConnectDetail} />
           <ProtectedRoute path={Paths.PricingModel} component={Pages.PricingModel} />

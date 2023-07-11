@@ -9,12 +9,12 @@ import Card from '@/components/Card';
 import { showNotification } from '@/utils/functions';
 import { TRootState } from '@/redux/reducers';
 import { EUpdateSettingsAction, getBranchesAction, getSettingsAction, updateSettingsAction } from '@/redux/actions';
-import { EAuditingStatus, ETypeNotification } from '@/common/enums';
+import { EAuditingStatus, ETransportFeeType, ETypeNotification } from '@/common/enums';
 import { Paths } from '@/pages/routers';
 import Switch from '@/components/Switch';
 
 import './TransportMode.scss';
-import { DEFAULT_PAGE } from '@/common/constants';
+import { DEFAULT_PAGE, dataTransportFeeTypeOptions } from '@/common/constants';
 import Radio from '@/components/Radio';
 import Input from '@/components/Input';
 
@@ -45,6 +45,8 @@ const TransportMode: React.FC = () => {
       transport_settings: branchesState?.content?.map((item) => ({
         branch_id: item.id,
         is_enable: values[`branch_${item.id}`] || false,
+        fee_type: values[`feeType_${item.id}`] ? Number(values[`feeType_${item.id}`]?.value) : undefined,
+        amount: values[`amount_${item.id}`],
       })),
     };
 
@@ -81,6 +83,8 @@ const TransportMode: React.FC = () => {
         return {
           ...result,
           [`branch_${item.branch_id}`]: item.is_enable,
+          [`feeType_${item.branch_id}`]: dataTransportFeeTypeOptions.find((option) => option.value === item.fee_type),
+          [`amount_${item.branch_id}`]: item.amount,
         };
       }, {});
       form.setFieldsValue(dataChanged);
@@ -136,36 +140,50 @@ const TransportMode: React.FC = () => {
                   <Col key={item.id} span={24}>
                     <div className="TransportMode-item">
                       <Form.Item name={`branch_${item.id}`}>
-                        <Switch label={item.name} />
+                        <Switch
+                          label={item.name}
+                          onChange={(checked): void => {
+                            const dataChanged = {
+                              [`branch_${item.id}`]: checked,
+                              [`feeType_${item.id}`]: dataTransportFeeTypeOptions.find(
+                                (option) => option.value === ETransportFeeType.FREE,
+                              ),
+                            };
+                            setFormValues({ ...formValues, ...dataChanged });
+                            form.setFieldsValue(dataChanged);
+                          }}
+                        />
                       </Form.Item>
                       {formValues?.[`branch_${item.id}`] && (
                         <div className="TransportMode-item-info">
-                          <Form.Item name={`isPaid_${item.id}`}>
+                          <Form.Item name={`feeType_${item.id}`}>
                             <Radio
-                              options={[
-                                { value: 'free', label: 'Miễn Phí' },
-                                {
-                                  value: 'paid',
-                                  label: (
-                                    <Row gutter={[16, 16]} align="middle">
-                                      <Col>Trả Phí</Col>
-                                      <Col>
-                                        <Form.Item name={`fee_${item.id}`}>
-                                          <Input
-                                            label="Phí đưa đón"
-                                            placeholder="Nhập dữ liệu"
-                                            active
-                                            numberic
-                                            useNumber
-                                            useComma
-                                            suffixText="đ"
-                                          />
-                                        </Form.Item>
-                                      </Col>
-                                    </Row>
-                                  ),
-                                },
-                              ]}
+                              options={dataTransportFeeTypeOptions.map((option) => {
+                                if (option.value === ETransportFeeType.MONTH) {
+                                  return {
+                                    ...option,
+                                    label: (
+                                      <Row gutter={[16, 16]} align="middle">
+                                        <Col>Trả Phí</Col>
+                                        <Col>
+                                          <Form.Item name={`amount_${item.id}`}>
+                                            <Input
+                                              label="Phí đưa đón"
+                                              placeholder="Nhập dữ liệu"
+                                              active
+                                              numberic
+                                              useNumber
+                                              useComma
+                                              suffixText="đ (theo tháng)"
+                                            />
+                                          </Form.Item>
+                                        </Col>
+                                      </Row>
+                                    ),
+                                  };
+                                }
+                                return option;
+                              })}
                             />
                           </Form.Item>
                         </div>

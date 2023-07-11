@@ -50,6 +50,7 @@ const Expenses = lazy(() => retryLoadComponent(() => import('@/pages/Expenses'))
 const BusStops = lazy(() => retryLoadComponent(() => import('@/pages/BusStops')));
 const PickupAttendances = lazy(() => retryLoadComponent(() => import('@/pages/PickupAttendances')));
 const Orders = lazy(() => retryLoadComponent(() => import('@/pages/Orders')));
+const OrderDetail = lazy(() => retryLoadComponent(() => import('@/pages/OrderDetail')));
 const Connects = lazy(() => retryLoadComponent(() => import('@/pages/Connects')));
 const ConnectDetail = lazy(() => retryLoadComponent(() => import('@/pages/ConnectDetail')));
 const PricingModel = lazy(() => retryLoadComponent(() => import('@/pages/PricingModel')));
@@ -100,6 +101,7 @@ export const Paths = {
   Practices: '/practices',
   Schedules: '/schedules',
   Orders: '/orders',
+  OrderDetail: (id?: string): string => `/orders/${id || ':id'}`,
   Categories: '/categories',
   Rewards: '/rewards',
   PurchaseOrders: '/inventory-histories',
@@ -112,7 +114,8 @@ export const Paths = {
   Revenues: '/revenues',
   Expenses: '/expenses',
   BusStops: '/transports',
-  PickupAttendances: '/transports/attendances',
+  PickupAttendancesForward: '/transports/attendances/forward',
+  PickupAttendancesBack: '/transports/attendances/back',
   Connects: '/connects',
   ConnectDetail: (id?: string): string => `/connects/${id || ':id'}`,
   PricingModel: '/settings/pricing-model',
@@ -147,6 +150,7 @@ export const Pages = {
   Managers,
   Redeems,
   Orders,
+  OrderDetail,
   ManagerDetail,
   Classes,
   ClassDetail,
@@ -196,6 +200,8 @@ interface IRouteProps extends RouteComponentProps {
   managers?: boolean;
   revenues?: boolean;
   expenses?: boolean;
+  forward?: boolean;
+  back?: boolean;
 }
 
 export const AuthRoute: React.FC<IRouteProps> = ({ component: Component, ...rest }) => {

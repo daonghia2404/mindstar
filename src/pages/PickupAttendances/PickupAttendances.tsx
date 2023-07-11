@@ -5,7 +5,7 @@ import moment, { Moment } from 'moment';
 import { Link } from '@reach/router';
 
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dataTypeCheckInOptions } from '@/common/constants';
-import { EEmpty, EFormat } from '@/common/enums';
+import { EBusStopDirection, EEmpty, EFormat } from '@/common/enums';
 import Button, { EButtonStyleType } from '@/components/Button';
 import Card from '@/components/Card';
 import Icon, { EIconColor, EIconName } from '@/components/Icon';
@@ -31,9 +31,10 @@ import Tags from '@/components/Tags';
 import { Paths } from '@/pages/routers';
 import BlockPermission from '@/components/BlockPermission';
 
+import { TPickupAttendancesProps } from './PickupAttendances.types';
 import './PickupAttendances.scss';
 
-const PickupAttendances: React.FC = () => {
+const PickupAttendances: React.FC<TPickupAttendancesProps> = ({ forward }) => {
   const dispatch = useDispatch();
 
   const settingsState = useSelector((state: TRootState) => state.settingReducer.getSettingsResponse)?.data;
@@ -199,6 +200,7 @@ const PickupAttendances: React.FC = () => {
           params: {
             ...getPickupAttendancesParamsRequest,
             busStopId: (getPickupAttendancesParamsRequest?.busStopId as unknown as TSelectOption)?.value,
+            direction: forward ? EBusStopDirection.FORWARD : EBusStopDirection.BACK,
           },
           headers: { branchIds: currentBranchId },
         }),
@@ -332,6 +334,7 @@ const PickupAttendances: React.FC = () => {
 
       <ModalCheckIns
         {...modalCheckInsState}
+        direction={forward ? EBusStopDirection.FORWARD : EBusStopDirection.BACK}
         isValidTransportMode={isValidTransportMode}
         getPickupAttendancesParamsRequest={getPickupAttendancesParamsRequest}
         onClose={handleCloseModalCheckIns}

@@ -184,7 +184,13 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     title: 'Dịch vụ',
     icon: EIconName.TruckDelivery,
     link: Paths.Dashboard,
-    activePaths: [Paths.BusStops, Paths.PickupAttendances, Paths.Connects, Paths.ConnectDetail(data?.id)],
+    activePaths: [
+      Paths.BusStops,
+      Paths.PickupAttendancesForward,
+      Paths.PickupAttendancesBack,
+      Paths.Connects,
+      Paths.ConnectDetail(data?.id),
+    ],
     children: [
       {
         id: '4-1',
@@ -198,8 +204,23 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         title: 'Điểm danh',
         headerTitle: 'Điểm danh Điểm đón',
         icon: EIconName.Checkbox,
-        link: Paths.PickupAttendances,
-        activePaths: [Paths.PickupAttendances],
+        activePaths: [Paths.PickupAttendancesForward, Paths.PickupAttendancesBack],
+        children: [
+          {
+            id: '4-2-1',
+            title: 'Chiều đi',
+            icon: EIconName.ArrowLongRight,
+            link: Paths.PickupAttendancesForward,
+            activePaths: [Paths.PickupAttendancesForward],
+          },
+          {
+            id: '4-2-2',
+            title: 'Chiều về',
+            icon: EIconName.ArrowLongLeft,
+            link: Paths.PickupAttendancesBack,
+            activePaths: [Paths.PickupAttendancesBack],
+          },
+        ],
       },
       {
         id: '4-3',
@@ -223,7 +244,15 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     title: 'Cửa hàng',
     icon: EIconName.ShoppingCart,
     link: Paths.Dashboard,
-    activePaths: [Paths.Categories, Paths.Rewards, Paths.Redeems, Paths.Products, Paths.Orders, Paths.PurchaseOrders],
+    activePaths: [
+      Paths.Categories,
+      Paths.Rewards,
+      Paths.Redeems,
+      Paths.Products,
+      Paths.Orders,
+      Paths.OrderDetail(data?.id),
+      Paths.PurchaseOrders,
+    ],
     children: [
       {
         id: '5-1',
@@ -244,7 +273,7 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         title: 'Đơn hàng',
         icon: EIconName.Receipt,
         link: Paths.Orders,
-        activePaths: [Paths.Orders],
+        activePaths: [Paths.Orders, Paths.OrderDetail(data?.id)],
       },
       {
         id: '5-4',

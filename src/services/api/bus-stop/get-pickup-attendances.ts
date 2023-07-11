@@ -12,6 +12,7 @@ export type TGetPickupAttendancesParams = {
   busStopId?: string;
   fromDate?: number;
   toDate?: number;
+  direction?: number;
 };
 
 export type TGetPickupAttendancesMaterials = {

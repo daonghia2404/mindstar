@@ -83,7 +83,7 @@ const ModalOrderForm: React.FC<TModalOrderFormProps> = ({ visible, data, onClose
         return result + item;
       });
 
-    return totalPriceProducts - (formValues?.shippingFee || 0) - (formValues?.discount || 0) || 0;
+    return totalPriceProducts + (formValues?.shippingFee || 0) - (formValues?.discount || 0) || 0;
   };
 
   const handleSubmit = (): void => {

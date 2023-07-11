@@ -161,7 +161,12 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
                   active
                   disabled={Boolean(data)}
                   options={dataTransactionTypeOptions.filter(
-                    (item) => ![ETransactionType.PRODUCT, ETransactionType.MEMBERSHIP_FEE].includes(item.value),
+                    (item) =>
+                      ![
+                        ETransactionType.PRODUCT,
+                        ETransactionType.MEMBERSHIP_FEE,
+                        ETransactionType.REGISTER_TO_JOIN_THE_CAR,
+                      ].includes(item.value),
                   )}
                 />
               </Form.Item>
@@ -196,7 +201,6 @@ const ModalRevenueForm: React.FC<TModalRevenueFormProps> = ({ visible, data, onC
                   ETransactionType.SPONSORSHIP,
                   ETransactionType.GIFT_AND_CONTRIBUTIONS,
                   ETransactionType.OTHER_SALES_AND_SERVICES,
-                  // ETransactionType.TOURNAMENT,
                 ].includes(formValues?.transactionType?.value) ? (
                   <Col span={24}>
                     <Form.Item name="title" rules={[validationRules.required()]}>

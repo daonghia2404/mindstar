@@ -134,12 +134,12 @@ const ModalBusStopPlayerForm: React.FC<TModalBusStopPlayerFormProps> = ({
             </Col>
             <Col span={12}>
               <Form.Item name="checkin">
-                <Switch label="Đưa đi" />
+                <Switch label="Chiều đi" />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item name="checkout">
-                <Switch label="Đón về" />
+                <Switch label="Chiều về" />
               </Form.Item>
             </Col>
           </Row>

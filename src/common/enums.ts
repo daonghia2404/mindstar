@@ -179,6 +179,7 @@ export enum ELevel {
 }
 
 export enum ETransactionType {
+  TRANSPORT_FEE = 8,
   REGISTER_TO_JOIN_THE_CAR = 7,
   TOURNAMENT = 6,
   OTHER_SALES_AND_SERVICES = 5,
@@ -222,4 +223,15 @@ export enum EReportUnitFilter {
   DATE = 'DATE',
   MONTH = 'MONTH',
   YEAR = 'YEAR',
+}
+
+export enum EBusStopDirection {
+  FORWARD = 1,
+  BACK = 2,
+}
+
+export enum ETransportFeeType {
+  FREE = 0,
+  TURN = 1,
+  MONTH = 2,
 }

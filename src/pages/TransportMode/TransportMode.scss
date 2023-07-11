@@ -38,6 +38,19 @@
       .FormField-suffix-text {
         width: unset;
       }
+
+      .Input {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+        transform: translateY(-1rem);
+        min-width: 24rem;
+
+        .FormField-label {
+          display: none;
+        }
+      }
     }
   }
 }
