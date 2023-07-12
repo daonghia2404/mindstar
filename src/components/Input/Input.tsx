@@ -59,7 +59,7 @@ const Input: React.FC<TInputProps> = ({
     if (onSearch) setKeyword(changedValue);
 
     if (numberic) {
-      const reg = /^\d*(\d*)?$/;
+      const reg = /^\d*\.?\d*$/;
       const isNumbericPass = reg.test(changedValue) || changedValue === '';
 
       if (useNumber) {
