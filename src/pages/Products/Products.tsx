@@ -164,10 +164,12 @@ const Products: React.FC = () => {
       keySort: 'selling_price',
       render: (_: string, record: TProduct): React.ReactElement => (
         <div className="Table-info">
-          <div className="Table-info-title">{formatCurrency({ amount: record?.selling_price, showSuffix: true })}</div>
+          <div className="Table-info-title">
+            {formatCurrency({ amount: record?.selling_price || EEmpty.ZERO, showSuffix: true })}
+          </div>
           {record?.retail_price && (
             <del className="Table-info-description">
-              {formatCurrency({ amount: record?.retail_price, showSuffix: true })}
+              {formatCurrency({ amount: record?.retail_price || EEmpty.ZERO, showSuffix: true })}
             </del>
           )}
         </div>

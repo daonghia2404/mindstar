@@ -1,0 +1,26 @@
+@import '@/assets/styles/_global.scss';
+
+.ReportRevenuesExpenses {
+  &-chart {
+    &-header {
+      margin-bottom: 2.4rem;
+
+      &-item {
+        display: flex;
+        align-items: center;
+        column-gap: 0.4rem;
+        font-size: 1.4rem;
+        color: $tundora;
+
+        strong {
+          font-weight: 600;
+        }
+
+        .Icon {
+          width: 2.4rem;
+          height: 2.4rem;
+        }
+      }
+    }
+  }
+}

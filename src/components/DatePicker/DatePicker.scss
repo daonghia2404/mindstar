@@ -51,10 +51,12 @@
       border-color: $white !important;
     }
 
+    .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):not(.ant-picker-cell-range-end) .ant-picker-cell-inner,
     .ant-picker-week-panel-row-selected td:first-child {
       border-radius: .4rem 0 0 .4rem;
     }
 
+    .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):not(.ant-picker-cell-range-start) .ant-picker-cell-inner,
     .ant-picker-week-panel-row-selected td:last-child {
       border-radius: 0 .4rem .4rem 0;
     }
@@ -113,6 +115,11 @@
     .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single)::before,
     .ant-picker-cell-in-view.ant-picker-cell-in-range::before {
       background: $white-lilac;
+    }
+
+    .ant-picker-content th,
+    .ant-picker-content td {
+      vertical-align: middle;
     }
   }
 }

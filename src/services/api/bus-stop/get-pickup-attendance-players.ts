@@ -12,6 +12,7 @@ export type TGetPickupAttendancePlayersParams = {
   size: number;
   fromDate?: number;
   toDate?: number;
+  direction?: number;
 };
 
 export type TGetPickupAttendancePlayersMaterials = {

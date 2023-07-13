@@ -70,6 +70,7 @@ export enum EIconName {
   ArrowBigUpLines = 'ArrowBigUpLines',
   Pdf = 'Pdf',
   Ticket = 'Ticket',
+  ArrowLeftRight = 'ArrowLeftRight',
 }
 
 export enum EIconColor {

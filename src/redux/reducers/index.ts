@@ -20,7 +20,7 @@ import playerReducer from './player';
 import practiceReducer from './practice';
 import productReducer from './product';
 import redeemReducer from './redeem';
-import reportInventoriesReducer from './report-inventories';
+import reportReducer from './report';
 import rewardReducer from './reward';
 import scheduleReducer from './schedule';
 import settingReducer from './setting';
@@ -54,7 +54,7 @@ const rootReducer = combineReducers({
   practiceReducer,
   productReducer,
   redeemReducer,
-  reportInventoriesReducer,
+  reportReducer,
   rewardReducer,
   scheduleReducer,
   settingReducer,

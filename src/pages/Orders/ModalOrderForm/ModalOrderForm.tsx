@@ -78,9 +78,12 @@ const ModalOrderForm: React.FC<TModalOrderFormProps> = ({ visible, data, onClose
   const caculateTotalPrice = (): number => {
     const totalPriceProducts = formValues?.products
       ?.filter((item: TProductSelector) => item.quantity && item.quantity > 0)
-      ?.map((item: TProductSelector) => item?.data?.selling_price || item?.data?.amount * (item.quantity || 0));
+      ?.map((item: TProductSelector) => (item?.data?.selling_price || item?.data?.amount) * (item.quantity || 0))
+      ?.reduce((result: number, item: number) => {
+        return result + item;
+      });
 
-    return totalPriceProducts - (formValues?.shippingFee || 0) - (formValues?.discount || 0) || 0;
+    return totalPriceProducts + (formValues?.shippingFee || 0) - (formValues?.discount || 0) || 0;
   };
 
   const handleSubmit = (): void => {

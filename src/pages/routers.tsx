@@ -50,6 +50,7 @@ const Expenses = lazy(() => retryLoadComponent(() => import('@/pages/Expenses'))
 const BusStops = lazy(() => retryLoadComponent(() => import('@/pages/BusStops')));
 const PickupAttendances = lazy(() => retryLoadComponent(() => import('@/pages/PickupAttendances')));
 const Orders = lazy(() => retryLoadComponent(() => import('@/pages/Orders')));
+const OrderDetail = lazy(() => retryLoadComponent(() => import('@/pages/OrderDetail')));
 const Connects = lazy(() => retryLoadComponent(() => import('@/pages/Connects')));
 const ConnectDetail = lazy(() => retryLoadComponent(() => import('@/pages/ConnectDetail')));
 const PricingModel = lazy(() => retryLoadComponent(() => import('@/pages/PricingModel')));
@@ -67,6 +68,8 @@ const Payrolls = lazy(() => retryLoadComponent(() => import('@/pages/Payrolls'))
 const PayrollDetail = lazy(() => retryLoadComponent(() => import('@/pages/PayrollDetail')));
 const PurchaseOrders = lazy(() => retryLoadComponent(() => import('@/pages/PurchaseOrders')));
 const ReportInventories = lazy(() => retryLoadComponent(() => import('@/pages/ReportInventories')));
+const ReportRevenuesExpenses = lazy(() => retryLoadComponent(() => import('@/pages/ReportRevenuesExpenses')));
+const ReportAttendances = lazy(() => retryLoadComponent(() => import('@/pages/ReportAttendances')));
 
 const Login = lazy(() => retryLoadComponent(() => import('@/pages/Login')));
 const LoginDomain = lazy(() => retryLoadComponent(() => import('@/pages/LoginDomain')));
@@ -99,6 +102,7 @@ export const Paths = {
   Practices: '/practices',
   Schedules: '/schedules',
   Orders: '/orders',
+  OrderDetail: (id?: string): string => `/orders/${id || ':id'}`,
   Categories: '/categories',
   Rewards: '/rewards',
   PurchaseOrders: '/inventory-histories',
@@ -111,7 +115,8 @@ export const Paths = {
   Revenues: '/revenues',
   Expenses: '/expenses',
   BusStops: '/transports',
-  PickupAttendances: '/transports/attendances',
+  PickupAttendancesForward: '/transports/attendances/forward',
+  PickupAttendancesBack: '/transports/attendances/back',
   Connects: '/connects',
   ConnectDetail: (id?: string): string => `/connects/${id || ':id'}`,
   PricingModel: '/settings/pricing-model',
@@ -126,8 +131,11 @@ export const Paths = {
   MyProfile: '/my-profile',
   PdfOrders: '/pdf-orders',
   Payrolls: '/payrolls',
-  ReportInventories: '/reportinventories',
   PayrollDetail: (id?: string): string => `/payrolls/${id || ':id'}`,
+  ReportRevenues: '/reports/revenues',
+  ReportExpenses: '/reports/expenses',
+  ReportAttendances: '/reports/attendances',
+  ReportInventories: '/reports/inventories',
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -145,6 +153,7 @@ export const Pages = {
   Redeems,
   Products,
   Orders,
+  OrderDetail,
   ManagerDetail,
   Classes,
   ClassDetail,
@@ -181,6 +190,8 @@ export const Pages = {
   PdfOrders,
   Payrolls,
   PayrollDetail,
+  ReportRevenuesExpenses,
+  ReportAttendances,
 
   Login,
   LoginDomain,
@@ -190,6 +201,10 @@ export const Pages = {
 interface IRouteProps extends RouteComponentProps {
   component: React.FC;
   managers?: boolean;
+  revenues?: boolean;
+  expenses?: boolean;
+  forward?: boolean;
+  back?: boolean;
 }
 
 export const AuthRoute: React.FC<IRouteProps> = ({ component: Component, ...rest }) => {

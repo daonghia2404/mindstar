@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 
 import Modal from '@/components/Modal';
 import { EUpdateAttendancesAction, getAttendancePlayersAction, updateAttendancesAction } from '@/redux/actions';
@@ -26,6 +27,7 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [formValues, setFormValues] = useState<any>({});
+  const isMobile = useMediaQuery({ query: '(max-width: 575px)' });
 
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
   const updateAttendancesLoading = useSelector(
@@ -157,26 +159,31 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
                 {attendancePlayersState?.map((item) => (
                   <Col span={24}>
                     <div className="ModalCheckIns-item">
-                      <Row gutter={[16, 16]} wrap={false} align="middle">
-                        <Col>
-                          <Avatar size={48} image={getFullUrlStatics(item?.[keyModule]?.avatar)} />
+                      <Row gutter={[16, 8]} wrap={isMobile} align="middle">
+                        <Col flex={isMobile ? undefined : 1} span={isMobile ? 24 : undefined}>
+                          <Row gutter={[8, 8]} align="middle" wrap={false}>
+                            <Col>
+                              <Avatar size={48} image={getFullUrlStatics(item?.[keyModule]?.avatar)} />
+                            </Col>
+                            <Col>
+                              <div className="ModalCheckIns-info">
+                                <div className="ModalCheckIns-info-title">{item?.[keyModule]?.name}</div>
+                                {item?.[keyModule]?.mobile ? (
+                                  <a
+                                    href={`tel: ${item?.[keyModule]?.mobile}`}
+                                    className="ModalCheckIns-link"
+                                    onClick={(e): void => e.stopPropagation()}
+                                  >
+                                    {item?.[keyModule]?.mobile}
+                                  </a>
+                                ) : (
+                                  <div className="ModalCheckIns-info-description">{EEmpty.DASH}</div>
+                                )}
+                              </div>
+                            </Col>
+                          </Row>
                         </Col>
-                        <Col span={8}>
-                          <div className="ModalCheckIns-info">
-                            <div className="ModalCheckIns-info-title">{item?.[keyModule]?.name}</div>
-                            {item?.[keyModule]?.mobile ? (
-                              <a
-                                href={`tel: ${item?.[keyModule]?.mobile}`}
-                                className="ModalCheckIns-link"
-                                onClick={(e): void => e.stopPropagation()}
-                              >
-                                {item?.[keyModule]?.mobile}
-                              </a>
-                            ) : (
-                              <div className="ModalCheckIns-info-description">{EEmpty.DASH}</div>
-                            )}
-                          </div>
-                        </Col>
+
                         <Col>
                           <Form.Item name={`${item?.[keyId]}_unit_value`}>
                             <Select
@@ -189,7 +196,7 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
                             />
                           </Form.Item>
                         </Col>
-                        <Col>
+                        <Col flex={isMobile ? 1 : undefined}>
                           <Form.Item name={`${item?.[keyId]}_description`}>
                             <Input label="Ghi chú" placeholder="Nhập dữ liệu" />
                           </Form.Item>

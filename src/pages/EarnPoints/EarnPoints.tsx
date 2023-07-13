@@ -37,7 +37,7 @@ const EarnPoints: React.FC = () => {
 
           return {
             ...item,
-            value: (isPercentField ? values[item.id] / 100 : values[item.id]) || 0,
+            value: (isPercentField ? Number(values[item.id]) : values[item.id]) || 0,
           };
         }),
         level: settingsState?.level,
@@ -64,7 +64,7 @@ const EarnPoints: React.FC = () => {
 
         return {
           ...result,
-          [`${item.id}`]: isPercentField ? item.value * 100 : item.value,
+          [`${item.id}`]: isPercentField ? item.value : item.value,
         };
       }, {});
       form.setFieldsValue(dataChanged);
@@ -113,9 +113,7 @@ const EarnPoints: React.FC = () => {
                         required
                         active
                         numberic
-                        useNumber
-                        min={isPercentField ? 0 : undefined}
-                        max={isPercentField ? 100 : undefined}
+                        useNumber={!isPercentField}
                         suffixText={isPercentField ? '%' : 'điểm'}
                       />
                     </Form.Item>

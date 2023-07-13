@@ -205,21 +205,55 @@ const BusStops: React.FC = () => {
       dataIndex: 'name',
       title: 'Tên',
       className: 'limit-width',
-      render: (_: string, record: TBusStopPlayer): React.ReactElement => (
-        <div className="Table-info">
-          <Link to={Paths.PlayerDetail(String(record?.player?.id))} className="Table-info-title">
-            {record?.player?.name || EEmpty.DASH}
-          </Link>
-          <div className="Table-info-description">{record?.player?.address || EEmpty.DASH}</div>
-          {record?.parent_mobile ? (
-            <a href={`tel: ${record?.parent_mobile}`} className="Table-link" onClick={(e): void => e.stopPropagation()}>
-              {record?.parent_mobile}
-            </a>
-          ) : (
-            <div className="Table-info-description">{EEmpty.DASH}</div>
-          )}
-        </div>
-      ),
+      render: (_: string, record: TBusStopPlayer): React.ReactElement => {
+        let iconName;
+        let iconColor;
+
+        switch (true) {
+          case record.is_departure_turn && record.is_return_turn:
+            iconName = EIconName.ArrowLeftRight;
+            break;
+          case record.is_departure_turn:
+            iconName = EIconName.ArrowLongRight;
+            iconColor = EIconColor.APPLE;
+            break;
+          case record.is_return_turn:
+            iconName = EIconName.ArrowLongLeft;
+            iconColor = EIconColor.POMEGRANATE;
+            break;
+          default:
+            break;
+        }
+        return (
+          <div className="Table-info">
+            <Row gutter={[4, 4]} align="middle" wrap={false}>
+              <Col>
+                <Link to={Paths.PlayerDetail(String(record?.player?.id))} className="Table-info-title">
+                  {record?.player?.name || EEmpty.DASH}
+                </Link>
+              </Col>
+              {iconName && (
+                <Col>
+                  <Icon style={{ width: '2.4rem', height: '2.4rem' }} name={iconName} color={iconColor} />
+                </Col>
+              )}
+            </Row>
+
+            <div className="Table-info-description">{record?.player?.address || EEmpty.DASH}</div>
+            {record?.parent_mobile ? (
+              <a
+                href={`tel: ${record?.parent_mobile}`}
+                className="Table-link"
+                onClick={(e): void => e.stopPropagation()}
+              >
+                {record?.parent_mobile}
+              </a>
+            ) : (
+              <div className="Table-info-description">{EEmpty.DASH}</div>
+            )}
+          </div>
+        );
+      },
     },
     {
       key: 'schedule',

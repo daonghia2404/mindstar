@@ -9,6 +9,7 @@ import { TTransaction } from '@/common/models';
 import { EEmpty, EFormat } from '@/common/enums';
 import { formatCurrency, formatISODateToDateTime } from '@/utils/functions';
 import { Paths } from '@/pages/routers';
+import { dataTransactionTypeOptions } from '@/common/constants';
 
 import { TRecentRevenueTableProps } from './RecentRevenueTable.types';
 import './RecentRevenueTable.scss';
@@ -21,12 +22,15 @@ const RecentRevenueTable: React.FC<TRecentRevenueTableProps> = () => {
       key: 'column1',
       dataIndex: 'column1',
       title: '',
-      render: (_: string, record: TTransaction): React.ReactElement => (
-        <div className="Table-info">
-          <div className="Table-info-title">{record?.buyer?.name || EEmpty.DASH}</div>
-          <div className="Table-info-description">{record?.short_description || EEmpty.DASH}</div>
-        </div>
-      ),
+      render: (_: string, record: TTransaction): React.ReactElement => {
+        const currentRevenue = dataTransactionTypeOptions.find((item) => item.value === record.transaction_detail_type);
+        return (
+          <div className="Table-info">
+            <div className="Table-info-title">{record?.buyer?.name || EEmpty.DASH}</div>
+            <div className="Table-info-description">{currentRevenue ? currentRevenue.label : EEmpty.DASH}</div>
+          </div>
+        );
+      },
     },
     {
       key: 'column2',

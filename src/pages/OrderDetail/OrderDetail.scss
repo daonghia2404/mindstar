@@ -1,0 +1,57 @@
+@import '@/assets/styles/_global.scss';
+
+.OrderDetail {
+  .Card {
+    height: 100%;
+  }
+
+  .Table {
+    .ant-table-thead {
+      display: none;
+    }
+
+    .ant-table-tbody>tr {
+      &>td {
+        border-style: dashed;
+      }
+
+      &:last-child {
+        &>td {
+          border: none;
+        }
+      }
+    }
+  }
+
+  &-total {
+    margin-top: 3.2rem;
+    padding: 1.6rem;
+
+    table {
+      width: 100%;
+
+      tr {
+        &:nth-last-child(2) {
+          td {
+            padding-bottom: .8rem;
+          }
+        }
+
+        &:last-child {
+          td {
+            padding-top: .8rem;
+            border-top: 1px solid $silver-chalice;
+          }
+        }
+      }
+
+      td {
+        padding: .2rem 0;
+
+        &:last-child {
+          text-align: right;
+        }
+      }
+    }
+  }
+}

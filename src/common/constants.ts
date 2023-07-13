@@ -2,14 +2,18 @@ import {
   EAuditingStatus,
   EDayOfWeek,
   EDegreeType,
+  EExpenseType,
+  EInventoryStatus,
   ELevel,
   EOrderStatus,
   EPaymentType,
   EPointActionType,
   EPricingModelType,
+  EReportUnitFilter,
   ESalaryType,
   ETransactionStatus,
   ETransactionType,
+  ETransportFeeType,
   ETypeCheckIn,
   EUserType,
 } from '@/common/enums';
@@ -121,6 +125,11 @@ export const dataProductStatusOptions = [
   { value: EAuditingStatus.INACTIVE, label: 'Ngừng Bán', data: { statusType: EStatusStyleType.DANGER } },
 ];
 
+export const dataInventoryStatusOptions = [
+  { value: EInventoryStatus.STOCKING, label: 'Còn Hàng', data: { statusType: EStatusStyleType.SUCCESS } },
+  { value: EInventoryStatus.OUT_OF_STOCK, label: 'Hết Hàng', data: { statusType: EStatusStyleType.DANGER } },
+];
+
 export const dataDegreeTypeOptions = [
   { value: EDegreeType.BEGINNER, label: 'Tập Sự', data: { color: EIconColor.CERULEAN } },
   { value: EDegreeType.INTERMEDIATE, label: 'Trung Cấp', data: { color: EIconColor.SELECTIVE_YELLOW } },
@@ -200,6 +209,19 @@ export const dataTransactionTypeOptions = [
   { value: ETransactionType.GIFT_AND_CONTRIBUTIONS, label: 'Đóng góp & Quà tặng' },
   { value: ETransactionType.OTHER_SALES_AND_SERVICES, label: 'Dịch vụ & Bán hàng khác' },
   { value: ETransactionType.TOURNAMENT, label: 'Giải đấu' },
+  { value: ETransactionType.REGISTER_TO_JOIN_THE_CAR, label: 'Đăng ký dịch vụ đưa đón' },
+  { value: ETransactionType.TRANSPORT_FEE, label: 'Phí dịch vụ đưa đón' },
+];
+
+export const dataExpenseTypeOptions = [
+  { data: { name: 'Supplier' }, value: EExpenseType.SUPPLIER, label: 'Nhà phân phối' },
+  { data: { name: 'Advertisement' }, value: EExpenseType.ADVERTISEMENT, label: 'Quảng cáo' },
+  { data: { name: 'Other' }, value: EExpenseType.OTHER, label: 'Khác' },
+  { data: { name: 'Refund product' }, value: EExpenseType.REFUND_PRODUCT, label: 'Hoàn trả sản phẩm' },
+  { data: { name: 'Transport' }, value: EExpenseType.TRANSPORT, label: 'Điểm đón' },
+  { data: { name: 'Stadium' }, value: EExpenseType.STADIUM, label: 'Sân bóng' },
+  { data: { name: 'Salary' }, value: EExpenseType.SALARY, label: 'Lương' },
+  { data: { name: 'Refund membership fee' }, value: EExpenseType.REFUND_MEMBERSHIP_FEE, label: 'Hoàn trả học phí' },
 ];
 
 export const dataPricingModelOptions = [
@@ -212,4 +234,16 @@ export const dataPointActionOptions = [
   { value: EPointActionType.BIRTHDAY, label: 'Sinh Nhật' },
   { value: EPointActionType.BUY_PRODUCT, label: 'Mua Sản Phẩm' },
   { value: EPointActionType.REFERRALS, label: 'Mã Giới Thiệu' },
+];
+
+export const dataReportUnitTypeOptions = [
+  { value: EReportUnitFilter.DATE, label: 'Hàng ngày', data: { unit: 'report-by-day' } },
+  { value: EReportUnitFilter.MONTH, label: 'Hàng tháng', data: { unit: 'report-by-month' } },
+  { value: EReportUnitFilter.YEAR, label: 'Hàng năm', data: { unit: 'report-by-year' } },
+];
+
+export const dataTransportFeeTypeOptions = [
+  { value: ETransportFeeType.FREE, label: 'Miễn Phí' },
+  // { value: ETransportFeeType.TURN, label: 'Theo Lượt' },
+  { value: ETransportFeeType.MONTH, label: 'Theo Tháng' },
 ];

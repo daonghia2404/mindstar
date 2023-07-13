@@ -75,8 +75,9 @@ import ShieldCancel from './ShieldCancel';
 import ArrowBigUpLines from './ArrowBigUpLines';
 import Pdf from './Pdf';
 import Ticket from './Ticket';
+import ArrowLeftRight from './ArrowLeftRight';
 
-const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
+const Icon: React.FC<TIconProps> = ({ name, className, color, style, onClick }) => {
   const renderIcon = (): React.ReactElement => {
     switch (name) {
       case EIconName.Google:
@@ -219,6 +220,8 @@ const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
         return <Pdf color={color} />;
       case EIconName.Ticket:
         return <Ticket color={color} />;
+      case EIconName.ArrowLeftRight:
+        return <ArrowLeftRight color={color} />;
 
       default:
         return <></>;
@@ -226,7 +229,11 @@ const Icon: React.FC<TIconProps> = ({ name, className, color, onClick }) => {
   };
 
   return (
-    <div className={classNames('Icon', 'flex', 'justify-center', 'items-center', className)} onClick={onClick}>
+    <div
+      className={classNames('Icon', 'flex', 'justify-center', 'items-center', className)}
+      onClick={onClick}
+      style={style}
+    >
       {renderIcon()}
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 import moment, { Moment } from 'moment';
 
 import {
@@ -88,6 +88,14 @@ const Orders: React.FC = () => {
 
   const dataTableDropdownActions = (data?: TOrder): TDropdownMenuItem[] => [
     {
+      value: 'view',
+      label: 'Chi tiết',
+      icon: EIconName.Eye,
+      onClick: (): void => {
+        navigate(Paths.OrderDetail(String(data?.id)));
+      },
+    },
+    {
       value: 'edit',
       label: 'Sửa',
       icon: EIconName.Pencil,
@@ -120,7 +128,11 @@ const Orders: React.FC = () => {
       key: 'id',
       dataIndex: 'id',
       title: 'Mã đơn hàng',
-      render: (_: string, record: TOrder): string => `ORD${record.id}`,
+      render: (_: string, record: TOrder): React.ReactElement => (
+        <Link className="Table-link" to={Paths.OrderDetail(String(record?.id))}>
+          ORD{record.id}
+        </Link>
+      ),
     },
     {
       key: 'avatar',
@@ -208,7 +220,7 @@ const Orders: React.FC = () => {
           <div className="Table-info">
             <div className="Table-info-title">
               {formatCurrency({
-                amount: record.amount - (record.shipping_fee || 0) - (record.discount_value || 0) || EEmpty.ZERO,
+                amount: record.transaction_amount || EEmpty.ZERO,
                 showSuffix: true,
               })}
             </div>

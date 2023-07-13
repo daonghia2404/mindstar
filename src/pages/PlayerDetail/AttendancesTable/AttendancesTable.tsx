@@ -110,12 +110,13 @@ const AttendancesTable: React.FC<TAttendancesTableProps> = () => {
   return (
     <div className="AttendancesTable">
       <Table
+        scroll={{ y: 92 * 5 }}
         header={
-          <Row gutter={[16, 16]} justify="space-between" align="middle">
+          <Row gutter={[16, 16]} justify="space-between" align="middle" wrap={false}>
             <Col>
               <Row gutter={[24, 16]}>
                 <Col>
-                  <div className="Table-total-item">
+                  <div className="Table-total-item nowrap">
                     <Icon name={EIconName.Briefcase} color={EIconColor.TUNDORA} />
                     Tổng Công: <strong>{0 || EEmpty.ZERO}</strong>
                   </div>

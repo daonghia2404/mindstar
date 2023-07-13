@@ -1,3 +1,5 @@
+import { ETransportFeeType } from '@/common/enums';
+
 export type TUser = {
   academy_id: number;
   address: string;
@@ -140,6 +142,8 @@ export type TSetting = {
   transport_settings: {
     branch_id: number;
     is_enable: boolean;
+    fee_type: ETransportFeeType;
+    amount: number;
   }[];
 };
 
@@ -335,18 +339,6 @@ export type TTimeOff = {
   reason: string;
 };
 
-export type TReportInventory = {
-  at_date: number;
-  cog: number;
-  image: string;
-  attributes: unknown;
-  product: TProduct;
-  quantities_in_hand: number;
-  quantities_sold: number;
-  status: number;
-  uuid: string;
-};
-
 export type TProduct = {
   product_id: number;
   product_name: string;
@@ -508,6 +500,8 @@ export type TBusStopPlayer = {
   player_id: number;
   parent_mobile?: string;
   update_date: number;
+  is_departure_turn: boolean;
+  is_return_turn: boolean;
 };
 
 export type TPickupAttendance = {
@@ -556,5 +550,17 @@ export type TInventoryHistory = {
   total: number;
   unit_price: number;
   update_date: number;
+  uuid: string;
+};
+
+export type TInventory = {
+  at_date: number;
+  cog: number;
+  image: string;
+  attributes: unknown;
+  product: TProduct;
+  quantities_in_hand: number;
+  quantities_sold: number;
+  status: number;
   uuid: string;
 };

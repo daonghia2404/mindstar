@@ -30,6 +30,7 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
   visible,
   getPickupAttendancesParamsRequest,
   isValidTransportMode,
+  direction,
   onClose,
   onSuccess,
 }) => {
@@ -89,6 +90,7 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
           player_id: item.player_id,
           pickup_status: typeof pickupStatus === 'number' ? pickupStatus : ETypeCheckIn.NONE,
           pickup_time: item.pickup_time || moment()?.valueOf(),
+          direction_status: direction,
         };
       });
 
@@ -135,6 +137,7 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
             size: 100,
             fromDate: getPickupAttendancesParamsRequest?.fromDate,
             toDate: getPickupAttendancesParamsRequest?.toDate,
+            direction,
           },
         }),
       );
@@ -255,36 +258,32 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
                       <Col span={24}>
                         <div className="ModalCheckIns-item">
                           <Row gutter={[16, 16]} wrap={false} align="middle">
-                            <Col>
-                              <Avatar size={48} image={getFullUrlStatics(item?.player?.avatar)} />
-                            </Col>
                             <Col flex={1}>
-                              <div className="ModalCheckIns-info">
-                                <div className="ModalCheckIns-info-title">{item?.player?.name}</div>
-                                {item?.player?.mobile ? (
-                                  <a
-                                    href={`tel: ${item?.player?.mobile}`}
-                                    className="ModalCheckIns-link"
-                                    onClick={(e): void => e.stopPropagation()}
-                                  >
-                                    {item?.player?.mobile}
-                                  </a>
-                                ) : (
-                                  <div className="ModalCheckIns-info-description">{EEmpty.DASH}</div>
-                                )}
-                              </div>
+                              <Row gutter={[8, 8]} wrap={false} align="middle">
+                                <Col>
+                                  <Avatar size={48} image={getFullUrlStatics(item?.player?.avatar)} />
+                                </Col>
+                                <Col flex={1}>
+                                  <div className="ModalCheckIns-info">
+                                    <div className="ModalCheckIns-info-title">{item?.player?.name}</div>
+                                    {item?.player?.mobile ? (
+                                      <a
+                                        href={`tel: ${item?.player?.mobile}`}
+                                        className="ModalCheckIns-link"
+                                        onClick={(e): void => e.stopPropagation()}
+                                      >
+                                        {item?.player?.mobile}
+                                      </a>
+                                    ) : (
+                                      <div className="ModalCheckIns-info-description">{EEmpty.DASH}</div>
+                                    )}
+                                  </div>
+                                </Col>
+                              </Row>
                             </Col>
-                            <Col>
-                              <div className="ModalCheckIns-info-description">Đi</div>
 
+                            <Col>
                               <Form.Item name={`${item?.player_id}_checked_in`}>
-                                <AttendanceCheckbox />
-                              </Form.Item>
-                            </Col>
-                            <Col>
-                              <div className="ModalCheckIns-info-description">Về</div>
-
-                              <Form.Item name={`${item?.player_id}_checked_out`}>
                                 <AttendanceCheckbox />
                               </Form.Item>
                             </Col>

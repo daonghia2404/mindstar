@@ -67,7 +67,7 @@ const RecentOrdersTable: React.FC<TRecentOrdersTableProps> = () => {
           <div className="Table-info text-right">
             <div className="Table-info-title nowrap">
               {formatCurrency({
-                amount: record.amount - (record.shipping_fee || 0) - (record.discount_value || 0),
+                amount: record.transaction_amount || EEmpty.ZERO,
                 showSuffix: true,
               })}
             </div>
