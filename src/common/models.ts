@@ -335,6 +335,18 @@ export type TTimeOff = {
   reason: string;
 };
 
+export type TReportInventory = {
+  at_date: number;
+  cog: number;
+  image: string;
+  attributes: unknown;
+  product: TProduct;
+  quantities_in_hand: number;
+  quantities_sold: number;
+  status: number;
+  uuid: string;
+};
+
 export type TProduct = {
   product_id: number;
   product_name: string;

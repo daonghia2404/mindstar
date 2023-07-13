@@ -31,7 +31,6 @@ const Products: React.FC = () => {
   const currentBranchId = useSelector((state: TRootState) => state.uiReducer.branch)?.id;
 
   const productsState = useSelector((state: TRootState) => state.productReducer.getProductsResponse)?.data;
-
   const [getProductsParamsRequest, setGetProductsParamsRequest] = useState<TGetProductsParams>({
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,

@@ -19,6 +19,7 @@ import playerSaga from './player';
 import practiceSaga from './practice';
 import productSaga from './product';
 import redeemSaga from './redeem';
+import reportInventoriesSaga from './report-inventories';
 import rewardSaga from './reward';
 import scheduleSaga from './schedule';
 import settingSaga from './setting';
@@ -49,6 +50,7 @@ const rootSaga = function* root(): Generator {
     fork(practiceSaga),
     fork(productSaga),
     fork(redeemSaga),
+    fork(reportInventoriesSaga),
     fork(rewardSaga),
     fork(scheduleSaga),
     fork(settingSaga),

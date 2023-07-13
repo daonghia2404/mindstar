@@ -31,3 +31,4 @@ export * from './supplier';
 export * from './bus-stop';
 export * from './merchant';
 export * from './inventory';
+export * from './report-inventories';
