@@ -325,7 +325,8 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
     id: '7',
     title: 'Báo cáo',
     icon: EIconName.ReportAnalytics,
-    activePaths: [Paths.ReportRevenues, Paths.ReportExpenses, Paths.ReportAttendances],
+    link: Paths.Dashboard,
+    activePaths: [Paths.ReportInventories, Paths.ReportRevenues, Paths.ReportExpenses, Paths.ReportAttendances],
     children: [
       {
         id: '7-1',
@@ -366,8 +367,8 @@ export const dataSideBar = (data?: any): TSideBarData[] => [
         id: '7-6',
         title: 'Tồn kho',
         icon: EIconName.WareHouse,
-        link: Paths.Dashboard,
-        activePaths: [],
+        link: Paths.ReportInventories,
+        activePaths: [Paths.ReportInventories],
       },
     ],
   },

@@ -3,6 +3,7 @@ import {
   EDayOfWeek,
   EDegreeType,
   EExpenseType,
+  EInventoryStatus,
   ELevel,
   EOrderStatus,
   EPaymentType,
@@ -122,6 +123,11 @@ export const dataAuditingStatusOptions = [
 export const dataProductStatusOptions = [
   { value: EAuditingStatus.ACTIVE, label: 'Đang Bán', data: { statusType: EStatusStyleType.SUCCESS } },
   { value: EAuditingStatus.INACTIVE, label: 'Ngừng Bán', data: { statusType: EStatusStyleType.DANGER } },
+];
+
+export const dataInventoryStatusOptions = [
+  { value: EInventoryStatus.STOCKING, label: 'Còn Hàng', data: { statusType: EStatusStyleType.SUCCESS } },
+  { value: EInventoryStatus.OUT_OF_STOCK, label: 'Hết Hàng', data: { statusType: EStatusStyleType.DANGER } },
 ];
 
 export const dataDegreeTypeOptions = [

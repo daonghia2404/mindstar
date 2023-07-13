@@ -552,3 +552,15 @@ export type TInventoryHistory = {
   update_date: number;
   uuid: string;
 };
+
+export type TInventory = {
+  at_date: number;
+  cog: number;
+  image: string;
+  attributes: unknown;
+  product: TProduct;
+  quantities_in_hand: number;
+  quantities_sold: number;
+  status: number;
+  uuid: string;
+};

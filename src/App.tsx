@@ -83,6 +83,7 @@ const App: React.FC = () => {
           <ProtectedRoute path={Paths.PlanPackages} component={Pages.PlanPackages} />
           <ProtectedRoute path={Paths.MyProfile} component={Pages.MyProfile} />
           <ProtectedRoute path={Paths.Payrolls} component={Pages.Payrolls} />
+          <ProtectedRoute path={Paths.ReportInventories} component={Pages.ReportInventories} />
           <ProtectedRoute path={Paths.PurchaseOrders} component={Pages.PurchaseOrders} />
           <ProtectedRoute path={Paths.PayrollDetail()} component={Pages.PayrollDetail} />
           <ProtectedRoute path={Paths.ReportRevenues} component={Pages.ReportRevenuesExpenses} revenues />

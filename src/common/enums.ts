@@ -235,3 +235,8 @@ export enum ETransportFeeType {
   TURN = 1,
   MONTH = 2,
 }
+
+export enum EInventoryStatus {
+  STOCKING = 1,
+  OUT_OF_STOCK = 2,
+}

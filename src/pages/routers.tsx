@@ -67,6 +67,7 @@ const PdfOrders = lazy(() => retryLoadComponent(() => import('@/pages/PdfOrders'
 const Payrolls = lazy(() => retryLoadComponent(() => import('@/pages/Payrolls')));
 const PayrollDetail = lazy(() => retryLoadComponent(() => import('@/pages/PayrollDetail')));
 const PurchaseOrders = lazy(() => retryLoadComponent(() => import('@/pages/PurchaseOrders')));
+const ReportInventories = lazy(() => retryLoadComponent(() => import('@/pages/ReportInventories')));
 const ReportRevenuesExpenses = lazy(() => retryLoadComponent(() => import('@/pages/ReportRevenuesExpenses')));
 const ReportAttendances = lazy(() => retryLoadComponent(() => import('@/pages/ReportAttendances')));
 
@@ -134,6 +135,7 @@ export const Paths = {
   ReportRevenues: '/reports/revenues',
   ReportExpenses: '/reports/expenses',
   ReportAttendances: '/reports/attendances',
+  ReportInventories: '/reports/inventories',
 
   Login: '/',
   LoginDomain: '/login-domain',
@@ -149,6 +151,7 @@ export const Pages = {
   Branches,
   Managers,
   Redeems,
+  Products,
   Orders,
   OrderDetail,
   ManagerDetail,
@@ -162,7 +165,7 @@ export const Pages = {
   Schedules,
   Categories,
   Rewards,
-  Products,
+  ReportInventories,
   SettingsGeneral,
   Users,
   PurchaseOrders,
