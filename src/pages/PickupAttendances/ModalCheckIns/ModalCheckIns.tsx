@@ -90,7 +90,7 @@ const ModalCheckIns: React.FC<TModalCheckInsProps> = ({
           player_id: item.player_id,
           pickup_status: typeof pickupStatus === 'number' ? pickupStatus : ETypeCheckIn.NONE,
           pickup_time: item.pickup_time || moment()?.valueOf(),
-          bus_direction: direction,
+          direction_status: direction,
         };
       });
 

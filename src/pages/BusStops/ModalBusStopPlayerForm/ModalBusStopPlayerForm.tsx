@@ -64,6 +64,8 @@ const ModalBusStopPlayerForm: React.FC<TModalBusStopPlayerFormProps> = ({
         bus_stop_id: dataBusStop?.id,
         day_of_week: values?.schedules?.map((item: TWorkTime) => item.dayOfWeek)?.join(','),
         player_id: values?.player ? Number(values?.player?.value) : undefined,
+        is_departure_turn: values?.isDepartureTurn,
+        is_return_turn: values?.isReturnTurn,
       };
 
       if (data) {
@@ -85,6 +87,8 @@ const ModalBusStopPlayerForm: React.FC<TModalBusStopPlayerFormProps> = ({
       handleResetPlayers();
       if (data) {
         form.setFieldsValue({
+          isDepartureTurn: data?.is_departure_turn,
+          isReturnTurn: data?.is_return_turn,
           player: data?.player ? { label: data?.player?.name, value: String(data?.player?.id) } : undefined,
           schedules: data?.day_of_week
             ? data?.day_of_week?.split(',')?.map((item) => ({
@@ -133,12 +137,12 @@ const ModalBusStopPlayerForm: React.FC<TModalBusStopPlayerFormProps> = ({
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item name="checkin">
+              <Form.Item name="isDepartureTurn">
                 <Switch label="Chiều đi" />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item name="checkout">
+              <Form.Item name="isReturnTurn">
                 <Switch label="Chiều về" />
               </Form.Item>
             </Col>

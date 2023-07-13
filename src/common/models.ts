@@ -500,6 +500,8 @@ export type TBusStopPlayer = {
   player_id: number;
   parent_mobile?: string;
   update_date: number;
+  is_departure_turn: boolean;
+  is_return_turn: boolean;
 };
 
 export type TPickupAttendance = {
