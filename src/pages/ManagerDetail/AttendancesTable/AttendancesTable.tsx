@@ -117,8 +117,11 @@ const AttendancesTable: React.FC<TAttendancesTableProps> = () => {
               <Row gutter={[24, 16]}>
                 <Col>
                   <div className="Table-total-item nowrap">
-                    <Icon name={EIconName.Briefcase} color={EIconColor.TUNDORA} />
-                    Tổng Công: <strong>{0 || EEmpty.ZERO}</strong>
+                    <Icon name={EIconName.UserCheck} color={EIconColor.TUNDORA} />
+                    Có mặt:{' '}
+                    <strong>
+                      {0 || EEmpty.ZERO} / {0 || EEmpty.ZERO}
+                    </strong>
                   </div>
                 </Col>
               </Row>

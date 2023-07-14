@@ -85,20 +85,30 @@ const ReportInventories: React.FC = () => {
       },
     },
     {
-      key: 'inventorynumber',
-      dataIndex: 'inventoryNumber',
-      title: 'Số Lượng Tồn Kho',
+      key: 'inputInventory',
+      dataIndex: 'inputInventory',
+      title: 'Số Lượng Nhập Hàng',
       sorter: true,
       keySort: 'quantities_in_hand',
       render: (_: string, record: TInventory): React.ReactElement => <>{record?.quantities_in_hand || EEmpty.ZERO}</>,
     },
     {
-      key: 'quantitysold',
-      dataIndex: 'quantitySold',
+      key: 'soldInventory',
+      dataIndex: 'soldInventory',
       title: 'Số Lượng Đã Bán',
       sorter: true,
       keySort: 'quantities_sold',
       render: (_: string, record: TInventory): React.ReactElement => <>{record?.quantities_sold || EEmpty.ZERO}</>,
+    },
+    {
+      key: 'storageInventory',
+      dataIndex: 'storageInventory',
+      title: 'Số Lượng Tồn Kho',
+      sorter: true,
+      keySort: 'quantities_in_hand',
+      render: (_: string, record: TInventory): React.ReactElement => (
+        <>{(record?.quantities_in_hand || EEmpty.ZERO) - (record?.quantities_sold || EEmpty.ZERO)}</>
+      ),
     },
     {
       key: 'status',
